@@ -43,7 +43,7 @@ export default class Layout extends React.Component {
           {children}
         </div>
 
-        {footer !== false && <Footer />}
+        {/* {footer !== false && <Footer />} */}
 
         <Modal />
       </div>
