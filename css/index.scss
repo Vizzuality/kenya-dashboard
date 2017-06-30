@@ -21,42 +21,12 @@
 @import 'components/layout/header';
 @import 'components/layout/footer';
 
-// - page
-@import 'components/page/section';
-@import 'components/page/static-header';
-@import 'components/page/static-section';
-@import 'components/page/static-box';
-@import 'components/page/static-tabs';
-
-// - map
-@import '../node_modules/mapbox-gl/dist/mapbox-gl';
-@import 'components/map/map';
-@import 'components/map/popup';
-
 // - ui
-@import '../node_modules/react-table/react-table';
 @import '../node_modules/react-select/dist/react-select';
-@import 'components/ui/article';
-@import 'components/ui/aside';
 @import 'components/ui/button';
-@import 'components/ui/card';
-@import 'components/ui/chart';
-@import 'components/ui/chart-legend';
-@import 'components/ui/doc-by-category';
-@import 'components/ui/doc-card';
-@import 'components/ui/doc-gallery';
-@import 'components/ui/doc-provided';
-@import 'components/ui/gallery';
 @import 'components/ui/icon';
-@import 'components/ui/intro';
 @import 'components/ui/modal';
-@import 'components/ui/observations-by-operator';
-@import 'components/ui/observations-by-illegality';
 @import 'components/ui/sidebar';
 @import 'components/ui/spinner';
-@import 'components/ui/tabs';
 @import 'components/ui/title';
-@import 'components/ui/table';
-@import 'components/ui/filters';
 @import 'components/ui/select';
-@import 'components/ui/navigation-list';

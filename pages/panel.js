@@ -5,32 +5,38 @@ import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
+import { Link } from 'routes';
+
 // Components
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 
-class HomePage extends Page {
+class PanelPage extends Page {
   render() {
     const { url, session } = this.props;
 
     return (
       <Layout
-        title="Home"
-        description="Home description..."
+        title="Panel"
+        description="Panel description..."
         url={url}
         session={session}
       >
-        Home
+        Panel
+
+        <Link route="indicator" params={{ indicator: 15 }}>
+          <a>Indicator</a>
+        </Link>
       </Layout>
     );
   }
 }
 
-HomePage.propTypes = {
+PanelPage.propTypes = {
   url: PropTypes.object,
   session: PropTypes.object
 };
 
 export default withRedux(
   store
-)(HomePage);
+)(PanelPage);
