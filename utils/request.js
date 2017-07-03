@@ -73,4 +73,8 @@ function remove({ url, headers = [], onSuccess, onError }) {
   return request;
 }
 
-export { get, post, remove };
+function getCartoData(query) {
+  return {};
+}
+
+export { get, post, remove, getCartoData };

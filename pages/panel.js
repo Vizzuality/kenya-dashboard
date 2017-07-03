@@ -11,6 +11,9 @@ import { Link } from 'routes';
 // Components
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
+import PanelList from 'components/ui/panel-list';
+import PanelItem from 'components/ui/panel-item';
+import Spinner from 'components/ui/spinner';
 
 class PanelPage extends Page {
   componentWillMount() {
@@ -32,9 +35,15 @@ class PanelPage extends Page {
         <h2>Filters</h2>
         <div>
           <h2>Panel</h2>
-          <Link route="indicator" params={{ indicator: 15 }}>
-            <a>Indicator</a>
-          </Link>
+          <Spinner isLoading={indicators.loading} />
+          <PanelList>
+            {indicators.list.map((ind, i) => (
+              <Link route="indicator" params={{ indicator: ind.slug }}>
+                <a><PanelItem key={i} info={ind} /></a>
+              </Link>
+            ))}
+          </PanelList>
+
         </div>
       </Layout>
     );

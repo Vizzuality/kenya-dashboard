@@ -1,27 +1,26 @@
 {
-  "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" }
-  ],
-  "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
-  ],
-  "profile": { "name": "typicode" },
   "indicator": [
     {
       "id": 1,
       "name": "Indicator1",
       "query": "",
       "slug": "indicator-1",
+      "category": "wildlife",
+      "threshold": 1,
+      "source": "S.R",
       "updatedAt": "date",
-      "threshold": 1
+      "type": 1
     },
     {
       "id": 2,
       "name": "Indicator2",
       "query": "",
       "slug": "indicator-2",
+      "category": "wildlife",
+      "threshold": 3,
+      "source": "S.R",
       "updatedAt": "date",
-      "threshold": 3
+      "type": 2
     }
   ]
 }
