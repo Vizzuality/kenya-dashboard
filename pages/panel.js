@@ -38,10 +38,10 @@ class PanelPage extends Page {
           <PanelList>
             <div className="row">
               {indicators.list.map((ind, i) => (
-                <div className="column small-12 medium-3">
+                <div key={i} className="column small-12 medium-3">
                   <Link route="indicator" params={{ indicator: ind.slug }}>
                     <a>
-                      <PanelItem key={i} info={ind} className="item-link" />
+                      <PanelItem info={ind} className="item-link" />
                     </a>
                   </Link>
                 </div>

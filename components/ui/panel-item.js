@@ -1,28 +1,50 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 
 // Components
 import TableType from 'components/indicators/table-type';
 import ArcType from 'components/indicators/arc-type';
+import Spinner from 'components/ui/spinner';
 
 // Utils
-import { getCartoData } from 'utils/request';
+import { get } from 'utils/request';
 
 // Constants
 import { THRESHOLD } from 'constants/indicators';
+
 
 export default class PanelItem extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: {}
+      data: undefined
     };
+
+    // Bindings
+    this.setData = this.setData.bind(this);
   }
 
   componentWillMount() {
-    const data = getCartoData(this.props.info.query);
+    this.getIndicatorData();
+  }
+
+  getIndicatorData() {
+    const { query } = this.props.info;
+    if (query && query !== '') {
+      get({
+        url: query,
+        onSuccess: this.setData,
+        onError: this.setData
+      });
+    } else {
+      this.setState({ data: null });
+    }
+  }
+
+  setData(data) {
     this.setState({ data });
   }
 
@@ -48,8 +70,10 @@ export default class PanelItem extends React.Component {
         <h3>{info.name}</h3>
 
         {/* Indicator type detail */}
-        <div className="ype-detail">
-          {this.getItemType()}
+        <div className="type-detail">
+          <Spinner isLoading={this.state.data === undefined} />
+          {this.state.data !== undefined && !isEmpty(this.state.data) &&
+            this.getItemType()}
         </div>
 
         <p><span>{info.source}</span>/ <span>{info.updatedAt}</span></p>

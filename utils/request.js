@@ -13,7 +13,7 @@ function get({ url, headers = [], onSuccess, onError }) {
         const data = JSON.parse(request.responseText);
         onSuccess(data);
       } else {
-        onError('error');
+        onError(null);
       }
     }
   };
@@ -73,8 +73,4 @@ function remove({ url, headers = [], onSuccess, onError }) {
   return request;
 }
 
-function getCartoData(query) {
-  return {};
-}
-
-export { get, post, remove, getCartoData };
+export { get, post, remove };
