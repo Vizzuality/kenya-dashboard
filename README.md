@@ -21,6 +21,16 @@ If you wanted to run this site in production run:
 You should run the the build step again any time you make changes to pages or
 components.
 
+## Mock server
+
+Instal server
+
+  npm install -g json-server
+
+Start server (port 3000 by default)
+
+  json-server --watch db.json
+
 ## Configuring
 
 If you configure a .env file (just copy [.env.default](https://github.com/Vizzuality/otp-portal/blob/master/.env.default) over to '.env' and fill in the options) you can configure a range of options.
