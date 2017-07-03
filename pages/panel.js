@@ -29,11 +29,13 @@ class PanelPage extends Page {
         url={url}
         session={session}
       >
-        Panel
-
-        <Link route="indicator" params={{ indicator: 15 }}>
-          <a>Indicator</a>
-        </Link>
+        <h2>Filters</h2>
+        <div>
+          <h2>Panel</h2>
+          <Link route="indicator" params={{ indicator: 15 }}>
+            <a>Indicator</a>
+          </Link>
+        </div>
       </Layout>
     );
   }
