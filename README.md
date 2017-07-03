@@ -23,13 +23,13 @@ components.
 
 ## Mock server
 
-Instal server
+Install server
 
-  npm install -g json-server
+    npm install -g json-server
 
 Start server (port 3000 by default)
 
-  json-server --watch db.json
+    json-server --watch db.json
 
 ## Configuring
 
