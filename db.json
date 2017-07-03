@@ -21,6 +21,39 @@
       "source": "S.R",
       "updatedAt": "date",
       "type": 2
+    },
+    {
+      "id": 3,
+      "name": "Indicator3",
+      "query": "",
+      "slug": "indicator-3",
+      "category": "wildlife",
+      "threshold": 2,
+      "source": "S.R",
+      "updatedAt": "date",
+      "type": 2
+    },
+    {
+      "id": 4,
+      "name": "Indicator4",
+      "query": "",
+      "slug": "indicator-4",
+      "category": "wildlife",
+      "threshold": 1,
+      "source": "S.R",
+      "updatedAt": "date",
+      "type": 1
+    },
+    {
+      "id": 5,
+      "name": "Indicator5",
+      "query": "",
+      "slug": "indicator-5",
+      "category": "wildlife",
+      "threshold": 3,
+      "source": "S.R",
+      "updatedAt": "date",
+      "type": 2
     }
   ]
 }

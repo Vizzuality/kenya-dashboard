@@ -47,8 +47,10 @@ export default class PanelItem extends React.Component {
         <h2>{info.category}</h2>
         <h3>{info.name}</h3>
 
-        {/* Indicator type */}
-        {this.getItemType()}
+        {/* Indicator type detail */}
+        <div className="ype-detail">
+          {this.getItemType()}
+        </div>
 
         <p><span>{info.source}</span>/ <span>{info.updatedAt}</span></p>
       </div>

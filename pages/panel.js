@@ -34,14 +34,19 @@ class PanelPage extends Page {
       >
         <h2>Filters</h2>
         <div>
-          <h2>Panel</h2>
           <Spinner isLoading={indicators.loading} />
           <PanelList>
-            {indicators.list.map((ind, i) => (
-              <Link route="indicator" params={{ indicator: ind.slug }}>
-                <a><PanelItem key={i} info={ind} /></a>
-              </Link>
-            ))}
+            <div className="row">
+              {indicators.list.map((ind, i) => (
+                <div className="column small-12 medium-3">
+                  <Link route="indicator" params={{ indicator: ind.slug }}>
+                    <a>
+                      <PanelItem key={i} info={ind} className="item-link" />
+                    </a>
+                  </Link>
+                </div>
+              ))}
+            </div>
           </PanelList>
 
         </div>
