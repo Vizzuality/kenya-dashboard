@@ -39,18 +39,22 @@ export function getIndicators(filters) {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_INDICATORS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicators?${query}&page[size]=999999999`, BASIC_QUERY_HEADER)
+    fetch(`${process.env.KENYA_API}/indicator?${query}&page[size]=999999999`, BASIC_QUERY_HEADER)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((data) => {
-        DESERIALIZER.deserialize(data, (err, dataParsed) => {
-          dispatch({
-            type: GET_INDICATORS,
-            payload: dataParsed
-          });
+        dispatch({
+          type: GET_INDICATORS,
+          payload: data
         });
+        // DESERIALIZER.deserialize(data, (err, dataParsed) => {
+        //   dispatch({
+        //     type: GET_INDICATORS,
+        //     payload: dataParsed
+        //   });
+        // });
       })
       .catch((err) => {
         // Fetch from server ko -> Dispatch error

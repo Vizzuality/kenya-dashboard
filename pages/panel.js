@@ -15,12 +15,12 @@ import Layout from 'components/layout/layout';
 class PanelPage extends Page {
   componentWillMount() {
     if (!this.props.indicators.length) {
-      this.props.getIndicators({});
+      this.props.getIndicators();
     }
   }
 
   render() {
-    const { url, session } = this.props;
+    const { url, session, indicators } = this.props;
 
     return (
       <Layout
@@ -47,9 +47,7 @@ PanelPage.propTypes = {
 export default withRedux(
   store,
   state => ({
-    indicators: state.indicators,
-    loading: state.loading,
-    error: state.error
+    indicators: state.indicators
   }),
   dispatch => ({
     getIndicators() {
