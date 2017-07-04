@@ -13,7 +13,7 @@ import Spinner from 'components/ui/spinner';
 import { get } from 'utils/request';
 
 // Constants
-import { THRESHOLD } from 'constants/indicators';
+import { EXAMPLE_QUERY_DATA } from 'constants/indicators';
 
 
 export default class PanelItem extends React.Component {
@@ -41,18 +41,24 @@ export default class PanelItem extends React.Component {
         onError: this.setData
       });
     } else {
-      this.setState({ data: null });
+      //TODO Provisional query data
+      this.setState({ data: EXAMPLE_QUERY_DATA });
+
+      // this.setState({ data: null });
     }
   }
 
   setData(data) {
-    this.setState({ data });
+    //TODO Provisional query data
+    this.setState({ data: EXAMPLE_QUERY_DATA });
+
+    // this.setState({ data });
   }
 
   getItemType() {
     switch (this.props.info.type) {
-      case 1: return <TableType data={this.state.data} />;
-      case 2: return <ArcType data={this.state.data} />;
+      case 'A': return <TableType data={this.state.data} />;
+      case 'B': return <ArcType data={this.state.data} />;
       default: return '';
     }
   }
@@ -79,13 +85,16 @@ export default class PanelItem extends React.Component {
 
   render() {
     const { info, className, isLink } = this.props;
+    const { data } = this.state;
     const classNames = classnames({
       'c-panel-item': true,
       [className]: !!className,
       '-link': isLink,
-      [`-${THRESHOLD[info.threshold]}`]: !!info.threshold
+      [`-${data ? info.threshold[data.threshold] : 'default'}`]: !!info.threshold && !isEmpty(info.threshold) && data && !!data.threshold
     });
     const content = this.getContent();
+
+    console.log(data);
 
     return (
       <div className={classNames}>

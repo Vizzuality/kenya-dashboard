@@ -1,8 +1,5 @@
-
-const THRESHOLD = {
-  1: 'fail',
-  2: 'medium',
-  3: 'success'
+const EXAMPLE_QUERY_DATA = {
+  threshold: 'fail'
 };
 
-export { THRESHOLD };
+export { EXAMPLE_QUERY_DATA };
