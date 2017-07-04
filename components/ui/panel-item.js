@@ -94,8 +94,6 @@ export default class PanelItem extends React.Component {
     });
     const content = this.getContent();
 
-    console.log(data);
-
     return (
       <div className={classNames}>
         {isLink ?
