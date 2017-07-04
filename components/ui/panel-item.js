@@ -41,7 +41,7 @@ export default class PanelItem extends React.Component {
         onError: this.setData
       });
     } else {
-      //TODO Provisional query data
+      // TODO Provisional query data
       this.setState({ data: EXAMPLE_QUERY_DATA });
 
       // this.setState({ data: null });
@@ -49,7 +49,7 @@ export default class PanelItem extends React.Component {
   }
 
   setData(data) {
-    //TODO Provisional query data
+    // TODO Provisional query data
     this.setState({ data: EXAMPLE_QUERY_DATA });
 
     // this.setState({ data });
@@ -83,11 +83,11 @@ export default class PanelItem extends React.Component {
     );
   }
 
-  getThreshold(threshold) {
+  getThreshold(thresholdVal) {
     let currentThreshold;
 
     Object.keys(this.props.info.threshold).forEach((k) => {
-      if (+threshold > +this.props.info.threshold[k]) {
+      if (+thresholdVal > +this.props.info.threshold[k]) {
         currentThreshold = k;
       }
     });
