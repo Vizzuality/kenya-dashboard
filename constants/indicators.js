@@ -1,5 +1,5 @@
 const EXAMPLE_QUERY_DATA = {
-  threshold: 'fail'
+  threshold: 129
 };
 
 export { EXAMPLE_QUERY_DATA };

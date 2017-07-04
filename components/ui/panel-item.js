@@ -83,14 +83,28 @@ export default class PanelItem extends React.Component {
     );
   }
 
+  getThreshold(threshold) {
+    let currentThreshold;
+
+    Object.keys(this.props.info.threshold).forEach((k) => {
+      if (+threshold > +this.props.info.threshold[k]) {
+        currentThreshold = k;
+      }
+    });
+
+    return currentThreshold;
+  }
+
   render() {
     const { info, className, isLink } = this.props;
     const { data } = this.state;
+    const threshold = data && data.threshold ? this.getThreshold(data.threshold) : null;
+
     const classNames = classnames({
       'c-panel-item': true,
       [className]: !!className,
       '-link': isLink,
-      [`-${data ? info.threshold[data.threshold] : 'default'}`]: !!info.threshold && !isEmpty(info.threshold) && data && !!data.threshold
+      [`-${threshold || 'default'}`]: !!info.threshold && !isEmpty(info.threshold) && !!data && !!data.threshold
     });
     const content = this.getContent();
 

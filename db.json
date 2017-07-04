@@ -10,9 +10,9 @@
       "updatedAt": "date",
       "type": "A",
       "threshold": {
-        "fail": "fail",
-        "medium": "medium",
-        "success": "success"
+        "fail":0,
+        "medium":100,
+        "success": 250
       },
       "widgets": [
         {
@@ -44,9 +44,9 @@
       "updatedAt": "date",
       "type": "B",
       "threshold": {
-        "fail": "fail",
-        "medium": "medium",
-        "success": "success"
+        "fail":0,
+        "medium":100,
+        "success": 250
       },
       "widgets": [
         {
@@ -70,9 +70,9 @@
       "updatedAt": "date",
       "type": "B",
       "threshold": {
-        "fail": "fail",
-        "medium": "medium",
-        "success": "success"
+        "fail":0,
+        "medium":100,
+        "success": 250
       },
       "widgets": [
         {
@@ -96,9 +96,9 @@
       "updatedAt": "date",
       "type": "A",
       "threshold": {
-        "fail": "fail",
-        "medium": "medium",
-        "success": "success"
+        "fail":0,
+        "medium":100,
+        "success": 250
       },
       "widgets": [
         {
@@ -122,9 +122,9 @@
       "updatedAt": "date",
       "type": "B",
       "threshold": {
-        "fail": "fail",
-        "medium": "medium",
-        "success": "success"
+        "fail":0,
+        "medium":100,
+        "success": 250
       },
       "widgets": [
         {
