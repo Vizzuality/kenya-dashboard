@@ -11,6 +11,7 @@ import { store } from 'store';
 
 // Libraries
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 
 // Components
 import Page from 'components/layout/page';
@@ -23,10 +24,16 @@ import Spinner from 'components/ui/spinner';
 class PanelPage extends Page {
   componentWillMount() {
     if (!this.props.indicators.list.length) {
-      this.props.getIndicators();
+      this.props.getIndicators(this.props.filters.selected);
     }
     if (isEmpty(this.props.filters.options)) {
       this.props.getFiltersOptions();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props.filters.selected, nextProps.filters.selected)) {
+      this.props.getIndicators(nextProps.filters.selected);
     }
   }
 
@@ -71,7 +78,7 @@ export default withRedux(
     filters: state.filters
   }),
   dispatch => ({
-    getIndicators() { dispatch(getIndicators()); },
+    getIndicators(filters) { dispatch(getIndicators(filters)); },
     getFiltersOptions() { dispatch(getFiltersOptions()); },
     setSelectedFilters(filters) { dispatch(setSelectedFilters(filters)); }
   })

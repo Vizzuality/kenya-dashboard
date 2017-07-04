@@ -18,7 +18,7 @@ const initialState = {
     counties: [],
     categories: [],
     dates: [],
-    sort: ''
+    sort: []
   },
   loading: false,
   error: null

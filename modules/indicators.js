@@ -1,4 +1,4 @@
-import { Deserializer } from 'jsonapi-serializer';
+// import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
 
 import { BASIC_QUERY_HEADER } from 'constants/query';
@@ -15,7 +15,7 @@ const initialState = {
   error: null
 };
 
-const DESERIALIZER = new Deserializer();
+// const DESERIALIZER = new Deserializer();
 
 /* Reducer */
 export default function indicatorsReducer(state = initialState, action) {
@@ -33,7 +33,12 @@ export default function indicatorsReducer(state = initialState, action) {
 
 /* Action creators */
 export function getIndicators(filters) {
-  const query = filters ? Object.keys(filters).map(key => `${key}=${filters[key]}`).join(',') : '';
+  let query = '';
+  Object.keys(filters).forEach((key) => {
+    if (filters[key].length) {
+      query += query === '' ? `${key}=${filters[key]}` : `&${key}=${filters[key]}`;
+    }
+  });
 
   return (dispatch) => {
     // Waiting for fetch from server -> Dispatch loading
