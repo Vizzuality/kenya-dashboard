@@ -1,0 +1,15 @@
+
+.c-panel-item {
+  width: 100%;
+
+  &.-link {
+    width: 100%;
+    height: 100%;
+  }
+
+  .type-detail {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+}

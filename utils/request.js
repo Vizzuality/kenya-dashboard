@@ -13,7 +13,7 @@ function get({ url, headers = [], onSuccess, onError }) {
         const data = JSON.parse(request.responseText);
         onSuccess(data);
       } else {
-        onError('error');
+        onError(null);
       }
     }
   };

@@ -1,19 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { getIndicators } from 'modules/indicators';
+
 // Redux
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
-import { Link } from 'routes';
-
 // Components
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
+import PanelList from 'components/ui/panel-list';
+import Spinner from 'components/ui/spinner';
 
 class PanelPage extends Page {
+  componentWillMount() {
+    if (!this.props.indicators.length) {
+      this.props.getIndicators();
+    }
+  }
+
   render() {
-    const { url, session } = this.props;
+    const { url, session, indicators } = this.props;
 
     return (
       <Layout
@@ -22,11 +30,11 @@ class PanelPage extends Page {
         url={url}
         session={session}
       >
-        Panel
-
-        <Link route="indicator" params={{ indicator: 15 }}>
-          <a>Indicator</a>
-        </Link>
+        <h2>Filters</h2>
+        <div>
+          <Spinner isLoading={indicators.loading} />
+          <PanelList list={indicators.list} isLink />
+        </div>
       </Layout>
     );
   }
@@ -38,5 +46,13 @@ PanelPage.propTypes = {
 };
 
 export default withRedux(
-  store
+  store,
+  state => ({
+    indicators: state.indicators
+  }),
+  dispatch => ({
+    getIndicators() {
+      dispatch(getIndicators());
+    }
+  })
 )(PanelPage);
