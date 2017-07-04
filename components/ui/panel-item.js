@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
 // Components
+import { Link } from 'routes';
 import TableType from 'components/indicators/table-type';
 import ArcType from 'components/indicators/arc-type';
 import Spinner from 'components/ui/spinner';
@@ -56,16 +57,11 @@ export default class PanelItem extends React.Component {
     }
   }
 
-  render() {
-    const { info, className } = this.props;
-    const classNames = classnames({
-      'c-panel-item': true,
-      [className]: !!className,
-      [`-${THRESHOLD[info.threshold]}`]: !!info.threshold
-    });
+  getContent() {
+    const { info } = this.props;
 
     return (
-      <div className={classNames}>
+      <div>
         <h2>{info.category}</h2>
         <h3>{info.name}</h3>
 
@@ -80,10 +76,35 @@ export default class PanelItem extends React.Component {
       </div>
     );
   }
+
+  render() {
+    const { info, className, isLink } = this.props;
+    const classNames = classnames({
+      'c-panel-item': true,
+      [className]: !!className,
+      '-link': isLink,
+      [`-${THRESHOLD[info.threshold]}`]: !!info.threshold
+    });
+    const content = this.getContent();
+
+    return (
+      <div className={classNames}>
+        {isLink ?
+          <Link route="indicator" params={{ indicator: info.slug }}>
+            <a>
+              {content}
+            </a>
+          </Link> :
+          content
+        }
+      </div>
+    );
+  }
 }
 
 PanelItem.propTypes = {
   info: PropTypes.object,
+  isLink: PropTypes.bool,
   className: PropTypes.string
 };
 
