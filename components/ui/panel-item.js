@@ -96,28 +96,24 @@ export default class PanelItem extends React.Component {
   }
 
   render() {
-    const { info, className, isLink } = this.props;
+    const { info, className } = this.props;
     const { data } = this.state;
     const threshold = data && data.threshold ? this.getThreshold(data.threshold) : null;
 
     const classNames = classnames({
       'c-panel-item': true,
       [className]: !!className,
-      '-link': isLink,
       [`-${threshold || 'default'}`]: !!info.threshold && !isEmpty(info.threshold) && !!data && !!data.threshold
     });
     const content = this.getContent();
 
     return (
       <div className={classNames}>
-        {isLink ?
-          <Link route="indicator" params={{ indicator: info.slug }}>
-            <a>
-              {content}
-            </a>
-          </Link> :
-          content
-        }
+        <Link route="indicator" params={{ indicator: info.slug }}>
+          <a>
+            {content}
+          </a>
+        </Link>
       </div>
     );
   }
@@ -125,7 +121,6 @@ export default class PanelItem extends React.Component {
 
 PanelItem.propTypes = {
   info: PropTypes.object,
-  isLink: PropTypes.bool,
   className: PropTypes.string
 };
 

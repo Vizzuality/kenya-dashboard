@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import PanelItem from 'components/ui/panel-item';
 
 
-export default function PanelList({ list, isLink }) {
+export default function PanelList({ list }) {
   return (
     <div className="c-panel-list">
       <div className="row">
         {list.map((ind, i) => (
           <div key={i} className="column small-12 medium-3">
-            <PanelItem info={ind} isLink={isLink} />
+            <PanelItem info={ind} />
           </div>
         ))}
       </div>
@@ -20,8 +20,7 @@ export default function PanelList({ list, isLink }) {
 }
 
 PanelList.propTypes = {
-  list: PropTypes.array,
-  isLink: PropTypes.bool
+  list: PropTypes.array
 };
 
 PanelList.defaultProps = {

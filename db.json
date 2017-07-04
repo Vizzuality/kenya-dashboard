@@ -138,5 +138,29 @@
       ],
       "layers": []
     }
-  ]
+  ],
+  "filter": {
+    "countries": [
+      { "iso": "KEN", "name": "Kenya" }
+    ],
+    "counties": [
+      { "id": "baringo", "name": "Baringo" },
+      { "id": "bomet", "name": "Bomet" },
+      { "id": "bungoma", "name": "Bungoma" },
+      { "id": "busia", "name": "Busia" },
+      { "id": "elgeyo", "name": "Elgeyo" }
+    ],
+    "categories": [
+      { "id": "wildlife", "name": "Wildlife" },
+      { "id": "category1", "name": "category1" },
+      { "id": "category2", "name": "category2" },
+      { "id": "category3", "name": "category3" }
+    ],
+    "dates": [
+      { "id": "2017", "name": "2017" },
+      { "id": "2016", "name": "2016" },
+      { "id": "2015", "name": "2015" },
+      { "id": "2014", "name": "2014" }
+    ]
+  }
 }
