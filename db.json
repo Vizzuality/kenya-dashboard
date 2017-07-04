@@ -161,6 +161,12 @@
       { "id": "2016", "name": "2016" },
       { "id": "2015", "name": "2015" },
       { "id": "2014", "name": "2014" }
+    ],
+    "sort": [
+      { "id": "name", "name": "Name" },
+      { "id": "county", "name": "County" },
+      { "id": "category", "name": "Category" },
+      { "id": "date", "name": "Date" }
     ]
   }
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // Modules
 import { getIndicators } from 'modules/indicators';
-import { getFilters } from 'modules/filters';
+import { getFiltersOptions, setSelectedFilters } from 'modules/filters';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
@@ -19,22 +19,19 @@ import PanelList from 'components/ui/panel-list';
 import Filters from 'components/ui/filters';
 import Spinner from 'components/ui/spinner';
 
-// Utils
-import { parseObjectSelectOptions } from 'utils/general';
 
 class PanelPage extends Page {
   componentWillMount() {
-    if (!this.props.indicators.length) {
+    if (!this.props.indicators.list.length) {
       this.props.getIndicators();
     }
-    if (!this.props.filters.length) {
-      this.props.getFilters();
+    if (isEmpty(this.props.filters.options)) {
+      this.props.getFiltersOptions();
     }
   }
 
   render() {
     const { url, session, indicators, filters } = this.props;
-    const parsedFilters = !isEmpty(filters.list) ? parseObjectSelectOptions(filters.list) : {};
 
     return (
       <Layout
@@ -43,9 +40,16 @@ class PanelPage extends Page {
         url={url}
         session={session}
       >
-        <h2>Filters</h2>
-        <Filters list={parsedFilters} />
-        
+        <div>
+          <h2>Filters</h2>
+          <Spinner isLoading={filters.loading} />
+          <Filters
+            options={filters.options}
+            selected={filters.selected}
+            onSetFilters={this.props.setSelectedFilters}
+          />
+        </div>
+
         <div>
           <Spinner isLoading={indicators.loading} />
           <PanelList list={indicators.list} />
@@ -68,6 +72,7 @@ export default withRedux(
   }),
   dispatch => ({
     getIndicators() { dispatch(getIndicators()); },
-    getFilters() { dispatch(getFilters()); }
+    getFiltersOptions() { dispatch(getFiltersOptions()); },
+    setSelectedFilters(filters) { dispatch(setSelectedFilters(filters)); }
   })
 )(PanelPage);
