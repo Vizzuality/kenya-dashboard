@@ -1,5 +1,6 @@
 // import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
+import { parseObjectToUrlParams } from 'utils/general';
 
 import { BASIC_QUERY_HEADER } from 'constants/query';
 
@@ -33,12 +34,7 @@ export default function indicatorsReducer(state = initialState, action) {
 
 /* Action creators */
 export function getIndicators(filters) {
-  let query = '';
-  Object.keys(filters).forEach((key) => {
-    if (filters[key].length) {
-      query += query === '' ? `${key}=${filters[key]}` : `&${key}=${filters[key]}`;
-    }
-  });
+  const query = parseObjectToUrlParams(filters);
 
   return (dispatch) => {
     // Waiting for fetch from server -> Dispatch loading

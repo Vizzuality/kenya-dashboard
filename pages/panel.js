@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 
 // Modules
 import { getIndicators } from 'modules/indicators';
-import { getFiltersOptions, setSelectedFilters } from 'modules/filters';
+import { getFiltersOptions, setSelectedFilters, setFiltersUrl } from 'modules/filters';
+
+// utils
+import { decode } from 'utils/general';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
@@ -23,11 +26,22 @@ import Spinner from 'components/ui/spinner';
 
 class PanelPage extends Page {
   componentWillMount() {
-    if (!this.props.indicators.list.length) {
-      this.props.getIndicators(this.props.filters.selected);
-    }
     if (isEmpty(this.props.filters.options)) {
       this.props.getFiltersOptions();
+    }
+  }
+
+  componentDidMount() {
+    const defaultFilters = this.props.url.query.filters;
+    let filters = this.props.filters.selected;
+
+    if (defaultFilters) {
+      filters = decode(defaultFilters);
+      this.props.setSelectedFilters(filters);
+    }
+
+    if (!this.props.indicators.list.length) {
+      this.props.getIndicators(filters);
     }
   }
 
@@ -80,6 +94,9 @@ export default withRedux(
   dispatch => ({
     getIndicators(filters) { dispatch(getIndicators(filters)); },
     getFiltersOptions() { dispatch(getFiltersOptions()); },
-    setSelectedFilters(filters) { dispatch(setSelectedFilters(filters)); }
+    setSelectedFilters(filters) {
+      dispatch(setSelectedFilters(filters));
+      dispatch(setFiltersUrl());
+    }
   })
 )(PanelPage);

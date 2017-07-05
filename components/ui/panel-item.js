@@ -86,9 +86,9 @@ export default class PanelItem extends React.Component {
   getThreshold(thresholdVal) {
     let currentThreshold;
 
-    Object.keys(this.props.info.threshold).forEach((k) => {
-      if (+thresholdVal > +this.props.info.threshold[k]) {
-        currentThreshold = k;
+    Object.keys(this.props.info.threshold).forEach((key) => {
+      if (+thresholdVal > +this.props.info.threshold[key]) {
+        currentThreshold = key;
       }
     });
 

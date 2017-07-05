@@ -1,7 +1,9 @@
 // import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
-import { parseObjectSelectOptions } from 'utils/general';
+import { parseObjectSelectOptions, encode } from 'utils/general';
+import Router from 'next/router';
 
+// Constants
 import { BASIC_QUERY_HEADER } from 'constants/query';
 
 /* Constants */
@@ -81,5 +83,24 @@ export function setSelectedFilters(filters) {
       type: SET_SELECTED_FILTERS,
       payload: filters
     });
+  };
+}
+
+export function setFiltersUrl() {
+  return (dispatch, getState) => {
+    const { filters } = getState();
+    const filtersUrl = encode(filters.selected);
+
+    const location = {
+      pathname: '/panel',
+      query: {}
+    };
+
+    // Do not show filters param when no one selected
+    if (filtersUrl !== '') {
+      location.query = { filters: filtersUrl };
+    }
+
+    Router.replace(location);
   };
 }
