@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import isArray from 'lodash/isArray';
 
 // Components
 import Select from 'react-select';
@@ -18,9 +19,9 @@ export default class Filters extends React.Component {
     };
   }
 
-  setFilters(opts, key, single) {
+  setFilters(opts, key) {
     const newFilter = {};
-    newFilter[key] = single ? opts.value : opts.map(o => o.value);
+    newFilter[key] = isArray(opts) ? opts.map(o => o.value) : opts.value;
     const newFilters = Object.assign({}, this.props.selected, newFilter);
     this.props.onSetFilters(newFilters);
   }
@@ -107,7 +108,7 @@ export default class Filters extends React.Component {
                 options={options.sort || []}
                 value={options.sort ?
                   options.sort.find(opt => selected.sort === opt.value) : {}}
-                onChange={opts => this.setFilters(opts, 'sort', true)}
+                onChange={opts => this.setFilters(opts, 'sort')}
               />
 
               {/* Dates select */}
