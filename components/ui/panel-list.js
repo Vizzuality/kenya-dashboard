@@ -8,7 +8,7 @@ import PanelItem from 'components/ui/panel-item';
 export default function PanelList({ list }) {
   return (
     <div className="c-panel-list">
-      <div className="row">
+      <div className="row collapse">
         {list.map((ind, i) => (
           <div key={i} className="column small-12 medium-3">
             <PanelItem info={ind} />

@@ -62,7 +62,6 @@ class PanelPage extends Page {
         session={session}
       >
         <div>
-          <h2>Filters</h2>
           <Spinner isLoading={filters.loading} />
           <Filters
             options={filters.options}
