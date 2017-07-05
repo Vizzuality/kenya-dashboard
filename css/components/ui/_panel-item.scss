@@ -1,6 +1,8 @@
 
 .c-panel-item {
   width: 100%;
+  box-shadow: 0px 0px 0.5px rgba($color-black, .3);
+  padding: 10px;
 
   &.-link {
     width: 100%;
