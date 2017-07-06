@@ -32,6 +32,11 @@
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-unused-expressions": ["error", { "allowShortCircuit": true }],
-    "import/prefer-default-export": 0
+    "import/prefer-default-export": 0,
+    "no-return-assign": 0,
+    "comma-dangle": ["error", "never"],
+    "prefer-stateless-function": [0, { "ignorePureComponents": true }],
+    "arrow-body-style": 0,
+    "no-underscore-dangle": 0
   }
 }

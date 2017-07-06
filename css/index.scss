@@ -21,6 +21,10 @@
 @import 'components/layout/header';
 @import 'components/layout/footer';
 
+// - map
+@import '../node_modules/leaflet/dist/leaflet';
+@import 'components/map/map';
+
 // - ui
 @import '../node_modules/react-select/dist/react-select';
 @import 'components/ui/button';

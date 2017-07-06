@@ -41,7 +41,8 @@ module.exports = {
         'process.env.PORT': JSON.stringify(process.env.PORT),
         'process.env.KENYA_API': JSON.stringify(process.env.KENYA_API),
         'process.env.KENYA_API_KEY': JSON.stringify(process.env.KENYA_API_KEY),
-        'process.env.MAPBOX_API_KEY': JSON.stringify(process.env.MAPBOX_API_KEY)
+        'process.env.BASEMAP_LABEL_URL': JSON.stringify(process.env.BASEMAP_LABEL_URL),
+        'process.env.BASEMAP_TILE_URL': JSON.stringify(process.env.BASEMAP_TILE_URL)
       })
     );
 
