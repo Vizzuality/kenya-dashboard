@@ -34,8 +34,6 @@ module.exports = {
       }
     );
 
-    config.module.noParse = /(mapbox-gl)\.js$/;
-
     config.plugins.push(
       new webpack.DefinePlugin({
         'process.env.PORT': JSON.stringify(process.env.PORT),

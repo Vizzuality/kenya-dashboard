@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Modules
+import { getSpecificIndicators } from 'modules/indicators';
+
 // Redux
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
@@ -14,14 +17,18 @@ let L;
 if (typeof window !== 'undefined') {
   /* eslint-disable global-require */
   L = require('leaflet/dist/leaflet');
-  L.labelUrl = process.env.BASEMAP_LABEL_URL;
-  L.tileUrl = process.env.BASEMAP_TILE_URL;
   /* eslint-enable global-require */
 }
 
 class IndicatorPage extends Page {
+  componentDidMount() {
+    if (!this.props.indicators.list.length) {
+      this.props.getSpecificIndicators(this.props.url.query.indicators);
+    }
+  }
+
   render() {
-    const { url, session } = this.props;
+    const { url, session, indicators } = this.props;
 
     /* Map config */
     // const updateMap = (map) => {
@@ -42,8 +49,8 @@ class IndicatorPage extends Page {
     const mapMethods = {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
       tileLayers: [
-        // { url: process.env.BASEMAP_LABEL_URL, zIndex: 0 },
-        { url: process.env.BASEMAP_TILE_URL, zIndex: 1000 }
+        { url: process.env.BASEMAP_LABEL_URL, zIndex: 10000 },
+        { url: process.env.BASEMAP_TILE_URL, zIndex: 0 }
       ]
     };
 
@@ -62,6 +69,9 @@ class IndicatorPage extends Page {
     //   html: '<div class="marker-inner"></div>'
     // });
 
+    const layers = [];
+    indicators.list.forEach(ind => ind.layers.length && layers.push(ind.layers[0].attributes));
+
     return (
       <Layout
         title="Panel"
@@ -75,7 +85,7 @@ class IndicatorPage extends Page {
             mapOptions={mapOptions}
             mapMethods={mapMethods}
             listeners={listeners}
-            layers={this.props.layersActive || []}
+            layers={layers || []}
             markers={[]}
             markerIcon={{}}
           />
@@ -91,5 +101,13 @@ IndicatorPage.propTypes = {
 };
 
 export default withRedux(
-  store
+  store,
+  state => ({
+    indicators: state.indicators.specific
+  }),
+  dispatch => ({
+    getSpecificIndicators(ids) {
+      dispatch(getSpecificIndicators(ids));
+    }
+  })
 )(IndicatorPage);

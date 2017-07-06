@@ -2,12 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Libraries
-// import L from 'leaflet/dist/leaflet';
 import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
 
 // Components
-// import Spinner from 'components/ui/spinner';
+import Spinner from 'components/ui/spinner';
 
 // Constants
 import { MAP_OPTIONS } from 'constants/map';
@@ -58,11 +57,13 @@ export default class Map extends React.Component {
 
     // Add event listeners
     // this.props.listeners && this.setMapEventListeners();
+
     // Exec leaflet methods
     // this.execMethods();
+
     // Add layers
-    // this.initLayerManager();
-    // this.props.layers && this.addLayer(this.props.layers);
+    this.initLayerManager();
+    this.props.layers && this.props.layers.map(l => this.addLayer(l));
     // this.props.markers.length && this.addMarker(this.props.markers);
   }
 
@@ -202,6 +203,7 @@ export default class Map extends React.Component {
     return (
       <div className={classNames}>
         <div ref={(node) => { this.mapNode = node; }} className="map-leaflet" />
+        <Spinner isLoading={this.state.loading} />
       </div>
     );
   }

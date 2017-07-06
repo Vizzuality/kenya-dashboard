@@ -2,7 +2,7 @@
 /* eslint import/extensions: 0 */
 
 // Utils
-import { get } from 'utils/general';
+import { get } from 'utils/request';
 
 let L;
 if (typeof window !== 'undefined') {
@@ -83,7 +83,6 @@ export default class LayerManager {
       ...layer.layerConfig.body
     };
     const params = `stat_tag=API&config=${encodeURIComponent(JSON.stringify(layerTpl))}`;
-
     const request = get({
       url: `https://${layer.layerConfig.account}.carto.com/api/v1/map?${params}`,
       onSuccess,
