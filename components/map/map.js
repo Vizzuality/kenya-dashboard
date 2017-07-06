@@ -75,7 +75,7 @@ export default class Map extends React.Component {
     // Layers
     if (!isEqual(this.props.layers, nextProps.layers)) {
       this.layerManager.removeAllLayers();
-      this.addLayer(nextProps.layers[0]);
+      nextProps.layers.map(l => this.addLayer(l));
     }
     // Markers
     if (!isEqual(this.props.markers, nextProps.markers)) {
@@ -157,15 +157,15 @@ export default class Map extends React.Component {
   }
 
   /* Layer methods */
-  addLayer(layer) {
+  addLayer(layer, opts) {
     this.setState({
       loading: true
     });
     if (Array.isArray(layer)) {
-      layer.forEach(l => this.layerManager.addLayer(l));
+      layer.forEach(l => this.layerManager.addLayer(l, opts));
       return;
     }
-    this.layerManager.addLayer(layer);
+    this.layerManager.addLayer(layer, opts);
   }
 
   removeLayer(layer) {

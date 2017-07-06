@@ -1,12 +1,15 @@
 
 const MAP_OPTIONS = {
-  zoom: 2,
+  zoom: 8,
   minZoom: 2,
   center: [30, -120],
   zoomControl: true,
   detectRetina: true
 };
 
+const GENERIC_ZINDEX = 500;
+
 export {
-  MAP_OPTIONS
+  MAP_OPTIONS,
+  GENERIC_ZINDEX
 };

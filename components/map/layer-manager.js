@@ -66,9 +66,11 @@ export default class LayerManager {
 
   /* Private methods */
   _addCartoLayer(layer) {
-    const onSuccess = (data) => {
+    const layerZIndex = layer.zIndex || 500;
+
+    const onSuccess = (data, zIndex) => {
       const tileUrl = `https://${layer.layerConfig.account}.carto.com/api/v1/map/${data.layergroupid}/{z}/{x}/{y}.png`;
-      this._mapLayers[layer.id] = L.tileLayer(tileUrl).addTo(this._map).setZIndex(500);
+      this._mapLayers[layer.id] = L.tileLayer(tileUrl).addTo(this._map).setZIndex(zIndex);
       this._mapLayers[layer.id].on('load', () => {
         this._onLayerAddedSuccess();
       });
@@ -85,7 +87,7 @@ export default class LayerManager {
     const params = `stat_tag=API&config=${encodeURIComponent(JSON.stringify(layerTpl))}`;
     const request = get({
       url: `https://${layer.layerConfig.account}.carto.com/api/v1/map?${params}`,
-      onSuccess,
+      onSuccess: data => onSuccess(data, layerZIndex),
       onError: this._onLayerAddedError
     });
 
