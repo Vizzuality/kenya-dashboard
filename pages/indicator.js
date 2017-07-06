@@ -27,8 +27,24 @@ class IndicatorPage extends Page {
     }
   }
 
+  getLayers() {
+    const { url, indicators } = this.props;
+    const layers = [];
+
+    if (indicators.list.length) {
+      const indicatorsOrder = url.query.indicators.split(',');
+
+      indicatorsOrder.forEach((id) => {
+        const ind = indicators.list.find(itr => `${itr.id}` === `${id}`);
+        ind && ind.layers && ind.layers.length && layers.push(ind.layers[0].attributes);
+      });
+    }
+
+    return layers;
+  }
+
   render() {
-    const { url, session, indicators } = this.props;
+    const { url, session } = this.props;
 
     /* Map config */
     // const updateMap = (map) => {
@@ -55,7 +71,7 @@ class IndicatorPage extends Page {
     };
 
     const mapOptions = {
-      zoom: 8,
+      zoom: 15,
       // zoom: this.props.mapState.zoom,
       minZoom: 2,
       maxZoom: 7,
@@ -69,8 +85,7 @@ class IndicatorPage extends Page {
     //   html: '<div class="marker-inner"></div>'
     // });
 
-    const layers = [];
-    indicators.list.forEach(ind => ind.layers.length && layers.push(ind.layers[0].attributes));
+    const layers = this.getLayers();
 
     return (
       <Layout
