@@ -33,23 +33,26 @@ class IndicatorPage extends Page {
   }
 
   componentDidMount() {
-    const { url, indicators } = this.props;
+    const { url } = this.props;
 
-    if (!indicators.list.length) {
-      this.props.getSpecificIndicators(url.query.indicators);
-    }
+    this.props.getSpecificIndicators(url.query.indicators);
 
     if (url.query.zoom || url.query.lat || url.query.lng) {
-      const mapParams = {
-        zoom: +url.query.zoom || 2,
-        center: {
-          lat: +url.query.lat || MAP_OPTIONS.center[0],
-          lng: +url.query.lng || MAP_OPTIONS.center[1]
-        }
-      };
-      this.update = false;
-      this.props.setSingleMapParamsFromUrl(mapParams);
+      this.setParams();
     }
+  }
+
+  setParams() {
+    const { url } = this.props;
+    const mapParams = {
+      zoom: +url.query.zoom || MAP_OPTIONS.zoom,
+      center: {
+        lat: +url.query.lat || MAP_OPTIONS.center[0],
+        lng: +url.query.lng || MAP_OPTIONS.center[1]
+      }
+    };
+    this.update = false;
+    this.props.setSingleMapParamsFromUrl(mapParams);
   }
 
   getLayers() {

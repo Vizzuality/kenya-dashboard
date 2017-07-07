@@ -1,6 +1,6 @@
 
 const MAP_OPTIONS = {
-  zoom: 8,
+  zoom: 2,
   minZoom: 2,
   maxZoom: 8,
   center: [30, -25],
