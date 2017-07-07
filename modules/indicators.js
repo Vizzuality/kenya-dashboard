@@ -1,4 +1,4 @@
-import { Deserializer } from 'jsonapi-serializer';
+// import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
 
 import { BASIC_QUERY_HEADER } from 'constants/query';
@@ -25,7 +25,7 @@ const initialState = {
   }
 };
 
-const DESERIALIZER = new Deserializer();
+// const DESERIALIZER = new Deserializer();
 
 /* Reducer */
 export default function indicatorsReducer(state = initialState, action) {

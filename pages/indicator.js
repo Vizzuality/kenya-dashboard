@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // Modules
 import { getSpecificIndicators } from 'modules/indicators';
+import { setSingleMapParams, setSingleMapParamsUrl } from 'modules/single-map';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
@@ -14,20 +15,32 @@ import Layout from 'components/layout/layout';
 import Map from 'components/map/map';
 
 // Constants
-import { GENERIC_ZINDEX } from 'constants/map';
+import { GENERIC_ZINDEX, MAP_OPTIONS } from 'constants/map';
 
-let L;
-if (typeof window !== 'undefined') {
-  /* eslint-disable global-require */
-  L = require('leaflet/dist/leaflet');
-  /* eslint-enable global-require */
-}
+
+// let L;
+// if (typeof window !== 'undefined') {
+//   /* eslint-disable global-require */
+//   L = require('leaflet/dist/leaflet');
+//   /* eslint-enable global-require */
+// }
 
 class IndicatorPage extends Page {
   componentDidMount() {
-    if (!this.props.indicators.list.length) {
-      this.props.getSpecificIndicators(this.props.url.query.indicators);
+    const { url, indicators } = this.props;
+    const mapParams = {
+      zoom: url.query.zoom || 2,
+      center: {
+        lat: +url.query.lat || MAP_OPTIONS.center[0],
+        lng: +url.query.lng || MAP_OPTIONS.center[1]
+      }
+    };
+
+    if (!indicators.list.length) {
+      this.props.getSpecificIndicators(url.query.indicators);
     }
+
+    this.props.setSingleMapParamsFromUrl(mapParams);
   }
 
   getLayers() {
@@ -50,48 +63,36 @@ class IndicatorPage extends Page {
     return layers.reverse().map((l, i) => Object.assign({}, l, { zIndex: GENERIC_ZINDEX + i }));
   }
 
+  /* Map config */
+  updateMap(map, urlObj) {
+    this.props.setSingleMapParams({
+      zoom: map.getZoom(),
+      center: map.getCenter()
+    }, urlObj);
+  }
+
   render() {
     const { url, session } = this.props;
 
-    /* Map config */
-    // const updateMap = (map) => {
-    //   this.props.setMapParams({
-    //     zoom: map.getZoom(),
-    //     latLng: map.getCenter()
-    //   });
-    // };
-
-    // const addPoint = (map, opts) => {
-    //   this.props.addPoint(opts.latlng);
-    // };
     const listeners = {
-      // moveend: updateMap,
-      // click: addPoint
+      moveend: map => this.updateMap(map, this.props.url)
     };
 
     const mapMethods = {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
       tileLayers: [
-        { url: process.env.BASEMAP_LABEL_URL, zIndex: 10000 },
-        { url: process.env.BASEMAP_TILE_URL, zIndex: 0 }
+        { url: process.env.BASEMAP_TILE_URL, zIndex: 0 },
+        { url: process.env.BASEMAP_LABEL_URL, zIndex: 10000 }
       ]
     };
 
     const mapOptions = {
-      zoom: 15,
-      // zoom: this.props.mapState.zoom,
-      minZoom: 2,
-      maxZoom: 7,
-      zoomControl: false,
-      center: [40, 40]
-      // center: [this.props.mapState.latLng.lat, this.props.mapState.latLng.lng]
+      zoom: this.props.mapState.zoom,
+      minZoom: MAP_OPTIONS.minZoom,
+      maxZoom: MAP_OPTIONS.maxZoom,
+      zoomControl: MAP_OPTIONS.zoomControl,
+      center: [this.props.mapState.center.lat, this.props.mapState.center.lng]
     };
-
-    // const markerIcon = L.divIcon({
-    //   className: 'c-marker',
-    //   html: '<div class="marker-inner"></div>'
-    // });
-
     const layers = this.setLayersZIndex(this.getLayers());
 
     return (
@@ -107,7 +108,7 @@ class IndicatorPage extends Page {
             mapOptions={mapOptions}
             mapMethods={mapMethods}
             listeners={listeners}
-            layers={layers || []}
+            layers={layers}
             markers={[]}
             markerIcon={{}}
           />
@@ -125,11 +126,19 @@ IndicatorPage.propTypes = {
 export default withRedux(
   store,
   state => ({
-    indicators: state.indicators.specific
+    indicators: state.indicators.specific,
+    mapState: state.singleMap
   }),
   dispatch => ({
     getSpecificIndicators(ids) {
       dispatch(getSpecificIndicators(ids));
+    },
+    setSingleMapParams(params, url) {
+      dispatch(setSingleMapParams(params));
+      dispatch(setSingleMapParamsUrl(url));
+    },
+    setSingleMapParamsFromUrl(params) {
+      dispatch(setSingleMapParams(params));
     }
   })
 )(IndicatorPage);

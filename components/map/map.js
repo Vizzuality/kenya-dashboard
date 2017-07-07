@@ -56,7 +56,7 @@ export default class Map extends React.Component {
     this.setTileLayers();
 
     // Add event listeners
-    // this.props.listeners && this.setMapEventListeners();
+    this.props.listeners && this.setMapEventListeners();
 
     // Exec leaflet methods
     // this.execMethods();
@@ -90,6 +90,17 @@ export default class Map extends React.Component {
     // Zoom
     if (this.props.mapOptions.zoom !== nextProps.mapOptions.zoom) {
       this.map.setZoom(nextProps.mapOptions.zoom);
+    }
+
+    // Center
+    if (!isEqual(this.props.mapOptions.center, nextProps.mapOptions.center)) {
+      this.map.setView(
+        new L.LatLng(
+          nextProps.mapOptions.center[0],
+          nextProps.mapOptions.center[1]
+        ),
+        nextProps.mapOptions.zoom
+      );
     }
   }
 
