@@ -71,6 +71,22 @@ class IndicatorPage extends Page {
     }, urlObj);
   }
 
+  getLayers() {
+    const { url, indicators } = this.props;
+    const layers = [];
+
+    if (indicators.list.length) {
+      const indicatorsOrder = url.query.indicators.split(',');
+
+      indicatorsOrder.forEach((id) => {
+        const ind = indicators.list.find(itr => `${itr.id}` === `${id}`);
+        ind && ind.layers && ind.layers.length && layers.push(ind.layers[0].attributes);
+      });
+    }
+
+    return layers;
+  }
+
   render() {
     const { url, session } = this.props;
 
@@ -85,7 +101,6 @@ class IndicatorPage extends Page {
         { url: process.env.BASEMAP_LABEL_URL, zIndex: 10000 }
       ]
     };
-
     const mapOptions = {
       zoom: this.props.mapState.zoom,
       minZoom: MAP_OPTIONS.minZoom,

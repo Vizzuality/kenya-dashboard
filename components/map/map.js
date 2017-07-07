@@ -63,7 +63,7 @@ export default class Map extends React.Component {
 
     // Add layers
     this.initLayerManager();
-    this.props.layers && this.props.layers.map(l => this.addLayer(l));
+    this.props.layers && this.props.layers.map((l, i) => this.addLayer(l, { zIndex: 600 - i }));
     // this.props.markers.length && this.addMarker(this.props.markers);
   }
 
