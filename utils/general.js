@@ -1,3 +1,4 @@
+
 function toBase64(file, cb) {
   const reader = new FileReader();
   reader.onload = (event) => {
@@ -16,7 +17,7 @@ function decode(obj) {
 
 function parseSelectOptions(options) {
   return options.map(o => (
-    { label: o.name, value: o.id }
+    { label: o.name, value: o.id || o.iso }
   ));
 }
 
@@ -28,4 +29,22 @@ function parseObjectSelectOptions(object) {
   return newObject;
 }
 
-export { toBase64, encode, decode, parseSelectOptions, parseObjectSelectOptions };
+function parseObjectToUrlParams(obj) {
+  let query = '';
+  Object.keys(obj).forEach((key) => {
+    if (obj[key].length) {
+      query += query === '' ? `${key}=${obj[key]}` : `&${key}=${obj[key]}`;
+    }
+  });
+
+  return query;
+}
+
+export {
+  toBase64,
+  encode,
+  decode,
+  parseSelectOptions,
+  parseObjectSelectOptions,
+  parseObjectToUrlParams
+};
