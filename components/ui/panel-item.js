@@ -109,7 +109,7 @@ export default class PanelItem extends React.Component {
 
     return (
       <div className={classNames}>
-        <Link route="indicator" params={{ indicator: info.slug }}>
+        <Link route="indicator" params={{ indicators: info.id }}>
           <a>
             {content}
           </a>

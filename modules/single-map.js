@@ -36,14 +36,13 @@ export function setSingleMapParams(params) {
   };
 }
 
-export function setSingleMapParamsUrl(url) {
-  return (dispatch, getState) => {
-    const { singleMap } = getState();
+export function setSingleMapParamsUrl(params, url) {
+  return () => {
     const indicatorsPathname = `${url.pathname}/${url.query.indicators}`;
-    const lat = singleMap.center.lat.toFixed(2);
-    const lng = singleMap.center.lng.toFixed(2);
-    const zoom = singleMap.zoom;
-    const params = `zoom=${zoom}&lat=${lat}&lng=${lng}`;
+    const lat = params.center.lat.toFixed(2);
+    const lng = params.center.lng.toFixed(2);
+    const zoom = params.zoom;
+    const urlParams = `zoom=${zoom}&lat=${lat}&lng=${lng}`;
 
     // Set location with indicators
     const location = {
@@ -52,6 +51,6 @@ export function setSingleMapParamsUrl(url) {
     };
 
     // Set pathname including indicators with / not as param
-    Router.replace(location, `${indicatorsPathname}?${params}`);
+    Router.replace(location, `${indicatorsPathname}?${urlParams}`);
   };
 }

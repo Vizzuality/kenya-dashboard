@@ -26,21 +26,30 @@ import { GENERIC_ZINDEX, MAP_OPTIONS } from 'constants/map';
 // }
 
 class IndicatorPage extends Page {
+  constructor(props) {
+    super(props);
+
+    this.update = true;
+  }
+
   componentDidMount() {
     const { url, indicators } = this.props;
-    const mapParams = {
-      zoom: url.query.zoom || 2,
-      center: {
-        lat: +url.query.lat || MAP_OPTIONS.center[0],
-        lng: +url.query.lng || MAP_OPTIONS.center[1]
-      }
-    };
 
     if (!indicators.list.length) {
       this.props.getSpecificIndicators(url.query.indicators);
     }
 
-    this.props.setSingleMapParamsFromUrl(mapParams);
+    if (url.query.zoom || url.query.lat || url.query.lng) {
+      const mapParams = {
+        zoom: +url.query.zoom || 2,
+        center: {
+          lat: +url.query.lat || MAP_OPTIONS.center[0],
+          lng: +url.query.lng || MAP_OPTIONS.center[1]
+        }
+      };
+      this.update = false;
+      this.props.setSingleMapParamsFromUrl(mapParams);
+    }
   }
 
   getLayers() {
@@ -71,27 +80,14 @@ class IndicatorPage extends Page {
     }, urlObj);
   }
 
-  getLayers() {
-    const { url, indicators } = this.props;
-    const layers = [];
-
-    if (indicators.list.length) {
-      const indicatorsOrder = url.query.indicators.split(',');
-
-      indicatorsOrder.forEach((id) => {
-        const ind = indicators.list.find(itr => `${itr.id}` === `${id}`);
-        ind && ind.layers && ind.layers.length && layers.push(ind.layers[0].attributes);
-      });
-    }
-
-    return layers;
-  }
-
   render() {
     const { url, session } = this.props;
 
     const listeners = {
-      moveend: map => this.updateMap(map, this.props.url)
+      moveend: (map) => {
+        this.update && this.updateMap(map, this.props.url);
+        if (!this.update) this.update = true;
+      }
     };
 
     const mapMethods = {
@@ -150,7 +146,7 @@ export default withRedux(
     },
     setSingleMapParams(params, url) {
       dispatch(setSingleMapParams(params));
-      dispatch(setSingleMapParamsUrl(url));
+      dispatch(setSingleMapParamsUrl(params, url));
     },
     setSingleMapParamsFromUrl(params) {
       dispatch(setSingleMapParams(params));

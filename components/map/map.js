@@ -11,7 +11,7 @@ import Spinner from 'components/ui/spinner';
 // Constants
 import { MAP_OPTIONS } from 'constants/map';
 
-//
+// Layer Manager
 import LayerManager from './layer-manager';
 
 
