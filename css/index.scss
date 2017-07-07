@@ -24,6 +24,7 @@
 // - map
 @import '../node_modules/leaflet/dist/leaflet';
 @import 'components/map/map';
+@import 'components/map/legend';
 
 // - ui
 @import '../node_modules/react-select/dist/react-select';

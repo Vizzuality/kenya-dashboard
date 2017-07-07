@@ -9,10 +9,14 @@ import { setSingleMapParams, setSingleMapParamsUrl } from 'modules/single-map';
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
+// Libraries
+import uniqBy from 'lodash/uniqBy';
+
 // Components
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import Map from 'components/map/map';
+import Legend from 'components/map/legend';
 
 // Constants
 import { GENERIC_ZINDEX, MAP_OPTIONS } from 'constants/map';
@@ -68,7 +72,7 @@ class IndicatorPage extends Page {
       });
     }
 
-    return layers;
+    return uniqBy(layers, l => l.id);
   }
 
   setLayersZIndex(layers) {
@@ -126,6 +130,7 @@ class IndicatorPage extends Page {
             markers={[]}
             markerIcon={{}}
           />
+          <Legend list={layers} />
         </div>
       </Layout>
     );
