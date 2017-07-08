@@ -40,34 +40,37 @@
       margin-bottom: 10px;
 
       &:last-child { margin-bottom: 0; }
-    }
 
-    .name-container {
-      margin-bottom: 5px;
+      &.-choropleth,
+      &.-gradient {
+        .visual-item {
+          display: flex;
+          flex-flow: column;
+          flex-grow: 1;
+        }
 
-      .show-btn {
-        margin-right: 8px;
+        .color {
+          display: inline-block;
+          height: 5px;
+          margin-bottom: 3px;
+        }
+
+        .value {
+          text-align: center;
+        }
       }
-    }
 
-    .layer-visual {
-      display: flex;
-      flex-flow: row wrap;
+      .name-container {
+        margin-bottom: 5px;
 
-      .visual-item {
+        .show-btn {
+          margin-right: 8px;
+        }
+      }
+
+      .layer-visual {
         display: flex;
-        flex-flow: column;
-        flex-grow: 1;
-      }
-
-      .color {
-        display: inline-block;
-        height: 5px;
-        margin-bottom: 3px;
-      }
-
-      .value {
-        text-align: center;
+        flex-flow: row wrap;
       }
     }
   }

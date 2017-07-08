@@ -15,9 +15,9 @@ export default class Legend extends React.Component {
     // Bindings
   }
 
-  getItemListStructure(name, visual) {
+  getItemListStructure(name, visual, type) {
     return (
-      <div className="legend-item" key={name}>
+      <div className={`legend-item -${type}`} key={name}>
         <div className="name-container">
           <button className="show-btn">o</button>
           <span className="layer-name">{name}</span>
@@ -37,13 +37,25 @@ export default class Legend extends React.Component {
       </div>
     ));
 
-    return this.getItemListStructure(layer.name, visual);
+    return this.getItemListStructure(layer.name, visual, 'choropleth');
+  }
+
+  getGradientContent(layer) {
+    const visual = layer.legendConfig.items.map((item, i) => (
+      <div key={i} className="visual-item">
+        <span className="color" style={{ backgroundColor: item.color }} />
+        <span className="value">{item.value}</span>
+      </div>
+    ));
+
+    return this.getItemListStructure(layer.name, visual, 'gradient');
   }
 
   getContent() {
-    const a = this.props.list.map((l, i) => {
+    const a = this.props.list.map((l) => {
       switch (l.legendConfig.type) {
-        case 'choropleth': return this.getChoroplethContent(l, i);
+        case 'choropleth': return this.getChoroplethContent(l);
+        case 'gradient': return this.getGradientContent(l);
         default: return 'Other';
       }
     });
@@ -51,7 +63,7 @@ export default class Legend extends React.Component {
   }
 
   render() {
-    const { className, list } = this.props;
+    const { className } = this.props;
 
     const classNames = classnames({
       'c-legend': true,

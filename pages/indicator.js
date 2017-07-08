@@ -72,7 +72,7 @@ class IndicatorPage extends Page {
       });
     }
 
-    return uniqBy(layers, l => l.id);
+    return uniqBy(layers, l => l.slug);
   }
 
   setLayersZIndex(layers) {
