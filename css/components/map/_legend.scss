@@ -13,11 +13,16 @@
 
   &.-hidden {
     height: auto;
+    padding: 0;
 
     .legend-content {
       height: 0;
       padding: 0;
       visibility: hidden;
+    }
+
+    .btn-close {
+      transform: rotate(180deg);
     }
   }
 
@@ -63,7 +68,7 @@
       .name-container {
         margin-bottom: 5px;
 
-        .show-btn {
+        .btn-show {
           margin-right: 8px;
         }
       }

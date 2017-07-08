@@ -11,15 +11,23 @@ import isEmpty from 'lodash/isEmpty';
 export default class Legend extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      open: true
+    };
 
     // Bindings
+    this.onToggle = this.onToggle.bind(this);
+  }
+
+  onToggle() {
+    this.setState({ open: !this.state.open });
   }
 
   getItemListStructure(name, visual, type) {
     return (
       <div className={`legend-item -${type}`} key={name}>
         <div className="name-container">
-          <button className="show-btn">o</button>
+          <button className="btn-show">o</button>
           <span className="layer-name">{name}</span>
         </div>
         <div className="layer-visual">
@@ -67,7 +75,8 @@ export default class Legend extends React.Component {
 
     const classNames = classnames({
       'c-legend': true,
-      [className]: !!className
+      [className]: !!className,
+      '-hidden': !this.state.open
     });
     const content = this.getContent();
 
@@ -75,7 +84,9 @@ export default class Legend extends React.Component {
       <div className={classNames}>
         <div className="legend-header">
           <div className="title">Legend</div>
-          <div className="tools">V</div>
+          <div className="tools">
+            <button className="btn-close" onClick={this.onToggle}>V</button>
+          </div>
         </div>
         <div className="legend-content">
           {content}
