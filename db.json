@@ -32,7 +32,69 @@
           "widgetConfig": {}
         }
       ],
-      "layers": []
+      "layers": [
+        {
+          "id": "9d295f2e-7626-4ed2-9e77-1e13356eaef7",
+          "type": "layer",
+          "attributes": {
+            "slug": "natural-resource-protection-and-child-health-indicators-2015-release-2010-2015-ciesin",
+            "userId": "58333dcfd9f39b189ca44c75",
+            "application": [
+                "rw"
+            ],
+            "name": "Natural Resource Protection and Child Health Indicators, 2015 Release (2010 – 2015) (CIESIN)",
+            "default": true,
+            "dataset": "21ac3cd2-9c19-47c7-ad18-4bcad118870f",
+            "provider": "cartodb",
+            "iso": [],
+            "description": null,
+            "layerConfig": {
+              "account": "wri-rw",
+              "body": {
+                "maxzoom": 18,
+                "minzoom": 3,
+                "layers": [
+                  {
+                    "type": "cartodb",
+                    "options": {
+                      "sql": "with a as (SELECT cartodb_id, the_geom, the_geom_webmercator, iso3, countryname, unnest(array[ 'nrpi_v2015_15', 'chi_v2015_15']) AS \"indicator\", unnest(array[ nrpi_v2015_15, chi_v2015_15]) AS \"value\" FROM \"wri-rw\".nrpi_chi_2015 where countryname != '' order by indicator, countryname asc) select cartodb_id, the_geom, the_geom_webmercator, iso3, countryname, avg(value) as value from a group by countryname, cartodb_id, the_geom, the_geom_webmercator, iso3 order by countryname",
+                      "cartocss": "#layer {  polygon-fill: ramp([value], (#64d1ed, #64d1ed, #59bad4, #37a3bf, #308da5), quantiles);  line-width: 1;  line-color: #FFF;  line-opacity: 0.5;  polygon-comp-op: src-over;}",
+                      "cartocss_version": "2.3.0"
+                    }
+                  }
+                ]
+              }
+            },
+            "legendConfig": {
+              "type": "choropleth",
+              "items": [
+                {
+                  "value": "0-49",
+                  "color": "#c3f1fc"
+                },
+                {
+                  "value": "49-66",
+                  "color": "#64d1ed"
+                },
+                {
+                  "value": "66-80",
+                  "color": "#59bad4"
+                },
+                {
+                  "value": "80-92",
+                  "color": "#37a3bf"
+                },
+                {
+                  "value": "92-100",
+                  "color": "#308da5"
+                }
+              ]
+            },
+            "applicationConfig": {},
+            "staticImageConfig": {}
+          }
+        }
+      ]
     },
     {
       "id": 2,
@@ -84,7 +146,87 @@
           "widgetConfig": {}
         }
       ],
-      "layers": []
+      "layers": [
+        {
+          "id": "8cee7211-d495-4217-8f9a-f6f903c3cef1",
+          "type": "layer",
+          "attributes": {
+            "slug": "open-air-quality-pm2-5",
+            "userId": "58333dcfd9f39b189ca44c75",
+            "application": [
+              "rw"
+            ],
+            "name": "Open Air Quality: PM2.5.",
+            "default": true,
+            "dataset": "b56b710d-f3a8-45b5-85b0-4a27cf5559f0",
+            "provider": "cartodb",
+            "iso": [
+              "global"
+            ],
+            "description": "",
+            "layerConfig": {
+              "account": "wri-rw",
+              "body": {
+                "maxzoom": 18,
+                "minzoom": 3,
+                "layers": [
+                  {
+                    "type": "mapnik",
+                    "options": {
+                      "sql": "SELECT * FROM pm2_5_pm10_no2_so2_o3_co_bc_openaq where parameter='pm25'",
+                      "cartocss": "#layer {  marker-width: 7;  marker-fill: ramp([value], (#f3cbd3, #eaa9bd, #dd88ac, #ca699d, #b14d8e, #91357d, #6c2167), quantiles);  marker-fill-opacity: 1;  marker-allow-overlap: true;  marker-line-width: 1;  marker-line-color: #FFF;  marker-line-opacity: 1;}",
+                      "cartocss_version": "2.3.0"
+                    }
+                  }
+                ]
+              }
+            },
+            "legendConfig": {
+              "type": "gradient",
+              "items": [
+                {
+                  "value": "-1111 µg/m³",
+                  "color": "#f3cbd3"
+                },
+                {
+                  "value": "",
+                  "color": "#eaa9bd"
+                },
+                {
+                  "value": "",
+                  "color": "#dd88ac"
+                },
+                {
+                  "value": "",
+                  "color": "#b14d8e"
+                },
+                {
+                  "value": "",
+                  "color": "#91357d"
+                },
+                {
+                  "value": "985 µg/m³",
+                  "color": "#6c2167"
+                }
+              ]
+            },
+            "applicationConfig": {},
+            "staticImageConfig": {
+              "format": "png",
+              "bbox": [
+                -110,
+                -65,
+                110,
+                65
+              ],
+              "width": 2048,
+              "height": 1024,
+              "srs": null,
+              "urlTemplate": "https://{{account}}.carto.com/api/v1/map/static/bbox/{{token_groupid}}/{{bbox}}/{{width}}/{{height}}.{{format}}"
+            }
+          }
+        }
+      ]
     },
     {
       "id": 4,
