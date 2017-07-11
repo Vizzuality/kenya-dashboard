@@ -1,12 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import isEmpty from 'lodash/isEmpty';
 
 // Components
+import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
+// import Icon from 'components/ui/icon';
 
 // Utils
 
+
+const SortableItem = SortableElement(({ value }) => value);
+
+const DragHandle = SortableHandle(() => (
+  <span className="dragger">
+    {/* <Icon name="icon-drag-dots" className="-small" /> */}
+    M
+  </span>
+));
+
+const SortableList = SortableContainer(({ items }) => (
+  <ul className="legend-list">
+    {items.map((value, index) =>
+      <SortableItem key={`item-${index}`} index={index} value={value} />
+    )}
+  </ul>
+));
 
 export default class Legend extends React.Component {
   constructor(props) {
@@ -18,6 +36,10 @@ export default class Legend extends React.Component {
     // Bindings
     this.onToggle = this.onToggle.bind(this);
     this.onToggleLayer = this.onToggleLayer.bind(this);
+
+    this.onSortEnd = this.onSortEnd.bind(this);
+    // this.onSortStart = this.onSortStart.bind(this);
+    // this.onSortMove = this.onSortMove.bind(this);
   }
 
   onToggle() {
@@ -34,17 +56,38 @@ export default class Legend extends React.Component {
     this.props.setLayersActive(active);
   }
 
+  onSortEnd({ oldIndex, newIndex }) {
+    const reversed = this.props.list.reverse();
+    const newLayersOrder = arrayMove(reversed, oldIndex, newIndex);
+    // Unreverse layers to set them in their real order
+    // const newLayersActive = newLayersOrder.map(l => l.dataset).reverse();
+
+    // this.props.setDatasetsActive(newLayersActive);
+  }
+
+  // onSortStart(opts) {
+  //   // const node = opts.node;
+  // }
+  //
+  // onSortMove(ev) {
+  // }
+
   getItemListStructure(layer, visual) {
     return (
-      <div className={`legend-item -${layer.attributes.legendConfig.type}`} key={layer.id}>
+      <li className={`legend-item -${layer.attributes.legendConfig.type}`} key={layer.id}>
         <div className="name-container">
-          <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>o</button>
-          <span className="layer-name">{layer.attributes.name}</span>
+          <header className="item-header">
+            <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>o</button>
+            <span className="layer-name">{layer.attributes.name}</span>
+          </header>
+          <div className="item-tools">
+            <DragHandle />
+          </div>
         </div>
         <div className="layer-visual">
           {visual}
         </div>
-      </div>
+      </li>
     );
   }
 
@@ -70,15 +113,27 @@ export default class Legend extends React.Component {
     return this.getItemListStructure(layer, visual);
   }
 
-  getContent() {
-    const a = this.props.list.map((l) => {
+
+  getLegendItems() {
+    // Reverse layers to show first the last one added
+    const layersReversed = this.props.list.slice().reverse();
+    return layersReversed.map((l) => {
       switch (l.attributes.legendConfig.type) {
         case 'choropleth': return this.getChoroplethContent(l);
         case 'gradient': return this.getGradientContent(l);
         default: return 'Other';
       }
     });
-    return a;
+  }
+
+  getContent() {
+    return this.props.list.map((l) => {
+      switch (l.attributes.legendConfig.type) {
+        case 'choropleth': return this.getChoroplethContent(l);
+        case 'gradient': return this.getGradientContent(l);
+        default: return 'Other';
+      }
+    });
   }
 
   render() {
@@ -89,7 +144,7 @@ export default class Legend extends React.Component {
       [className]: !!className,
       '-hidden': !this.state.open
     });
-    const content = this.getContent();
+    // const content = this.getContent();
 
     return (
       <div className={classNames}>
@@ -100,7 +155,19 @@ export default class Legend extends React.Component {
           </div>
         </div>
         <div className="legend-content">
-          {content}
+          <SortableList
+            items={this.getLegendItems()}
+            helperClass="c-legend-unit -sort"
+            onSortEnd={this.onSortEnd}
+            onSortStart={this.onSortStart}
+            onSortMove={this.onSortMove}
+            axis="y"
+            lockAxis="y"
+            lockToContainerEdges
+            lockOffset="50%"
+            useDragHandle
+          />
+          {/* {content} */}
         </div>
       </div>
     );

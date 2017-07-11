@@ -69,7 +69,7 @@ export default class LayerManager {
     const layerZIndex = layer.zIndex || 500;
 
     const onSuccess = (data, zIndex) => {
-      const tileUrl = `https://${layer.attributes.layerConfig.account}.carto.com/api/v1/map/${data.layergroupid}/{z}/{x}/{y}.png`;
+      const tileUrl = `${data.cdn_url.templates.https.url}/${layer.attributes.layerConfig.account}/api/v1/map/${data.layergroupid}/{z}/{x}/{y}.png`;
       this._mapLayers[layer.id] = L.tileLayer(tileUrl).addTo(this._map).setZIndex(zIndex);
       this._mapLayers[layer.id].on('load', () => {
         this._onLayerAddedSuccess();

@@ -30,21 +30,13 @@ import { GENERIC_ZINDEX, MAP_OPTIONS } from 'constants/map';
 // }
 
 class IndicatorPage extends Page {
-  constructor(props) {
-    super(props);
-
-    this.update = true;
-
-    // Bindings
-  }
-
   componentDidMount() {
     const { url } = this.props;
 
     this.props.getSpecificIndicators(url.query.indicators);
 
     if (url.query.zoom || url.query.lat || url.query.lng) {
-      this.setParams();
+      this.setMapParams();
     }
   }
 
@@ -55,7 +47,8 @@ class IndicatorPage extends Page {
     }
   }
 
-  setParams() {
+  /* Config map params and set them in the map */
+  setMapParams() {
     const { url } = this.props;
     const mapParams = {
       zoom: +url.query.zoom || MAP_OPTIONS.zoom,
@@ -64,10 +57,10 @@ class IndicatorPage extends Page {
         lng: +url.query.lng || MAP_OPTIONS.center[1]
       }
     };
-    this.update = false;
     this.props.setSingleMapParamsFromUrl(mapParams);
   }
 
+  /* Get all selected indicators first layer if they have anyone */
   getLayers(indicators) {
     const { url } = this.props;
     const layers = [];
@@ -84,6 +77,7 @@ class IndicatorPage extends Page {
     return this.setLayersZIndex(uniqBy(layers, l => l.id));
   }
 
+  /* Set layers z index depending on their order */
   setLayersZIndex(layers) {
     return layers.reverse().map((l, i) => Object.assign({}, l,
       { zIndex: this.props.mapState.layersActive.includes(l.id) ? GENERIC_ZINDEX + i : -1 }));
@@ -99,11 +93,9 @@ class IndicatorPage extends Page {
 
   render() {
     const { url, session } = this.props;
-
     const listeners = {
       moveend: (map) => {
-        this.update && this.updateMap(map, this.props.url);
-        if (!this.update) this.update = true;
+        this.updateMap(map, this.props.url);
       }
     };
 
@@ -122,7 +114,6 @@ class IndicatorPage extends Page {
       center: [this.props.mapState.center.lat, this.props.mapState.center.lng]
     };
     const layers = this.getLayers(this.props.indicators.list);
-    // const layersActive = layers.filter(l => mapState.layersActive.includes(l.id));
 
     return (
       <Layout
@@ -143,7 +134,7 @@ class IndicatorPage extends Page {
             markerIcon={{}}
           />
           <Legend
-            list={layers.reverse()}
+            list={layers}
             layersActive={this.props.mapState.layersActive}
             setLayersActive={this.props.setLayersActive}
           />
