@@ -26,23 +26,17 @@ import { GENERIC_ZINDEX, MAP_OPTIONS } from 'constants/map';
 // }
 
 class IndicatorPage extends Page {
-  constructor(props) {
-    super(props);
-
-    this.update = true;
-  }
-
   componentDidMount() {
     const { url } = this.props;
 
     this.props.getSpecificIndicators(url.query.indicators);
 
     if (url.query.zoom || url.query.lat || url.query.lng) {
-      this.setParams();
+      this.setMapParams();
     }
   }
 
-  setParams() {
+  setMapParams() {
     const { url } = this.props;
     const mapParams = {
       zoom: +url.query.zoom || MAP_OPTIONS.zoom,
@@ -51,7 +45,6 @@ class IndicatorPage extends Page {
         lng: +url.query.lng || MAP_OPTIONS.center[1]
       }
     };
-    this.update = false;
     this.props.setSingleMapParamsFromUrl(mapParams);
   }
 
@@ -88,8 +81,7 @@ class IndicatorPage extends Page {
 
     const listeners = {
       moveend: (map) => {
-        this.update && this.updateMap(map, this.props.url);
-        if (!this.update) this.update = true;
+        this.updateMap(map, this.props.url);
       }
     };
 
