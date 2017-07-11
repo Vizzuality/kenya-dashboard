@@ -143,7 +143,7 @@ class IndicatorPage extends Page {
             markerIcon={{}}
           />
           <Legend
-            list={layers}
+            list={layers.reverse()}
             layersActive={this.props.mapState.layersActive}
             setLayersActive={this.props.setLayersActive}
           />

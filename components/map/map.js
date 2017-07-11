@@ -84,8 +84,7 @@ export default class Map extends React.Component {
     if (!isEqual(this.props.layersActive, nextProps.layersActive)) {
       const removed = difference(this.props.layersActive, nextProps.layersActive);
       const added = difference(nextProps.layersActive, this.props.layersActive);
-      debugger;
-      removed.length && this.removeLayer(nextProps.layers.filter(l => removed.includes(l.is)));
+      removed.length && this.removeLayer(nextProps.layers.filter(l => removed.includes(l.id)));
       added.length && this.addLayer(nextProps.layers.filter(l => added.includes(l.id)));
     }
 

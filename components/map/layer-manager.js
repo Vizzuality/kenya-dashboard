@@ -33,10 +33,8 @@ export default class LayerManager {
   }
 
   removeLayer(layerId) {
-    debugger;
     if (this._mapLayers[layerId]) {
       this._map.removeLayer(this._mapLayers[layerId]);
-      debugger;
       delete this._mapLayers[layerId];
     }
   }
