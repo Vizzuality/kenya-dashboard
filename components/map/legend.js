@@ -17,18 +17,29 @@ export default class Legend extends React.Component {
 
     // Bindings
     this.onToggle = this.onToggle.bind(this);
+    this.onToggleLayer = this.onToggleLayer.bind(this);
   }
 
   onToggle() {
     this.setState({ open: !this.state.open });
   }
 
-  getItemListStructure(name, visual, type) {
+  onToggleLayer(id) {
+    let active = this.props.layersActive.slice();
+    if (active.includes(id)) {
+      active = active.filter(layerId => layerId !== id);
+    } else {
+      active.push(id);
+    }
+    this.props.setLayersActive(active);
+  }
+
+  getItemListStructure(layer, visual) {
     return (
-      <div className={`legend-item -${type}`} key={name}>
+      <div className={`legend-item -${layer.attributes.legendConfig.type}`} key={layer.id}>
         <div className="name-container">
-          <button className="btn-show">o</button>
-          <span className="layer-name">{name}</span>
+          <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>o</button>
+          <span className="layer-name">{layer.attributes.name}</span>
         </div>
         <div className="layer-visual">
           {visual}
@@ -38,30 +49,30 @@ export default class Legend extends React.Component {
   }
 
   getChoroplethContent(layer) {
-    const visual = layer.legendConfig.items.map((item, i) => (
+    const visual = layer.attributes.legendConfig.items.map((item, i) => (
       <div key={i} className="visual-item">
         <span className="color" style={{ backgroundColor: item.color }} />
         <span className="value">{item.value}</span>
       </div>
     ));
 
-    return this.getItemListStructure(layer.name, visual, 'choropleth');
+    return this.getItemListStructure(layer, visual);
   }
 
   getGradientContent(layer) {
-    const visual = layer.legendConfig.items.map((item, i) => (
+    const visual = layer.attributes.legendConfig.items.map((item, i) => (
       <div key={i} className="visual-item">
         <span className="color" style={{ backgroundColor: item.color }} />
         <span className="value">{item.value}</span>
       </div>
     ));
 
-    return this.getItemListStructure(layer.name, visual, 'gradient');
+    return this.getItemListStructure(layer, visual);
   }
 
   getContent() {
     const a = this.props.list.map((l) => {
-      switch (l.legendConfig.type) {
+      switch (l.attributes.legendConfig.type) {
         case 'choropleth': return this.getChoroplethContent(l);
         case 'gradient': return this.getGradientContent(l);
         default: return 'Other';
@@ -98,7 +109,10 @@ export default class Legend extends React.Component {
 
 Legend.propTypes = {
   className: PropTypes.string,
-  list: PropTypes.array
+  list: PropTypes.array,
+  layersActive: PropTypes.array,
+  // Actions
+  setLayersActive: PropTypes.func
 };
 
 Legend.defaultProps = {

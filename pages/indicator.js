@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // Modules
 import { getSpecificIndicators } from 'modules/indicators';
-import { setSingleMapParams, setSingleMapParamsUrl } from 'modules/single-map';
+import { setSingleMapParams, setSingleMapParamsUrl, setLayersActive } from 'modules/single-map';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
@@ -34,6 +34,8 @@ class IndicatorPage extends Page {
     super(props);
 
     this.update = true;
+
+    // Bindings
   }
 
   componentDidMount() {
@@ -43,6 +45,13 @@ class IndicatorPage extends Page {
 
     if (url.query.zoom || url.query.lat || url.query.lng) {
       this.setParams();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.indicators.list.length && nextProps.indicators.list.length) {
+      const layersActive = this.getLayers(nextProps.indicators.list).map(l => l.id);
+      this.props.setLayersActive(layersActive);
     }
   }
 
@@ -59,24 +68,25 @@ class IndicatorPage extends Page {
     this.props.setSingleMapParamsFromUrl(mapParams);
   }
 
-  getLayers() {
-    const { url, indicators } = this.props;
+  getLayers(indicators) {
+    const { url } = this.props;
     const layers = [];
 
-    if (indicators.list.length) {
+    if (indicators.length) {
       const indicatorsOrder = url.query.indicators.split(',');
 
       indicatorsOrder.forEach((id) => {
-        const ind = indicators.list.find(itr => `${itr.id}` === `${id}`);
-        ind && ind.layers && ind.layers.length && layers.push(ind.layers[0].attributes);
+        const ind = indicators.find(itr => `${itr.id}` === `${id}`);
+        ind && ind.layers && ind.layers.length && layers.push(ind.layers[0]);
       });
     }
 
-    return uniqBy(layers, l => l.slug);
+    return this.setLayersZIndex(uniqBy(layers, l => l.id));
   }
 
   setLayersZIndex(layers) {
-    return layers.reverse().map((l, i) => Object.assign({}, l, { zIndex: GENERIC_ZINDEX + i }));
+    return layers.reverse().map((l, i) => Object.assign({}, l,
+      { zIndex: this.props.mapState.layersActive.includes(l.id) ? GENERIC_ZINDEX + i : -1 }));
   }
 
   /* Map config */
@@ -111,7 +121,8 @@ class IndicatorPage extends Page {
       zoomControl: MAP_OPTIONS.zoomControl,
       center: [this.props.mapState.center.lat, this.props.mapState.center.lng]
     };
-    const layers = this.setLayersZIndex(this.getLayers());
+    const layers = this.getLayers(this.props.indicators.list);
+    // const layersActive = layers.filter(l => mapState.layersActive.includes(l.id));
 
     return (
       <Layout
@@ -127,10 +138,15 @@ class IndicatorPage extends Page {
             mapMethods={mapMethods}
             listeners={listeners}
             layers={layers}
+            layersActive={this.props.mapState.layersActive}
             markers={[]}
             markerIcon={{}}
           />
-          <Legend list={layers} />
+          <Legend
+            list={layers}
+            layersActive={this.props.mapState.layersActive}
+            setLayersActive={this.props.setLayersActive}
+          />
         </div>
       </Layout>
     );
@@ -158,6 +174,9 @@ export default withRedux(
     },
     setSingleMapParamsFromUrl(params) {
       dispatch(setSingleMapParams(params));
+    },
+    setLayersActive(layersActive) {
+      dispatch(setLayersActive(layersActive));
     }
   })
 )(IndicatorPage);
