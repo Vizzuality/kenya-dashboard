@@ -27,3 +27,20 @@ a {
 
   &:hover { opacity: .7; }
 }
+
+button {
+  background: 0;
+  border: 0;
+  cursor: pointer;
+
+  &:focus { outline: none; }
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}

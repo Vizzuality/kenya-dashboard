@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 // Libraries
 import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
+import difference from 'lodash/difference';
 
 // Components
 import Spinner from 'components/ui/spinner';
@@ -63,7 +64,7 @@ export default class Map extends React.Component {
 
     // Add layers
     this.initLayerManager();
-    this.props.layers && this.props.layers.map((l, i) => this.addLayer(l, { zIndex: 600 - i }));
+    this.props.layers && this.addLayer(this.props.layers);
     // this.props.markers.length && this.addMarker(this.props.markers);
   }
 
@@ -72,11 +73,24 @@ export default class Map extends React.Component {
     if (!isEqual(this.props.mapMethods.fitBounds, nextProps.mapMethods.fitBounds)) {
       this.map.fitBounds(nextProps.mapMethods.fitBounds);
     }
+
     // Layers
-    if (!isEqual(this.props.layers, nextProps.layers)) {
+    if (!isEqual(this.props.layers, nextProps.layers) &&
+      isEqual(this.props.indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
       this.layerManager.removeAllLayers();
-      nextProps.layers.map(l => this.addLayer(l));
+      this.addLayer(nextProps.layers);
     }
+
+    if (!isEqual(this.props.indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
+      const removed = difference(
+        this.props.indicatorsLayersActive,
+        nextProps.indicatorsLayersActive
+      );
+      const added = difference(nextProps.indicatorsLayersActive, this.props.indicatorsLayersActive);
+      removed.length && this.removeLayer(nextProps.layers.filter(l => removed.includes(l.id)));
+      added.length && this.addLayer(nextProps.layers.filter(l => added.includes(l.id)));
+    }
+
     // Markers
     if (!isEqual(this.props.markers, nextProps.markers)) {
       addOrRemove(
@@ -225,6 +239,7 @@ Map.propTypes = {
   mapOptions: React.PropTypes.object,
   mapMethods: React.PropTypes.object,
   layers: React.PropTypes.array,
+  indicatorsLayersActive: React.PropTypes.array,
   markers: React.PropTypes.array,
   markerIcon: React.PropTypes.object,
   listeners: React.PropTypes.object

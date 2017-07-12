@@ -18,9 +18,8 @@ const initialState = {
 /* Reducer */
 export default function singleMapReducer(state = initialState, action) {
   switch (action.type) {
-    case SET_SINGLE_MAP_PARAMS: {
+    case SET_SINGLE_MAP_PARAMS:
       return Object.assign({}, state, action.payload);
-    }
     default:
       return state;
   }
