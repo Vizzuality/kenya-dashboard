@@ -9,7 +9,7 @@ import {
 } from 'modules/single-map';
 
 // Selectors
-import { getIndicatorsLayers, getIndicatorsWithLayers } from 'selectors/indicators';
+import { getIndicatorsWithLayers } from 'selectors/indicators';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
@@ -21,6 +21,7 @@ import { setLayersZIndex } from 'utils/map';
 // Components
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
+import Accordion from 'components/ui/accordion';
 import Map from 'components/map/map';
 import Legend from 'components/map/legend';
 
@@ -92,15 +93,10 @@ class IndicatorPage extends Page {
 
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
 
-    return (
-      <Layout
-        title="Panel"
-        description="Panel description..."
-        url={url}
-        session={session}
-      >
-        <h2>Sidebar</h2>
-        <div>
+    const list = [
+      {
+        id: 'map-1',
+        el: (
           <Map
             mapOptions={mapOptions}
             mapMethods={mapMethods}
@@ -110,6 +106,33 @@ class IndicatorPage extends Page {
             markers={[]}
             markerIcon={{}}
           />
+        )
+      },
+      {
+        id: 'map-2',
+        el: (
+          <Map
+            mapOptions={mapOptions}
+            mapMethods={mapMethods}
+            listeners={listeners}
+            layers={layers}
+            indicatorsLayersActive={indicators.layersActive}
+            markers={[]}
+            markerIcon={{}}
+          />
+        )
+      }
+    ];
+
+    return (
+      <Layout
+        title="Panel"
+        description="Panel description..."
+        url={url}
+        session={session}
+      >
+        <Accordion list={list} />
+        <div>
           <Legend
             list={layers}
             indicatorsLayersActive={indicators.layersActive}

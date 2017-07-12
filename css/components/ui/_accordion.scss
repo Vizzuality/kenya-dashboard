@@ -1,0 +1,15 @@
+
+.c-accordion {
+  width: 100%;
+  display: flex;
+
+  .accordion-item {
+    flex-grow: 1;
+    transition: all .3s ease;
+
+    &.-hidden {
+      width: 30px;
+      flex-grow: 0;
+    }
+  }
+}
