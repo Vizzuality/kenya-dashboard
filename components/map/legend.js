@@ -1,15 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// Libraries
 import classnames from 'classnames';
 
-// Components
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
+
+// Components
 // import Icon from 'components/ui/icon';
 
 const SortableItem = SortableElement(({ value }) => value);
 
 const DragHandle = SortableHandle(() => (
-  <span className="dragger SortableItem">
+  <span className="handler">
     {/* <Icon name="icon-drag-dots" className="-small" /> */}
     M
   </span>
@@ -23,20 +26,19 @@ const SortableList = SortableContainer(({ items }) => (
   </ul>
 ));
 
-export default class Legend extends React.Component {
+class Legend extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       open: true
     };
 
-    // Bindings
+    // BINDINGS
     this.onToggle = this.onToggle.bind(this);
     this.onToggleLayer = this.onToggleLayer.bind(this);
 
     this.onSortEnd = this.onSortEnd.bind(this);
-    this.onSortStart = this.onSortStart.bind(this);
-    this.onSortMove = this.onSortMove.bind(this);
   }
 
   onToggle() {
@@ -55,70 +57,61 @@ export default class Legend extends React.Component {
 
   onSortEnd({ oldIndex, newIndex }) {
     const reversed = this.props.list.reverse();
-    const newLayersOrder = arrayMove(reversed, oldIndex, newIndex).reverse();
+    const newLayersOrder = arrayMove(reversed, oldIndex, newIndex);
     // Unreverse layers to set them in their real order
-    this.props.setIndicatorsLayers(newLayersOrder);
+    const newLayersActive = newLayersOrder.reverse();
+
+    this.props.setIndicatorsLayers(newLayersActive);
   }
 
-  onSortStart(opts) {
-    // const node = opts.node;
-  }
-
-  onSortMove(ev) {
-  }
-
-  getItemListStructure(layer, visual) {
-    return (
-      <li className={`legend-item -${layer.attributes.legendConfig.type}`} key={layer.id}>
-        <div className="name-container">
-          <header className="item-header">
-            <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>o</button>
-            <span className="layer-name">{layer.attributes.name}</span>
-          </header>
-          <div className="item-tools">
-            <DragHandle />
-          </div>
-        </div>
-        <div className="layer-visual">
-          {visual}
-        </div>
-      </li>
-    );
-  }
-
+  /* Legend visual contents by type */
   getBasicContent(layer) {
-    const visual = layer.attributes.legendConfig.items.map((item, i) => (
+    return layer.attributes.legendConfig.items.map((item, i) => (
       <div key={i} className="visual-item">
         <span className="color" style={{ backgroundColor: item.color }} />
         <span className="value">{item.name || item.value}</span>
       </div>
     ));
-
-    return this.getItemListStructure(layer, visual);
   }
 
   getChoroplethGradientContent(layer) {
-    const visual = layer.attributes.legendConfig.items.map((item, i) => (
+    return layer.attributes.legendConfig.items.map((item, i) => (
       <div key={i} className="visual-item">
         <span className="color" style={{ backgroundColor: item.color }} />
         <span className="value">{item.value}</span>
       </div>
     ));
-
-    return this.getItemListStructure(layer, visual);
   }
 
+  getVisualByLayerType(layer) {
+    switch (layer.attributes.legendConfig.type) {
+      case 'choropleth': return this.getChoroplethGradientContent(layer);
+      case 'gradient': return this.getChoroplethGradientContent(layer);
+      case 'basic': return this.getBasicContent(layer);
+      default: return 'Not covered';
+    }
+  }
+
+  /* Legend item structure */
   getLegendItems() {
     // Reverse layers to show first the last one added
-    const layersReversed = this.props.list.slice().reverse();
-    return layersReversed.map((l) => {
-      switch (l.attributes.legendConfig.type) {
-        case 'choropleth': return this.getChoroplethGradientContent(l);
-        case 'gradient': return this.getChoroplethGradientContent(l);
-        case 'basic': return this.getBasicContent(l);
-        default: return 'Other';
-      }
-    });
+    const layersActiveReversed = this.props.list.slice().reverse();
+    return layersActiveReversed.map((layer, i) => (
+      <li key={i} className={`legend-item -${layer.attributes.legendConfig.type}`}>
+        <header className="item-header">
+          <div className="item-header">
+            <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>o</button>
+            <span className="layer-name">{layer.attributes.name}</span>
+          </div>
+          <div className="item-tools">
+            <DragHandle />
+          </div>
+        </header>
+        <div className="layer-visual">
+          {this.getVisualByLayerType(layer)}
+        </div>
+      </li>
+    ));
   }
 
   render() {
@@ -131,12 +124,12 @@ export default class Legend extends React.Component {
 
     return (
       <div className={classNames}>
-        <div className="legend-header">
+        <header className="legend-header">
           <div className="title">Legend</div>
           <div className="tools">
             <button className="btn-close" onClick={this.onToggle}>V</button>
           </div>
-        </div>
+        </header>
         <div className="legend-content">
           <SortableList
             items={this.getLegendItems()}
@@ -157,13 +150,13 @@ export default class Legend extends React.Component {
 }
 
 Legend.propTypes = {
-  className: PropTypes.string,
+  className: PropTypes.object,
   list: PropTypes.array,
   indicatorsLayersActive: PropTypes.array,
-  // Actions
-  setIndicatorsLayersActive: PropTypes.func,
-  setIndicatorsLayers: PropTypes.func
+
+  // Functions
+  setIndicatorsLayers: PropTypes.func,
+  setIndicatorsLayersActive: PropTypes.func
 };
 
-Legend.defaultProps = {
-};
+export default Legend;
