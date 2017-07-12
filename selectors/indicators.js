@@ -18,9 +18,6 @@ const getIndicatorsLayers = createSelector(
       });
     }
 
-    // Order layers
-    // if (_specificLayersActive.length) layers = this.orderLayers(layers);
-
     return uniqBy(layers, l => l.id);
   }
 );
