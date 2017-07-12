@@ -75,15 +75,18 @@ export default class Map extends React.Component {
     }
 
     // Layers
-    // if (!isEqual(this.props.layers, nextProps.layers) ||
-    //   !isEqual(this.props.layersActive, nextProps.layersActive)) {
-    //   this.layerManager.removeAllLayers();
-    //   this.addLayer(nextProps.layers);
-    // }
+    if (!isEqual(this.props.layers, nextProps.layers) &&
+      isEqual(this.props.indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
+      this.layerManager.removeAllLayers();
+      this.addLayer(nextProps.layers);
+    }
 
-    if (!isEqual(this.props.layersActive, nextProps.layersActive)) {
-      const removed = difference(this.props.layersActive, nextProps.layersActive);
-      const added = difference(nextProps.layersActive, this.props.layersActive);
+    if (!isEqual(this.props.indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
+      const removed = difference(
+        this.props.indicatorsLayersActive,
+        nextProps.indicatorsLayersActive
+      );
+      const added = difference(nextProps.indicatorsLayersActive, this.props.indicatorsLayersActive);
       removed.length && this.removeLayer(nextProps.layers.filter(l => removed.includes(l.id)));
       added.length && this.addLayer(nextProps.layers.filter(l => added.includes(l.id)));
     }
@@ -236,7 +239,7 @@ Map.propTypes = {
   mapOptions: React.PropTypes.object,
   mapMethods: React.PropTypes.object,
   layers: React.PropTypes.array,
-  layersActive: React.PropTypes.array,
+  indicatorsLayersActive: React.PropTypes.array,
   markers: React.PropTypes.array,
   markerIcon: React.PropTypes.object,
   listeners: React.PropTypes.object

@@ -6,9 +6,6 @@ import classnames from 'classnames';
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
 // import Icon from 'components/ui/icon';
 
-// Utils
-
-
 const SortableItem = SortableElement(({ value }) => value);
 
 const DragHandle = SortableHandle(() => (
@@ -47,22 +44,20 @@ export default class Legend extends React.Component {
   }
 
   onToggleLayer(id) {
-    let active = this.props.layersActive.slice();
+    let active = this.props.indicatorsLayersActive.slice();
     if (active.includes(id)) {
       active = active.filter(layerId => layerId !== id);
     } else {
       active.push(id);
     }
-    this.props.setLayersActive(active);
+    this.props.setIndicatorsLayersActive(active);
   }
 
   onSortEnd({ oldIndex, newIndex }) {
     const reversed = this.props.list.reverse();
-    const newLayersOrder = arrayMove(reversed, oldIndex, newIndex);
+    const newLayersOrder = arrayMove(reversed, oldIndex, newIndex).reverse();
     // Unreverse layers to set them in their real order
-    // const newLayersActive = newLayersOrder.map(l => l.dataset).reverse();
-
-    // this.props.setDatasetsActive(newLayersActive);
+    this.props.setIndicatorsLayers(newLayersOrder);
   }
 
   // onSortStart(opts) {
@@ -126,25 +121,13 @@ export default class Legend extends React.Component {
     });
   }
 
-  getContent() {
-    return this.props.list.map((l) => {
-      switch (l.attributes.legendConfig.type) {
-        case 'choropleth': return this.getChoroplethContent(l);
-        case 'gradient': return this.getGradientContent(l);
-        default: return 'Other';
-      }
-    });
-  }
-
   render() {
     const { className } = this.props;
-
     const classNames = classnames({
       'c-legend': true,
       [className]: !!className,
       '-hidden': !this.state.open
     });
-    // const content = this.getContent();
 
     return (
       <div className={classNames}>
@@ -177,9 +160,10 @@ export default class Legend extends React.Component {
 Legend.propTypes = {
   className: PropTypes.string,
   list: PropTypes.array,
-  layersActive: PropTypes.array,
+  indicatorsLayersActive: PropTypes.array,
   // Actions
-  setLayersActive: PropTypes.func
+  setIndicatorsLayersActive: PropTypes.func,
+  setIndicatorsLayers: PropTypes.func
 };
 
 Legend.defaultProps = {

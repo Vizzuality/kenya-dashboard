@@ -2,15 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Modules
-import { getSpecificIndicators } from 'modules/indicators';
-import { setSingleMapParams, setSingleMapParamsUrl, setLayersActive } from 'modules/single-map';
+import { getSpecificIndicators, setIndicatorsLayersActive, setIndicatorsLayers } from 'modules/indicators';
+import {
+  setSingleMapParams,
+  setSingleMapParamsUrl
+} from 'modules/single-map';
+
+// Selectors
+import { getIndicatorsLayers, getIndicatorsWithLayers } from 'selectors/indicators';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
-// Libraries
-import uniqBy from 'lodash/uniqBy';
+// Utils
+import { setLayersZIndex } from 'utils/map';
 
 // Components
 import Page from 'components/layout/page';
@@ -19,7 +25,7 @@ import Map from 'components/map/map';
 import Legend from 'components/map/legend';
 
 // Constants
-import { GENERIC_ZINDEX, MAP_OPTIONS } from 'constants/map';
+import { MAP_OPTIONS } from 'constants/map';
 
 
 // let L;
@@ -40,13 +46,6 @@ class IndicatorPage extends Page {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.indicators.list.length && nextProps.indicators.list.length) {
-      const layersActive = this.getLayers(nextProps.indicators.list).map(l => l.id);
-      this.props.setLayersActive(layersActive);
-    }
-  }
-
   /* Config map params and set them in the map */
   setMapParams() {
     const { url } = this.props;
@@ -60,29 +59,6 @@ class IndicatorPage extends Page {
     this.props.setSingleMapParamsFromUrl(mapParams);
   }
 
-  /* Get all selected indicators first layer if they have anyone */
-  getLayers(indicators) {
-    const { url } = this.props;
-    const layers = [];
-
-    if (indicators.length) {
-      const indicatorsOrder = url.query.indicators.split(',');
-
-      indicatorsOrder.forEach((id) => {
-        const ind = indicators.find(itr => `${itr.id}` === `${id}`);
-        ind && ind.layers && ind.layers.length && layers.push(ind.layers[0]);
-      });
-    }
-
-    return this.setLayersZIndex(uniqBy(layers, l => l.id));
-  }
-
-  /* Set layers z index depending on their order */
-  setLayersZIndex(layers) {
-    return layers.reverse().map((l, i) => Object.assign({}, l,
-      { zIndex: this.props.mapState.layersActive.includes(l.id) ? GENERIC_ZINDEX + i : -1 }));
-  }
-
   /* Map config */
   updateMap(map, urlObj) {
     this.props.setSingleMapParams({
@@ -92,7 +68,7 @@ class IndicatorPage extends Page {
   }
 
   render() {
-    const { url, session } = this.props;
+    const { url, session, mapState, indicators } = this.props;
     const listeners = {
       moveend: (map) => {
         this.updateMap(map, this.props.url);
@@ -107,13 +83,14 @@ class IndicatorPage extends Page {
       ]
     };
     const mapOptions = {
-      zoom: this.props.mapState.zoom,
+      zoom: mapState.zoom,
       minZoom: MAP_OPTIONS.minZoom,
       maxZoom: MAP_OPTIONS.maxZoom,
       zoomControl: MAP_OPTIONS.zoomControl,
-      center: [this.props.mapState.center.lat, this.props.mapState.center.lng]
+      center: [mapState.center.lat, mapState.center.lng]
     };
-    const layers = this.getLayers(this.props.indicators.list);
+
+    const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
 
     return (
       <Layout
@@ -129,14 +106,15 @@ class IndicatorPage extends Page {
             mapMethods={mapMethods}
             listeners={listeners}
             layers={layers}
-            layersActive={this.props.mapState.layersActive}
+            indicatorsLayersActive={indicators.layersActive}
             markers={[]}
             markerIcon={{}}
           />
           <Legend
             list={layers}
-            layersActive={this.props.mapState.layersActive}
-            setLayersActive={this.props.setLayersActive}
+            indicatorsLayersActive={indicators.layersActive}
+            setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
+            setIndicatorsLayers={this.props.setIndicatorsLayers}
           />
         </div>
       </Layout>
@@ -151,10 +129,16 @@ IndicatorPage.propTypes = {
 
 export default withRedux(
   store,
-  state => ({
-    indicators: state.indicators.specific,
-    mapState: state.singleMap
-  }),
+  state => (
+    {
+      indicators: Object.assign(
+        {},
+        state.indicators.specific,
+        { indicatorsWithLayers: getIndicatorsWithLayers(state) }
+      ),
+      mapState: state.singleMap
+    }
+  ),
   dispatch => ({
     getSpecificIndicators(ids) {
       dispatch(getSpecificIndicators(ids));
@@ -166,8 +150,11 @@ export default withRedux(
     setSingleMapParamsFromUrl(params) {
       dispatch(setSingleMapParams(params));
     },
-    setLayersActive(layersActive) {
-      dispatch(setLayersActive(layersActive));
+    setIndicatorsLayersActive(indicatorsLayersActive) {
+      dispatch(setIndicatorsLayersActive(indicatorsLayersActive));
+    },
+    setIndicatorsLayers(indicatorsIayers) {
+      dispatch(setIndicatorsLayers(indicatorsIayers));
     }
   })
 )(IndicatorPage);

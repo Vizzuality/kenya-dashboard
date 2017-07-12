@@ -12,6 +12,10 @@ const GET_INDICATORS_ERROR = 'GET_INDICATORS_ERROR';
 const GET_SPECIFIC_INDICATORS = 'GET_SPECIFIC_INDICATORS';
 const GET_SPECIFIC_INDICATORS_LOADING = 'GET_SPECIFIC_INDICATORS_LOADING';
 const GET_SPECIFIC_INDICATORS_ERROR = 'GET_SPECIFIC_INDICATORS_ERROR';
+// Layers
+const SET_SPECIFIC_LAYERS_ACTIVE = 'SET_SPECIFIC_LAYERS_ACTIVE';
+const SET_INDICATORS_LAYERS = 'SET_INDICATORS_LAYERS';
+
 
 /* Initial state */
 const initialState = {
@@ -22,7 +26,10 @@ const initialState = {
   specific: {
     list: [],
     loading: false,
-    error: null
+    error: null,
+    layers: [],
+    layersActive: [],
+    indicatorsWithLayers: []
   }
 };
 
@@ -40,8 +47,17 @@ export default function indicatorsReducer(state = initialState, action) {
       return Object.assign({}, state, { list: [], loading: false, error: action.payload });
     // Specific indicators
     case GET_SPECIFIC_INDICATORS: {
+      const indicatorsWithLayers = action.payload.filter(ind => ind.layers && ind.layers.length);
+      const layers = indicatorsWithLayers.map(ind => ind.layers[0]);
       const newSpecific = Object.assign({}, state.specific,
-        { list: action.payload, loading: false, error: null });
+        {
+          list: action.payload,
+          loading: false,
+          error: null,
+          indicatorsWithLayers,
+          layers,
+          layersActive: layers.map(ind => ind.id)
+        });
       return Object.assign({}, state, { specific: newSpecific });
     }
     case GET_SPECIFIC_INDICATORS_LOADING: {
@@ -51,7 +67,17 @@ export default function indicatorsReducer(state = initialState, action) {
     }
     case GET_SPECIFIC_INDICATORS_ERROR: {
       const newSpecific = Object.assign({}, state.specific,
-        { list: [], loading: false, error: action.payload });
+        { list: [], loading: false, error: action.payload, indicatorsWithLayers: [] });
+      return Object.assign({}, state, { specific: newSpecific });
+    }
+    case SET_SPECIFIC_LAYERS_ACTIVE: {
+      const newSpecific = Object.assign({}, state.specific,
+        { layersActive: action.payload });
+      return Object.assign({}, state, { specific: newSpecific });
+    }
+    case SET_INDICATORS_LAYERS: {
+      const newSpecific = Object.assign({}, state.specific,
+        { layers: action.payload });
       return Object.assign({}, state, { specific: newSpecific });
     }
     default:
@@ -94,6 +120,17 @@ export function getIndicators(filters) {
   };
 }
 
+
+/* Specific Indicators */
+export function setIndicatorsLayersActive(layersActive) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_SPECIFIC_LAYERS_ACTIVE,
+      payload: layersActive
+    });
+  };
+}
+
 export function getSpecificIndicators(indicators) {
   const ids = indicators.split(',');
   const query = ids.map(id => `id=${id}`).join('&');
@@ -111,6 +148,7 @@ export function getSpecificIndicators(indicators) {
           type: GET_SPECIFIC_INDICATORS,
           payload: data
         });
+
         // DESERIALIZER.deserialize(data, (err, dataParsed) => {
         //   dispatch({
         //     type: GET_INDICATORS,
@@ -125,5 +163,14 @@ export function getSpecificIndicators(indicators) {
           payload: err.message
         });
       });
+  };
+}
+
+export function setIndicatorsLayers(layers) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_INDICATORS_LAYERS,
+      payload: layers
+    });
   };
 }

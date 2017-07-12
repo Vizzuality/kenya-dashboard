@@ -5,7 +5,6 @@ import { MAP_OPTIONS } from 'constants/map';
 
 /* Constants */
 const SET_SINGLE_MAP_PARAMS = 'SET_SINGLE_MAP_PARAMS';
-const SET_LAYERS_ACTIVE = 'SET_LAYERS_ACTIVE';
 
 /* Initial state */
 const initialState = {
@@ -13,8 +12,7 @@ const initialState = {
     lat: MAP_OPTIONS.center[0],
     lng: MAP_OPTIONS.center[1]
   },
-  zoom: MAP_OPTIONS.zoom,
-  layersActive: []
+  zoom: MAP_OPTIONS.zoom
 };
 
 /* Reducer */
@@ -22,9 +20,6 @@ export default function singleMapReducer(state = initialState, action) {
   switch (action.type) {
     case SET_SINGLE_MAP_PARAMS:
       return Object.assign({}, state, action.payload);
-    case SET_LAYERS_ACTIVE: {
-      return Object.assign({}, state, { layersActive: action.payload });
-    }
     default:
       return state;
   }
@@ -56,14 +51,5 @@ export function setSingleMapParamsUrl(params, url) {
 
     // Set pathname including indicators with / not as param
     Router.replace(location, `${indicatorsPathname}?${urlParams}`);
-  };
-}
-
-export function setLayersActive(layersActive) {
-  return (dispatch) => {
-    dispatch({
-      type: SET_LAYERS_ACTIVE,
-      payload: layersActive
-    });
   };
 }
