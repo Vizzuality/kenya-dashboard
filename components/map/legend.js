@@ -9,7 +9,7 @@ import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'r
 const SortableItem = SortableElement(({ value }) => value);
 
 const DragHandle = SortableHandle(() => (
-  <span className="dragger">
+  <span className="dragger SortableItem">
     {/* <Icon name="icon-drag-dots" className="-small" /> */}
     M
   </span>
@@ -35,8 +35,8 @@ export default class Legend extends React.Component {
     this.onToggleLayer = this.onToggleLayer.bind(this);
 
     this.onSortEnd = this.onSortEnd.bind(this);
-    // this.onSortStart = this.onSortStart.bind(this);
-    // this.onSortMove = this.onSortMove.bind(this);
+    this.onSortStart = this.onSortStart.bind(this);
+    this.onSortMove = this.onSortMove.bind(this);
   }
 
   onToggle() {
@@ -60,12 +60,12 @@ export default class Legend extends React.Component {
     this.props.setIndicatorsLayers(newLayersOrder);
   }
 
-  // onSortStart(opts) {
-  //   // const node = opts.node;
-  // }
-  //
-  // onSortMove(ev) {
-  // }
+  onSortStart(opts) {
+    // const node = opts.node;
+  }
+
+  onSortMove(ev) {
+  }
 
   getItemListStructure(layer, visual) {
     return (
@@ -86,7 +86,18 @@ export default class Legend extends React.Component {
     );
   }
 
-  getChoroplethContent(layer) {
+  getBasicContent(layer) {
+    const visual = layer.attributes.legendConfig.items.map((item, i) => (
+      <div key={i} className="visual-item">
+        <span className="color" style={{ backgroundColor: item.color }} />
+        <span className="value">{item.name || item.value}</span>
+      </div>
+    ));
+
+    return this.getItemListStructure(layer, visual);
+  }
+
+  getChoroplethGradientContent(layer) {
     const visual = layer.attributes.legendConfig.items.map((item, i) => (
       <div key={i} className="visual-item">
         <span className="color" style={{ backgroundColor: item.color }} />
@@ -96,26 +107,15 @@ export default class Legend extends React.Component {
 
     return this.getItemListStructure(layer, visual);
   }
-
-  getGradientContent(layer) {
-    const visual = layer.attributes.legendConfig.items.map((item, i) => (
-      <div key={i} className="visual-item">
-        <span className="color" style={{ backgroundColor: item.color }} />
-        <span className="value">{item.value}</span>
-      </div>
-    ));
-
-    return this.getItemListStructure(layer, visual);
-  }
-
 
   getLegendItems() {
     // Reverse layers to show first the last one added
     const layersReversed = this.props.list.slice().reverse();
     return layersReversed.map((l) => {
       switch (l.attributes.legendConfig.type) {
-        case 'choropleth': return this.getChoroplethContent(l);
-        case 'gradient': return this.getGradientContent(l);
+        case 'choropleth': return this.getChoroplethGradientContent(l);
+        case 'gradient': return this.getChoroplethGradientContent(l);
+        case 'basic': return this.getBasicContent(l);
         default: return 'Other';
       }
     });
@@ -150,7 +150,6 @@ export default class Legend extends React.Component {
             lockOffset="50%"
             useDragHandle
           />
-          {/* {content} */}
         </div>
       </div>
     );

@@ -33,6 +33,7 @@
   }
 
   .legend-content {
+    position: relative;
     display: flex;
     flex-flow: column;
     height: 100%;
@@ -43,6 +44,7 @@
 
     .legend-item {
       margin-bottom: 10px;
+      background: lightblue;
 
       &:last-child { margin-bottom: 0; }
 
@@ -78,5 +80,15 @@
         flex-flow: row wrap;
       }
     }
+  }
+}
+
+.legend-item {
+  &.-sort {
+    background-color: $color-white;
+    max-height: 90px;
+    overflow: hidden;
+    padding: 10px 0;
+    z-index: 99999999;
   }
 }
