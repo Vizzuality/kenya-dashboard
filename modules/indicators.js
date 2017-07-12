@@ -131,9 +131,8 @@ export function setIndicatorsLayersActive(layersActive) {
   };
 }
 
-export function getSpecificIndicators(indicators) {
-  const ids = indicators.split(',');
-  const query = ids.map(id => `id=${id}`).join('&');
+export function getSpecificIndicators(ids) {
+  const query = Array.isArray(ids) ? ids.map(id => `id=${id}`).join('&') : `id=${ids}`;
   return (dispatch) => {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });

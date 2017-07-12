@@ -37,19 +37,17 @@ export function setSingleMapParams(params) {
 
 export function setSingleMapParamsUrl(params, url) {
   return () => {
-    const indicatorsPathname = `${url.pathname}/${url.query.indicators}`;
     const lat = params.center.lat.toFixed(2);
     const lng = params.center.lng.toFixed(2);
     const zoom = params.zoom;
-    const urlParams = `zoom=${zoom}&lat=${lat}&lng=${lng}`;
 
     // Set location with indicators
     const location = {
       pathname: url.pathname,
-      query: { lat, lng, zoom, indicators: url.query.indicators }
+      query: Object.assign({}, url.query, { lat, lng, zoom })
     };
 
     // Set pathname including indicators with / not as param
-    Router.replace(location, `${indicatorsPathname}?${urlParams}`);
+    Router.replace(location);
   };
 }

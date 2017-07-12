@@ -2,6 +2,7 @@
 .c-accordion {
   width: 100%;
   display: flex;
+  justify-content: flex-end;
 
   .accordion-item {
     flex-grow: 1;
