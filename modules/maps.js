@@ -6,17 +6,22 @@ import { MAP_OPTIONS } from 'constants/map';
 
 /* Constants */
 const SET_MAP_PARAMS = 'SET_MAP_PARAMS';
+const ADD_AREA = 'ADD_AREA';
+
+const DEFAULT_AREA_PARAMS = {
+  center: {
+    lat: MAP_OPTIONS.center[0],
+    lng: MAP_OPTIONS.center[1]
+  },
+  zoom: MAP_OPTIONS.zoom,
+  type: '',
+  name: ''
+};
 
 /* Initial state */
 const initialState = {
   areas: {
-    area1: {
-      center: {
-        lat: MAP_OPTIONS.center[0],
-        lng: MAP_OPTIONS.center[1]
-      },
-      zoom: MAP_OPTIONS.zoom
-    }
+    defaultArea: DEFAULT_AREA_PARAMS
   },
   expanded: false
 };
@@ -26,6 +31,12 @@ export default function mapsReducer(state = initialState, action) {
   switch (action.type) {
     case SET_MAP_PARAMS: {
       const newAreaParams = Object.assign({}, state.areas, action.payload);
+      return Object.assign({}, state, { areas: newAreaParams });
+    }
+    case ADD_AREA: {
+      const newAreaParams = Object.assign({}, state.areas, {
+        [Math.random()]: DEFAULT_AREA_PARAMS
+      });
       return Object.assign({}, state, { areas: newAreaParams });
     }
     default:
@@ -59,5 +70,13 @@ export function setSingleMapParamsUrl(params, url) {
 
     // Set pathname including indicators with / not as param
     Router.replace(location);
+  };
+}
+
+export function addArea() {
+  return (dispatch) => {
+    dispatch({
+      type: ADD_AREA
+    });
   };
 }
