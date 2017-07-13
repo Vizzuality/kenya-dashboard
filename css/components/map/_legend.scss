@@ -68,6 +68,21 @@
         }
       }
 
+      &.-basic {
+        .visual-item {
+          display: flex;
+          align-items: center;
+          margin-right: 15px;
+          margin-bottom: 5px;
+        }
+
+        .color {
+          margin-right: 8px;
+          width: 10px;
+          height: 10px;
+        }
+      }
+
       .item-header {
         display: flex;
         justify-content: space-between;

@@ -93,7 +93,7 @@ class ComparePage extends Page {
 
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
 
-    const list = [
+    const accordionTop = [
       {
         id: 'map-1',
         el: (
@@ -138,6 +138,21 @@ class ComparePage extends Page {
       }
     ];
 
+    const accordionBottom = [
+      {
+        id: 'map-1',
+        el: <div>Loc 1</div>
+      },
+      {
+        id: 'map-2',
+        el: <div>Loc 2</div>
+      },
+      {
+        id: 'map-3',
+        el: <div>Loc 3</div>
+      }
+    ];
+
     return (
       <Layout
         title="Panel"
@@ -145,15 +160,18 @@ class ComparePage extends Page {
         url={url}
         session={session}
       >
-        <Accordion list={list} />
-        <div>
-          <Legend
-            list={layers}
-            indicatorsLayersActive={indicators.layersActive}
-            setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
-            setIndicatorsLayers={this.props.setIndicatorsLayers}
-          />
-        </div>
+        <Accordion
+          top={accordionTop}
+          middle={
+            <Legend
+              list={layers}
+              indicatorsLayersActive={indicators.layersActive}
+              setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
+              setIndicatorsLayers={this.props.setIndicatorsLayers}
+            />
+          }
+          bottom={accordionBottom}
+        />
       </Layout>
     );
   }

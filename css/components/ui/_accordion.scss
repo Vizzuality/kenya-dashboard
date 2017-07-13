@@ -2,7 +2,13 @@
 .c-accordion {
   width: 100%;
   display: flex;
+  flex-flow: column;
   justify-content: flex-end;
+
+  .accordion-section {
+    display: flex;
+    justify-content: flex-end;
+  }
 
   .accordion-item {
     flex-grow: 1;
