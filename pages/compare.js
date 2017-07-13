@@ -6,7 +6,7 @@ import { getSpecificIndicators, setIndicatorsLayersActive, setIndicatorsLayers }
 import {
   setSingleMapParams,
   setSingleMapParamsUrl
-} from 'modules/single-map';
+} from 'modules/maps';
 
 // Selectors
 import { getIndicatorsWithLayers } from 'selectors/indicators';
@@ -41,24 +41,16 @@ class ComparePage extends Page {
     super(props);
 
     this.state = {
-      hidden: []
+      hidden: [],
+      areas: []
     };
 
     // Bindings
-    this.onToggle = this.onToggle.bind(this);
+    this.onToggleAccordionItem = this.onToggleAccordionItem.bind(this);
+    this.onAddArea = this.onAddArea.bind(this);
   }
 
-  onToggle(e, id) {
-    let newHidden = this.state.hidden;
-    if (this.state.hidden.includes(id)) {
-      newHidden = newHidden.filter(hiddenId => hiddenId !== id);
-    } else if (newHidden.length + 1 < 3) {
-      newHidden.push(id);
-    }
-
-    this.setState({ hidden: newHidden });
-  }
-
+  /* Lyfecycle */
   componentDidMount() {
     const { url } = this.props;
 
@@ -69,6 +61,29 @@ class ComparePage extends Page {
     }
   }
 
+  /* Accordion methods */
+  onToggleAccordionItem(e, id) {
+    let newHidden = this.state.hidden;
+    if (this.state.hidden.includes(id)) {
+      newHidden = newHidden.filter(hiddenId => hiddenId !== id);
+    } else if (newHidden.length + 1 < 3) {
+      newHidden.push(id);
+    }
+
+    this.setState({ hidden: newHidden });
+  }
+
+  getList(list) {
+    const { hidden } = this.state;
+
+    return list.map((l, i) => (
+      <div className={`accordion-item ${hidden.includes(l.id) ? '-hidden' : ''}`} id={l.id} key={i}>
+        {l.el}
+      </div>
+    ));
+  }
+
+  /** Maps methods */
   /* Config map params and set them in the map */
   setMapParams() {
     const { url } = this.props;
@@ -90,105 +105,65 @@ class ComparePage extends Page {
     }, urlObj);
   }
 
-  getList(list) {
-    const { hidden } = this.state;
+  getAreaMaps(layers) {
+    const { mapState, url, indicators } = this.props;
 
-    return list.map((l, i) => (
-      <div className={`accordion-item ${hidden.includes(l.id) ? '-hidden' : ''}`} id={l.id} key={i}>
-        <div>
-          {/* <button onClick={e => this.onToggle(e, l.id)}>X</button> */}
-        </div>
-        <div>
-          {l.el}
-        </div>
-      </div>
-    ));
+    // TODO custom url for each map
+    return Object.keys(mapState.areas).map((key) => {
+      const listeners = {
+        moveend: (map) => {
+          this.updateMap(map, url);
+        }
+      };
+
+      const mapMethods = {
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
+        tileLayers: [
+          { url: process.env.BASEMAP_TILE_URL, zIndex: 0 },
+          { url: process.env.BASEMAP_LABEL_URL, zIndex: 10000 }
+        ]
+      };
+
+      const mapOptions = {
+        zoom: mapState.areas[key].zoom,
+        minZoom: MAP_OPTIONS.minZoom,
+        maxZoom: MAP_OPTIONS.maxZoom,
+        zoomControl: MAP_OPTIONS.zoomControl,
+        center: [mapState.areas[key].center.lat, mapState.areas[key].center.lng]
+      };
+
+      return {
+        id: key,
+        el: (
+          <Map
+            mapOptions={mapOptions}
+            mapMethods={mapMethods}
+            listeners={listeners}
+            layers={layers}
+            indicatorsLayersActive={indicators.layersActive}
+            markers={[]}
+            markerIcon={{}}
+          />
+        )
+      };
+    });
+  }
+
+  /* Add area */
+  onAddArea() {
+    // this.props.addArea();
   }
 
   render() {
     const { url, session, mapState, indicators } = this.props;
-    const listeners = {
-      moveend: (map) => {
-        this.updateMap(map, this.props.url);
-      }
-    };
-
-    const mapMethods = {
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
-      tileLayers: [
-        { url: process.env.BASEMAP_TILE_URL, zIndex: 0 },
-        { url: process.env.BASEMAP_LABEL_URL, zIndex: 10000 }
-      ]
-    };
-    const mapOptions = {
-      zoom: mapState.zoom,
-      minZoom: MAP_OPTIONS.minZoom,
-      maxZoom: MAP_OPTIONS.maxZoom,
-      zoomControl: MAP_OPTIONS.zoomControl,
-      center: [mapState.center.lat, mapState.center.lng]
-    };
-
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
-
-    const accordionTop = [
+    const areaMaps = this.getAreaMaps(layers);
+    const indicatorsWidgets = Object.keys(mapState.areas).map(key => (
       {
-        id: 'map-1',
-        el: (
-          <Map
-            mapOptions={mapOptions}
-            mapMethods={mapMethods}
-            listeners={listeners}
-            layers={layers}
-            indicatorsLayersActive={indicators.layersActive}
-            markers={[]}
-            markerIcon={{}}
-          />
-        )
-      },
-      {
-        id: 'map-2',
-        el: (
-          <Map
-            mapOptions={mapOptions}
-            mapMethods={mapMethods}
-            listeners={listeners}
-            layers={layers}
-            indicatorsLayersActive={indicators.layersActive}
-            markers={[]}
-            markerIcon={{}}
-          />
-        )
-      },
-      {
-        id: 'map-3',
-        el: (
-          <Map
-            mapOptions={mapOptions}
-            mapMethods={mapMethods}
-            listeners={listeners}
-            layers={layers}
-            indicatorsLayersActive={indicators.layersActive}
-            markers={[]}
-            markerIcon={{}}
-          />
-        )
+        id: key,
+        el: <div><button onClick={e => this.onToggleAccordionItem(e, key)}>X</button> Loc 1 </div>
       }
-    ];
-
-    const accordionBottom = [
-      {
-        id: 'map-1',
-        el: <div><button onClick={e => this.onToggle(e, 'map-1')}>X</button> Loc 1 </div>
-      },
-      {
-        id: 'map-2',
-        el: <div><button onClick={e => this.onToggle(e, 'map-2')}>X</button> Loc 2 </div>
-      },
-      {
-        id: 'map-3',
-        el: <div><button onClick={e => this.onToggle(e, 'map-3')}>X</button> Loc 3 </div>
-      }
-    ];
+    ));
 
     return (
       <Layout
@@ -197,8 +172,9 @@ class ComparePage extends Page {
         url={url}
         session={session}
       >
+        <button onClick={this.onAddArea}>+ Add Area</button>
         <Accordion
-          top={this.getList(accordionTop)}
+          top={this.getList(areaMaps)}
           middle={
             <Legend
               list={layers}
@@ -207,7 +183,7 @@ class ComparePage extends Page {
               setIndicatorsLayers={this.props.setIndicatorsLayers}
             />
           }
-          bottom={this.getList(accordionBottom)}
+          bottom={this.getList(indicatorsWidgets)}
         />
       </Layout>
     );
@@ -228,7 +204,7 @@ export default withRedux(
         state.indicators.specific,
         { indicatorsWithLayers: getIndicatorsWithLayers(state) }
       ),
-      mapState: state.singleMap
+      mapState: state.maps
     }
   ),
   dispatch => ({

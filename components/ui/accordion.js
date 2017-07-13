@@ -33,9 +33,9 @@ export default function Accordion(props) {
 
 Accordion.propTypes = {
   className: PropTypes.string,
-  top: PropTypes.array,
-  middle: PropTypes.array,
-  bottom: PropTypes.array
+  top: PropTypes.any,
+  middle: PropTypes.any,
+  bottom: PropTypes.any
 };
 
 Accordion.defaultProps = {

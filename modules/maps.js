@@ -4,21 +4,32 @@ import Router from 'next/router';
 import { MAP_OPTIONS } from 'constants/map';
 
 /* Constants */
-const SET_SINGLE_MAP_PARAMS = 'SET_SINGLE_MAP_PARAMS';
+const SET_MAP_PARAMS = 'SET_MAP_PARAMS';
 
 /* Initial state */
 const initialState = {
-  center: {
-    lat: MAP_OPTIONS.center[0],
-    lng: MAP_OPTIONS.center[1]
+  areas: {
+    map1: {
+      center: {
+        lat: MAP_OPTIONS.center[0],
+        lng: MAP_OPTIONS.center[1]
+      },
+      zoom: MAP_OPTIONS.zoom
+    }
   },
-  zoom: MAP_OPTIONS.zoom
+  map: {
+    center: {
+      lat: MAP_OPTIONS.center[0],
+      lng: MAP_OPTIONS.center[1]
+    },
+    zoom: MAP_OPTIONS.zoom
+  }
 };
 
 /* Reducer */
-export default function singleMapReducer(state = initialState, action) {
+export default function mapsReducer(state = initialState, action) {
   switch (action.type) {
-    case SET_SINGLE_MAP_PARAMS:
+    case SET_MAP_PARAMS:
       return Object.assign({}, state, action.payload);
     default:
       return state;
@@ -29,7 +40,7 @@ export default function singleMapReducer(state = initialState, action) {
 export function setSingleMapParams(params) {
   return (dispatch) => {
     dispatch({
-      type: SET_SINGLE_MAP_PARAMS,
+      type: SET_MAP_PARAMS,
       payload: params
     });
   };
