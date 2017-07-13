@@ -394,5 +394,20 @@
       { "id": "category", "name": "Category" },
       { "id": "date", "name": "Date" }
     ]
+  },
+  "indicators": {
+    "climate": [
+      { "id": 1, "name": "Indicator1" }
+    ],
+    "land-cover": [
+      { "id": 2, "name": "Indicator2" },
+      { "id": 5, "name": "Indicator5" }
+    ],
+    "wild-life": [
+      { "id": 3, "name": "Indicator3" }
+    ],
+    "life-stock": [
+      { "id": 4, "name": "Indicator4" }
+    ]
   }
 }

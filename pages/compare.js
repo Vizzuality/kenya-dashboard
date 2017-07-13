@@ -13,6 +13,9 @@ import {
 // Selectors
 import { getIndicatorsWithLayers } from 'selectors/indicators';
 
+// Services
+import modal from 'services/modal';
+
 // Redux
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
@@ -55,6 +58,7 @@ class ComparePage extends Page {
     // Bindings
     this.onToggleAccordionItem = this.onToggleAccordionItem.bind(this);
     this.onAddArea = this.onAddArea.bind(this);
+    this.onToggleModal = this.onToggleModal.bind(this);
   }
 
   /* Lyfecycle */
@@ -178,6 +182,13 @@ class ComparePage extends Page {
       this.props.removeArea(id);
   }
 
+  onToggleModal() {
+    const opts = {
+      children: 'hola'
+    };
+    modal.toggleModal(true, opts);
+  }
+
   render() {
     const { session } = this.props;
     const { url, mapState, indicators } = this.props;
@@ -210,6 +221,7 @@ class ComparePage extends Page {
         {Object.keys(mapState.areas).length < 3 &&
           <button onClick={this.onAddArea}>+ Add Area</button>
         }
+        <button onClick={this.onToggleModal}>+ Add Indicator</button>
         <Accordion
           top={this.getList(areaMaps)}
           middle={

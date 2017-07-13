@@ -5,13 +5,18 @@ import { parseObjectToUrlParams } from 'utils/general';
 import { BASIC_QUERY_HEADER } from 'constants/query';
 
 /* Constants */
+// All indicators
 const GET_INDICATORS = 'GET_INDICATORS';
 const GET_INDICATORS_LOADING = 'GET_INDICATORS_LOADING';
 const GET_INDICATORS_ERROR = 'GET_INDICATORS_ERROR';
-
+// Specific indicators
 const GET_SPECIFIC_INDICATORS = 'GET_SPECIFIC_INDICATORS';
 const GET_SPECIFIC_INDICATORS_LOADING = 'GET_SPECIFIC_INDICATORS_LOADING';
 const GET_SPECIFIC_INDICATORS_ERROR = 'GET_SPECIFIC_INDICATORS_ERROR';
+// All indicators filter list
+const GET_INDICATORS_FILTER_LIST = 'GET_INDICATORS_FILTER_LIST';
+const GET_INDICATORS_FILTER_LIST_LOADING = 'GET_INDICATORS_FILTER_LIST_LOADING';
+const GET_INDICATORS_FILTER_LIST_ERROR = 'GET_INDICATORS_FILTER_LIST_ERROR';
 // Layers
 const SET_SPECIFIC_LAYERS_ACTIVE = 'SET_SPECIFIC_LAYERS_ACTIVE';
 const SET_INDICATORS_LAYERS = 'SET_INDICATORS_LAYERS';
@@ -30,6 +35,11 @@ const initialState = {
     layers: [],
     layersActive: [],
     indicatorsWithLayers: []
+  },
+  filterList: {
+    list: {},
+    loading: false,
+    error: null
   }
 };
 
@@ -70,6 +80,23 @@ export default function indicatorsReducer(state = initialState, action) {
         { list: [], loading: false, error: action.payload, indicatorsWithLayers: [] });
       return Object.assign({}, state, { specific: newSpecific });
     }
+    // All indicators filter list
+    case GET_INDICATORS_FILTER_LIST: {
+      const newFilterList = Object.assign({}, state.filterList,
+        { list: action.payload, loading: false, error: null });
+      return Object.assign({}, state, { filterList: newFilterList });
+    }
+    case GET_INDICATORS_FILTER_LIST_LOADING: {
+      const newFilterList = Object.assign({}, state.filterList,
+        { loading: true, error: null });
+      return Object.assign({}, state, { filterList: newFilterList });
+    }
+    case GET_INDICATORS_FILTER_LIST_ERROR: {
+      const newFilterList = Object.assign({}, state.filterList,
+        { list: [], loading: false, error: action.payload, indicatorsWithLayers: [] });
+      return Object.assign({}, state, { filterList: newFilterList });
+    }
+    // Layers
     case SET_SPECIFIC_LAYERS_ACTIVE: {
       const newSpecific = Object.assign({}, state.specific,
         { layersActive: action.payload });
@@ -159,6 +186,39 @@ export function getSpecificIndicators(ids) {
         // Fetch from server ko -> Dispatch error
         dispatch({
           type: GET_SPECIFIC_INDICATORS_ERROR,
+          payload: err.message
+        });
+      });
+  };
+}
+
+export function getIndicatorsFilterList() {
+  return (dispatch) => {
+    // Waiting for fetch from server -> Dispatch loading
+    dispatch({ type: GET_INDICATORS_FILTER_LIST_LOADING });
+
+    fetch(`${process.env.KENYA_API}/indicators?page[size]=999999999`, BASIC_QUERY_HEADER)
+      .then((response) => {
+        if (response.ok) return response.json();
+        throw new Error(response.statusText);
+      })
+      .then((data) => {
+        dispatch({
+          type: GET_INDICATORS_FILTER_LIST,
+          payload: data
+        });
+
+        // DESERIALIZER.deserialize(data, (err, dataParsed) => {
+        //   dispatch({
+        //     type: GET_INDICATORS,
+        //     payload: dataParsed
+        //   });
+        // });
+      })
+      .catch((err) => {
+        // Fetch from server ko -> Dispatch error
+        dispatch({
+          type: GET_INDICATORS_FILTER_LIST_ERROR,
           payload: err.message
         });
       });
