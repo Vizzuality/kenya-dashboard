@@ -37,6 +37,28 @@ import { MAP_OPTIONS } from 'constants/map';
 // }
 
 class ComparePage extends Page {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hidden: []
+    };
+
+    // Bindings
+    this.onToggle = this.onToggle.bind(this);
+  }
+
+  onToggle(e, id) {
+    let newHidden = this.state.hidden;
+    if (this.state.hidden.includes(id)) {
+      newHidden = newHidden.filter(hiddenId => hiddenId !== id);
+    } else if (newHidden.length + 1 < 3) {
+      newHidden.push(id);
+    }
+
+    this.setState({ hidden: newHidden });
+  }
+
   componentDidMount() {
     const { url } = this.props;
 
@@ -66,6 +88,21 @@ class ComparePage extends Page {
       zoom: map.getZoom(),
       center: map.getCenter()
     }, urlObj);
+  }
+
+  getList(list) {
+    const { hidden } = this.state;
+
+    return list.map((l, i) => (
+      <div className={`accordion-item ${hidden.includes(l.id) ? '-hidden' : ''}`} id={l.id} key={i}>
+        <div>
+          {/* <button onClick={e => this.onToggle(e, l.id)}>X</button> */}
+        </div>
+        <div>
+          {l.el}
+        </div>
+      </div>
+    ));
   }
 
   render() {
@@ -141,15 +178,15 @@ class ComparePage extends Page {
     const accordionBottom = [
       {
         id: 'map-1',
-        el: <div>Loc 1</div>
+        el: <div><button onClick={e => this.onToggle(e, 'map-1')}>X</button> Loc 1 </div>
       },
       {
         id: 'map-2',
-        el: <div>Loc 2</div>
+        el: <div><button onClick={e => this.onToggle(e, 'map-2')}>X</button> Loc 2 </div>
       },
       {
         id: 'map-3',
-        el: <div>Loc 3</div>
+        el: <div><button onClick={e => this.onToggle(e, 'map-3')}>X</button> Loc 3 </div>
       }
     ];
 
@@ -161,7 +198,7 @@ class ComparePage extends Page {
         session={session}
       >
         <Accordion
-          top={accordionTop}
+          top={this.getList(accordionTop)}
           middle={
             <Legend
               list={layers}
@@ -170,7 +207,7 @@ class ComparePage extends Page {
               setIndicatorsLayers={this.props.setIndicatorsLayers}
             />
           }
-          bottom={accordionBottom}
+          bottom={this.getList(accordionBottom)}
         />
       </Layout>
     );
