@@ -83,7 +83,6 @@ class ComparePage extends Page {
     } else if (newHidden.length + 1 < Object.keys(this.props.mapState.areas).length) {
       newHidden.push(id);
     }
-
     this.setState({ hidden: newHidden });
   }
 
@@ -191,7 +190,7 @@ class ComparePage extends Page {
         id: key,
         el: (
           <div>
-            <button onClick={() => this.onToggleAccordionItem(key)}>{'<>'}</button>
+            <button className="btn-toggle" onClick={e => this.onToggleAccordionItem(e, key)}>{'<>'}</button>
             Loc {key} Widget
             {Object.keys(this.props.mapState.areas).length > 1 &&
               <button onClick={() => this.onRemoveArea(key)}>{'X'}</button>

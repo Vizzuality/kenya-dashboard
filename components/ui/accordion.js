@@ -1,6 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// Libraries
 import classnames from 'classnames';
+
+// Components
+import { CSSTransitionGroup } from 'react-transition-group';
+
 
 export default function Accordion(props) {
   const { className, top, middle, bottom } = props;
@@ -14,7 +20,13 @@ export default function Accordion(props) {
     <div className={classNames}>
       {top &&
         <div className="accordion-section -top">
-          {top}
+          <CSSTransitionGroup
+            transitionName="item"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}
+          >
+            {top}
+          </CSSTransitionGroup>
         </div>
       }
       {middle &&
@@ -24,7 +36,13 @@ export default function Accordion(props) {
       }
       {bottom &&
         <div className="accordion-section -bottom">
-          {bottom}
+          <CSSTransitionGroup
+            transitionName="item"
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={300}
+          >
+            {bottom}
+          </CSSTransitionGroup>
         </div>
       }
     </div>
