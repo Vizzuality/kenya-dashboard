@@ -15,8 +15,12 @@ import { getIndicatorsWithLayers } from 'selectors/indicators';
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
+// Libraries
+import isEqual from 'lodash/isEqual';
+
 // Utils
 import { setLayersZIndex } from 'utils/map';
+import { decode } from 'utils/general';
 
 // Components
 import Page from 'components/layout/page';
@@ -41,9 +45,10 @@ class ComparePage extends Page {
     super(props);
 
     this.state = {
-      hidden: [],
-      areas: []
+      hidden: []
     };
+
+    this.url = props.url;
 
     // Bindings
     this.onToggleAccordionItem = this.onToggleAccordionItem.bind(this);
@@ -56,8 +61,15 @@ class ComparePage extends Page {
 
     this.props.getSpecificIndicators(url.query.indicators);
 
-    if (url.query.zoom || url.query.lat || url.query.lng) {
-      this.setMapParams();
+    if (url.query.maps) {
+      const params = decode(url.query.maps);
+      this.setMapParams(params);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props.url.query, nextProps.url.query)) {
+      this.url = nextProps.url;
     }
   }
 
@@ -66,13 +78,14 @@ class ComparePage extends Page {
     let newHidden = this.state.hidden;
     if (this.state.hidden.includes(id)) {
       newHidden = newHidden.filter(hiddenId => hiddenId !== id);
-    } else if (newHidden.length + 1 < 3) {
+    } else if (newHidden.length + 1 < Object.keys(this.props.mapState.areas).length) {
       newHidden.push(id);
     }
 
     this.setState({ hidden: newHidden });
   }
 
+  /* Get an accordion section list with the components */
   getList(list) {
     const { hidden } = this.state;
 
@@ -85,34 +98,37 @@ class ComparePage extends Page {
 
   /** Maps methods */
   /* Config map params and set them in the map */
-  setMapParams() {
-    const { url } = this.props;
-    const mapParams = {
-      zoom: +url.query.zoom || MAP_OPTIONS.zoom,
-      center: {
-        lat: +url.query.lat || MAP_OPTIONS.center[0],
-        lng: +url.query.lng || MAP_OPTIONS.center[1]
-      }
-    };
-    this.props.setSingleMapParamsFromUrl(mapParams);
+  setMapParams(params) {
+    Object.keys(params).forEach((key) => {
+      const mapParams = {
+        zoom: +params[key].zoom || MAP_OPTIONS.zoom,
+        center: {
+          lat: +params[key].lat || MAP_OPTIONS.center[0],
+          lng: +params[key].lng || MAP_OPTIONS.center[1]
+        }
+      };
+      this.props.setSingleMapParamsFromUrl(mapParams, key);
+    });
   }
 
   /* Map config */
-  updateMap(map, urlObj) {
-    this.props.setSingleMapParams({
-      zoom: map.getZoom(),
-      center: map.getCenter()
-    }, urlObj);
+  updateMap(map, url, key) {
+    this.props.setSingleMapParams(
+      {
+        zoom: map.getZoom(),
+        center: map.getCenter(),
+        key
+      }, url, key);
   }
 
+  /* Creat all maps with their own properties */
   getAreaMaps(layers) {
-    const { mapState, url, indicators } = this.props;
+    const { mapState, indicators } = this.props;
 
-    // TODO custom url for each map
     return Object.keys(mapState.areas).map((key) => {
       const listeners = {
         moveend: (map) => {
-          this.updateMap(map, url);
+          this.updateMap(map, this.url, key);
         }
       };
 
@@ -155,13 +171,16 @@ class ComparePage extends Page {
   }
 
   render() {
-    const { url, session, mapState, indicators } = this.props;
+    const { session } = this.props;
+    const { url, mapState, indicators } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(layers);
+
+    // Widget samples
     const indicatorsWidgets = Object.keys(mapState.areas).map(key => (
       {
         id: key,
-        el: <div><button onClick={e => this.onToggleAccordionItem(e, key)}>X</button> Loc 1 </div>
+        el: <div><button onClick={e => this.onToggleAccordionItem(e, key)}>X</button>Loc 1 Widget</div>
       }
     ));
 
@@ -211,12 +230,12 @@ export default withRedux(
     getSpecificIndicators(ids) {
       dispatch(getSpecificIndicators(ids));
     },
-    setSingleMapParams(params, url) {
-      dispatch(setSingleMapParams(params));
+    setSingleMapParams(params, url, key) {
+      dispatch(setSingleMapParams(params, key));
       dispatch(setSingleMapParamsUrl(params, url));
     },
-    setSingleMapParamsFromUrl(params) {
-      dispatch(setSingleMapParams(params));
+    setSingleMapParamsFromUrl(params, key) {
+      dispatch(setSingleMapParams(params, key));
     },
     setIndicatorsLayersActive(indicatorsLayersActive) {
       dispatch(setIndicatorsLayersActive(indicatorsLayersActive));
