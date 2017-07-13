@@ -7,6 +7,7 @@ import { MAP_OPTIONS } from 'constants/map';
 /* Constants */
 const SET_MAP_PARAMS = 'SET_MAP_PARAMS';
 const ADD_AREA = 'ADD_AREA';
+const REMOVE_AREA = 'REMOVE_AREA';
 
 const DEFAULT_AREA_PARAMS = {
   center: {
@@ -21,7 +22,7 @@ const DEFAULT_AREA_PARAMS = {
 /* Initial state */
 const initialState = {
   areas: {
-    defaultArea: DEFAULT_AREA_PARAMS
+    defaultAreaMap: DEFAULT_AREA_PARAMS
   },
   expanded: false
 };
@@ -39,6 +40,8 @@ export default function mapsReducer(state = initialState, action) {
       });
       return Object.assign({}, state, { areas: newAreaParams });
     }
+    case REMOVE_AREA:
+      return Object.assign({}, state, { areas: action.payload });
     default:
       return state;
   }
@@ -77,6 +80,22 @@ export function addArea() {
   return (dispatch) => {
     dispatch({
       type: ADD_AREA
+    });
+  };
+}
+
+export function removeArea(id) {
+  return (dispatch, getState) => {
+    const areas = getState().maps.areas;
+    const activeIds = Object.keys(areas).filter(key => key !== id);
+    const newAreas = {};
+    activeIds.forEach((aId) => {
+      newAreas[aId] = areas[aId];
+    });
+
+    dispatch({
+      type: REMOVE_AREA,
+      payload: newAreas
     });
   };
 }

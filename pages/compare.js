@@ -6,7 +6,8 @@ import { getSpecificIndicators, setIndicatorsLayersActive, setIndicatorsLayers }
 import {
   setSingleMapParams,
   setSingleMapParamsUrl,
-  addArea
+  addArea,
+  removeArea
 } from 'modules/maps';
 
 // Selectors
@@ -172,6 +173,12 @@ class ComparePage extends Page {
       this.props.addArea();
   }
 
+  /* Reamove area */
+  onRemoveArea(id) {
+    Object.keys(this.props.mapState.areas).length > 1 &&
+      this.props.removeArea(id);
+  }
+
   render() {
     const { session } = this.props;
     const { url, mapState, indicators } = this.props;
@@ -182,7 +189,15 @@ class ComparePage extends Page {
     const indicatorsWidgets = Object.keys(mapState.areas).map(key => (
       {
         id: key,
-        el: <div><button onClick={e => this.onToggleAccordionItem(e, key)}>X</button>Loc {key} Widget</div>
+        el: (
+          <div>
+            <button onClick={() => this.onToggleAccordionItem(key)}>{'<>'}</button>
+            Loc {key} Widget
+            {Object.keys(this.props.mapState.areas).length > 1 &&
+              <button onClick={() => this.onRemoveArea(key)}>{'X'}</button>
+            }
+          </div>
+        )
       }
     ));
 
@@ -249,6 +264,9 @@ export default withRedux(
     },
     addArea() {
       dispatch(addArea());
+    },
+    removeArea(id) {
+      dispatch(removeArea(id));
     }
   })
 )(ComparePage);
