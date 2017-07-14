@@ -399,14 +399,14 @@
     "climate": [
       { "id": 1, "name": "Indicator1" }
     ],
-    "land-cover": [
+    "land cover": [
       { "id": 2, "name": "Indicator2" },
       { "id": 5, "name": "Indicator5" }
     ],
-    "wild-life": [
+    "wild life": [
       { "id": 3, "name": "Indicator3" }
     ],
-    "life-stock": [
+    "life stock": [
       { "id": 4, "name": "Indicator4" }
     ]
   }

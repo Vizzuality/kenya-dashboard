@@ -2,7 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Modules
-import { getSpecificIndicators, setIndicatorsLayersActive, setIndicatorsLayers } from 'modules/indicators';
+import {
+  getSpecificIndicators,
+  setIndicatorsLayersActive,
+  setIndicatorsLayers,
+  getIndicatorsFilterList
+} from 'modules/indicators';
+
 import {
   setSingleMapParams,
   setSingleMapParamsUrl,
@@ -33,6 +39,7 @@ import Layout from 'components/layout/layout';
 import Accordion from 'components/ui/accordion';
 import Map from 'components/map/map';
 import Legend from 'components/map/legend';
+import IndicatorsList from 'components/modal-contents/indicators-list';
 
 // Constants
 import { MAP_OPTIONS } from 'constants/map';
@@ -61,15 +68,21 @@ class ComparePage extends Page {
     this.onToggleModal = this.onToggleModal.bind(this);
   }
 
-  /* Lyfecycle */
+  /* Lifecycle */
   componentDidMount() {
     const { url } = this.props;
 
     this.props.getSpecificIndicators(url.query.indicators);
 
+    // Update areas with url params
     if (url.query.maps) {
       const params = decode(url.query.maps);
       this.setMapParams(params);
+    }
+
+    // Get all indicators to set the add indicators list
+    if (!Object.keys(this.props.indicatorsFilterList.list).length) {
+      this.props.getIndicatorsFilterList();
     }
   }
 
@@ -184,7 +197,10 @@ class ComparePage extends Page {
 
   onToggleModal() {
     const opts = {
-      children: 'hola'
+      children: IndicatorsList,
+      childrenProps: {
+        indicators: this.props.indicatorsFilterList
+      }
     };
     modal.toggleModal(true, opts);
   }
@@ -253,13 +269,26 @@ export default withRedux(
         state.indicators.specific,
         { indicatorsWithLayers: getIndicatorsWithLayers(state) }
       ),
+      indicatorsFilterList: state.indicators.filterList,
       mapState: state.maps
     }
   ),
   dispatch => ({
+    // Indicators
     getSpecificIndicators(ids) {
       dispatch(getSpecificIndicators(ids));
     },
+    getIndicatorsFilterList() {
+      dispatch(getIndicatorsFilterList());
+    },
+    // Layers
+    setIndicatorsLayersActive(indicatorsLayersActive) {
+      dispatch(setIndicatorsLayersActive(indicatorsLayersActive));
+    },
+    setIndicatorsLayers(indicatorsIayers) {
+      dispatch(setIndicatorsLayers(indicatorsIayers));
+    },
+    // Map
     setSingleMapParams(params, url, key) {
       dispatch(setSingleMapParams(params, key));
       dispatch(setSingleMapParamsUrl(params, url));
@@ -267,12 +296,7 @@ export default withRedux(
     setSingleMapParamsFromUrl(params, key) {
       dispatch(setSingleMapParams(params, key));
     },
-    setIndicatorsLayersActive(indicatorsLayersActive) {
-      dispatch(setIndicatorsLayersActive(indicatorsLayersActive));
-    },
-    setIndicatorsLayers(indicatorsIayers) {
-      dispatch(setIndicatorsLayers(indicatorsIayers));
-    },
+    // Area
     addArea() {
       dispatch(addArea());
     },

@@ -26,10 +26,14 @@
 @import 'components/map/map';
 @import 'components/map/legend';
 
+// modal contents
+@import 'components/modal-contents/indicators-list';
+
 // - ui
 @import '../node_modules/react-select/dist/react-select';
 @import 'components/ui/accordion';
 @import 'components/ui/button';
+@import 'components/ui/collapsible-list';
 @import 'components/ui/filters';
 @import 'components/ui/icon';
 @import 'components/ui/modal';
