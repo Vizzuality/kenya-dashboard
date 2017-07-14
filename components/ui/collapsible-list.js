@@ -1,25 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// Libraries
 import classnames from 'classnames';
+
+// Components
+import Switch from 'react-toggle-switch';
 
 export default class CollapsibleList extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      hidden: false
+      hidden: false,
+      activeItems: []
     };
 
     // Bindings
     this.onToggleList = this.onToggleList.bind(this);
+    this.onSwitchItem = this.onSwitchItem.bind(this);
+  }
+
+  componentWillMount() {
+    this.setState({ activeItems: this.props.activeItems });
   }
 
   onToggleList() {
     this.setState({ hidden: !this.state.hidden });
   }
 
+  onSwitchItem(id) {
+    let activeItems = this.state.activeItems;
+
+    if (this.state.activeItems.includes(id)) {
+      // Remove item
+      activeItems = activeItems.filter(ai => ai !== id);
+      this.props.removeItem && this.props.removeItem(id);
+    } else {
+      // Add item
+      activeItems.push(id);
+      this.props.addItem && this.props.addItem(id);
+    }
+
+    this.setState({ activeItems });
+  }
+
   render() {
-    const { className, title, list } = this.props;
+    const { className, title, list, activeItems } = this.props;
     const classNames = classnames({
       'c-collapsible-list': true,
       [className]: !!className,
@@ -37,6 +64,11 @@ export default class CollapsibleList extends React.Component {
             {list.map((l, i) => (
               <li className="list-item" key={i}>
                 {l.name}
+                <Switch
+                  onClick={() => this.onSwitchItem(l.id)}
+                  on={this.state.activeItems.includes(l.id)}
+                  className="c-switch"
+                />
               </li>
             ))}
           </ul>
@@ -49,5 +81,9 @@ export default class CollapsibleList extends React.Component {
 CollapsibleList.propTypes = {
   title: PropTypes.string,
   list: PropTypes.array,
-  className: PropTypes.string
+  activeItems: PropTypes.array,
+  className: PropTypes.string,
+  // Actions
+  addItem: PropTypes.func,
+  removeItem: PropTypes.func
 };

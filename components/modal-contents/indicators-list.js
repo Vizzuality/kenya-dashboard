@@ -7,7 +7,8 @@ import classnames from 'classnames';
 // Components
 import CollapsibleList from 'components/ui/collapsible-list';
 
-export default function IndicatorsList({ indicators, className }) {
+export default function IndicatorsList(props) {
+  const { className, indicators, activeIndicators } = props;
   const classNames = classnames({
     'c-indicators-list': true,
     [className]: !!className
@@ -22,7 +23,13 @@ export default function IndicatorsList({ indicators, className }) {
         <div className="row">
           {Object.keys(indicators.list).map((key, i) => (
             <div className="column small-12 medium-4" key={i}>
-              <CollapsibleList title={key} list={indicators.list[key]} />
+              <CollapsibleList
+                title={key}
+                list={indicators.list[key]}
+                activeItems={activeIndicators}
+                addItem={props.addIndicator}
+                removeItem={props.removeIndicator}
+              />
             </div>
           ))}
         </div>
@@ -33,5 +40,9 @@ export default function IndicatorsList({ indicators, className }) {
 
 IndicatorsList.propTypes = {
   indicators: PropTypes.object,
-  className: PropTypes.string
+  activeIndicators: PropTypes.array,
+  className: PropTypes.string,
+  // Actions
+  addIndicator: PropTypes.func,
+  removeIndicator: PropTypes.func
 };

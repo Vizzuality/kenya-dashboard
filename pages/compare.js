@@ -6,7 +6,9 @@ import {
   getSpecificIndicators,
   setIndicatorsLayersActive,
   setIndicatorsLayers,
-  getIndicatorsFilterList
+  getIndicatorsFilterList,
+  addIndicator,
+  removeIndicator
 } from 'modules/indicators';
 
 import {
@@ -199,7 +201,10 @@ class ComparePage extends Page {
     const opts = {
       children: IndicatorsList,
       childrenProps: {
-        indicators: this.props.indicatorsFilterList
+        indicators: this.props.indicatorsFilterList,
+        activeIndicators: this.props.indicators.list.map(ind => ind.id),
+        addIndicator: this.props.addIndicator,
+        removeIndicator: this.props.removeIndicator
       }
     };
     modal.toggleModal(true, opts);
@@ -210,7 +215,6 @@ class ComparePage extends Page {
     const { url, mapState, indicators } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(layers);
-
     // Widget samples
     const indicatorsWidgets = Object.keys(mapState.areas).map(key => (
       {
@@ -218,7 +222,8 @@ class ComparePage extends Page {
         el: (
           <div>
             <button className="btn-toggle" onClick={e => this.onToggleAccordionItem(e, key)}>{'<>'}</button>
-            Loc {key} Widget
+            Loc {key}
+            {indicators.list.map((ind, i) => <p key={i}>{ind.name}</p>)}
             {Object.keys(this.props.mapState.areas).length > 1 &&
               <button onClick={() => this.onRemoveArea(key)}>{'X'}</button>
             }
@@ -227,6 +232,7 @@ class ComparePage extends Page {
       }
     ));
 
+    // console.log(indicators.layers);
     return (
       <Layout
         title="Panel"
@@ -280,6 +286,12 @@ export default withRedux(
     },
     getIndicatorsFilterList() {
       dispatch(getIndicatorsFilterList());
+    },
+    addIndicator(id) {
+      dispatch(addIndicator(id));
+    },
+    removeIndicator(id) {
+      dispatch(removeIndicator(id));
     },
     // Layers
     setIndicatorsLayersActive(indicatorsLayersActive) {
