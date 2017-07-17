@@ -13,16 +13,12 @@ export default class CollapsibleList extends React.Component {
 
     this.state = {
       hidden: false,
-      activeItems: []
+      activeItems: props.activeItems
     };
 
     // Bindings
     this.onToggleList = this.onToggleList.bind(this);
     this.onSwitchItem = this.onSwitchItem.bind(this);
-  }
-
-  componentWillMount() {
-    this.setState({ activeItems: this.props.activeItems });
   }
 
   onToggleList() {
@@ -35,18 +31,18 @@ export default class CollapsibleList extends React.Component {
     if (this.state.activeItems.includes(id)) {
       // Remove item
       activeItems = activeItems.filter(ai => ai !== id);
-      this.props.removeItem && this.props.removeItem(id);
+      this.props.removeItem && this.props.removeItem(id, this.props.url);
     } else {
       // Add item
       activeItems.push(id);
-      this.props.addItem && this.props.addItem(id);
+      this.props.addItem && this.props.addItem(id, this.props.url);
     }
 
     this.setState({ activeItems });
   }
 
   render() {
-    const { className, title, list, activeItems } = this.props;
+    const { className, title, list } = this.props;
     const classNames = classnames({
       'c-collapsible-list': true,
       [className]: !!className,
@@ -83,6 +79,7 @@ CollapsibleList.propTypes = {
   list: PropTypes.array,
   activeItems: PropTypes.array,
   className: PropTypes.string,
+  url: PropTypes.object,
   // Actions
   addItem: PropTypes.func,
   removeItem: PropTypes.func

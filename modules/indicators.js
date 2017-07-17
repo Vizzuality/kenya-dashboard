@@ -1,5 +1,6 @@
 // import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
+import Router from 'next/router';
 import { parseObjectToUrlParams } from 'utils/general';
 
 import { BASIC_QUERY_HEADER } from 'constants/query';
@@ -166,7 +167,7 @@ export function setIndicatorsLayersActive(layersActive) {
 }
 
 export function getSpecificIndicators(ids) {
-  const query = Array.isArray(ids) ? ids.map(id => `id=${id}`).join('&') : `id=${ids}`;
+  const query = ids.split(',').map(id => `id=${id}`).join('&');
   return (dispatch) => {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
@@ -307,5 +308,30 @@ export function getIndicatorsFilterList() {
           payload: err.message
         });
       });
+  };
+}
+
+export function setIndicatorsParamsUrl(indicatorId, type, url) {
+  return () => {
+    let newQuery = {};
+    let indicatorsIds = url.query.indicators ? url.query.indicators : '';
+
+    // Update indicators ids
+    if (type === 'add') {
+      indicatorsIds += indicatorsIds.length ? `,${indicatorId}` : `${indicatorId}`;
+    } else { // Remove
+      indicatorsIds = indicatorsIds.split(',').filter(id => `${id}` !== `${indicatorId}`).join(',');
+    }
+
+    // Set query indicator param, if no id, indicator param doesn't show up
+    if (indicatorsIds === '') {
+      Object.keys(url.query).filter(key => key !== 'indicators').map(key => newQuery[key] = url.query[key]);
+    } else {
+      newQuery = Object.assign({}, url.query, { indicators: indicatorsIds });
+    }
+
+    const location = { pathname: url.pathname, query: newQuery };
+
+    Router.replace(location);
   };
 }

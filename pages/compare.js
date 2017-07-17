@@ -8,7 +8,8 @@ import {
   setIndicatorsLayers,
   getIndicatorsFilterList,
   addIndicator,
-  removeIndicator
+  removeIndicator,
+  setIndicatorsParamsUrl
 } from 'modules/indicators';
 
 import {
@@ -67,7 +68,7 @@ class ComparePage extends Page {
   componentDidMount() {
     const { url } = this.props;
 
-    this.props.getSpecificIndicators(url.query.indicators);
+    url.query.indicators && this.props.getSpecificIndicators(url.query.indicators);
 
     // Update areas with url params
     if (url.query.maps) {
@@ -84,6 +85,21 @@ class ComparePage extends Page {
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props.url.query, nextProps.url.query)) {
       this.url = nextProps.url;
+    }
+
+    if (this.props.modal.opened && nextProps.modal.opened &&
+      !isEqual(this.props.indicators.list, nextProps.indicators.list)) {
+      const opts = {
+        children: IndicatorsList,
+        childrenProps: {
+          indicators: this.props.indicatorsFilterList,
+          activeIndicators: nextProps.indicators.list.map(ind => ind.id),
+          addIndicator: this.props.addIndicator,
+          removeIndicator: this.props.removeIndicator,
+          url: nextProps.url
+        }
+      };
+      modal.setModalOptions(opts);
     }
   }
 
@@ -190,7 +206,7 @@ class ComparePage extends Page {
       this.props.removeArea(id);
   }
 
-  onToggleModal(loading) {
+  onToggleModal() {
     const opts = {
       children: IndicatorsList,
       childrenProps: {
@@ -198,7 +214,7 @@ class ComparePage extends Page {
         activeIndicators: this.props.indicators.list.map(ind => ind.id),
         addIndicator: this.props.addIndicator,
         removeIndicator: this.props.removeIndicator,
-        loading
+        url: this.props.url
       }
     };
     modal.toggleModal(true, opts);
@@ -235,7 +251,7 @@ class ComparePage extends Page {
         {Object.keys(mapState.areas).length < 3 &&
           <button onClick={this.onAddArea}>+ Add Area</button>
         }
-        <button onClick={() => this.onToggleModal(indicators.loading)}>+ Add Indicator</button>
+        <button onClick={this.onToggleModal}>+ Add Indicator</button>
         <Accordion
           top={this.getList(areaMaps)}
           middle={
@@ -268,7 +284,8 @@ export default withRedux(
         { indicatorsWithLayers: getIndicatorsWithLayers(state) }
       ),
       indicatorsFilterList: state.indicators.filterList,
-      mapState: state.maps
+      mapState: state.maps,
+      modal: state.modal
     }
   ),
   dispatch => ({
@@ -279,11 +296,13 @@ export default withRedux(
     getIndicatorsFilterList() {
       dispatch(getIndicatorsFilterList());
     },
-    addIndicator(id) {
+    addIndicator(id, url) {
       dispatch(addIndicator(id));
+      dispatch(setIndicatorsParamsUrl(id, 'add', url));
     },
-    removeIndicator(id) {
+    removeIndicator(id, url) {
       dispatch(removeIndicator(id));
+      dispatch(setIndicatorsParamsUrl(id, 'remove', url));
     },
     // Layers
     setIndicatorsLayersActive(indicatorsLayersActive) {

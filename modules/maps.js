@@ -71,7 +71,6 @@ export function setSingleMapParamsUrl(params, url) {
       query: Object.assign({}, url.query, { maps: encode(newAreasParams) })
     };
 
-    // Set pathname including indicators with / not as param
     Router.replace(location);
   };
 }
