@@ -2,7 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Modules
-import { getSpecificIndicators, setIndicatorsLayersActive, setIndicatorsLayers } from 'modules/indicators';
+import {
+  getSpecificIndicators,
+  setIndicatorsLayersActive,
+  setIndicatorsLayers,
+  getIndicatorsFilterList,
+  addIndicator,
+  removeIndicator,
+  setIndicatorsParamsUrl
+} from 'modules/indicators';
+
 import {
   setSingleMapParams,
   setSingleMapParamsUrl,
@@ -12,6 +21,9 @@ import {
 
 // Selectors
 import { getIndicatorsWithLayers } from 'selectors/indicators';
+
+// Services
+import modal from 'services/modal';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
@@ -30,17 +42,11 @@ import Layout from 'components/layout/layout';
 import Accordion from 'components/ui/accordion';
 import Map from 'components/map/map';
 import Legend from 'components/map/legend';
+import IndicatorsList from 'components/modal-contents/indicators-list';
 
 // Constants
 import { MAP_OPTIONS } from 'constants/map';
 
-
-// let L;
-// if (typeof window !== 'undefined') {
-//   /* eslint-disable global-require */
-//   L = require('leaflet/dist/leaflet');
-//   /* eslint-enable global-require */
-// }
 
 class ComparePage extends Page {
   constructor(props) {
@@ -55,17 +61,24 @@ class ComparePage extends Page {
     // Bindings
     this.onToggleAccordionItem = this.onToggleAccordionItem.bind(this);
     this.onAddArea = this.onAddArea.bind(this);
+    this.onToggleModal = this.onToggleModal.bind(this);
   }
 
-  /* Lyfecycle */
+  /* Lifecycle */
   componentDidMount() {
     const { url } = this.props;
 
-    this.props.getSpecificIndicators(url.query.indicators);
+    url.query.indicators && this.props.getSpecificIndicators(url.query.indicators);
 
+    // Update areas with url params
     if (url.query.maps) {
       const params = decode(url.query.maps);
       this.setMapParams(params);
+    }
+
+    // Get all indicators to set the add indicators list
+    if (!Object.keys(this.props.indicatorsFilterList.list).length) {
+      this.props.getIndicatorsFilterList();
     }
   }
 
@@ -73,11 +86,26 @@ class ComparePage extends Page {
     if (!isEqual(this.props.url.query, nextProps.url.query)) {
       this.url = nextProps.url;
     }
+
+    if (this.props.modal.opened && nextProps.modal.opened &&
+      !isEqual(this.props.indicators.list, nextProps.indicators.list)) {
+      const opts = {
+        children: IndicatorsList,
+        childrenProps: {
+          indicators: this.props.indicatorsFilterList,
+          activeIndicators: nextProps.indicators.list.map(ind => ind.id),
+          addIndicator: this.props.addIndicator,
+          removeIndicator: this.props.removeIndicator,
+          url: nextProps.url
+        }
+      };
+      modal.setModalOptions(opts);
+    }
   }
 
   /* Accordion methods */
   onToggleAccordionItem(e, id) {
-    let newHidden = this.state.hidden;
+    let newHidden = this.state.hidden.slice();
     if (this.state.hidden.includes(id)) {
       newHidden = newHidden.filter(hiddenId => hiddenId !== id);
     } else if (newHidden.length + 1 < Object.keys(this.props.mapState.areas).length) {
@@ -178,12 +206,24 @@ class ComparePage extends Page {
       this.props.removeArea(id);
   }
 
+  onToggleModal() {
+    const opts = {
+      children: IndicatorsList,
+      childrenProps: {
+        indicators: this.props.indicatorsFilterList,
+        activeIndicators: this.props.indicators.list.map(ind => ind.id),
+        addIndicator: this.props.addIndicator,
+        removeIndicator: this.props.removeIndicator,
+        url: this.props.url
+      }
+    };
+    modal.toggleModal(true, opts);
+  }
+
   render() {
-    const { session } = this.props;
-    const { url, mapState, indicators } = this.props;
+    const { url, mapState, indicators, session } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(layers);
-
     // Widget samples
     const indicatorsWidgets = Object.keys(mapState.areas).map(key => (
       {
@@ -191,7 +231,8 @@ class ComparePage extends Page {
         el: (
           <div>
             <button className="btn-toggle" onClick={e => this.onToggleAccordionItem(e, key)}>{'<>'}</button>
-            Loc {key} Widget
+            Loc {key}
+            {indicators.list.map((ind, i) => <p key={i}>{ind.name}</p>)}
             {Object.keys(this.props.mapState.areas).length > 1 &&
               <button onClick={() => this.onRemoveArea(key)}>{'X'}</button>
             }
@@ -210,6 +251,7 @@ class ComparePage extends Page {
         {Object.keys(mapState.areas).length < 3 &&
           <button onClick={this.onAddArea}>+ Add Area</button>
         }
+        <button onClick={this.onToggleModal}>+ Add Indicator</button>
         <Accordion
           top={this.getList(areaMaps)}
           middle={
@@ -241,13 +283,35 @@ export default withRedux(
         state.indicators.specific,
         { indicatorsWithLayers: getIndicatorsWithLayers(state) }
       ),
-      mapState: state.maps
+      indicatorsFilterList: state.indicators.filterList,
+      mapState: state.maps,
+      modal: state.modal
     }
   ),
   dispatch => ({
+    // Indicators
     getSpecificIndicators(ids) {
       dispatch(getSpecificIndicators(ids));
     },
+    getIndicatorsFilterList() {
+      dispatch(getIndicatorsFilterList());
+    },
+    addIndicator(id, url) {
+      dispatch(addIndicator(id));
+      dispatch(setIndicatorsParamsUrl(id, 'add', url));
+    },
+    removeIndicator(id, url) {
+      dispatch(removeIndicator(id));
+      dispatch(setIndicatorsParamsUrl(id, 'remove', url));
+    },
+    // Layers
+    setIndicatorsLayersActive(indicatorsLayersActive) {
+      dispatch(setIndicatorsLayersActive(indicatorsLayersActive));
+    },
+    setIndicatorsLayers(indicatorsIayers) {
+      dispatch(setIndicatorsLayers(indicatorsIayers));
+    },
+    // Map
     setSingleMapParams(params, url, key) {
       dispatch(setSingleMapParams(params, key));
       dispatch(setSingleMapParamsUrl(params, url));
@@ -255,12 +319,7 @@ export default withRedux(
     setSingleMapParamsFromUrl(params, key) {
       dispatch(setSingleMapParams(params, key));
     },
-    setIndicatorsLayersActive(indicatorsLayersActive) {
-      dispatch(setIndicatorsLayersActive(indicatorsLayersActive));
-    },
-    setIndicatorsLayers(indicatorsIayers) {
-      dispatch(setIndicatorsLayers(indicatorsIayers));
-    },
+    // Area
     addArea() {
       dispatch(addArea());
     },
