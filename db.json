@@ -44,7 +44,7 @@
             ],
             "name": "Natural Resource Protection and Child Health Indicators, 2015 Release (2010 – 2015) (CIESIN)",
             "default": true,
-            "dataset": "21ac3cd2-9c19-47c7-ad18-4bcad118870f",
+            "indicator": 1,
             "provider": "cartodb",
             "iso": [],
             "description": null,
@@ -132,7 +132,7 @@
             ],
             "name": "Marine and Terrestrial Protected Areas",
             "default": true,
-            "dataset": "de452a4c-a55c-464d-9037-8c3e9fe48365",
+            "indicator": 2,
             "provider": "cartodb",
             "iso": [
               "global"
@@ -242,7 +242,7 @@
             ],
             "name": "Open Air Quality: PM2.5.",
             "default": true,
-            "dataset": "b56b710d-f3a8-45b5-85b0-4a27cf5559f0",
+            "indicator": 3,
             "provider": "cartodb",
             "iso": [
               "global"

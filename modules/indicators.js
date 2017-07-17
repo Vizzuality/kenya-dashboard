@@ -83,48 +83,10 @@ export default function indicatorsReducer(state = initialState, action) {
       return Object.assign({}, state, { specific: newSpecific });
     }
     // Add & remove indicators
-    case ADD_INDICATOR: {
-      const list = action.payload ?
-        [action.payload].concat(state.specific.list) :
-        state.specific.list;
-
-      const indicatorsWithLayers = action.payload.layers && action.payload.layers.length ?
-        [action.payload].concat(state.specific.indicatorsWithLayers) :
-        state.specific.indicatorsWithLayers;
-
-      const layers = action.payload.layers && action.payload.layers.length ?
-        [action.payload.layers[0]].concat(state.specific.layers) :
-        state.specific.layers;
-
-      const layersActive = action.payload.layers && action.payload.layers.length ?
-        [action.payload.layers[0].id].concat(state.specific.layersActive) :
-        state.specific.layersActive;
-
-      const newSpecific = Object.assign({}, state.specific,
-        {
-          list,
-          loading: false,
-          error: null,
-          indicatorsWithLayers,
-          layers,
-          layersActive
-        });
-      return Object.assign({}, state, { specific: newSpecific });
-    }
-    case REMOVE_INDICATOR: {
-      const indicatorsWithLayers = action.payload.filter(ind => ind.layers && ind.layers.length);
-      const layers = indicatorsWithLayers.map(ind => ind.layers[0]);
-      const newSpecific = Object.assign({}, state.specific,
-        {
-          list: action.payload,
-          loading: false,
-          error: null,
-          indicatorsWithLayers,
-          layers,
-          layersActive: layers.map(ind => ind.id)
-        });
-      return Object.assign({}, state, { specific: newSpecific });
-    }
+    case ADD_INDICATOR:
+      return Object.assign({}, state, { specific: action.payload });
+    case REMOVE_INDICATOR:
+      return Object.assign({}, state, { specific: action.payload });
     // All indicators filter list
     case GET_INDICATORS_FILTER_LIST: {
       const newFilterList = Object.assign({}, state.filterList,
@@ -247,7 +209,7 @@ export function setIndicatorsLayers(layers) {
 }
 
 export function addIndicator(id) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
 
     fetch(`${process.env.KENYA_API}/indicator?id=${id}&page[size]=999999999`, BASIC_QUERY_HEADER)
@@ -256,9 +218,27 @@ export function addIndicator(id) {
         throw new Error(response.statusText);
       })
       .then((data) => {
+        const specific = getState().indicators.specific;
+        // Update state attributes with new data
+        const list = data[0] ? [data[0]].concat(specific.list) : specific.list;
+        const indicatorsWithLayers = data[0].layers && data[0].layers.length ?
+          [data[0]].concat(specific.indicatorsWithLayers) :
+          specific.indicatorsWithLayers;
+
+        const layers = data[0].layers && data[0].layers.length ?
+          [data[0].layers[0]].concat(specific.layers) :
+          specific.layers;
+
+        const layersActive = data[0].layers && data[0].layers.length ?
+          [data[0].layers[0].id].concat(specific.layersActive) :
+          specific.layersActive;
+
+        const newSpecific = Object.assign({}, specific,
+          { list, indicatorsWithLayers, layers, layersActive });
+
         dispatch({
           type: ADD_INDICATOR,
-          payload: data.length ? data[0] : data
+          payload: newSpecific
         });
 
         // DESERIALIZER.deserialize(data, (err, dataParsed) => {
@@ -275,6 +255,25 @@ export function addIndicator(id) {
           payload: err.message
         });
       });
+  };
+}
+
+export function removeIndicator(id) {
+  return (dispatch, getState) => {
+    const state = getState().indicators.specific;
+    // Update state with new data
+    const list = state.list.filter(ind => ind.id !== id);
+    const indicatorsWithLayers = state.indicatorsWithLayers.filter(ind => ind.id !== id);
+    const layers = state.layers.filter(lay => lay.attributes.indicator !== id);
+    const layersActive = layers.map(l => l.id);
+
+    const newSpecific = Object.assign({}, state,
+      { list, indicatorsWithLayers, layers, layersActive });
+
+    dispatch({
+      type: REMOVE_INDICATOR,
+      payload: newSpecific
+    });
   };
 }
 

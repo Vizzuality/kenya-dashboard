@@ -47,13 +47,6 @@ import IndicatorsList from 'components/modal-contents/indicators-list';
 import { MAP_OPTIONS } from 'constants/map';
 
 
-// let L;
-// if (typeof window !== 'undefined') {
-//   /* eslint-disable global-require */
-//   L = require('leaflet/dist/leaflet');
-//   /* eslint-enable global-require */
-// }
-
 class ComparePage extends Page {
   constructor(props) {
     super(props);
@@ -96,7 +89,7 @@ class ComparePage extends Page {
 
   /* Accordion methods */
   onToggleAccordionItem(e, id) {
-    let newHidden = this.state.hidden;
+    let newHidden = this.state.hidden.slice();
     if (this.state.hidden.includes(id)) {
       newHidden = newHidden.filter(hiddenId => hiddenId !== id);
     } else if (newHidden.length + 1 < Object.keys(this.props.mapState.areas).length) {
@@ -197,22 +190,22 @@ class ComparePage extends Page {
       this.props.removeArea(id);
   }
 
-  onToggleModal() {
+  onToggleModal(loading) {
     const opts = {
       children: IndicatorsList,
       childrenProps: {
         indicators: this.props.indicatorsFilterList,
         activeIndicators: this.props.indicators.list.map(ind => ind.id),
         addIndicator: this.props.addIndicator,
-        removeIndicator: this.props.removeIndicator
+        removeIndicator: this.props.removeIndicator,
+        loading
       }
     };
     modal.toggleModal(true, opts);
   }
 
   render() {
-    const { session } = this.props;
-    const { url, mapState, indicators } = this.props;
+    const { url, mapState, indicators, session } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(layers);
     // Widget samples
@@ -232,7 +225,6 @@ class ComparePage extends Page {
       }
     ));
 
-    // console.log(indicators.layers);
     return (
       <Layout
         title="Panel"
@@ -243,7 +235,7 @@ class ComparePage extends Page {
         {Object.keys(mapState.areas).length < 3 &&
           <button onClick={this.onAddArea}>+ Add Area</button>
         }
-        <button onClick={this.onToggleModal}>+ Add Indicator</button>
+        <button onClick={() => this.onToggleModal(indicators.loading)}>+ Add Indicator</button>
         <Accordion
           top={this.getList(areaMaps)}
           middle={
