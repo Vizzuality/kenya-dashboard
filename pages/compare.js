@@ -31,6 +31,7 @@ import { store } from 'store';
 
 // Libraries
 import isEqual from 'lodash/isEqual';
+import classnames from 'classnames';
 
 // Utils
 import { setLayersZIndex } from 'utils/map';
@@ -119,11 +120,18 @@ class ComparePage extends Page {
   getList(list) {
     const { hidden } = this.state;
 
-    return list.map((l, i) => (
-      <div className={`accordion-item ${hidden.includes(l.id) ? '-hidden' : ''}`} id={l.id} key={i}>
-        {l.el}
-      </div>
-    ));
+    return list.map((l, i) => {
+      const className = classnames({
+        'accordion-item': true,
+        '-hidden': hidden.includes(l.id)
+      });
+
+      return (
+        <div className={className} id={l.id} key={i}>
+          {l.el}
+        </div>
+      );
+    });
   }
 
   /** Maps methods */

@@ -33,43 +33,13 @@ export default function Accordion(props) {
             {sec.items}
           </div>
       ))}
-      {/* {top &&
-        <div className="accordion-section -top">
-          <CSSTransitionGroup
-            transitionName="item"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}
-          >
-            {top}
-          </CSSTransitionGroup>
-        </div>
-      }
-      {middle &&
-        <div className="accordion-section -middle">
-          {middle}
-        </div>
-      }
-      {bottom &&
-        <div className="accordion-section -bottom">
-          <CSSTransitionGroup
-            transitionName="item"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={300}
-          >
-            {bottom}
-          </CSSTransitionGroup>
-        </div>
-      } */}
     </div>
   );
 }
 
 Accordion.propTypes = {
   className: PropTypes.string,
-  sections: PropTypes.array,
-  top: PropTypes.any,
-  middle: PropTypes.any,
-  bottom: PropTypes.any
+  sections: PropTypes.array
 };
 
 Accordion.defaultProps = {
