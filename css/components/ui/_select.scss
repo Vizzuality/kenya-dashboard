@@ -4,7 +4,7 @@
 
 /* Overried react select */
 .is-focused:not(.is-open) > .Select-control {
-  border-color: rgba($color-tertiary, .3);
+  border-color: rgba($color-secondary, .3);
   box-shadow: none;
 }
 
@@ -58,7 +58,7 @@
     .Select-placeholder {
       color: rgba($color-black, .3);
       text-transform: uppercase;
-      font-family: $font-family-proximanova;
+      font-family: $font-family-1;
       padding-left: 0;
     }
   }
@@ -80,7 +80,7 @@
       }
 
       .Select-value-label {
-        font-family: $font-family-proximanova;
+        font-family: $font-family-1;
         text-transform: uppercase;
         letter-spacing: 1px;
         line-height: 19px;
@@ -117,12 +117,12 @@
 
     .Select-option {
       text-transform: capitalize;
-      font-family: $font-family-proximanova;
+      font-family: $font-family-1;
 
       &.is-focused {
         background-color: rgba($color-text-1, .07);
         color: $color-text-1;
-        font-family: $font-family-proximanova;
+        font-family: $font-family-1;
       }
 
       &:hover {

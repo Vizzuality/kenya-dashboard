@@ -4,7 +4,7 @@
   padding: 9px 25px 8px;
   text-align: center;
   letter-spacing: 2px;
-  font-family: $font-family-proximanova;
+  font-family: $font-family-1;
   font-size: $font-size-default;
   font-weight: $font-weight-default;
   border-radius: 3px;
@@ -37,7 +37,7 @@
   // - twitter
   // - linkedin
   &.-primary {
-    border-color: $border-color-3;
+    border-color: $color-border-1;
     color: $color-text-1;
     background: transparent;
 
@@ -47,22 +47,12 @@
   }
 
   &.-secondary {
-    border-color: $border-color-3;
+    border-color: $color-border-1;
     color: $color-text-2;
-    background: $color-gray-1;
+    background: $color-dark-grey;
 
     &:hover {
       color: darken($color-text-2, 10%);
-    }
-  }
-
-  &.-tertiary {
-    border-color: $color-tertiary;
-    color: $color-text-1;
-    background: $color-tertiary;
-
-    &:hover {
-      color: darken($color-text-1, 10%);
     }
   }
 
