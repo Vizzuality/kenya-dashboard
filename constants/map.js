@@ -8,9 +8,18 @@ const MAP_OPTIONS = {
   detectRetina: true
 };
 
+const MAP_METHODS = {
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
+  tileLayers: [
+    { url: process.env.BASEMAP_TILE_URL, zIndex: 0 },
+    { url: process.env.BASEMAP_LABEL_URL, zIndex: 10000 }
+  ]
+};
+
 const GENERIC_ZINDEX = 500;
 
 export {
   MAP_OPTIONS,
+  MAP_METHODS,
   GENERIC_ZINDEX
 };

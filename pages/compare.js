@@ -40,7 +40,7 @@ import { decode } from 'utils/general';
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import Accordion from 'components/ui/accordion';
-import Map from 'components/map/map';
+import AreaMap from 'components/map/area-map';
 import Legend from 'components/map/legend';
 import IndicatorsList from 'components/modal-contents/indicators-list';
 
@@ -87,6 +87,7 @@ class ComparePage extends Page {
       this.url = nextProps.url;
     }
 
+    // Update modal content props
     if (this.props.modal.opened && nextProps.modal.opened &&
       !isEqual(this.props.url.query, nextProps.url.query)) {
       const opts = {
@@ -140,58 +141,25 @@ class ComparePage extends Page {
     });
   }
 
-  /* Map config */
-  updateMap(map, url, key) {
-    this.props.setSingleMapParams(
-      {
-        zoom: map.getZoom(),
-        center: map.getCenter(),
-        key
-      }, url, key);
-  }
-
   /* Creat all maps with their own properties */
   getAreaMaps(layers) {
     const { mapState, indicators } = this.props;
 
-    return Object.keys(mapState.areas).map((key) => {
-      const listeners = {
-        moveend: (map) => {
-          this.updateMap(map, this.url, key);
-        }
-      };
-
-      const mapMethods = {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>',
-        tileLayers: [
-          { url: process.env.BASEMAP_TILE_URL, zIndex: 0 },
-          { url: process.env.BASEMAP_LABEL_URL, zIndex: 10000 }
-        ]
-      };
-
-      const mapOptions = {
-        zoom: mapState.areas[key].zoom,
-        minZoom: MAP_OPTIONS.minZoom,
-        maxZoom: MAP_OPTIONS.maxZoom,
-        zoomControl: MAP_OPTIONS.zoomControl,
-        center: [mapState.areas[key].center.lat, mapState.areas[key].center.lng]
-      };
-
-      return {
+    return Object.keys(mapState.areas).map(key => (
+      {
         id: key,
         el: (
-          <Map
-            mapOptions={mapOptions}
-            mapMethods={mapMethods}
-            listeners={listeners}
+          <AreaMap
+            url={this.props.url}
+            id={key}
+            area={mapState.areas[key]}
             layers={layers}
-            indicatorsLayersActive={indicators.layersActive}
-            markers={[]}
-            markerIcon={{}}
+            layersActive={indicators.layersActive}
+            setSingleMapParams={this.props.setSingleMapParams}
           />
         )
-      };
-    });
+      }
+    ));
   }
 
   /* Add area */
@@ -253,16 +221,22 @@ class ComparePage extends Page {
         }
         <button onClick={this.onToggleModal}>+ Add Indicator</button>
         <Accordion
-          top={this.getList(areaMaps)}
-          middle={
-            <Legend
-              list={layers}
-              indicatorsLayersActive={indicators.layersActive}
-              setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
-              setIndicatorsLayers={this.props.setIndicatorsLayers}
-            />
-          }
-          bottom={this.getList(indicatorsWidgets)}
+          sections={[
+            { type: 'dynamic', items: this.getList(areaMaps) },
+            {
+              type: 'static',
+              items: [
+                <Legend
+                  key="legend"
+                  list={layers}
+                  indicatorsLayersActive={indicators.layersActive}
+                  setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
+                  setIndicatorsLayers={this.props.setIndicatorsLayers}
+                />
+              ]
+            },
+            { type: 'dynamic', items: this.getList(indicatorsWidgets) }
+          ]}
         />
       </Layout>
     );

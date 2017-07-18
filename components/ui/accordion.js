@@ -9,7 +9,7 @@ import { CSSTransitionGroup } from 'react-transition-group';
 
 
 export default function Accordion(props) {
-  const { className, top, middle, bottom } = props;
+  const { className, sections } = props;
 
   const classNames = classnames({
     'c-accordion': true,
@@ -18,7 +18,22 @@ export default function Accordion(props) {
 
   return (
     <div className={classNames}>
-      {top &&
+      {sections.map((sec, i) => (
+        sec.type === 'dynamic' ?
+          <div className="accordion-section -dynamic" key={i}>
+            <CSSTransitionGroup
+              transitionName="item"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={300}
+            >
+              {sec.items}
+            </CSSTransitionGroup>
+          </div> :
+          <div className="accordion-section -static" key={i}>
+            {sec.items}
+          </div>
+      ))}
+      {/* {top &&
         <div className="accordion-section -top">
           <CSSTransitionGroup
             transitionName="item"
@@ -44,13 +59,14 @@ export default function Accordion(props) {
             {bottom}
           </CSSTransitionGroup>
         </div>
-      }
+      } */}
     </div>
   );
 }
 
 Accordion.propTypes = {
   className: PropTypes.string,
+  sections: PropTypes.array,
   top: PropTypes.any,
   middle: PropTypes.any,
   bottom: PropTypes.any
