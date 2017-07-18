@@ -88,7 +88,7 @@ class ComparePage extends Page {
     }
 
     if (this.props.modal.opened && nextProps.modal.opened &&
-      !isEqual(this.props.indicators.list, nextProps.indicators.list)) {
+      !isEqual(this.props.url.query, nextProps.url.query)) {
       const opts = {
         children: IndicatorsList,
         childrenProps: {

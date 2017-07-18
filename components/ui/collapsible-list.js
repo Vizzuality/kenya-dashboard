@@ -26,7 +26,7 @@ export default class CollapsibleList extends React.Component {
   }
 
   onSwitchItem(id) {
-    let activeItems = this.state.activeItems;
+    let activeItems = this.state.activeItems.slice();
 
     if (this.state.activeItems.includes(id)) {
       // Remove item

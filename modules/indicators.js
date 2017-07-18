@@ -314,24 +314,27 @@ export function getIndicatorsFilterList() {
 export function setIndicatorsParamsUrl(indicatorId, type, url) {
   return () => {
     let newQuery = {};
-    let indicatorsIds = url.query.indicators ? url.query.indicators : '';
+    const { indicators } = url.query;
+    const indicatorsIds = indicators ? indicators.split(',') : [];
 
     // Update indicators ids
     if (type === 'add') {
-      indicatorsIds += indicatorsIds.length ? `,${indicatorId}` : `${indicatorId}`;
+      indicatorsIds.push(`${indicatorId}`);
     } else { // Remove
-      indicatorsIds = indicatorsIds.split(',').filter(id => `${id}` !== `${indicatorId}`).join(',');
+      const idIndex = indicatorsIds.indexOf(`${indicatorId}`);
+      indicatorsIds.splice(idIndex, 1);
     }
 
-    // Set query indicator param, if no id, indicator param doesn't show up
-    if (indicatorsIds === '') {
-      Object.keys(url.query).filter(key => key !== 'indicators').map(key => newQuery[key] = url.query[key]);
+    // Show indicators param if there are ids, or hide if not
+    if (indicatorsIds.length) {
+      newQuery = { ...url.query, indicators: indicatorsIds.join(',') };
     } else {
-      newQuery = Object.assign({}, url.query, { indicators: indicatorsIds });
+      Object.keys(url.query).forEach((key) => {
+        if (key !== 'indicators') newQuery = url.query[key];
+      });
     }
 
     const location = { pathname: url.pathname, query: newQuery };
-
     Router.replace(location);
   };
 }
