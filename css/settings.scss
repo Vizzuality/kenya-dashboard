@@ -1,41 +1,50 @@
 /**
  * COLORS
- * - App
  * - Common
- * - States
+ * - App
+ * - Threshold
  * - Text
+ * - State
  * - Borders
+ * - Backgrounds
 */
-// App
-$color-primary: #005b23;
-$color-secondary: #e98300;
-$color-tertiary: #f7f6ed;
-$color-gray-1: #333333;
-$color-gray-2: #EDECE3;
-$color-gray-3: #9B9B9B;
-
 // Common
-$color-white: white;
 $color-black: black;
+$color-dark: #1E2727;
+$color-dark-grey: #2E3D3D;
+$color-dark-green: #73A575;
+$color-light-green: #C9FF8A;
+$color-watermelon: #FF6161; // Red
+$color-peach: #FFA26E; // Orange
+$color-white: white;
 
-// States
-$color-success: #1c801c;
-$color-error: #de2239;
+// App
+$color-primary: $color-dark-green;
+$color-secondary: $color-dark-grey;
+
+// Threshold
+$color-threshold-success: $color-light-green;
+$color-threshold-medium: $color-peach;
+$color-threshold-fail: $color-watermelon;
 
 // Text
-$color-text-1: #333333;
-$color-text-2: #f7f6ed;
+$color-text-1: $color-white;
+$color-text-2: $color-black;
+
+// State
+$color-success: $color-dark-green;
+$color-error: $color-watermelon;
 
 // Borders
-$border-color-1: #D8D8D8;
-$border-color-2: #aaa;
-$border-color-3: #333;
+$color-border-1: $color-dark-grey;
+$color-border-2: $color-white;
 
-// Legend color
-$lg-color-0: #e98300;
-$lg-color-1: #333333;
-$lg-color-2: #005b23;
-$lg-color-3: #9B9B9B;
+// Backgrounds
+$color-bg-dark: $color-dark;
+$color-bg-light: $color-white;
+
+// Shadow
+$box-shadow: 2px 2px 22px 0 rgba($color-black, .52);
 
 // Zindex
 $z-index-1: 0;
@@ -49,17 +58,17 @@ $z-index-3: 1000;
  * - Weights
 */
 // Families
-$font-family-proximanova: 'Proxima Nova';
-$font-family-georgia: Georgia, Arial, sans-serif;
+$font-family-1: 'Protipo A';
+$font-family-2: Georgia, Arial, sans-serif;
 
 // Sizes
 $font-size-extrasmall:  10px;
 $font-size-small:       13px;
-$font-size-default:     16px;
+$font-size-default:     15px;
 $font-size-big:         20px;
 $font-size-bigger:      24px;
 $font-size-extrabig:    26px;
-$font-size-huge:        48px;
+$font-size-huge:        42px;
 $font-size-extrahuge:   72px;
 
 // Weights
@@ -71,7 +80,7 @@ $font-weight-bold:    700;
  * LAYOUT
 */
 // Max widths
-$layout-max-width: 1060px;
+$layout-max-width: 1024px;
 
 // Responsive breakpoints
 $br-mobile: 640px;
