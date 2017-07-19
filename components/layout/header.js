@@ -30,10 +30,12 @@ export default class Header extends React.Component {
     this.setState({ open: !this.state.open });
   }
 
-  getPageCustomContent() {
+  getCustomContentByPage() {
     const { url } = this.props;
 
     switch (url.pathname) {
+      // Different pathnames for the index
+      case '/index': return { title: <h1>Kenya</h1> };
       case '/': return { title: <h1>Kenya</h1> };
       case '/dashboard': return {
         title: <h1>Dashboard</h1>,
@@ -52,28 +54,29 @@ export default class Header extends React.Component {
   }
 
   render() {
+    const { url } = this.props;
     const toggleMenuClasses = classnames(
       'toggle-menu',
       { '-open': this.state.open }
     );
 
-    const pageCustomContent = this.getPageCustomContent();
+    const customContentByPage = this.getCustomContentByPage();
 
     return (
       <header className="c-header">
         {/* Header content */}
         <div className="row collapse">
           <div className="column small-12">
-            <div className="header-content">
+            <div className="header-container">
               <div className="header-title">
                 <button className="btn-menu" onClick={this.onToggleMenu}>
                   <Icon name="icon-menu" className="-big" />
                 </button>
-                {pageCustomContent.title}
+                {customContentByPage.title}
               </div>
-              {pageCustomContent.content &&
-                <div className="header-main">
-                  {pageCustomContent.content}
+              {customContentByPage.content &&
+                <div className="header-content">
+                  {customContentByPage.content}
                 </div>
               }
             </div>
@@ -95,13 +98,19 @@ export default class Header extends React.Component {
             </section>
             <nav className="menu-main">
               <ul className="nav-list">
-                {HEADER_MENU_LINKS.map((item, i) => (
-                  <li className="nav-item" key={i}>
-                    <Link route={item.route}>
-                      <a>{item.label}</a>
-                    </Link>
-                  </li>
-                ))}
+                {HEADER_MENU_LINKS.map((item, i) => {
+                  const itemClasses = classnames(
+                    'nav-item',
+                    { '-active': `/${item.route}` === url.pathname || (url.pathname === '/' && item.route === 'home') }
+                  );
+                  return (
+                    <li className={itemClasses} key={i} >
+                      <Link route={item.route}>
+                        <a>{item.label}</a>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </nav>
           </div>
