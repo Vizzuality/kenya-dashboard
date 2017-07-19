@@ -113,7 +113,5 @@ export default class Header extends React.Component {
 
 Header.propTypes = {
   url: PropTypes.object.isRequired,
-  session: PropTypes.object,
-  title: PropTypes.element,
-  main: PropTypes.element
+  session: PropTypes.object
 };

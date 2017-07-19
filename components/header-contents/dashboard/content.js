@@ -6,7 +6,7 @@ import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
 // Modules
-import { getFiltersOptions, setSelectedFilters, setFiltersUrl } from 'modules/filters';
+import { getFiltersOptions, setSelectedFilters, setFiltersUrl, setDashboardLayout } from 'modules/filters';
 
 // Libraries
 import isEmpty from 'lodash/isEmpty';
@@ -39,7 +39,9 @@ class DashboardHeaderContent extends React.Component {
       <Filters
         options={filters.options}
         selected={filters.selected}
+        layout={filters.layout}
         onSetFilters={this.props.setSelectedFilters}
+        onSetDashboardLayout={this.props.setDashboardLayout}
       />
     );
   }
@@ -50,7 +52,8 @@ DashboardHeaderContent.propTypes = {
   url: PropTypes.object,
   // Actions
   getFiltersOptions: PropTypes.func,
-  setSelectedFilters: PropTypes.func
+  setSelectedFilters: PropTypes.func,
+  setDashboardLayout: PropTypes.func
 };
 
 export default withRedux(
@@ -63,6 +66,7 @@ export default withRedux(
     setSelectedFilters(filters) {
       dispatch(setSelectedFilters(filters));
       dispatch(setFiltersUrl());
-    }
+    },
+    setDashboardLayout(layout) { dispatch(setDashboardLayout(layout)); }
   })
 )(DashboardHeaderContent);

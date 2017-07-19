@@ -8,4 +8,20 @@
     flex-grow: 1;
     margin-right: 15px;
   }
+
+  .btn-grid,
+  .btn-list {
+    display: flex;
+    align-items: center;
+
+    &.-active {
+      .c-icon {
+        fill: $color-primary;
+      }
+    }
+
+    .c-icon {
+      fill: $color-secondary;
+    }
+  }
 }

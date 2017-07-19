@@ -20,21 +20,21 @@ import Spinner from 'components/ui/spinner';
 
 class DashboardPage extends Page {
   componentDidMount() {
-    const { selected } = this.props.filters;
+    const { selectedFilters } = this.props;
 
     if (!this.props.indicators.list.length) {
-      this.props.getIndicators(selected);
+      this.props.getIndicators(selectedFilters);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props.filters.selected, nextProps.filters.selected)) {
-      this.props.getIndicators(nextProps.filters.selected);
+    if (!isEqual(this.props.selectedFilters, nextProps.selectedFilters)) {
+      this.props.getIndicators(nextProps.selectedFilters);
     }
   }
 
   render() {
-    const { url, session, indicators } = this.props;
+    const { url, session, indicators, layout } = this.props;
 
     return (
       <Layout
@@ -45,7 +45,7 @@ class DashboardPage extends Page {
       >
         <div>
           <Spinner isLoading={indicators.loading} />
-          <DashboardList list={indicators.list} />
+          <DashboardList list={indicators.list} layout={layout} />
         </div>
       </Layout>
     );
@@ -61,7 +61,8 @@ export default withRedux(
   store,
   state => ({
     indicators: state.indicators,
-    filters: state.filters
+    selectedFilters: state.filters.selected,
+    layout: state.filters.layout
   }),
   dispatch => ({
     getIndicators(filters) { dispatch(getIndicators(filters)); }

@@ -11,6 +11,7 @@ const GET_FILTERS_OPTIONS = 'GET_FILTERS_OPTIONS';
 const GET_FILTERS_LOADING = 'GET_FILTERS_LOADING';
 const GET_FILTERS_ERROR = 'GET_FILTERS_ERROR';
 const SET_SELECTED_FILTERS = 'SET_SELECTED_FILTERS';
+const SET_DASHBOARD_LAYOUT = 'SET_DASHBOARD_LAYOUT';
 
 /* Initial state */
 const initialState = {
@@ -23,7 +24,8 @@ const initialState = {
     sort: []
   },
   loading: false,
-  error: null
+  error: null,
+  layout: 'grid'
 };
 
 // const DESERIALIZER = new Deserializer();
@@ -39,6 +41,8 @@ export default function filtersReducer(state = initialState, action) {
       return Object.assign({}, state, { options: {}, loading: false, error: action.payload });
     case SET_SELECTED_FILTERS:
       return Object.assign({}, state, { selected: action.payload });
+    case SET_DASHBOARD_LAYOUT:
+      return Object.assign({}, state, { layout: action.payload });
     default:
       return state;
   }
@@ -102,5 +106,14 @@ export function setFiltersUrl() {
     }
 
     Router.replace(location);
+  };
+}
+
+export function setDashboardLayout(layout) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_DASHBOARD_LAYOUT,
+      payload: layout
+    });
   };
 }

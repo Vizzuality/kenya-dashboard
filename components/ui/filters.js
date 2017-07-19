@@ -5,6 +5,7 @@ import isArray from 'lodash/isArray';
 
 // Components
 import Select from 'react-select';
+import Icon from 'components/ui/icon';
 
 // Constants
 import { SHOW_BY_OPTION } from 'constants/filters';
@@ -17,6 +18,17 @@ export default class Filters extends React.Component {
     this.state = {
       showBy: 'country'
     };
+
+    // Bindings
+    this.onSetDashboardLayout = this.onSetDashboardLayout.bind(this);
+  }
+
+  /**
+    UI events
+  */
+  onSetDashboardLayout(e) {
+    const layout = e.currentTarget.getAttribute('data-layout');
+    this.props.onSetDashboardLayout(layout);
   }
 
   setFilters(opts, key) {
@@ -38,15 +50,25 @@ export default class Filters extends React.Component {
   }
 
   render() {
-    const { options, selected } = this.props;
+    const { className, options, selected, layout } = this.props;
     const { showBy } = this.state;
-    const className = classnames({
-      'c-filters': true,
-      [this.props.className]: !!this.props.className
-    });
+    const classNames = classnames(
+      'c-filters',
+      { [className]: !!className }
+    );
+
+    const btnGridClasses = classnames(
+      'btn-grid',
+      { '-active': layout === 'grid' }
+    );
+
+    const btnListClasses = classnames(
+      'btn-list',
+      { '-active': layout === 'list' }
+    );
 
     return (
-      <div className={className}>
+      <div className={classNames}>
         <Select
           instanceId="showByOptions"
           className="c-select"
@@ -111,18 +133,15 @@ export default class Filters extends React.Component {
           onChange={opts => this.setFilters(opts, 'sort')}
         />
 
-        {/* Dates select */}
-        {/* <Select
-          instanceId="datesOptions"
-          className="c-select"
-          name="dates"
-          placeholder="Dates"
-          multi
-          options={options.dates || []}
-          value={options.dates ?
-            options.dates.filter(opt => selected.dates.includes(opt.value)) : []}
-          onChange={opts => this.setFilters(opts, 'dates')}
-        /> */}
+        {/* Set layout buttons */}
+        <button className={btnGridClasses} data-layout="grid" onClick={this.onSetDashboardLayout}>
+          <Icon name="icon-arrow-left" className="" />
+        </button>
+
+        <button className={btnListClasses} data-layout="list" onClick={this.onSetDashboardLayout}>
+          <Icon name="icon-arrow-right" className="" />
+        </button>
+
       </div>
     );
   }
@@ -132,8 +151,10 @@ Filters.propTypes = {
   className: PropTypes.string,
   options: PropTypes.object,
   selected: PropTypes.object,
+  layout: PropTypes.string,
   // Actions
-  onSetFilters: PropTypes.func
+  onSetFilters: PropTypes.func,
+  onSetDashboardLayout: PropTypes.func
 };
 
 Filters.defaultProps = {
