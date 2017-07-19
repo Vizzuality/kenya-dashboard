@@ -28,6 +28,16 @@ $menu-container-width: 220px;
         fill: $color-primary;
       }
     }
+
+    .title-link {
+      display: flex;
+      align-items: center;
+
+      .c-icon {
+        fill: $color-text-1;
+        margin-right: 15px;
+      }
+    }
   }
 
   .header-content {

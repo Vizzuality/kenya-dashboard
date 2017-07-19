@@ -41,10 +41,12 @@ export default class Header extends React.Component {
         title: <h1>Dashboard</h1>,
         content: <DashboardHeaderContent url={url} />
       };
-      case '/indicator': return {
+      case '/compare': return {
         title: (
           <Link route="dashboard">
-            <a><Icon name="icon-arrow-left" className="" />Go to dashboard</a>
+            <a className="title-link">
+              <Icon name="icon-arrow-left2" className="-normal" /><h1>Go to dashboard</h1>
+            </a>
           </Link>
         )
       };

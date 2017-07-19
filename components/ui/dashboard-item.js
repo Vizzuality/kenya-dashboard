@@ -109,7 +109,7 @@ export default class DashboardItem extends React.Component {
 
     return (
       <div className={classNames}>
-        <Link route="indicator" params={{ indicators: info.id }}>
+        <Link route="compare" params={{ indicators: info.id }}>
           <a>
             {content}
           </a>
