@@ -1,11 +1,12 @@
 
 .c-filters {
   display: flex;
+  justify-content: flex-end;
   padding: 20px;
+  padding-right: 0;
   width: 100%;
 
   .c-select {
-    flex-grow: 1;
     margin-right: 15px;
   }
 
@@ -13,6 +14,7 @@
   .btn-list {
     display: flex;
     align-items: center;
+    padding: 0;
 
     &.-active {
       .c-icon {
@@ -22,6 +24,12 @@
 
     .c-icon {
       fill: $color-secondary;
+      margin-top: 3px;
     }
+  }
+
+  .btn-grid {
+    margin-left: 15px;
+    margin-right: 20px;
   }
 }

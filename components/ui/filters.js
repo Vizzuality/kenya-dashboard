@@ -7,16 +7,13 @@ import isArray from 'lodash/isArray';
 import Select from 'react-select';
 import Icon from 'components/ui/icon';
 
-// Constants
-import { SHOW_BY_OPTION } from 'constants/filters';
-
 
 export default class Filters extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      showBy: 'country'
+      showBy: 'county'
     };
 
     // Bindings
@@ -69,30 +66,6 @@ export default class Filters extends React.Component {
 
     return (
       <div className={classNames}>
-        <Select
-          instanceId="showByOptions"
-          className="c-select"
-          name="showBy"
-          placeholder="Show by..."
-          options={SHOW_BY_OPTION || []}
-          value={showBy}
-          onChange={opts => this.setShowBy(opts)}
-        />
-        {/* country select */}
-        {showBy === 'country' &&
-          <Select
-            instanceId="countriesOptions"
-            className="c-select"
-            name="countries"
-            placeholder="Countries"
-            multi
-            options={options.countries || []}
-            value={options.countries ?
-              options.countries.filter(opt => selected.countries.includes(opt.value)) : []}
-            onChange={opts => this.setFilters(opts, 'countries')}
-          />
-        }
-
         {/* County select */}
         {showBy === 'county' &&
           <Select
@@ -126,7 +99,7 @@ export default class Filters extends React.Component {
           instanceId="sortbyOptions"
           className="c-select"
           name="sort"
-          placeholder="Sort By"
+          placeholder="Sort"
           options={options.sort || []}
           value={options.sort ?
             options.sort.find(opt => selected.sort === opt.value) : {}}
@@ -135,11 +108,11 @@ export default class Filters extends React.Component {
 
         {/* Set layout buttons */}
         <button className={btnGridClasses} data-layout="grid" onClick={this.onSetDashboardLayout}>
-          <Icon name="icon-arrow-left" className="" />
+          <Icon name="icon-grid" className="-small" />
         </button>
 
         <button className={btnListClasses} data-layout="list" onClick={this.onSetDashboardLayout}>
-          <Icon name="icon-arrow-right" className="" />
+          <Icon name="icon-list" className="-small" />
         </button>
 
       </div>

@@ -62,12 +62,12 @@ export default class Header extends React.Component {
     return (
       <header className="c-header">
         {/* Header content */}
-        <div className="row">
+        <div className="row collapse">
           <div className="column small-12">
             <div className="header-content">
               <div className="header-title">
                 <button className="btn-menu" onClick={this.onToggleMenu}>
-                  <Icon name="icon-arrow-left" className="" />
+                  <Icon name="icon-menu" className="-big" />
                 </button>
                 {pageCustomContent.title}
               </div>
