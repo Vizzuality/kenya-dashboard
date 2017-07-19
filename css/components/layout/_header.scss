@@ -1,2 +1,120 @@
+$menu-container-width: 220px;
+
 .c-header {
+  display: flex;
+  justify-content: space-between;
+
+  .header-content {
+    display: flex;
+  }
+
+  .header-title {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-right: 30px;
+
+    .btn-menu {
+      display: flex;
+      align-items: center;
+      margin-right: 22px;
+
+      .c-icon {
+        fill: $color-primary;
+      }
+    }
+  }
+
+  .header-main {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+
+    .c-filters {
+    }
+  }
+
+  /* Toggle Menu */
+  .toggle-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    opacity: 0;
+    z-index: 10003;
+    background: rgba($color-bg-dark, .7);
+    transform: translateX(-100%);
+    transition: all $animation-time-2 $ease-in-cubic;
+
+    &.-open {
+      opacity: 1;
+      transform: translateX(0);
+      transition: all $animation-time-2 $ease-in-cubic;
+    }
+
+    .menu-container {
+      max-width: $menu-container-width;
+      height: 100%;
+      background: $color-secondary;
+    }
+
+    .menu-close {
+      display: flex;
+      justify-content: center;
+      padding: 30px 25px;
+
+      .btn-close {
+        display: flex;
+        align-items: center;
+        color: $color-text-1;
+        text-transform: uppercase;
+        font-weight: $font-size-default;
+      }
+
+      .c-icon {
+        fill: $color-light-green;
+        margin-right: 12px;
+      }
+    }
+
+    .menu-user {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 25px;
+      border-bottom: 1px solid rgba($color-border-3, .2);
+    }
+
+    .menu-main {
+      padding: 20px 0;
+    }
+
+    .nav-list {
+      width: 100%;
+    }
+
+    .nav-item {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+
+      a {
+        padding: 15px 25px;
+        width: 100%;
+        height: 100%;
+        color: $color-text-1;
+        line-height: 18px;
+        text-align: center;
+        text-transform: uppercase;
+
+        &:hover {
+          background: rgba($color-primary, .5);
+          opacity: .7;
+        }
+      }
+    }
+  }
 }

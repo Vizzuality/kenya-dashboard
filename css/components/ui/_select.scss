@@ -24,7 +24,6 @@
   .Select-control {
     background-color: transparent;
     border: 0;
-    border-bottom: 1px solid rgba($color-black, .2);
     border-radius: 0;
     cursor: text;
 
@@ -33,6 +32,7 @@
     }
 
     .Select-clear-zone {
+      padding-top: 5px;
       padding-bottom: 0;
     }
 
@@ -42,13 +42,12 @@
 
     .Select-arrow-zone {
       padding: 0;
-
     }
 
     .Select-arrow {
       border: 0;
-      border-right: 2px solid rgba($color-white, .5);
-      border-bottom: 2px solid rgba($color-white, .5);
+      border-right: 2px solid rgba($color-primary, 1);
+      border-bottom: 2px solid rgba($color-primary, 1);
       width: 6px;
       height: 6px;
       transform: rotate(45deg);
@@ -56,17 +55,16 @@
     }
 
     .Select-placeholder {
-      color: rgba($color-black, .3);
+      color: $color-text-1;
       text-transform: uppercase;
       font-family: $font-family-1;
       padding-left: 0;
+      padding-top: 4px;
     }
   }
 
   .Select-multi-value-wrapper {
     .Select-value {
-      // position: relative;
-      // color: white;
       background-color: transparent;
       border-color: rgba($color-text-1, .3);
       border-radius: 100px;
@@ -74,6 +72,8 @@
       margin-left: 0;
       margin-right: 3px;
       margin-bottom: 5px;
+      padding-top: 4px;
+      font-family: $font-family-1;
 
       &.last-child {
         margin-right: 0;
@@ -114,20 +114,23 @@
     border-top-right-radius: 0;
     border-bottom-left-radius: 2px;
     border-bottom-right-radius: 2px;
+    padding: 13px;
+    color: $color-text-2;
 
     .Select-option {
       text-transform: capitalize;
       font-family: $font-family-1;
+      color: $color-text-2;
 
       &.is-focused {
-        background-color: rgba($color-text-1, .07);
-        color: $color-text-1;
+        background-color: $color-tertiary;
+        color: $color-text-2;
         font-family: $font-family-1;
       }
 
       &:hover {
-        background-color: rgba($color-text-1, .07);
-        color: $color-primary;
+        background-color: $color-tertiary;
+        color: $color-text-2;
       }
     }
   }
@@ -135,4 +138,9 @@
 
 .is-open > .Select-control .Select-arrow {
   top: auto;
+}
+
+.has-value.Select--single > .Select-control .Select-value .Select-value-label,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+  color: $color-text-1;
 }

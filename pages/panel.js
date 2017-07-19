@@ -19,6 +19,7 @@ import isEqual from 'lodash/isEqual';
 // Components
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
+import Header from 'components/layout/header';
 import PanelList from 'components/ui/panel-list';
 import Filters from 'components/ui/filters';
 import Spinner from 'components/ui/spinner';
@@ -32,16 +33,15 @@ class PanelPage extends Page {
   }
 
   componentDidMount() {
-    const defaultFilters = this.props.url.query.filters;
-    let filters = this.props.filters.selected;
+    const { filters } = this.props.url.query;
+    const { selected } = this.props.filters;
 
-    if (defaultFilters) {
-      filters = decode(defaultFilters);
-      this.props.setSelectedFilters(filters);
+    if (filters) {
+      this.props.setSelectedFilters(decode(filters));
     }
 
     if (!this.props.indicators.list.length) {
-      this.props.getIndicators(filters);
+      this.props.getIndicators(selected);
     }
   }
 
@@ -51,8 +51,30 @@ class PanelPage extends Page {
     }
   }
 
+  getCustomHeader() {
+    const { url, session, filters } = this.props;
+
+    const main = (
+      <Filters
+        options={filters.options}
+        selected={filters.selected}
+        onSetFilters={this.props.setSelectedFilters}
+      />
+    );
+
+    return (
+      <Header
+        url={url}
+        session={session}
+        title={<h1>Dashboard</h1>}
+        main={main}
+      />
+    );
+  }
+
   render() {
-    const { url, session, indicators, filters } = this.props;
+    const { url, session, indicators } = this.props;
+    const customHeader = this.getCustomHeader();
 
     return (
       <Layout
@@ -60,16 +82,8 @@ class PanelPage extends Page {
         description="Panel description..."
         url={url}
         session={session}
+        header={customHeader}
       >
-        <div>
-          <Spinner isLoading={filters.loading} />
-          <Filters
-            options={filters.options}
-            selected={filters.selected}
-            onSetFilters={this.props.setSelectedFilters}
-          />
-        </div>
-
         <div>
           <Spinner isLoading={indicators.loading} />
           <PanelList list={indicators.list} />

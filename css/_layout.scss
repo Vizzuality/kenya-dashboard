@@ -10,6 +10,10 @@
   @include flex-grid-row(nest, expand, null, false, $grid-column-gutter);
 }
 
+.row {
+  width: 100%;
+}
+
 .l-page {
   display: flex;
   flex-direction: column;

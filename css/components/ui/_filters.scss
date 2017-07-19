@@ -1,4 +1,11 @@
 
 .c-filters {
+  display: flex;
   padding: 20px;
+  width: 100%;
+
+  .c-select {
+    flex-grow: 1;
+    margin-right: 15px;
+  }
 }
