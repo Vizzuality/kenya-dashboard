@@ -1,0 +1,56 @@
+
+.c-accordion {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-end;
+
+  .accordion-section {
+    &.-dynamic{
+      span {
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+
+    .item-enter {
+      transform: translate(100%);
+    }
+    .item-enter.item-enter-active {
+      transform: translate(0%);
+      transition: transform 500ms ease-in-out;
+    }
+    .item-leave {
+      transform: translate(-100%);
+      transition: transform 300ms ease-in-out;
+    }
+    .item-leave.item-leave-active {
+      transform: translate(100%);
+      transition: transform 300ms ease-in-out;
+    }
+  }
+
+  .accordion-item {
+    flex-grow: 1;
+    transition: all .3s ease;
+
+
+    &.-hidden {
+      width: 30px;
+      flex-grow: 0;
+
+      * {
+        visibility: hidden;
+      }
+
+      & .btn-toggle,
+      & .c-map {
+        visibility: visible;
+
+        & * {
+          visibility: visible;
+        }
+      }
+    }
+  }
+}

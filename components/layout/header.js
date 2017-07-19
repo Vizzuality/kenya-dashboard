@@ -7,8 +7,6 @@ export default class Header extends React.Component {
   render() {
     return (
       <header className="c-header">
-        Header
-
         <ul>
           <li>
             <Link route="home">
@@ -18,11 +16,6 @@ export default class Header extends React.Component {
           <li>
             <Link route="panel">
               <a>Panel</a>
-            </Link>
-          </li>
-          <li>
-            <Link route="compare">
-              <a>Compare</a>
             </Link>
           </li>
           <li>

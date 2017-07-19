@@ -64,7 +64,7 @@ export default class Map extends React.Component {
 
     // Add layers
     this.initLayerManager();
-    this.props.layers && this.addLayer(this.props.layers);
+    this.props.layers.length && this.addLayer(this.props.layers);
     // this.props.markers.length && this.addMarker(this.props.markers);
   }
 
@@ -75,6 +75,7 @@ export default class Map extends React.Component {
     }
 
     // Layers
+    // Add layers with new order
     if (!isEqual(this.props.layers, nextProps.layers) &&
       isEqual(this.props.indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
       this.layerManager.removeAllLayers();
@@ -82,13 +83,21 @@ export default class Map extends React.Component {
     }
 
     if (!isEqual(this.props.indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
+      const added = difference(nextProps.indicatorsLayersActive, this.props.indicatorsLayersActive);
       const removed = difference(
         this.props.indicatorsLayersActive,
         nextProps.indicatorsLayersActive
       );
-      const added = difference(nextProps.indicatorsLayersActive, this.props.indicatorsLayersActive);
-      removed.length && this.removeLayer(nextProps.layers.filter(l => removed.includes(l.id)));
       added.length && this.addLayer(nextProps.layers.filter(l => added.includes(l.id)));
+
+      // In case the indicator has being removed before de layer
+      if (removed.length) {
+        let layersToRemove = nextProps.layers.filter(l => removed.includes(l.id));
+        if (!layersToRemove.length) {
+          layersToRemove = this.props.layers.filter(l => removed.includes(l.id));
+        }
+        this.removeLayer(layersToRemove);
+      }
     }
 
     // Markers
