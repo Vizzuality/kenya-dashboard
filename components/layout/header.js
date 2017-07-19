@@ -8,6 +8,9 @@ import classnames from 'classnames';
 import { Link } from 'routes';
 import Icon from 'components/ui/icon';
 
+// Header components
+import DashboardHeaderContent from 'components/header-contents/dashboard/content';
+
 // Constants
 import { HEADER_MENU_LINKS } from 'constants/general';
 
@@ -27,15 +30,28 @@ export default class Header extends React.Component {
     this.setState({ open: !this.state.open });
   }
 
+  getContent() {
+    const { url } = this.props;
+    switch (url.pathname) {
+      case '/dashboard': return {
+        title: <h1>Dashboard</h1>,
+        content: <DashboardHeaderContent url={url} />
+      };
+      default: return {};
+    }
+  }
+
   render() {
-    const { title, main } = this.props;
     const toggleMenuClasses = classnames(
       'toggle-menu',
       { '-open': this.state.open }
     );
 
+    const content = this.getContent();
+
     return (
       <header className="c-header">
+        {/* Header content */}
         <div className="row">
           <div className="column small-12">
             <div className="header-content">
@@ -43,17 +59,18 @@ export default class Header extends React.Component {
                 <button className="btn-menu" onClick={this.onToggleMenu}>
                   <Icon name="icon-arrow-left" className="" />
                 </button>
-                {title}
+                {content.title}
               </div>
-              {main &&
+              {content.content &&
                 <div className="header-main">
-                  {main}
+                  {content.content}
                 </div>
               }
             </div>
           </div>
         </div>
 
+        {/* Toggle menu */}
         <div className={toggleMenuClasses}>
           <div className="overlay" onClick={this.onToggleMenu} />
           <div className="menu-container">

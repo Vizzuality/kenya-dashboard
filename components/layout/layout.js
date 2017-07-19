@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 export default class Layout extends React.Component {
   render() {
-    const { title, description, url, session, children, className, header } = this.props;
+    const { title, description, url, session, children, className } = this.props;
 
     const classNames = classnames({
       [className]: !!className
@@ -30,16 +30,13 @@ export default class Layout extends React.Component {
           title={title}
           description={description}
         />
-
         <Icons />
 
-        {/* Customs Header component or defualt header */}
-        {header ||
-          <Header
-            url={url}
-            session={session}
-          />
-        }
+        {/* Customs Header */}
+        <Header
+          url={url}
+          session={session}
+        />
 
         <div className={`l-main ${classNames}`}>
           {children}
@@ -60,6 +57,5 @@ Layout.propTypes = {
   children: PropTypes.any.isRequired,
   session: PropTypes.object,
   url: PropTypes.object.isRequired,
-  className: PropTypes.string,
-  header: PropTypes.element
+  className: PropTypes.string
 };
