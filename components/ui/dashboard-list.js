@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Components
-import PanelItem from 'components/ui/panel-item';
+import DashboardItem from 'components/ui/dashboard-item';
 
 
-export default function PanelList({ list }) {
+export default function DashboardList({ list }) {
   return (
-    <div className="c-panel-list">
+    <div className="c-dashboard-list">
       <div className="row collapse">
         {list.map((ind, i) => (
           <div key={i} className="column small-12 medium-3">
-            <PanelItem info={ind} />
+            <DashboardItem info={ind} />
           </div>
         ))}
       </div>
@@ -19,10 +19,10 @@ export default function PanelList({ list }) {
   );
 }
 
-PanelList.propTypes = {
+DashboardList.propTypes = {
   list: PropTypes.array
 };
 
-PanelList.defaultProps = {
+DashboardList.defaultProps = {
   children: ''
 };

@@ -94,8 +94,8 @@ class IndicatorPage extends Page {
 
     return (
       <Layout
-        title="Panel"
-        description="Panel description..."
+        title="Dashboard"
+        description="Dashboard description..."
         url={url}
         session={session}
       >

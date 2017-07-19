@@ -64,7 +64,7 @@ export default class Header extends React.Component {
               </button>
             </div>
             <section className="menu-user">
-              <span>Avatar</span>
+              <Icon name="icon-user" className="-extra-huge" />
             </section>
             <nav className="menu-main">
               <ul className="nav-list">

@@ -33,7 +33,7 @@ export default class Layout extends React.Component {
 
         <Icons />
 
-        {/* Header component */}
+        {/* Customs Header component or defualt header */}
         {header ||
           <Header
             url={url}

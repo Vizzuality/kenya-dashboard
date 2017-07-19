@@ -92,7 +92,7 @@ export function setFiltersUrl() {
     const filtersUrl = encode(filters.selected);
 
     const location = {
-      pathname: '/panel',
+      pathname: '/dashboard',
       query: {}
     };
 
