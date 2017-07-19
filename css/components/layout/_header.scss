@@ -43,22 +43,40 @@ $menu-container-width: 220px;
     left: 0;
     bottom: 0;
     width: 100%;
-    opacity: 0;
-    z-index: 10003;
-    background: rgba($color-bg-dark, .7);
-    transform: translateX(-100%);
-    transition: all $animation-time-2 $ease-in-cubic;
+    z-index: -1;
 
     &.-open {
-      opacity: 1;
-      transform: translateX(0);
+      z-index: 10003;
+
+      .overlay {
+        opacity: 1;
+        transition: opacity $animation-time-2 $ease-out-cubic;
+      }
+
+      .menu-container {
+        transform: translateX(0);
+        transition: all $animation-time-2 $ease-out-cubic;
+      }
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      opacity: 0;
+      background: rgba($color-bg-dark, .7);
+      cursor: pointer;
       transition: all $animation-time-2 $ease-in-cubic;
     }
 
     .menu-container {
+      transform: translateX(-100%);
       max-width: $menu-container-width;
       height: 100%;
       background: $color-secondary;
+      transition: all $animation-time-2 $ease-out-cubic;
     }
 
     .menu-close {

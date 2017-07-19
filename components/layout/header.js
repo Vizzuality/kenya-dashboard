@@ -55,6 +55,7 @@ export default class Header extends React.Component {
         </div>
 
         <div className={toggleMenuClasses}>
+          <div className="overlay" onClick={this.onToggleMenu} />
           <div className="menu-container">
             <div className="menu-close">
               <button className="btn-close" onClick={this.onToggleMenu}>
