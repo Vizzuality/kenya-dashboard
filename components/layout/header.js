@@ -101,7 +101,12 @@ export default class Header extends React.Component {
                 {HEADER_MENU_LINKS.map((item, i) => {
                   const itemClasses = classnames(
                     'nav-item',
-                    { '-active': `/${item.route}` === url.pathname || (url.pathname === '/' && item.route === 'home') }
+                    {
+                      '-active': `/${item.route}` === url.pathname ||
+                      // Index page has two different pathnames
+                      (url.pathname === '/' && item.route === 'home') ||
+                      (url.pathname === '/index' && item.route === 'home')
+                    }
                   );
                   return (
                     <li className={itemClasses} key={i} >
