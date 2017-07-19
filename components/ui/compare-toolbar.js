@@ -15,27 +15,32 @@ export default class CompareToolbar extends React.Component {
   constructor(props) {
     super(props);
 
+    this.url = props.url;
+
     // Bindings
     this.onAddArea = this.onAddArea.bind(this);
     this.onToggleModal = this.onToggleModal.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props.url.query, nextProps.url.query)) {
+    const { url, modalOpened, indicatorsFilterList, addIndicator, removeIndicator } = this.props;
+
+    if (!isEqual(url.query, nextProps.url.query)) {
       this.url = nextProps.url;
     }
 
     // Update modal content props
-    if (this.props.modalOpened && nextProps.modalOpened &&
+    if (modalOpened && nextProps.modalOpened &&
       !isEqual(this.props.url.query, nextProps.url.query)) {
       const opts = {
         children: IndicatorsList,
         childrenProps: {
-          indicators: this.props.indicatorsFilterList,
+          indicators: indicatorsFilterList,
           activeIndicators: nextProps.indicatorsList.map(ind => ind.id),
-          addIndicator: this.props.addIndicator,
-          removeIndicator: this.props.removeIndicator,
-          url: nextProps.url
+          url: nextProps.url,
+          addIndicator,
+          removeIndicator,
+          closeModal: modal.toggleModal
         }
       };
       modal.setModalOptions(opts);
@@ -54,9 +59,10 @@ export default class CompareToolbar extends React.Component {
       childrenProps: {
         indicators: this.props.indicatorsFilterList,
         activeIndicators: this.props.indicatorsList.map(ind => ind.id),
+        url: this.props.url,
         addIndicator: this.props.addIndicator,
         removeIndicator: this.props.removeIndicator,
-        url: this.props.url
+        closeModal: modal.toggleModal
       }
     };
     modal.toggleModal(true, opts);
@@ -75,9 +81,9 @@ export default class CompareToolbar extends React.Component {
     return (
       <div className={classNames}>
         {Object.keys(areas).length < 3 &&
-          <button className="btn btn-add-area" onClick={this.onAddArea}>Add Area</button>
+          <button className="c-button btn-add-area" onClick={this.onAddArea}>Add Area</button>
         }
-        <button className="btn btn-add-indicator" onClick={this.onToggleModal}>Add Indicator</button>
+        <button className="c-button btn-add-indicator" onClick={this.onToggleModal}>Add Indicator</button>
       </div>
     );
   }

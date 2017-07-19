@@ -6,13 +6,7 @@
   padding: 0 20px 20px;
   transform: translateX(-50%);
 
-  .btn {
-    color: $color-text-1;
-    padding: 12px 14px;
-    border-radius: 100px;
-    background-color: $color-secondary;
-    font-size: $font-size-small;
-    line-height: 16px;
+  .c-button {
     margin-right: 45px;
 
     &:last-child {

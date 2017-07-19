@@ -6,6 +6,7 @@ import classnames from 'classnames';
 
 // Components
 import Switch from 'react-toggle-switch';
+import Icon from 'components/ui/icon';
 
 export default class CollapsibleList extends React.Component {
   constructor(props) {
@@ -42,7 +43,7 @@ export default class CollapsibleList extends React.Component {
   }
 
   render() {
-    const { className, title, list } = this.props;
+    const { className, title, list, collapse } = this.props;
     const classNames = classnames({
       'c-collapsible-list': true,
       [className]: !!className,
@@ -52,14 +53,18 @@ export default class CollapsibleList extends React.Component {
     return (
       <div className={classNames}>
         <h1 className="collapsible-title">
-          <button className="btn-collapse" onClick={this.onToggleList}>V</button>
           {title}
+          {collapse &&
+            <button className="btn btn-collapse" onClick={this.onToggleList}>
+              <Icon name="icon-arrow-down" className="-smaller" />
+            </button>
+          }
         </h1>
         <div className="collapsible-list-container">
           <ul className="collapsible-list">
             {list.map((l, i) => (
               <li className="list-item" key={i}>
-                {l.name}
+                <span>{l.name}</span>
                 <Switch
                   onClick={() => this.onSwitchItem(l.id)}
                   on={this.state.activeItems.includes(l.id)}
@@ -80,7 +85,12 @@ CollapsibleList.propTypes = {
   activeItems: PropTypes.array,
   className: PropTypes.string,
   url: PropTypes.object,
+  collapse: PropTypes.bool,
   // Actions
   addItem: PropTypes.func,
   removeItem: PropTypes.func
+};
+
+CollapsibleList.defaultProps = {
+  collapse: true
 };
