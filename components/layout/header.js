@@ -30,13 +30,23 @@ export default class Header extends React.Component {
     this.setState({ open: !this.state.open });
   }
 
-  getContent() {
+  getPageCustomContent() {
     const { url } = this.props;
+
     switch (url.pathname) {
+      case '/': return { title: <h1>Kenya</h1> };
       case '/dashboard': return {
         title: <h1>Dashboard</h1>,
         content: <DashboardHeaderContent url={url} />
       };
+      case '/indicator': return {
+        title: (
+          <Link route="dashboard">
+            <a><Icon name="icon-arrow-left" className="" />Go to dashboard</a>
+          </Link>
+        )
+      };
+      case '/about': return { title: <h1>About the Alliance</h1> };
       default: return {};
     }
   }
@@ -47,7 +57,7 @@ export default class Header extends React.Component {
       { '-open': this.state.open }
     );
 
-    const content = this.getContent();
+    const pageCustomContent = this.getPageCustomContent();
 
     return (
       <header className="c-header">
@@ -59,11 +69,11 @@ export default class Header extends React.Component {
                 <button className="btn-menu" onClick={this.onToggleMenu}>
                   <Icon name="icon-arrow-left" className="" />
                 </button>
-                {content.title}
+                {pageCustomContent.title}
               </div>
-              {content.content &&
+              {pageCustomContent.content &&
                 <div className="header-main">
-                  {content.content}
+                  {pageCustomContent.content}
                 </div>
               }
             </div>
