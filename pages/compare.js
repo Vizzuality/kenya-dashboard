@@ -17,6 +17,7 @@ import {
   setSingleMapParamsUrl,
   setMapExpansion,
   setMapExpansionUrl,
+  fitAreaBounds,
   addArea,
   removeArea
 } from 'modules/maps';
@@ -310,6 +311,9 @@ export default withRedux(
     },
     setSingleMapParamsFromUrl(params, key) {
       dispatch(setSingleMapParams(params, key));
+    },
+    fitAreaBounds() {
+      dispatch(fitAreaBounds());
     },
     setMapExpansion(expand, url) {
       dispatch(setMapExpansion(expand));

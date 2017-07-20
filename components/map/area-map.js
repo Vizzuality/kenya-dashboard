@@ -8,15 +8,16 @@ import classnames from 'classnames';
 import Map from 'components/map/map';
 import MapControls from 'components/map/map-controls';
 import ZoomControl from 'components/ui/zoom-control';
+import FitBoundsControl from 'components/ui/fit-bounds-control';
 
 // Constants
 import { MAP_OPTIONS, MAP_METHODS } from 'constants/map';
 
 export default class AreaMap extends React.Component {
-  setListeners(url, id) {
+  setListeners(url, id, area) {
     return {
       moveend: (map) => {
-        this.updateMap(map, url, id);
+        this.updateMap(map, url, id, area);
       }
     };
   }
@@ -24,6 +25,8 @@ export default class AreaMap extends React.Component {
   getMapOptions(area) {
     return {
       zoom: area.zoom,
+      fitBounds: area.fitBounds,
+      bounds: area.bounds,
       minZoom: MAP_OPTIONS.minZoom,
       maxZoom: MAP_OPTIONS.maxZoom,
       zoomControl: MAP_OPTIONS.zoomControl,
@@ -31,13 +34,17 @@ export default class AreaMap extends React.Component {
     };
   }
 
-  updateMap(map, url, id) {
+  updateMap(map, url, id, area) {
     this.props.setSingleMapParams(
       {
-        zoom: map.getZoom(),
-        center: map.getCenter(),
-        key: id
-      }, url, id);
+        ...area,
+        ...{
+          zoom: map.getZoom(),
+          center: map.getCenter(),
+          key: id
+        }
+      },
+      url, id);
   }
 
   render() {
@@ -46,7 +53,7 @@ export default class AreaMap extends React.Component {
       'c-area-map',
       { '-expanded': mapState.expanded }
     );
-    const listeners = this.setListeners(url, id);
+    const listeners = this.setListeners(url, id, area);
     const mapOptions = this.getMapOptions(area);
 
     return (
@@ -58,6 +65,9 @@ export default class AreaMap extends React.Component {
               const newArea = { ...mapState.areas[id], ...{ zoom } };
               this.props.setSingleMapParams(newArea, url, id);
             }}
+          />
+          <FitBoundsControl
+            fitAreaBounds={this.props.fitAreaBounds}
           />
         </MapControls>
         <Map
@@ -82,5 +92,6 @@ AreaMap.propTypes = {
   layersActive: PropTypes.array,
   mapState: PropTypes.object,
   // Actions
-  setSingleMapParams: PropTypes.func
+  setSingleMapParams: PropTypes.func,
+  fitAreaBounds: PropTypes.func
 };

@@ -17,15 +17,9 @@ $button-size: 36px;
     justify-content: center;
     align-items: center;
     background-color: $color-bg-dark;;
-
     width: 100%;
     padding: 0;
-
     border: 1px solid $color-border-1;
-
-    &:not(:first-child) {
-      margin: $space-1 / 2 0 0 0;
-    }
 
     // buttons
     button {
@@ -39,9 +33,7 @@ $button-size: 36px;
       box-shadow: 0 2px 4px 0 rgba($color-black, .5);
       transition: background-color linear $animation-time;
 
-      &:not(:first-child) {
-        border-top: 1px solid $color-border-1;
-      }
+      border-top: 1px solid $color-border-1;
 
       &:hover {
         background-color: rgba($color-bg-dark, .8);

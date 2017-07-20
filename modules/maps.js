@@ -6,6 +6,7 @@ import { MAP_OPTIONS } from 'constants/map';
 
 /* Constants */
 const SET_MAP_PARAMS = 'SET_MAP_PARAMS';
+const FIT_AREA_BOUNDS = 'FIT_AREA_BOUNDS';
 const SET_MAP_EXPANSION = 'SET_MAP_EXPANSION';
 const ADD_AREA = 'ADD_AREA';
 const REMOVE_AREA = 'REMOVE_AREA';
@@ -101,6 +102,12 @@ export function setMapExpansionUrl(expanded, url) {
     const location = { pathname: url.pathname, query: newQuery };
 
     Router.replace(location);
+  };
+}
+
+// Fit area bounds
+export function fitAreaBounds() {
+  return () => {
   };
 }
 
