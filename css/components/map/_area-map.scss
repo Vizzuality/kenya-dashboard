@@ -1,5 +1,7 @@
 
 .c-area-map {
+  position: relative;
+  
   &.-expanded {
     .c-map {
       height: 65vh;

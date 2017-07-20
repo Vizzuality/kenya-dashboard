@@ -169,7 +169,7 @@ class ComparePage extends Page {
             area={mapState.areas[key]}
             layers={layers}
             layersActive={indicators.layersActive}
-            expanded={mapState.expanded}
+            mapState={mapState}
             setSingleMapParams={this.props.setSingleMapParams}
           />
         )

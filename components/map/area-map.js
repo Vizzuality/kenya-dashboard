@@ -7,6 +7,7 @@ import classnames from 'classnames';
 // Components
 import Map from 'components/map/map';
 import MapControls from 'components/map/map-controls';
+import ZoomControl from 'components/ui/zoom-control';
 
 // Constants
 import { MAP_OPTIONS, MAP_METHODS } from 'constants/map';
@@ -40,18 +41,25 @@ export default class AreaMap extends React.Component {
   }
 
   render() {
-    const { url, id, area, layers, layersActive, expanded } = this.props;
+    const { url, id, area, layers, layersActive, mapState } = this.props;
     const classNames = classnames(
       'c-area-map',
-      { '-expanded': expanded }
+      { '-expanded': mapState.expanded }
     );
     const listeners = this.setListeners(url, id);
     const mapOptions = this.getMapOptions(area);
 
     return (
       <div className={classNames}>
-        <MapControls
-        />
+        <MapControls>
+          <ZoomControl
+            zoom={mapState.areas[id].zoom}
+            onZoomChange={(zoom) => {
+              const newArea = { ...mapState.areas[id], ...{ zoom } };
+              this.props.setSingleMapParams(newArea, url, id);
+            }}
+          />
+        </MapControls>
         <Map
           mapOptions={mapOptions}
           mapMethods={MAP_METHODS}
@@ -72,7 +80,7 @@ AreaMap.propTypes = {
   area: PropTypes.object,
   layers: PropTypes.array,
   layersActive: PropTypes.array,
-  expanded: PropTypes.bool,
+  mapState: PropTypes.object,
   // Actions
   setSingleMapParams: PropTypes.func
 };
