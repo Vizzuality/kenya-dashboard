@@ -1,0 +1,30 @@
+
+.c-area-indicators {
+  width: 100%;
+  border-right: 1px solid $color-border-1;
+
+  .area-indicators-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    background-color: rgba($color-secondary, .4);
+    border-bottom: 1px solid $color-border-1;
+
+    .tools {
+      display: flex;
+
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-left: 1px solid $color-border-1;
+
+        .c-icon {
+          fill: rgba($color-text-1, .5);
+        }
+      }
+    }
+  }
+}
