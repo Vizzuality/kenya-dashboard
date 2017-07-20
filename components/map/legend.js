@@ -118,7 +118,7 @@ class Legend extends React.Component {
   }
 
   render() {
-    const { className, expanded } = this.props;
+    const { className, expanded, url } = this.props;
     const classNames = classnames({
       'c-legend': true,
       [className]: !!className,
@@ -138,6 +138,7 @@ class Legend extends React.Component {
               </h2>
               <div className="tools">
                 <ExpandMap
+                  url={url}
                   expanded={expanded}
                   setMapExpansion={this.props.setMapExpansion}
                 />
@@ -166,6 +167,7 @@ class Legend extends React.Component {
 
 Legend.propTypes = {
   className: PropTypes.object,
+  url: PropTypes.object,
   list: PropTypes.array,
   indicatorsLayersActive: PropTypes.array,
   expanded: PropTypes.bool,

@@ -82,8 +82,25 @@ export function setMapExpansion(expand) {
   return (dispatch) => {
     dispatch({
       type: SET_MAP_EXPANSION,
-      payload: expand
+      payload: !!expand
     });
+  };
+}
+
+export function setMapExpansionUrl(expanded, url) {
+  return () => {
+    const newQuery = {};
+
+    Object.keys(url.query).forEach((key) => {
+      if (key !== 'expanded') {
+        newQuery[key] = url.query[key];
+      }
+    });
+    if (expanded) newQuery.expanded = true;
+
+    const location = { pathname: url.pathname, query: newQuery };
+
+    Router.replace(location);
   };
 }
 

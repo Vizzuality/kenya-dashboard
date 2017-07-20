@@ -14,7 +14,7 @@ export default class ExpandMap extends React.Component {
 
   onSetMapExpansion() {
     const expanded = !this.props.expanded;
-    this.props.setMapExpansion(expanded);
+    this.props.setMapExpansion(!!expanded, this.props.url);
   }
 
   render() {
@@ -30,6 +30,7 @@ export default class ExpandMap extends React.Component {
 }
 
 ExpandMap.propTypes = {
+  url: PropTypes.object,
   expanded: PropTypes.bool,
   // Actions
   setMapExpansion: PropTypes.func

@@ -16,6 +16,7 @@ import {
   setSingleMapParams,
   setSingleMapParamsUrl,
   setMapExpansion,
+  setMapExpansionUrl,
   addArea,
   removeArea
 } from 'modules/maps';
@@ -76,6 +77,10 @@ class ComparePage extends Page {
     if (url.query.maps) {
       const params = decode(url.query.maps);
       this.setMapParams(params);
+    }
+
+    if (url.query.expanded) {
+      this.props.setMapExpansionFromUrl(!!url.query.expanded);
     }
 
     // Get all indicators to set the add indicators list
@@ -166,7 +171,6 @@ class ComparePage extends Page {
             layersActive={indicators.layersActive}
             expanded={mapState.expanded}
             setSingleMapParams={this.props.setSingleMapParams}
-            setMapExpansion={this.props.setMapExpansion}
           />
         )
       }
@@ -239,6 +243,7 @@ class ComparePage extends Page {
               items: [
                 <Legend
                   key="legend"
+                  url={url}
                   list={layers}
                   indicatorsLayersActive={indicators.layersActive}
                   setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
@@ -306,9 +311,11 @@ export default withRedux(
     setSingleMapParamsFromUrl(params, key) {
       dispatch(setSingleMapParams(params, key));
     },
-    setMapExpansion(expand) {
+    setMapExpansion(expand, url) {
       dispatch(setMapExpansion(expand));
+      dispatch(setMapExpansionUrl(expand, url));
     },
+    setMapExpansionFromUrl(expand) { dispatch(setMapExpansion(expand)); },
     // Area
     addArea() {
       dispatch(addArea());
