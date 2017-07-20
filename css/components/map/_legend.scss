@@ -7,6 +7,7 @@
   background-color: $color-white;
   padding-bottom: 15px;
   z-index: 1001;
+  background-color: $color-secondary;
 
   &.-hidden {
     height: auto;
@@ -27,21 +28,44 @@
   .legend-header {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    padding: 10px 0;
+
+    .title {
+      color: rgba($color-text-1, .5);
+      font-size: 16px;
+      line-height: 16px;
+    }
+
+    .tools {
+
+      .c-icon {
+        fill: $color-text-1;
+      }
+    }
+
+    .btn {
+      margin-left: 8px;
+
+      .c-icon {
+        fill: $color-primary;
+        stroke: $color-primary;
+        stroke-width: 4px;
+      }
+    }
   }
 
   .legend-content {
     position: relative;
     display: flex;
     flex-flow: column;
-    height: 100%;
+    height: calc(100% - 45px);
     justify-content: space-between;
     padding: 0 0 10px;
     transition: all .2s ease-out;
     overflow-y: auto;
 
     .legend-item {
-      padding: 10px;
+      padding: 10px 0;
       border-bottom: 1px solid rgba($color-black, .2);
 
       &:last-child {
@@ -90,6 +114,10 @@
 
         .btn-show {
           margin-right: 8px;
+
+          .c-icon {
+            fill: $color-text-1;
+          }
         }
       }
 

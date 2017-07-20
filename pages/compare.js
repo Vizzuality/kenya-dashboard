@@ -15,6 +15,7 @@ import {
 import {
   setSingleMapParams,
   setSingleMapParamsUrl,
+  setMapExpansion,
   addArea,
   removeArea
 } from 'modules/maps';
@@ -121,10 +122,10 @@ class ComparePage extends Page {
     const { hidden } = this.state;
 
     return list.map((l, i) => {
-      const className = classnames({
-        'accordion-item': true,
-        '-hidden': hidden.includes(l.id)
-      });
+      const className = classnames(
+        'accordion-item',
+        { '-hidden': hidden.includes(l.id) }
+      );
 
       return (
         <div className={className} id={l.id} key={i}>
@@ -163,7 +164,9 @@ class ComparePage extends Page {
             area={mapState.areas[key]}
             layers={layers}
             layersActive={indicators.layersActive}
+            expanded={mapState.expanded}
             setSingleMapParams={this.props.setSingleMapParams}
+            setMapExpansion={this.props.setMapExpansion}
           />
         )
       }
@@ -240,6 +243,8 @@ class ComparePage extends Page {
                   indicatorsLayersActive={indicators.layersActive}
                   setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
                   setIndicatorsLayers={this.props.setIndicatorsLayers}
+                  expanded={mapState.expanded}
+                  setMapExpansion={this.props.setMapExpansion}
                 />
               ]
             },
@@ -300,6 +305,9 @@ export default withRedux(
     },
     setSingleMapParamsFromUrl(params, key) {
       dispatch(setSingleMapParams(params, key));
+    },
+    setMapExpansion(expand) {
+      dispatch(setMapExpansion(expand));
     },
     // Area
     addArea() {

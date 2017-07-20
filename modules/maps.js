@@ -6,6 +6,7 @@ import { MAP_OPTIONS } from 'constants/map';
 
 /* Constants */
 const SET_MAP_PARAMS = 'SET_MAP_PARAMS';
+const SET_MAP_EXPANSION = 'SET_MAP_EXPANSION';
 const ADD_AREA = 'ADD_AREA';
 const REMOVE_AREA = 'REMOVE_AREA';
 
@@ -34,6 +35,8 @@ export default function mapsReducer(state = initialState, action) {
       const newAreaParams = Object.assign({}, state.areas, action.payload);
       return Object.assign({}, state, { areas: newAreaParams });
     }
+    case SET_MAP_EXPANSION:
+      return Object.assign({}, state, { expanded: action.payload });
     case ADD_AREA: {
       const newAreaParams = Object.assign({}, state.areas, {
         [Math.random()]: DEFAULT_AREA_PARAMS
@@ -75,6 +78,16 @@ export function setSingleMapParamsUrl(params, url) {
   };
 }
 
+export function setMapExpansion(expand) {
+  return (dispatch) => {
+    dispatch({
+      type: SET_MAP_EXPANSION,
+      payload: expand
+    });
+  };
+}
+
+// Areas
 export function addArea() {
   return (dispatch) => {
     dispatch({

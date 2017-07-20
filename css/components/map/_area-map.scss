@@ -1,0 +1,9 @@
+
+.c-area-map {
+  &.-expanded {
+    .c-map {
+      height: 380px;
+      transition: all $animation-time-2 $ease-out-sine;
+    }
+  }
+}

@@ -23,8 +23,10 @@
 
 // - map
 @import '../node_modules/leaflet/dist/leaflet';
+@import 'components/map/area-map';
 @import 'components/map/map';
 @import 'components/map/legend';
+@import 'components/map/map-controls';
 
 // modal contents
 @import 'components/modal-contents/indicators-list';

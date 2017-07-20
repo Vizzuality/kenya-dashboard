@@ -4,17 +4,19 @@ import PropTypes from 'prop-types';
 // Libraries
 import classnames from 'classnames';
 
-import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
 
 // Components
-// import Icon from 'components/ui/icon';
+import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
+import ExpandMap from 'components/ui/expand-map';
+import Icon from 'components/ui/icon';
+
 
 const SortableItem = SortableElement(({ value }) => value);
 
 const DragHandle = SortableHandle(() => (
   <span className="handler">
     {/* <Icon name="icon-drag-dots" className="-small" /> */}
-    M
+    Drag
   </span>
 ));
 
@@ -31,13 +33,12 @@ class Legend extends React.Component {
     super(props);
 
     this.state = {
-      open: true
+      open: false
     };
 
     // BINDINGS
     this.onToggle = this.onToggle.bind(this);
     this.onToggleLayer = this.onToggleLayer.bind(this);
-
     this.onSortEnd = this.onSortEnd.bind(this);
   }
 
@@ -100,7 +101,9 @@ class Legend extends React.Component {
       <li key={i} className={`legend-item -${layer.attributes.legendConfig.type}`}>
         <header className="item-header">
           <div className="item-header">
-            <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>o</button>
+            <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>
+              <Icon name="icon-eye" className="" />
+            </button>
             <span className="layer-name">{layer.attributes.name}</span>
           </div>
           <div className="item-tools">
@@ -115,7 +118,7 @@ class Legend extends React.Component {
   }
 
   render() {
-    const { className } = this.props;
+    const { className, expanded } = this.props;
     const classNames = classnames({
       'c-legend': true,
       [className]: !!className,
@@ -124,25 +127,37 @@ class Legend extends React.Component {
 
     return (
       <div className={classNames}>
-        <header className="legend-header">
-          <div className="title">Legend</div>
-          <div className="tools">
-            <button className="btn-close" onClick={this.onToggle}>V</button>
+        <div className="row">
+          <div className="column small-12">
+            <header className="legend-header">
+              <h2 className="title">
+                Legend
+                <button className="btn btn-close" onClick={this.onToggle}>
+                  <Icon name="icon-arrow-up" className="-smaller" />
+                </button>
+              </h2>
+              <div className="tools">
+                <ExpandMap
+                  expanded={expanded}
+                  setMapExpansion={this.props.setMapExpansion}
+                />
+              </div>
+            </header>
+            <div className="legend-content">
+              <SortableList
+                items={this.getLegendItems()}
+                helperClass="c-legend-unit -sort"
+                onSortEnd={this.onSortEnd}
+                onSortStart={this.onSortStart}
+                onSortMove={this.onSortMove}
+                axis="y"
+                lockAxis="y"
+                lockToContainerEdges
+                lockOffset="50%"
+                useDragHandle
+              />
+            </div>
           </div>
-        </header>
-        <div className="legend-content">
-          <SortableList
-            items={this.getLegendItems()}
-            helperClass="c-legend-unit -sort"
-            onSortEnd={this.onSortEnd}
-            onSortStart={this.onSortStart}
-            onSortMove={this.onSortMove}
-            axis="y"
-            lockAxis="y"
-            lockToContainerEdges
-            lockOffset="50%"
-            useDragHandle
-          />
         </div>
       </div>
     );
@@ -153,10 +168,11 @@ Legend.propTypes = {
   className: PropTypes.object,
   list: PropTypes.array,
   indicatorsLayersActive: PropTypes.array,
-
-  // Functions
+  expanded: PropTypes.bool,
+  // Actions
   setIndicatorsLayers: PropTypes.func,
-  setIndicatorsLayersActive: PropTypes.func
+  setIndicatorsLayersActive: PropTypes.func,
+  setMapExpansion: PropTypes.func
 };
 
 export default Legend;
