@@ -15,8 +15,7 @@ const SortableItem = SortableElement(({ value }) => value);
 
 const DragHandle = SortableHandle(() => (
   <span className="handler">
-    {/* <Icon name="icon-drag-dots" className="-small" /> */}
-    Drag
+    <Icon name="icon-drag" className="" />
   </span>
 ));
 

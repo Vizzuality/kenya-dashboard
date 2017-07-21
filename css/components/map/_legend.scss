@@ -37,9 +37,8 @@
     }
 
     .tools {
-
       .c-icon {
-        fill: $color-text-1;
+        fill: rgba($color-text-1, .5);
       }
     }
 
@@ -114,6 +113,7 @@
 
         .btn-show {
           margin-right: 8px;
+          padding: 0;
 
           .c-icon {
             fill: $color-text-1;
@@ -123,7 +123,11 @@
 
       .item-tools {
         .handler {
-          cursor: move;
+          cursor: -webkit-grab;
+        }
+
+        .c-icon {
+          fill: $color-primary;
         }
       }
 
@@ -136,11 +140,78 @@
 }
 
 .legend-item {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba($color-black, .2);
+
+  &:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
   &.-sort {
-    background-color: $color-white;
+    background-color: $color-bg-dark;
     max-height: 90px;
     overflow: hidden;
     padding: 10px 0;
     z-index: 99999999;
+  }
+
+  &.-choropleth,
+  &.-gradient {
+    .visual-item {
+      display: flex;
+      flex-flow: column;
+      flex-grow: 1;
+    }
+
+    .color {
+      display: inline-block;
+      height: 5px;
+      margin-bottom: 3px;
+    }
+
+    .value {
+      text-align: center;
+    }
+  }
+
+  &.-basic {
+    .visual-item {
+      display: flex;
+      align-items: center;
+      margin-right: 15px;
+      margin-bottom: 5px;
+    }
+
+    .color {
+      margin-right: 8px;
+      width: 10px;
+      height: 10px;
+    }
+  }
+
+  .item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+
+    .btn-show {
+      margin-right: 8px;
+
+      .c-icon {
+        fill: $color-text-1;
+      }
+    }
+  }
+
+  .item-tools {
+    .handler {
+      cursor: move;
+    }
+  }
+
+  .layer-visual {
+    display: flex;
+    flex-flow: row wrap;
   }
 }

@@ -27,7 +27,7 @@ export default class FitBoundsControl extends React.Component {
 
     return (
       <button className={classNames} onClick={this.onFitBounds}>
-        <Icon name="icon-check" className="" />
+        <Icon name="icon-location" className="" />
       </button>
     );
   }

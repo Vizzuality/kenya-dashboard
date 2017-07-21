@@ -40,7 +40,7 @@ export default class AreaIndicators extends React.Component {
           </div>
           <div className="tools">
             <button className="btn btn-toggle" onClick={e => this.props.onToggleAccordionItem(e, id)}>
-              <Icon name="icon-arrow-right2" className="" />
+              <Icon name="icon-expand" className="" />
             </button>
             {numOfAreas > 1 &&
               <button className="btn btn-remove" onClick={() => this.onRemoveArea(id)}>
