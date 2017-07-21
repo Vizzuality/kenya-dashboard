@@ -1,0 +1,52 @@
+$button-size: 36px;
+
+.c-map-controls {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10001;
+
+  &.-left {
+    top: $space-1 * 2;
+    left: $space-1 * 2;
+    right: auto;
+  }
+
+  .map-controls-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $color-bg-dark;;
+    width: 100%;
+    padding: 0;
+    border: 1px solid $color-border-1;
+
+    // buttons
+    button {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: $button-size;
+      height: $button-size;
+      background-color: $color-bg-dark;
+      box-shadow: 0 2px 4px 0 rgba($color-black, .5);
+      transition: background-color linear $animation-time;
+
+      border-top: 1px solid $color-border-1;
+
+      &:hover {
+        background-color: rgba($color-bg-dark, .8);
+      }
+
+      &.-disabled {
+        pointer-events: none;
+        opacity: 0.25;
+      }
+
+      > svg {
+        fill: $color-white;
+      }
+    }
+  }
+}

@@ -70,8 +70,8 @@ export default class Map extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     // Fitbounds
-    if (!isEqual(this.props.mapMethods.fitBounds, nextProps.mapMethods.fitBounds)) {
-      this.map.fitBounds(nextProps.mapMethods.fitBounds);
+    if (!isEqual(this.props.mapOptions.fitBounds, nextProps.mapOptions.fitBounds)) {
+      // TODO fit area bounds
     }
 
     // Layers
