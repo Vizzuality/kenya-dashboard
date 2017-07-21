@@ -12,6 +12,7 @@
 $color-black: black;
 $color-dark: #1E2727;
 $color-dark-grey: #2E3D3D;
+$color-light-grey: #979797;
 $color-dark-green: #73A575;
 $color-light-green: #C9FF8A;
 $color-watermelon: #FF6161; // Red
@@ -21,6 +22,7 @@ $color-white: white;
 // App
 $color-primary: $color-dark-green;
 $color-secondary: $color-dark-grey;
+$color-tertiary: $color-light-green;
 
 // Threshold
 $color-threshold-success: $color-light-green;
@@ -38,6 +40,7 @@ $color-error: $color-watermelon;
 // Borders
 $color-border-1: $color-dark-grey;
 $color-border-2: $color-white;
+$color-border-3: $color-light-grey;
 
 // Backgrounds
 $color-bg-dark: $color-dark;
@@ -59,7 +62,7 @@ $z-index-3: 1000;
 */
 // Families
 $font-family-1: 'Protipo A';
-$font-family-2: Georgia, Arial, sans-serif;
+$font-family-2: sans-serif, Arial, Georgia;
 
 // Sizes
 $font-size-extrasmall:  10px;

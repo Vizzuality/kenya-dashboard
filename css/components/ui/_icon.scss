@@ -13,13 +13,33 @@
     height: 10px;
   }
 
+  &.-small {
+    width: 14px;
+    height: 14px;
+  }
+
   &.-medium {
+    width: 18px;
+    height: 18px;
+  }
+
+  &.-normal {
+    width: 21px;
+    height: 21px;
+  }
+
+  &.-big {
     width: 24px;
     height: 24px;
   }
 
-  &.-big {
+  &.-bigger {
     width: 32px;
     height: 32px;
+  }
+
+  &.-extra-huge {
+    width: 70px;
+    height: 70px;
   }
 }

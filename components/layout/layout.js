@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Components
-import Header from 'components/layout/header';
-import Footer from 'components/layout/footer';
 import Head from 'components/layout/head';
 import Icons from 'components/layout/icons';
+import Header from 'components/layout/header';
 import Modal from 'components/ui/modal';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -19,7 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 export default class Layout extends React.Component {
   render() {
-    const { title, description, url, session, children, className, footer } = this.props;
+    const { title, description, url, session, children, className } = this.props;
 
     const classNames = classnames({
       [className]: !!className
@@ -31,9 +30,9 @@ export default class Layout extends React.Component {
           title={title}
           description={description}
         />
-
         <Icons />
 
+        {/* Customs Header */}
         <Header
           url={url}
           session={session}
@@ -58,6 +57,5 @@ Layout.propTypes = {
   children: PropTypes.any.isRequired,
   session: PropTypes.object,
   url: PropTypes.object.isRequired,
-  className: PropTypes.string,
-  footer: PropTypes.bool
+  className: PropTypes.string
 };

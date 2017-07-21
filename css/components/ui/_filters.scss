@@ -1,4 +1,33 @@
 
 .c-filters {
-  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+
+  .c-select {
+    margin-right: 15px;
+  }
+
+  .btn-grid,
+  .btn-list {
+    display: flex;
+    align-items: center;
+    padding: 0;
+
+    &.-active {
+      .c-icon {
+        fill: $color-primary;
+      }
+    }
+
+    .c-icon {
+      fill: $color-secondary;
+      margin-top: 3px;
+    }
+  }
+
+  .btn-grid {
+    margin-left: 15px;
+    margin-right: 20px;
+  }
 }

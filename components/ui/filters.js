@@ -5,9 +5,7 @@ import isArray from 'lodash/isArray';
 
 // Components
 import Select from 'react-select';
-
-// Constants
-import { SHOW_BY_OPTION } from 'constants/filters';
+import Icon from 'components/ui/icon';
 
 
 export default class Filters extends React.Component {
@@ -15,8 +13,19 @@ export default class Filters extends React.Component {
     super(props);
 
     this.state = {
-      showBy: 'country'
+      showBy: 'county'
     };
+
+    // Bindings
+    this.onSetDashboardLayout = this.onSetDashboardLayout.bind(this);
+  }
+
+  /**
+    UI events
+  */
+  onSetDashboardLayout(e) {
+    const layout = e.currentTarget.getAttribute('data-layout');
+    this.props.onSetDashboardLayout(layout);
   }
 
   setFilters(opts, key) {
@@ -38,93 +47,74 @@ export default class Filters extends React.Component {
   }
 
   render() {
-    const { options, selected } = this.props;
+    const { className, options, selected, layout } = this.props;
     const { showBy } = this.state;
-    const className = classnames({
-      'c-filters': true,
-      [this.props.className]: !!this.props.className
-    });
+    const classNames = classnames(
+      'c-filters',
+      { [className]: !!className }
+    );
+
+    const btnGridClasses = classnames(
+      'btn-grid',
+      { '-active': layout === 'grid' }
+    );
+
+    const btnListClasses = classnames(
+      'btn-list',
+      { '-active': layout === 'list' }
+    );
 
     return (
-      <div className={className}>
-        <div className="row">
-          <div className="column small-12 medium-3">
-            <Select
-              instanceId="showByOptions"
-              name="showBy"
-              placeholder="Show by..."
-              options={SHOW_BY_OPTION || []}
-              value={showBy}
-              onChange={opts => this.setShowBy(opts)}
-            />
-          </div>
-          <div className="column small-12 medium-9">
-            <div className="filters-container">
-              {/* country select */}
-              {showBy === 'country' &&
-                <Select
-                  instanceId="countriesOptions"
-                  name="countries"
-                  placeholder="Countries"
-                  multi
-                  options={options.countries || []}
-                  value={options.countries ?
-                    options.countries.filter(opt => selected.countries.includes(opt.value)) : []}
-                  onChange={opts => this.setFilters(opts, 'countries')}
-                />
-              }
+      <div className={classNames}>
+        {/* County select */}
+        {showBy === 'county' &&
+          <Select
+            instanceId="countiesOptions"
+            className="c-select"
+            name="counties"
+            placeholder="Counties"
+            multi
+            options={options.counties || []}
+            value={options.counties ?
+              options.counties.filter(opt => selected.counties.includes(opt.value)) : []}
+            onChange={opts => this.setFilters(opts, 'counties')}
+          />
+        }
 
-              {/* County select */}
-              {showBy === 'county' &&
-                <Select
-                  instanceId="countiesOptions"
-                  name="counties"
-                  placeholder="Counties"
-                  multi
-                  options={options.counties || []}
-                  value={options.counties ?
-                    options.counties.filter(opt => selected.counties.includes(opt.value)) : []}
-                  onChange={opts => this.setFilters(opts, 'counties')}
-                />
-              }
+        {/* Categories select */}
+        <Select
+          instanceId="categoriesOptions"
+          className="c-select"
+          name="categories"
+          placeholder="Categories"
+          multi
+          options={options.categories || []}
+          value={options.categories ?
+            options.categories.filter(opt => selected.categories.includes(opt.value)) : []}
+          onChange={opts => this.setFilters(opts, 'categories')}
+        />
 
-              {/* Categories select */}
-              <Select
-                instanceId="categoriesOptions"
-                name="categories"
-                placeholder="Categories"
-                multi
-                options={options.categories || []}
-                value={options.categories ?
-                  options.categories.filter(opt => selected.categories.includes(opt.value)) : []}
-                onChange={opts => this.setFilters(opts, 'categories')}
-              />
+        {/* Sort by select */}
+        <Select
+          instanceId="sortbyOptions"
+          className="c-select"
+          name="sort"
+          placeholder="Sort"
+          options={options.sort || []}
+          value={options.sort ?
+            options.sort.find(opt => selected.sort === opt.value) : {}}
+          onChange={opts => this.setFilters(opts, 'sort')}
+        />
 
-              {/* Sort by select */}
-              <Select
-                instanceId="sortbyOptions"
-                name="sort"
-                placeholder="Sort By"
-                options={options.sort || []}
-                value={options.sort ?
-                  options.sort.find(opt => selected.sort === opt.value) : {}}
-                onChange={opts => this.setFilters(opts, 'sort')}
-              />
+        {/* Set layout buttons */}
+        <button className={btnGridClasses} data-layout="grid" onClick={this.onSetDashboardLayout}>
+          <Icon name="icon-grid" className="-small" />
+        </button>
 
-              {/* Dates select */}
-              <Select
-                instanceId="datesOptions"
-                name="dates"
-                placeholder="Dates"
-                multi
-                options={options.dates || []}
-                value={options.dates ?
-                  options.dates.filter(opt => selected.dates.includes(opt.value)) : []}
-                onChange={opts => this.setFilters(opts, 'dates')}
-              />
-            </div>
-          </div>
-        </div>
+        <button className={btnListClasses} data-layout="list" onClick={this.onSetDashboardLayout}>
+          <Icon name="icon-list" className="-small" />
+        </button>
+
       </div>
     );
   }
@@ -134,8 +124,10 @@ Filters.propTypes = {
   className: PropTypes.string,
   options: PropTypes.object,
   selected: PropTypes.object,
+  layout: PropTypes.string,
   // Actions
-  onSetFilters: PropTypes.func
+  onSetFilters: PropTypes.func,
+  onSetDashboardLayout: PropTypes.func
 };
 
 Filters.defaultProps = {

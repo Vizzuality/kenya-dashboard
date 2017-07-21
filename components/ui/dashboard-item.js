@@ -16,7 +16,7 @@ import { get } from 'utils/request';
 import { EXAMPLE_QUERY_DATA } from 'constants/indicators';
 
 
-export default class PanelItem extends React.Component {
+export default class DashboardItem extends React.Component {
   constructor(props) {
     super(props);
 
@@ -101,7 +101,7 @@ export default class PanelItem extends React.Component {
     const threshold = data && data.threshold ? this.getThreshold(data.threshold) : null;
 
     const classNames = classnames({
-      'c-panel-item': true,
+      'c-dashboard-item': true,
       [className]: !!className,
       [`-${threshold || 'default'}`]: !!info.threshold && !isEmpty(info.threshold) && !!data && !!data.threshold
     });
@@ -119,11 +119,11 @@ export default class PanelItem extends React.Component {
   }
 }
 
-PanelItem.propTypes = {
+DashboardItem.propTypes = {
   info: PropTypes.object,
   className: PropTypes.string
 };
 
-PanelItem.defaultProps = {
+DashboardItem.defaultProps = {
   info: {}
 };
