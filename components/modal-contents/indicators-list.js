@@ -30,10 +30,16 @@ export default function IndicatorsList(props) {
                 addItem={props.addIndicator}
                 removeItem={props.removeIndicator}
                 url={props.url}
+                collapse={false}
               />
             </div>
           ))}
         </div>
+        <footer className="actions-container">
+          <button className="c-button btn-add-indicator" onClick={() => props.closeModal(false)}>
+            Add Indicator
+          </button>
+        </footer>
       </section>
     </div>
   );
@@ -46,5 +52,6 @@ IndicatorsList.propTypes = {
   url: PropTypes.object,
   // Actions
   addIndicator: PropTypes.func,
-  removeIndicator: PropTypes.func
+  removeIndicator: PropTypes.func,
+  closeModal: PropTypes.func
 };

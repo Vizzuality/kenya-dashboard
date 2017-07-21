@@ -18,7 +18,23 @@
 
   .collapsible-title {
     position: relative;
+    display: flex;
+    align-items: center;
+    font-size: $font-size-default;
+    line-height: 18px;
+    text-transform: capitalize;
     z-index: 1;
+    margin-bottom: 16px;
+    cursor: default;
+
+    .btn {
+      padding: 0;
+      margin-left: 10px;
+    }
+
+    .c-icon {
+      fill: $color-text-1;
+    }
   }
 
   .btn-collapse {
@@ -33,5 +49,15 @@
   .collapsible-list {
     transform: translateY(0);
     transition: all .2s ease;
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: $font-size-small;
+      line-height: 16px;
+      text-transform: capitalize;
+      margin-bottom: 10px;
+    }
   }
 }

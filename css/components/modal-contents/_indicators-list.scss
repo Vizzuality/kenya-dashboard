@@ -1,16 +1,19 @@
 
 .c-indicators-list {
-  padding: 50px;
-  
+  padding: 42px 48px 26px;
+
   .list-header {
     width: 100%;
+    margin-bottom: 30px;
 
     .title {
       text-align: center;
     }
   }
 
-  .list-content {
-
+  .actions-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 26px;
   }
 }

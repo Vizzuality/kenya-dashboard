@@ -1,19 +1,10 @@
 .c-button {
-  display: inline-block;
-  align-items: center;
-  padding: 9px 25px 8px;
-  text-align: center;
-  letter-spacing: 2px;
-  font-family: $font-family-1;
-  font-size: $font-size-default;
-  font-weight: $font-weight-default;
-  border-radius: 3px;
-  text-transform: uppercase;
-  border-width: 1px;
-  border-style: solid;
-  white-space: nowrap;
-  text-decoration: none;
-  transition: all .1s linear;
+  color: $color-text-1;
+  padding: 12px 14px;
+  border-radius: 100px;
+  background-color: $color-secondary;
+  font-size: $font-size-small;
+  line-height: 16px;
 
   // STATES
   &.-disabled {

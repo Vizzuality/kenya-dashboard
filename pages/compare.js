@@ -25,9 +25,6 @@ import {
 // Selectors
 import { getIndicatorsWithLayers } from 'selectors/indicators';
 
-// Services
-import modal from 'services/modal';
-
 // Redux
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
@@ -47,7 +44,7 @@ import Accordion from 'components/ui/accordion';
 import AreaMap from 'components/map/area-map';
 import AreaIndicators from 'components/ui/area-indicators';
 import Legend from 'components/map/legend';
-import IndicatorsList from 'components/modal-contents/indicators-list';
+import CompareToolbar from 'components/ui/compare-toolbar';
 
 // Constants
 import { MAP_OPTIONS } from 'constants/map';
@@ -67,7 +64,6 @@ class ComparePage extends Page {
     this.onToggleAccordionItem = this.onToggleAccordionItem.bind(this);
     this.onAddArea = this.onAddArea.bind(this);
     this.onRemoveArea = this.onRemoveArea.bind(this);
-    this.onToggleModal = this.onToggleModal.bind(this);
   }
 
   /* Lifecycle */
@@ -95,22 +91,6 @@ class ComparePage extends Page {
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props.url.query, nextProps.url.query)) {
       this.url = nextProps.url;
-    }
-
-    // Update modal content props
-    if (this.props.modal.opened && nextProps.modal.opened &&
-      !isEqual(this.props.url.query, nextProps.url.query)) {
-      const opts = {
-        children: IndicatorsList,
-        childrenProps: {
-          indicators: this.props.indicatorsFilterList,
-          activeIndicators: nextProps.indicators.list.map(ind => ind.id),
-          addIndicator: this.props.addIndicator,
-          removeIndicator: this.props.removeIndicator,
-          url: nextProps.url
-        }
-      };
-      modal.setModalOptions(opts);
     }
   }
 
@@ -205,22 +185,8 @@ class ComparePage extends Page {
       this.props.removeArea(id);
   }
 
-  onToggleModal() {
-    const opts = {
-      children: IndicatorsList,
-      childrenProps: {
-        indicators: this.props.indicatorsFilterList,
-        activeIndicators: this.props.indicators.list.map(ind => ind.id),
-        addIndicator: this.props.addIndicator,
-        removeIndicator: this.props.removeIndicator,
-        url: this.props.url
-      }
-    };
-    modal.toggleModal(true, opts);
-  }
-
   render() {
-    const { url, mapState, indicators, session } = this.props;
+    const { url, mapState, indicators, session, indicatorsFilterList, modal } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(layers);
     const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators);
@@ -232,10 +198,16 @@ class ComparePage extends Page {
         url={url}
         session={session}
       >
-        {Object.keys(mapState.areas).length < 3 &&
-          <button onClick={this.onAddArea}>+ Add Area</button>
-        }
-        <button onClick={this.onToggleModal}>+ Add Indicator</button>
+        <CompareToolbar
+          indicatorsFilterList={indicatorsFilterList}
+          indicatorsList={indicators.list}
+          areas={mapState.areas}
+          modalOpened={modal.opened}
+          url={url}
+          addArea={this.props.addArea}
+          addIndicator={this.props.addIndicator}
+          removeIndicator={this.props.removeIndicator}
+        />
         <Accordion
           sections={[
             { type: 'dynamic', items: this.getList(areaMaps) },
