@@ -21,8 +21,8 @@ export default class ExpandMap extends React.Component {
     return (
       <button className="c-expand-map" onClick={this.onSetMapExpansion}>
         {this.props.expanded ?
-          <Icon name="icon-arrow-up2" className="" /> :
-          <Icon name="icon-arrow-down2" className="" />
+          <Icon name="icon-retract" className="" /> :
+          <Icon name="icon-enlarge" className="" />
         }
       </button>
     );
