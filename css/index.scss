@@ -23,8 +23,10 @@
 
 // - map
 @import '../node_modules/leaflet/dist/leaflet';
+@import 'components/map/area-map';
 @import 'components/map/map';
 @import 'components/map/legend';
+@import 'components/map/map-controls';
 
 // modal contents
 @import 'components/modal-contents/indicators-list';
@@ -33,6 +35,7 @@
 @import '../node_modules/react-select/dist/react-select';
 @import '../node_modules/react-toggle-switch/dist/css/switch.min';
 @import 'components/ui/accordion';
+@import 'components/ui/area-indicators';
 @import 'components/ui/button';
 @import 'components/ui/collapsible-list';
 @import 'components/ui/compare-toolbar';
@@ -46,3 +49,4 @@
 @import 'components/ui/switch';
 @import 'components/ui/title';
 @import 'components/ui/select';
+@import 'components/ui/zoom-control';

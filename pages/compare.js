@@ -15,6 +15,9 @@ import {
 import {
   setSingleMapParams,
   setSingleMapParamsUrl,
+  setMapExpansion,
+  setMapExpansionUrl,
+  fitAreaBounds,
   addArea,
   removeArea
 } from 'modules/maps';
@@ -39,6 +42,7 @@ import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import Accordion from 'components/ui/accordion';
 import AreaMap from 'components/map/area-map';
+import AreaIndicators from 'components/ui/area-indicators';
 import Legend from 'components/map/legend';
 import CompareToolbar from 'components/ui/compare-toolbar';
 
@@ -51,13 +55,15 @@ class ComparePage extends Page {
     super(props);
 
     this.state = {
-      hidden: []
+      activeArea: null
     };
 
     this.url = props.url;
 
     // Bindings
     this.onToggleAccordionItem = this.onToggleAccordionItem.bind(this);
+    this.onAddArea = this.onAddArea.bind(this);
+    this.onRemoveArea = this.onRemoveArea.bind(this);
   }
 
   /* Lifecycle */
@@ -70,6 +76,10 @@ class ComparePage extends Page {
     if (url.query.maps) {
       const params = decode(url.query.maps);
       this.setMapParams(params);
+    }
+
+    if (url.query.expanded) {
+      this.props.setMapExpansionFromUrl(!!url.query.expanded);
     }
 
     // Get all indicators to set the add indicators list
@@ -86,24 +96,19 @@ class ComparePage extends Page {
 
   /* Accordion methods */
   onToggleAccordionItem(e, id) {
-    let newHidden = this.state.hidden.slice();
-    if (this.state.hidden.includes(id)) {
-      newHidden = newHidden.filter(hiddenId => hiddenId !== id);
-    } else if (newHidden.length + 1 < Object.keys(this.props.mapState.areas).length) {
-      newHidden.push(id);
-    }
-    this.setState({ hidden: newHidden });
+    const activeArea = id === this.state.activeArea ? null : id;
+    this.setState({ activeArea });
   }
 
   /* Get an accordion section list with the components */
   getList(list) {
-    const { hidden } = this.state;
+    const { activeArea } = this.state;
 
     return list.map((l, i) => {
-      const className = classnames({
-        'accordion-item': true,
-        '-hidden': hidden.includes(l.id)
-      });
+      const className = classnames(
+        'accordion-item',
+        { '-collapsed': activeArea !== null && l.id !== activeArea }
+      );
 
       return (
         <div className={className} id={l.id} key={i}>
@@ -142,11 +147,36 @@ class ComparePage extends Page {
             area={mapState.areas[key]}
             layers={layers}
             layersActive={indicators.layersActive}
+            mapState={mapState}
             setSingleMapParams={this.props.setSingleMapParams}
           />
         )
       }
     ));
+  }
+
+  /* Create all indicators */
+  getAreaIndicators(areas, indicators) {
+    return Object.keys(areas).map(key => (
+      {
+        id: key,
+        el: (
+          <AreaIndicators
+            id={key}
+            indicators={indicators}
+            numOfAreas={Object.keys(areas).length}
+            onToggleAccordionItem={this.onToggleAccordionItem}
+            onRemoveArea={this.onRemoveArea}
+          />
+        )
+      }
+    ));
+  }
+
+  /* Add area */
+  onAddArea() {
+    Object.keys(this.props.mapState.areas).length < 3 &&
+      this.props.addArea();
   }
 
   /* Reamove area */
@@ -159,22 +189,7 @@ class ComparePage extends Page {
     const { url, mapState, indicators, session, indicatorsFilterList, modal } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(layers);
-    // Widget samples
-    const indicatorsWidgets = Object.keys(mapState.areas).map(key => (
-      {
-        id: key,
-        el: (
-          <div>
-            <button className="btn-toggle" onClick={e => this.onToggleAccordionItem(e, key)}>{'<>'}</button>
-            Loc {key}
-            {indicators.list.map((ind, i) => <p key={i}>{ind.name}</p>)}
-            {Object.keys(this.props.mapState.areas).length > 1 &&
-              <button onClick={() => this.onRemoveArea(key)}>{'X'}</button>
-            }
-          </div>
-        )
-      }
-    ));
+    const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators);
 
     return (
       <Layout
@@ -201,10 +216,13 @@ class ComparePage extends Page {
               items: [
                 <Legend
                   key="legend"
+                  url={url}
                   list={layers}
                   indicatorsLayersActive={indicators.layersActive}
                   setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
                   setIndicatorsLayers={this.props.setIndicatorsLayers}
+                  expanded={mapState.expanded}
+                  setMapExpansion={this.props.setMapExpansion}
                 />
               ]
             },
@@ -266,6 +284,14 @@ export default withRedux(
     setSingleMapParamsFromUrl(params, key) {
       dispatch(setSingleMapParams(params, key));
     },
+    fitAreaBounds() {
+      dispatch(fitAreaBounds());
+    },
+    setMapExpansion(expand, url) {
+      dispatch(setMapExpansion(expand));
+      dispatch(setMapExpansionUrl(expand, url));
+    },
+    setMapExpansionFromUrl(expand) { dispatch(setMapExpansion(expand)); },
     // Area
     addArea() {
       dispatch(addArea());
