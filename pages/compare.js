@@ -19,7 +19,8 @@ import {
   setMapExpansionUrl,
   fitAreaBounds,
   addArea,
-  removeArea
+  removeArea,
+  setAreasParamsUrl
 } from 'modules/maps';
 
 // Selectors
@@ -175,14 +176,18 @@ class ComparePage extends Page {
 
   /* Add area */
   onAddArea() {
-    Object.keys(this.props.mapState.areas).length < 3 &&
-      this.props.addArea();
+    const { url, mapState } = this.props;
+
+    Object.keys(mapState.areas).length < 3 &&
+      this.props.addArea(url);
   }
 
   /* Reamove area */
   onRemoveArea(id) {
-    Object.keys(this.props.mapState.areas).length > 1 &&
-      this.props.removeArea(id);
+    const { url, mapState } = this.props;
+
+    Object.keys(mapState.areas).length > 1 &&
+      this.props.removeArea(id, url);
   }
 
   render() {
@@ -293,11 +298,13 @@ export default withRedux(
     },
     setMapExpansionFromUrl(expand) { dispatch(setMapExpansion(expand)); },
     // Area
-    addArea() {
+    addArea(url) {
       dispatch(addArea());
+      dispatch(setAreasParamsUrl(url));
     },
-    removeArea(id) {
+    removeArea(id, url) {
       dispatch(removeArea(id));
+      dispatch(setAreasParamsUrl(url));
     }
   })
 )(ComparePage);

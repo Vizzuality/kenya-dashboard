@@ -6,7 +6,6 @@ import { MAP_OPTIONS } from 'constants/map';
 
 /* Constants */
 const SET_MAP_PARAMS = 'SET_MAP_PARAMS';
-const FIT_AREA_BOUNDS = 'FIT_AREA_BOUNDS';
 const SET_MAP_EXPANSION = 'SET_MAP_EXPANSION';
 const ADD_AREA = 'ADD_AREA';
 const REMOVE_AREA = 'REMOVE_AREA';
@@ -69,7 +68,6 @@ export function setSingleMapParamsUrl(params, url) {
     const zoom = params.zoom;
     const newAreasParams = Object.assign({}, urlParams, { [params.key]: { lat, lng, zoom } });
 
-    // Set location with indicators
     const location = {
       pathname: url.pathname,
       query: Object.assign({}, url.query, { maps: encode(newAreasParams) })
@@ -133,5 +131,25 @@ export function removeArea(id) {
       type: REMOVE_AREA,
       payload: newAreas
     });
+  };
+}
+
+export function setAreasParamsUrl(url) {
+  return (dispatch, getState) => {
+    const areas = getState().maps.areas;
+    const newAreas = {};
+
+    Object.keys(areas).forEach((key) => {
+      newAreas[key] = { ...areas[key].zoom,
+        ...{ lat: areas[key].center.lat, lng: areas[key].center.lng }
+      };
+    });
+
+    const location = {
+      pathname: url.pathname,
+      query: Object.assign({}, url.query, { maps: encode(newAreas) })
+    };
+
+    Router.replace(location);
   };
 }
