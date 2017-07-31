@@ -11,7 +11,7 @@ const bodyParser = require('body-parser');
 const routes = require('./routes');
 
 // Load environment variables from .env file if present
-const dotenv = require('dotenv').load();
+require('dotenv').load();
 
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
