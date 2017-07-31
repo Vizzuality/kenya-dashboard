@@ -366,15 +366,9 @@
     }
   ],
   "filter": {
-    "countries": [
-      { "iso": "KEN", "name": "Kenya" }
-    ],
-    "counties": [
-      { "id": "baringo", "name": "Baringo" },
-      { "id": "bomet", "name": "Bomet" },
-      { "id": "bungoma", "name": "Bungoma" },
-      { "id": "busia", "name": "Busia" },
-      { "id": "elgeyo", "name": "Elgeyo" }
+    "areas": [
+      { "id": "counties", "name": "Counties" },
+      { "id": "protected-areas", "name": "Protected Areas" }
     ],
     "categories": [
       { "id": "wildlife", "name": "Wildlife" },
@@ -409,5 +403,16 @@
     "life stock": [
       { "id": 4, "name": "Indicator4" }
     ]
-  }
+  },
+  "counties": [
+    { "id": "baringo", "name": "Baringo" },
+    { "id": "bomet", "name": "Bomet" },
+    { "id": "bungoma", "name": "Bungoma" },
+    { "id": "busia", "name": "Busia" },
+    { "id": "elgeyo", "name": "Elgeyo" }
+  ],
+  "protected-areas": [
+    { "id": "protected_area_1", "name": "Protected Area 1" },
+    { "id": "protected_area_2", "name": "Protected Area 2" }
+  ]
 }

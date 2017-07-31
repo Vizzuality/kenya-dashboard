@@ -5,4 +5,12 @@ const HEADER_MENU_LINKS = [
   { label: 'About the Alliance', route: 'about' }
 ];
 
-export { HEADER_MENU_LINKS };
+const SELECT_SEARCH_OPTIONS = {
+  shouldSort: true,
+  threshold: 0.6,
+  maxPatternLength: 50,
+  minMatchCharLength: 1,
+  keys: ['label']
+};
+
+export { HEADER_MENU_LINKS, SELECT_SEARCH_OPTIONS };

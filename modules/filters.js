@@ -17,10 +17,8 @@ const SET_DASHBOARD_LAYOUT = 'SET_DASHBOARD_LAYOUT';
 const initialState = {
   options: {},
   selected: {
-    countries: [],
-    counties: [],
+    areas: [],
     categories: [],
-    dates: [],
     sort: []
   },
   loading: false,

@@ -1,0 +1,31 @@
+
+.c-select-slider {
+  position: relative;
+  width: 200px;
+  overflow: hidden;
+  max-height: 120px;
+
+  .slider-item {
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    transition: all $animation-time-2 $ease-in-sine;
+
+    &.-hidden-right {
+      position: absolute;
+      left: 100%;
+      right: -100%;
+      visibility: hidden;
+      transition: all $animation-time-2 $ease-in-sine;
+    }
+
+    &.-hidden-left {
+      position: absolute;
+      left: -100%;
+      right: 100%;
+      visibility: hidden;
+      transition: all $animation-time-2 $ease-in-sine;
+    }
+  }
+}
