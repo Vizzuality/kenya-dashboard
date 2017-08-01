@@ -6,7 +6,6 @@ import classnames from 'classnames';
 import isArray from 'lodash/isArray';
 
 // Components
-import Select from 'react-select';
 import Icon from 'components/ui/icon';
 import SelectCustom from 'components/ui/select-custom';
 
@@ -74,28 +73,14 @@ export default class Filters extends React.Component {
           selected={selected.categories}
           multi
         />
-        {/* <Select
-          instanceId="categoriesOptions"
-          className="c-select"
-          name="categories"
-          placeholder="Categories"
-          multi
-          options={options.categories || []}
-          value={options.categories ?
-            options.categories.filter(opt => selected.categories.includes(opt.value)) : []}
-          onChange={opts => this.setFilters(opts, 'categories')}
-        /> */}
 
         {/* Sort by select */}
-        <Select
-          instanceId="sortbyOptions"
-          className="c-select"
+        <SelectCustom
+          label="Sort"
           name="sort"
-          placeholder="Sort"
-          options={options.sort || []}
-          value={options.sort ?
-            options.sort.find(opt => selected.sort === opt.value) : {}}
-          onChange={opts => this.setFilters(opts, 'sort')}
+          list={options.sort}
+          setValue={this.setFilters}
+          selected={selected.sort}
         />
 
         {/* Set layout buttons */}

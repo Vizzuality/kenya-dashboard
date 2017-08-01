@@ -52,7 +52,7 @@ export default class SelectCustom extends React.Component {
       default: return (
         <SelectList
           name={this.props.name}
-          list={this.state.list}
+          list={this.props.list}
           selected={this.props.selected}
           setValue={this.props.setValue}
           onToggleTooltip={this.onToggleTooltip}

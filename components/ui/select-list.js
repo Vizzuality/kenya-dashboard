@@ -47,10 +47,11 @@ export default class SelectList extends React.Component {
     const value = e.currentTarget.getAttribute('data-value');
     const isParent = e.currentTarget.getAttribute('data-is-parent');
 
-    // If is last child & can be selected
+    // If can be selected
     if (!this.props.list.list && this.props.setValue) {
       const totalValue = this.getValues(value);
       this.props.setValue(totalValue, this.props.name);
+      !this.type && this.props.onToggleTooltip && this.props.onToggleTooltip();
     // If is parent in slider
     } else if (isParent) {
       this.props.onToggle('next', value);
@@ -134,7 +135,8 @@ SelectList.propTypes = {
   searchPlaceholder: PropTypes.string,
   // Actions
   setValue: PropTypes.func,
-  onToggle: PropTypes.func
+  onToggle: PropTypes.func,
+  onToggleTooltip: PropTypes.func
 };
 
 SelectList.defaultProps = {

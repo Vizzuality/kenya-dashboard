@@ -7,6 +7,10 @@
     .item {
       justify-content: flex-start;
 
+      &:hover {
+        background-color: transparent;
+      }
+
       .c-checkbox {
         margin-right: 6px;
         cursor: pointer;
