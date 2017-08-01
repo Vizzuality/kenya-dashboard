@@ -6,6 +6,8 @@ import classnames from 'classnames';
 
 // Components
 import TetherComponent from 'react-tether';
+import Icon from 'components/ui/icon';
+import SelectSlider from 'components/ui/select-slider';
 
 
 export default class SelectCustom extends React.Component {
@@ -24,8 +26,22 @@ export default class SelectCustom extends React.Component {
     this.setState({ open: !this.state.open });
   }
 
+  getContent() {
+    switch (this.props.type) {
+      case 'slider': return (
+        <SelectSlider
+          list={this.props.list}
+          selected={this.props.selected}
+          setValue={this.props.setValue}
+          onToggleTooltip={this.onToggleTooltip}
+        />
+      );
+      default: return null;
+    }
+  }
+
   render() {
-    const { className, label, selectContent } = this.props;
+    const { className, label } = this.props;
     const classNames = classnames(
       'c-select-custom',
       {
@@ -42,14 +58,18 @@ export default class SelectCustom extends React.Component {
             to: 'window',
             pin: true
           }]}
-          offset="0 0"
+          classes={{
+            element: 'c-tooltip -arrow-top'
+          }}
+          offset="-8px 0"
         >
           <button className="btn-tooltip" onClick={this.onToggleTooltip}>
             <h1 className="label">{label}</h1>
+            <Icon name="icon-arrow-down" className="-smaller" />
           </button>
           {this.state.open &&
-            <div ref={(node) => { this.el = node; }} className="c-tooltip -arrow-top">
-              {selectContent}
+            <div ref={(node) => { this.el = node; }} className="tooltip-container">
+              {this.getContent()}
             </div>
           }
         </TetherComponent>
@@ -61,5 +81,9 @@ export default class SelectCustom extends React.Component {
 SelectCustom.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
-  selectContent: PropTypes.any
+  type: PropTypes.any,
+  list: PropTypes.array,
+  selected: PropTypes.array,
+  // Actions
+  setValue: PropTypes.func
 };

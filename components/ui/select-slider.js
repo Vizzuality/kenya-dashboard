@@ -21,6 +21,7 @@ export default class SelectSlider extends React.Component {
 
     // Bindings
     this.onToggle = this.onToggle.bind(this);
+    this.setValue = this.setValue.bind(this);
   }
 
   /**
@@ -84,19 +85,26 @@ export default class SelectSlider extends React.Component {
 
     return (
       <div className={classNames}>
-        <button onClick={() => this.onToggle('back')}>
-          <Icon name="icon-arrow-left" className="-small" />
+        <button className="btn-back" onClick={() => this.onToggle('back')}>
+          <Icon name="icon-arrow-left" className="-smaller" />
           Back
         </button>
         <SelectList
-          list={this.state.specificList}
-          setValue={this.props.setValue}
           name="areas"
+          list={this.state.specificList}
+          selected={this.props.selected}
+          setValue={this.setValue}
           onToggle={this.onToggle}
           search
         />
       </div>
     );
+  }
+
+  /* Set value and close tooltip */
+  setValue(value, type) {
+    this.props.setValue(value, type);
+    this.props.onToggleTooltip();
   }
 
   render() {
@@ -122,6 +130,8 @@ export default class SelectSlider extends React.Component {
 SelectSlider.propTypes = {
   className: PropTypes.string,
   list: PropTypes.array,
+  selected: PropTypes.array,
   // Actions
-  setValue: PropTypes.func
+  setValue: PropTypes.func,
+  onToggleTooltip: PropTypes.func
 };

@@ -1,0 +1,26 @@
+
+.c-select-custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 20px;
+
+  .btn-tooltip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+
+    .c-icon {
+      margin-left: 15px;
+      fill: $color-primary;
+    }
+  }
+
+  .label {
+    font-size: $font-size-default;
+    line-height: 16px;
+    font-weight: $font-weight-default;
+    color: rgba($color-text-1, .5);
+  }
+}

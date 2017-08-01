@@ -27,4 +27,17 @@
       transform: translate(-100%, 0);
     }
   }
+
+  .btn-back {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 14px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: $font-size-small;
+
+    .c-icon {
+      margin-right: 8px;
+    }
+  }
 }

@@ -1,6 +1,5 @@
 
 .c-tooltip {
-  position: relative;
   padding: 10px;
   background-color: $color-white;
   color: $color-text-2;
@@ -16,5 +15,10 @@
       transform: rotate(45deg) translateX(-50%);
       background-color: $color-white;
     }
+  }
+
+  .tooltip-container {
+    overflow: auto;
+    max-height: 150px;
   }
 }

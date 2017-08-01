@@ -9,7 +9,6 @@ import isArray from 'lodash/isArray';
 import Select from 'react-select';
 import Icon from 'components/ui/icon';
 import SelectCustom from 'components/ui/select-custom';
-import SelectSlider from 'components/ui/select-slider';
 
 
 export default class Filters extends React.Component {
@@ -58,9 +57,10 @@ export default class Filters extends React.Component {
         {/* Areas */}
         <SelectCustom
           label="Areas"
-          selectContent={
-            <SelectSlider list={options.areas} setValue={this.setFilters} />
-          }
+          type="slider"
+          list={options.areas}
+          setValue={this.setFilters}
+          selected={selected.areas}
         />
 
         {/* Categories select */}

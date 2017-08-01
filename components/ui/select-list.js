@@ -54,43 +54,50 @@ export default class SelectList extends React.Component {
   }
 
   render() {
-    const { className, type, search, searchPlaceholder } = this.props;
+    const { className, type, search, searchPlaceholder, selected } = this.props;
     const classNames = classnames(
       'c-select-list',
-      {
-        [className]: !!className
-      }
+      { [className]: !!className }
     );
 
     return (
       <div className={classNames}>
         {/* Search */}
         {search &&
-          <div className="">
-            <input type="text" onKeyUp={this.onSearch} placeholder={searchPlaceholder} />
+          <div className="search-container">
+            <input className="search-box" type="text" onKeyUp={this.onSearch} placeholder={searchPlaceholder} />
             <Icon name="icon-search" className="" />
           </div>
         }
 
         {/* List */}
         <ul className="list">
-          {this.state.filteredList.map((l, i) => (
-            <li
-              key={i}
-              data-value={l.id}
-              data-is-parent={l.list && l.list.length}
-              onClick={this.onClick}
-            >
-              {/* Checkbox */}
-              {type === 'checkbox' && <input type="checkbox" />}
+          {this.state.filteredList.map((l, i) => {
+            const isSelected = selected && selected.includes(l.id);
+            const itemClassNames = classnames(
+              'item',
+              { '-selected': type !== 'checkbox' && isSelected }
+            );
 
-              {/* Name */}
-              <span>{l.name}</span>
+            return (
+              <li
+                key={i}
+                className={itemClassNames}
+                data-value={l.id}
+                data-is-parent={l.list && l.list.length}
+                onClick={this.onClick}
+              >
+                {/* Checkbox */}
+                {type === 'checkbox' && <input type="checkbox" checked={isSelected} />}
 
-              {/* Switch to own list if exists */}
-              {l.list && l.list.length > 0 && <Icon name="icon-arrow-right" className="" />}
-            </li>
-          ))}
+                {/* Name */}
+                <span>{l.name}</span>
+
+                {/* Icon when it has its own list */}
+                {l.list && l.list.length > 0 && <Icon name="icon-arrow-right" className="" />}
+              </li>
+            );
+          })}
         </ul>
       </div>
     );
