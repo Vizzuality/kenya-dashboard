@@ -3,6 +3,19 @@
   background-color: $color-bg-light;
   color: $color-text-2;
 
+  &.-checkbox {
+    .item {
+      justify-content: flex-start;
+
+      .c-checkbox {
+        margin-right: 6px;
+        cursor: pointer;
+
+        input { cursor: pointer; }
+      }
+    }
+  }
+
   .search-container {
     display: flex;
     align-items: center;

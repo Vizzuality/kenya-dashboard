@@ -57,6 +57,7 @@ export default class Filters extends React.Component {
         {/* Areas */}
         <SelectCustom
           label="Areas"
+          name="areas"
           type="slider"
           list={options.areas}
           setValue={this.setFilters}
@@ -64,7 +65,16 @@ export default class Filters extends React.Component {
         />
 
         {/* Categories select */}
-        <Select
+        <SelectCustom
+          label="Topics"
+          name="categories"
+          type="checkbox"
+          list={options.categories}
+          setValue={this.setFilters}
+          selected={selected.categories}
+          multi
+        />
+        {/* <Select
           instanceId="categoriesOptions"
           className="c-select"
           name="categories"
@@ -74,7 +84,7 @@ export default class Filters extends React.Component {
           value={options.categories ?
             options.categories.filter(opt => selected.categories.includes(opt.value)) : []}
           onChange={opts => this.setFilters(opts, 'categories')}
-        />
+        /> */}
 
         {/* Sort by select */}
         <Select

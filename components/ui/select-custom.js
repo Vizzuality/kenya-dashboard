@@ -8,6 +8,7 @@ import classnames from 'classnames';
 import TetherComponent from 'react-tether';
 import Icon from 'components/ui/icon';
 import SelectSlider from 'components/ui/select-slider';
+import SelectList from 'components/ui/select-list';
 
 
 export default class SelectCustom extends React.Component {
@@ -30,13 +31,33 @@ export default class SelectCustom extends React.Component {
     switch (this.props.type) {
       case 'slider': return (
         <SelectSlider
+          name={this.props.name}
           list={this.props.list}
           selected={this.props.selected}
           setValue={this.props.setValue}
           onToggleTooltip={this.onToggleTooltip}
         />
       );
-      default: return null;
+      case 'checkbox': return (
+        <SelectList
+          type="checkbox"
+          className="-checkbox"
+          name={this.props.name}
+          list={this.props.list}
+          selected={this.props.selected}
+          setValue={this.props.setValue}
+          multi={this.props.multi}
+        />
+      );
+      default: return (
+        <SelectList
+          name={this.props.name}
+          list={this.state.list}
+          selected={this.props.selected}
+          setValue={this.props.setValue}
+          onToggleTooltip={this.onToggleTooltip}
+        />
+      );
     }
   }
 
@@ -81,9 +102,11 @@ export default class SelectCustom extends React.Component {
 SelectCustom.propTypes = {
   className: PropTypes.string,
   label: PropTypes.string,
+  name: PropTypes.string,
   type: PropTypes.any,
   list: PropTypes.array,
   selected: PropTypes.array,
+  multi: PropTypes.bool,
   // Actions
   setValue: PropTypes.func
 };

@@ -10,6 +10,7 @@ import { SELECT_SEARCH_OPTIONS } from 'constants/general';
 
 // Components
 import Icon from 'components/ui/icon';
+import Checkbox from 'components/ui/checkbox';
 
 
 export default class SelectList extends React.Component {
@@ -46,11 +47,29 @@ export default class SelectList extends React.Component {
     const value = e.currentTarget.getAttribute('data-value');
     const isParent = e.currentTarget.getAttribute('data-is-parent');
 
+    // If is last child & can be selected
     if (!this.props.list.list && this.props.setValue) {
-      this.props.setValue(value, this.props.name);
+      const totalValue = this.getValues(value);
+      this.props.setValue(totalValue, this.props.name);
+    // If is parent in slider
     } else if (isParent) {
       this.props.onToggle('next', value);
     }
+  }
+
+  getValues(value) {
+    let totalValue = value;
+
+    if (this.props.multi) {
+      const index = this.props.selected.indexOf(value);
+      totalValue = this.props.selected.slice();
+
+      // Add or remove from already selected
+      if (index !== -1) {
+        totalValue.splice(index, 1);
+      } else totalValue.push(value);
+    }
+    return totalValue;
   }
 
   render() {
@@ -88,7 +107,7 @@ export default class SelectList extends React.Component {
                 onClick={this.onClick}
               >
                 {/* Checkbox */}
-                {type === 'checkbox' && <input type="checkbox" checked={isSelected} />}
+                {type === 'checkbox' && <Checkbox checked={isSelected} />}
 
                 {/* Name */}
                 <span>{l.name}</span>
@@ -111,6 +130,7 @@ SelectList.propTypes = {
   list: PropTypes.array.isRequired,
   selected: PropTypes.array,
   search: PropTypes.bool,
+  multi: PropTypes.bool,
   searchPlaceholder: PropTypes.string,
   // Actions
   setValue: PropTypes.func,

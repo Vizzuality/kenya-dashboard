@@ -1,0 +1,27 @@
+
+.c-checkbox {
+  position: relative;
+
+  &.-checked {
+    .fake-checkbox {
+      border: 1px solid $color-primary;
+      background-color: $color-primary;
+    }
+  }
+
+  input {
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+  }
+
+  .fake-checkbox {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15px;
+    height: 15px;
+    border: 1px solid $color-text-2;
+  }
+}
