@@ -367,20 +367,31 @@
   ],
   "filter": {
     "areas": [
-      { "id": "counties", "name": "Counties" },
-      { "id": "protected-areas", "name": "Protected Areas" }
+      {
+        "id": "counties",
+        "name": "Counties",
+        "list": [
+          { "id": "baringo", "name": "Baringo" },
+          { "id": "bomet", "name": "Bomet" },
+          { "id": "bungoma", "name": "Bungoma" },
+          { "id": "busia", "name": "Busia" },
+          { "id": "elgeyo", "name": "Elgeyo" }
+        ]
+      },
+      {
+        "id": "protected-areas",
+        "name": "Protected Areas",
+        "list": [
+          { "id": "protected_area_1", "name": "Protected Area 1" },
+          { "id": "protected_area_2", "name": "Protected Area 2" }
+        ]
+      }
     ],
     "categories": [
       { "id": "wildlife", "name": "Wildlife" },
       { "id": "category1", "name": "category1" },
       { "id": "category2", "name": "category2" },
       { "id": "category3", "name": "category3" }
-    ],
-    "dates": [
-      { "id": "2017", "name": "2017" },
-      { "id": "2016", "name": "2016" },
-      { "id": "2015", "name": "2015" },
-      { "id": "2014", "name": "2014" }
     ],
     "sort": [
       { "id": "name", "name": "Name" },
@@ -403,16 +414,5 @@
     "life stock": [
       { "id": 4, "name": "Indicator4" }
     ]
-  },
-  "counties": [
-    { "id": "baringo", "name": "Baringo" },
-    { "id": "bomet", "name": "Bomet" },
-    { "id": "bungoma", "name": "Bungoma" },
-    { "id": "busia", "name": "Busia" },
-    { "id": "elgeyo", "name": "Elgeyo" }
-  ],
-  "protected-areas": [
-    { "id": "protected_area_1", "name": "Protected Area 1" },
-    { "id": "protected_area_2", "name": "Protected Area 2" }
-  ]
+  }
 }

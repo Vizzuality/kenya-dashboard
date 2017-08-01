@@ -10,7 +10,7 @@ const SELECT_SEARCH_OPTIONS = {
   threshold: 0.6,
   maxPatternLength: 50,
   minMatchCharLength: 1,
-  keys: ['label']
+  keys: ['name', 'label']
 };
 
 export { HEADER_MENU_LINKS, SELECT_SEARCH_OPTIONS };

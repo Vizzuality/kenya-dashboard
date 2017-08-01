@@ -3,10 +3,6 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
-import fetch from 'isomorphic-fetch';
-
-// Constants
-import { BASIC_QUERY_HEADER } from 'constants/query';
 
 // Components
 import Icon from 'components/ui/icon';
@@ -18,25 +14,53 @@ export default class SelectSlider extends React.Component {
     super(props);
 
     this.state = {
-      next: false,
-      specificList: [],
-      loading: false
+      next: props.list.list && props.list.list.length,
+      specificList: this.props.list || [],
+      breadcrumbs: []
     };
 
     // Bindings
     this.onToggle = this.onToggle.bind(this);
-    this.getSpecificList = this.getSpecificList.bind(this);
   }
 
   /**
     UI events
   */
-  onToggle() {
-    this.setState({ next: !this.state.next });
+  onToggle(direction, value) {
+    const { breadcrumbs } = this.state;
+
+    if (direction === 'next') {
+      const newBreadcrumbs = breadcrumbs.slice();
+      newBreadcrumbs.push(value);
+      const specificList = this.getSpecificList(direction, value, newBreadcrumbs);
+      this.setState({ breadcrumbs: newBreadcrumbs, next: true, specificList });
+    } else {
+      const newBreadcrumbs = breadcrumbs.slice(0, breadcrumbs.length - 1);
+      const specificList = this.getSpecificList(direction, value, newBreadcrumbs);
+      this.setState({ breadcrumbs: newBreadcrumbs, next: false, specificList });
+    }
+  }
+
+  getSpecificList(direction, value, breadcrumbs) {
+    let newSpecificList = this.state.specificList;
+
+    if (direction === 'next') {
+      const wholeItem = this.state.specificList.find(item => item.id === value);
+      if (wholeItem) newSpecificList = wholeItem.list;
+    } else {
+      let newList = this.props.list;
+      breadcrumbs.forEach((val) => {
+        const wholeItem = newList.find(item => item.id === val);
+        if (wholeItem) newList = wholeItem.list;
+      });
+      newSpecificList = newList;
+    }
+
+    return newSpecificList;
   }
 
   /* Tooltip content */
-  getListContent() {
+  getPrincipalListContent() {
     const classNames = classnames(
       'slider-item',
       { '-hidden-left': this.state.next }
@@ -47,24 +71,9 @@ export default class SelectSlider extends React.Component {
         className={classNames}
         list={this.props.list}
         type="slider"
-        onGetSpecificList={this.getSpecificList}
         onToggle={this.onToggle}
       />
     );
-  }
-
-  getSpecificList(value) {
-    debugger;
-    this.setState({ loading: true });
-
-    fetch(`${process.env.KENYA_API}/${value}?page[size]=999999999`, BASIC_QUERY_HEADER)
-      .then((response) => {
-        if (response.ok) return response.json();
-        throw new Error(response.statusText);
-      })
-      .then((data) => {
-        debugger;
-      });
   }
 
   getSpecificListContent() {
@@ -75,14 +84,15 @@ export default class SelectSlider extends React.Component {
 
     return (
       <div className={classNames}>
-        <button onClick={this.onToggle}>
+        <button onClick={() => this.onToggle('back')}>
           <Icon name="icon-arrow-left" className="-small" />
           Back
         </button>
         <SelectList
-          list={this.props.list}
+          list={this.state.specificList}
           setValue={this.props.setValue}
-          type="areas"
+          name="areas"
+          onToggle={this.onToggle}
           search
         />
       </div>
@@ -97,7 +107,7 @@ export default class SelectSlider extends React.Component {
         [className]: !!className
       }
     );
-    const principalList = this.getListContent();
+    const principalList = this.getPrincipalListContent();
     const specificList = this.getSpecificListContent();
 
     return (

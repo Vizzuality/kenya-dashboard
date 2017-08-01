@@ -3,29 +3,28 @@
   position: relative;
   width: 200px;
   overflow: hidden;
-  max-height: 120px;
 
   .slider-item {
+    width: 100%;
     position: relative;
+    max-height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto;
     top: 0;
     left: 0;
     right: 0;
-    transition: all $animation-time-2 $ease-in-sine;
+    transition: all $animation-time $ease-in-sine;
 
     &.-hidden-right {
       position: absolute;
-      left: 100%;
-      right: -100%;
       visibility: hidden;
-      transition: all $animation-time-2 $ease-in-sine;
+      transform: translate(100%, 0);
     }
 
     &.-hidden-left {
       position: absolute;
-      left: -100%;
-      right: 100%;
       visibility: hidden;
-      transition: all $animation-time-2 $ease-in-sine;
+      transform: translate(-100%, 0);
     }
   }
 }

@@ -26,20 +26,30 @@ export default class SelectList extends React.Component {
   }
 
   /**
+    Lifecycle
+  */
+  componentWillReceiveProps(nextProps) {
+    this.setState({ filteredList: nextProps.list });
+  }
+
+  /**
     UI events
   */
   onSearch(e) {
+    const value = e.currentTarget.value;
     const fuse = new Fuse(this.props.list, SELECT_SEARCH_OPTIONS);
-    const filteredList = fuse.search(e.currentTarget.value);
+    const filteredList = value !== '' ? fuse.search(value) : this.props.list;
     this.setState({ filteredList });
   }
 
   onClick(e) {
-    if (this.props.setValue) {
-      const value = e.currentTarget.getAttribute('data-value');
-      this.props.setValue(value, this.props.type);
-    } else {
-      this.props.onToggle();
+    const value = e.currentTarget.getAttribute('data-value');
+    const isParent = e.currentTarget.getAttribute('data-is-parent');
+
+    if (!this.props.list.list && this.props.setValue) {
+      this.props.setValue(value, this.props.name);
+    } else if (isParent) {
+      this.props.onToggle('next', value);
     }
   }
 
@@ -65,10 +75,20 @@ export default class SelectList extends React.Component {
         {/* List */}
         <ul className="list">
           {this.state.filteredList.map((l, i) => (
-            <li key={i} data-value={l.value} onClick={this.onClick}>
+            <li
+              key={i}
+              data-value={l.id}
+              data-is-parent={l.list && l.list.length}
+              onClick={this.onClick}
+            >
+              {/* Checkbox */}
               {type === 'checkbox' && <input type="checkbox" />}
-              <span>{l.label}</span>
-              Next
+
+              {/* Name */}
+              <span>{l.name}</span>
+
+              {/* Switch to own list if exists */}
+              {l.list && l.list.length > 0 && <Icon name="icon-arrow-right" className="" />}
             </li>
           ))}
         </ul>
@@ -80,6 +100,7 @@ export default class SelectList extends React.Component {
 SelectList.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string,
+  name: PropTypes.string,
   list: PropTypes.array.isRequired,
   selected: PropTypes.array,
   search: PropTypes.bool,
