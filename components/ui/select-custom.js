@@ -23,6 +23,13 @@ export default class SelectCustom extends React.Component {
     this.onToggleTooltip = this.onToggleTooltip.bind(this);
   }
 
+  /**
+    Lifecycle
+  */
+  componentDidMount() {
+    this.handleTooltipOpening();
+  }
+
   onToggleTooltip() {
     this.setState({ open: !this.state.open });
   }
@@ -61,13 +68,24 @@ export default class SelectCustom extends React.Component {
     }
   }
 
+  // Close tooltip when clicking outside
+  handleTooltipOpening() {
+    window.addEventListener('click', (e) => {
+      const el = e.target;
+      const isNotTooltipOrChild = el !== this.el && !this.el.contains(el);
+      const isNotTooltipBtn = el !== this.btn && !this.btn.contains(el);
+
+      if (isNotTooltipOrChild && isNotTooltipBtn && this.state.open) {
+        this.setState({ open: false });
+      }
+    }, false);
+  }
+
   render() {
     const { className, label } = this.props;
     const classNames = classnames(
       'c-select-custom',
-      {
-        [className]: !!className
-      }
+      { [className]: !!className }
     );
 
     return (
@@ -84,7 +102,7 @@ export default class SelectCustom extends React.Component {
           }}
           offset="-8px 0"
         >
-          <button className="btn-tooltip" onClick={this.onToggleTooltip}>
+          <button className="btn-tooltip" onClick={this.onToggleTooltip} ref={(node) => { this.btn = node; }}>
             <h1 className="label">{label}</h1>
             <Icon name="icon-arrow-down" className="-smaller" />
           </button>
