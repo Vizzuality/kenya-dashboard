@@ -367,13 +367,7 @@
   ],
   "filter": {
     "areas": [
-      {
-        "id": "countries",
-        "name": "Countries",
-        "list": [
-          { "id": "kenya", "name": "Kenya" }
-        ]
-      },
+      { "id": "kenya", "name": "Kenya" },
       {
         "id": "counties",
         "name": "Counties",

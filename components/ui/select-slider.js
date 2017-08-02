@@ -38,7 +38,7 @@ export default class SelectSlider extends React.Component {
     } else {
       const newBreadcrumbs = breadcrumbs.slice(0, breadcrumbs.length - 1);
       const specificList = this.getSpecificList(direction, value, newBreadcrumbs);
-      this.setState({ breadcrumbs: newBreadcrumbs, next: false, specificList });
+      this.setState({ breadcrumbs: newBreadcrumbs, next: newBreadcrumbs.length > 0, specificList });
     }
   }
 
@@ -49,10 +49,11 @@ export default class SelectSlider extends React.Component {
       const wholeItem = this.state.specificList.find(item => item.id === value);
       if (wholeItem) newSpecificList = wholeItem.list;
     } else {
-      let newList = this.props.list;
+      let newList = this.props.list.slice();
+
       breadcrumbs.forEach((val) => {
         const wholeItem = newList.find(item => item.id === val);
-        if (wholeItem) newList = wholeItem.list;
+        if (wholeItem && wholeItem.list) newList = wholeItem.list;
       });
       newSpecificList = newList;
     }
@@ -69,9 +70,12 @@ export default class SelectSlider extends React.Component {
 
     return (
       <SelectList
+        name="areas"
+        type="slider"
         className={classNames}
         list={this.props.list}
-        type="slider"
+        selected={this.props.selected}
+        setValue={this.setValue}
         onToggle={this.onToggle}
       />
     );
@@ -91,6 +95,7 @@ export default class SelectSlider extends React.Component {
         </button>
         <SelectList
           name="areas"
+          type="slider"
           list={this.state.specificList}
           selected={this.props.selected}
           setValue={this.setValue}

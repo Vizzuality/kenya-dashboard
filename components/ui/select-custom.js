@@ -30,6 +30,9 @@ export default class SelectCustom extends React.Component {
     this.handleTooltipOpening();
   }
 
+  /**
+   UI events
+  */
   onToggleTooltip() {
     this.setState({ open: !this.state.open });
   }
