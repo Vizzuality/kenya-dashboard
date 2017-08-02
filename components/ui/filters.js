@@ -53,7 +53,7 @@ export default class Filters extends React.Component {
 
     return (
       <div className={classNames}>
-        {/* Areas */}
+        {/* Areas select */}
         <SelectCustom
           label="Areas"
           name="areas"
