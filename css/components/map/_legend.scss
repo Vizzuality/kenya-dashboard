@@ -39,6 +39,8 @@
     }
 
     .tools {
+      display: flex;
+      align-items: center;
       padding: 10px 0 10px 30px;
       border-left: 1px solid rgba($color-white, .5);
 
@@ -53,6 +55,7 @@
         font-size: 16px;
         line-height: 16px;
         font-weight: $font-weight-light;
+        padding: 0;
 
         .c-icon {
           margin-right: 15px;
@@ -100,6 +103,8 @@
     }
 
     .legend-item {
+      padding: 10px 0;
+
       &:nth-child(odd) {
         padding-right: 25px;
       }
@@ -147,7 +152,7 @@
         justify-content: space-between;
         width: 100%;
         font-size: $font-size-small;
-        line-height: 16px;
+        line-height: 18px;
         font-weight: $font-weight-default;
 
         .btn-show {
@@ -184,12 +189,17 @@
   }
 }
 
+
+/* Dragged item */
 .legend-item {
   padding: 10px 0;
 
-  &:last-child {
-    padding-bottom: 0;
-    border-bottom: 0;
+  &:nth-child(odd) {
+    padding-right: 25px;
+  }
+
+  &:nth-child(even) {
+    padding-left: 25px;
   }
 
   &.-sort {
@@ -234,13 +244,17 @@
     }
   }
 
-  .item-header {
+  .legend-item-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
+    width: 100%;
+    font-size: $font-size-small;
+    line-height: 18px;
+    font-weight: $font-weight-default;
 
     .btn-show {
-      margin-right: 8px;
+      margin-right: 10px;
+      padding: 0;
 
       .c-icon {
         fill: $color-text-1;
@@ -249,14 +263,24 @@
   }
 
   .item-tools {
+    display: flex;
+    align-items: center;
+
     .handler {
-      cursor: move;
+      cursor: -webkit-grab;
+    }
+
+    .c-icon {
+      fill: $color-primary;
     }
   }
 
   .layer-visual {
     display: flex;
     flex-flow: row wrap;
+    font-size: $font-size-small;
+    line-height: 16px;
+    color: rgba($color-text-1, .5);
   }
 
   .c-collapsible-list {
