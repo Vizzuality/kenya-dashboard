@@ -20,7 +20,7 @@ const DragHandle = SortableHandle(() => (
 ));
 
 const SortableList = SortableContainer(({ items }) => (
-  <ul className="legend-list">
+  <ul className="legend-list row">
     {items.map((value, index) =>
       <SortableItem key={`item-${index}`} index={index} value={value} />
     )}
@@ -97,15 +97,15 @@ class Legend extends React.Component {
     // Reverse layers to show first the last one added
     const layersActiveReversed = this.props.list.slice().reverse();
     return layersActiveReversed.map((layer, i) => (
-      <li key={i} className={`legend-item -${layer.attributes.legendConfig.type}`}>
+      <li key={i} className={`legend-item column small-12 medium-6 -${layer.attributes.legendConfig.type}`}>
         <header className="item-header">
           <div className="item-header">
-            <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>
-              <Icon name="icon-eye" className="" />
-            </button>
             <span className="layer-name">{layer.attributes.name}</span>
           </div>
           <div className="item-tools">
+            <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>
+              <Icon name="icon-eye" className="" />
+            </button>
             <DragHandle />
           </div>
         </header>
@@ -151,8 +151,8 @@ class Legend extends React.Component {
                 onSortStart={this.onSortStart}
                 onSortMove={this.onSortMove}
                 axis="y"
-                lockAxis="y"
-                lockToContainerEdges
+                // lockAxis="y"
+                // lockToContainerEdges
                 lockOffset="50%"
                 useDragHandle
               />
