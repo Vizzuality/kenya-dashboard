@@ -28,9 +28,10 @@ export default class Filters extends React.Component {
   }
 
   setFilters(opts, key) {
-    const newFilter = {};
-    newFilter[key] = isArray(opts) ? opts.map(o => o) : [opts];
-    const newFilters = Object.assign({}, this.props.selected, newFilter);
+    const newFilters = {
+      ...this.props.selected,
+      [key]: isArray(opts) ? opts.map(o => o) : [opts]
+    };
     this.props.onSetFilters(newFilters);
   }
 
