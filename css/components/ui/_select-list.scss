@@ -1,0 +1,61 @@
+
+.c-select-list {
+  background-color: $color-bg-light;
+  color: $color-text-2;
+
+  &.-checkbox {
+    .item {
+      justify-content: flex-start;
+
+      &:hover {
+        background-color: transparent;
+      }
+
+      .c-checkbox {
+        margin-right: 6px;
+        cursor: pointer;
+
+        input { cursor: pointer; }
+      }
+    }
+  }
+
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $color-bg-dark;
+    padding: 8px;
+    margin-bottom: 8px;
+
+    .search-box {
+      border: 0;
+      color: $color-text-1;
+      background-color: transparent;
+    }
+
+    .c-icon {
+      fill: $color-text-1;
+    }
+  }
+
+  .item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    cursor: pointer;
+
+    &.-selected {
+      background-color: $color-primary;
+    }
+
+    &:hover {
+      background-color: $color-light-green;
+    }
+
+    .c-icon {
+      fill: $color-text-2;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+
+.c-select-slider {
+  position: relative;
+  width: 200px;
+  overflow: hidden;
+
+  .slider-item {
+    width: 100%;
+    position: relative;
+    max-height: 250px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    transition: all $animation-time $ease-in-sine;
+
+    &.-hidden-right {
+      position: absolute;
+      visibility: hidden;
+      transform: translate(100%, 0);
+    }
+
+    &.-hidden-left {
+      position: absolute;
+      visibility: hidden;
+      transform: translate(-100%, 0);
+    }
+  }
+
+  .btn-back {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 14px;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: $font-size-small;
+
+    .c-icon {
+      margin-right: 8px;
+    }
+  }
+}

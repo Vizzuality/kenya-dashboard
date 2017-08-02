@@ -1,0 +1,24 @@
+
+.c-tooltip {
+  padding: 10px;
+  background-color: $color-white;
+  color: $color-text-2;
+
+  &.-arrow-top {
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 12px;
+      height: 12px;
+      transform: rotate(45deg) translateX(-50%);
+      background-color: $color-white;
+    }
+  }
+
+  .tooltip-container {
+    overflow: auto;
+    max-height: 150px;
+  }
+}

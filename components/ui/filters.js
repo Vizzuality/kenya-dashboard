@@ -1,23 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// Libraries
 import classnames from 'classnames';
 import isArray from 'lodash/isArray';
 
 // Components
-import Select from 'react-select';
 import Icon from 'components/ui/icon';
+import SelectCustom from 'components/ui/select-custom';
 
 
 export default class Filters extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showBy: 'county'
-    };
-
     // Bindings
     this.onSetDashboardLayout = this.onSetDashboardLayout.bind(this);
+    this.setFilters = this.setFilters.bind(this);
   }
 
   /**
@@ -29,26 +28,15 @@ export default class Filters extends React.Component {
   }
 
   setFilters(opts, key) {
-    const newFilter = {};
-    newFilter[key] = isArray(opts) ? opts.map(o => o.value) : opts.value;
-    const newFilters = Object.assign({}, this.props.selected, newFilter);
+    const newFilters = {
+      ...this.props.selected,
+      [key]: isArray(opts) ? opts.map(o => o) : [opts]
+    };
     this.props.onSetFilters(newFilters);
-  }
-
-  setShowBy(option) {
-    this.setState({ showBy: option.value }, () => {
-      // Reset unselected type filter
-      if (option.value === 'countries') {
-        this.setFilters([], 'counties');
-      } else {
-        this.setFilters([], 'countries');
-      }
-    });
   }
 
   render() {
     const { className, options, selected, layout } = this.props;
-    const { showBy } = this.state;
     const classNames = classnames(
       'c-filters',
       { [className]: !!className }
@@ -66,44 +54,34 @@ export default class Filters extends React.Component {
 
     return (
       <div className={classNames}>
-        {/* County select */}
-        {showBy === 'county' &&
-          <Select
-            instanceId="countiesOptions"
-            className="c-select"
-            name="counties"
-            placeholder="Counties"
-            multi
-            options={options.counties || []}
-            value={options.counties ?
-              options.counties.filter(opt => selected.counties.includes(opt.value)) : []}
-            onChange={opts => this.setFilters(opts, 'counties')}
-          />
-        }
+        {/* Areas select */}
+        <SelectCustom
+          label="Areas"
+          name="areas"
+          type="slider"
+          list={options.areas}
+          setValue={this.setFilters}
+          selected={selected.areas}
+        />
 
         {/* Categories select */}
-        <Select
-          instanceId="categoriesOptions"
-          className="c-select"
+        <SelectCustom
+          label="Topics"
           name="categories"
-          placeholder="Categories"
+          type="checkbox"
+          list={options.categories}
+          setValue={this.setFilters}
+          selected={selected.categories}
           multi
-          options={options.categories || []}
-          value={options.categories ?
-            options.categories.filter(opt => selected.categories.includes(opt.value)) : []}
-          onChange={opts => this.setFilters(opts, 'categories')}
         />
 
         {/* Sort by select */}
-        <Select
-          instanceId="sortbyOptions"
-          className="c-select"
+        <SelectCustom
+          label="Sort"
           name="sort"
-          placeholder="Sort"
-          options={options.sort || []}
-          value={options.sort ?
-            options.sort.find(opt => selected.sort === opt.value) : {}}
-          onChange={opts => this.setFilters(opts, 'sort')}
+          list={options.sort}
+          setValue={this.setFilters}
+          selected={selected.sort}
         />
 
         {/* Set layout buttons */}

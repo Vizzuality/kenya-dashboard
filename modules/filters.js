@@ -1,6 +1,6 @@
 // import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
-import { parseObjectSelectOptions, encode } from 'utils/general';
+import { encode } from 'utils/general';
 import Router from 'next/router';
 
 // Constants
@@ -17,10 +17,8 @@ const SET_DASHBOARD_LAYOUT = 'SET_DASHBOARD_LAYOUT';
 const initialState = {
   options: {},
   selected: {
-    countries: [],
-    counties: [],
+    areas: [],
     categories: [],
-    dates: [],
     sort: []
   },
   loading: false,
@@ -62,7 +60,7 @@ export function getFiltersOptions() {
       .then((data) => {
         dispatch({
           type: GET_FILTERS_OPTIONS,
-          payload: parseObjectSelectOptions(data)
+          payload: data
         });
         // DESERIALIZER.deserialize(data, (err, dataParsed) => {
         //   dispatch({

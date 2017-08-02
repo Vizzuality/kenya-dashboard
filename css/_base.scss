@@ -38,6 +38,10 @@ button {
   &:focus { outline: none; }
 }
 
+input {
+  &:focus { outline: none; }
+}
+
 ul {
   margin: 0;
   padding: 0;
@@ -48,7 +52,6 @@ li {
 }
 
 /* Titles */
-
 h1,
 h2,
 h3,
