@@ -11,6 +11,7 @@ import { getTopicIcon } from 'utils/indicators';
 
 // Components
 import { Link } from 'routes';
+import ItemTools from 'components/ui/item-tools';
 import TableType from 'components/indicators/table-type';
 import ArcType from 'components/indicators/arc-type';
 import Spinner from 'components/ui/spinner';
@@ -69,15 +70,6 @@ export default class DashboardItem extends React.Component {
     }
   }
 
-  // Provisional
-  getItemTools() {
-    return (
-      <button>
-        <Icon name="icon-info" />
-      </button>
-    );
-  }
-
   getThreshold(thresholdVal) {
     const threshold = this.defaultWidget.json_config.threshold;
     let currentThreshold;
@@ -109,8 +101,7 @@ export default class DashboardItem extends React.Component {
         <header className="item-header">
           <h1 className="item-title">{info.name}</h1>
           <div className="item-tools">
-            {this.getItemTools()}
-            {/* <ItemTools date /> */}
+            <ItemTools info={this.defaultWidget} />
           </div>
         </header>
 
