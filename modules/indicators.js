@@ -1,7 +1,11 @@
 // import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
 import Router from 'next/router';
+
+// Utils
+import flattenDeep from 'lodash/flattenDeep';
 import { parseObjectToUrlParams } from 'utils/general';
+import { getIndicatorLayers } from 'utils/indicators';
 
 import { BASIC_QUERY_HEADER } from 'constants/query';
 
@@ -60,8 +64,10 @@ export default function indicatorsReducer(state = initialState, action) {
       return Object.assign({}, state, { list: [], loading: false, error: action.payload });
     // Specific indicators
     case GET_SPECIFIC_INDICATORS: {
-      const indicatorsWithLayers = action.payload.filter(ind => ind.layers && ind.layers.length);
-      const layers = indicatorsWithLayers.map(ind => ind.layers[0]);
+      const indicatorsWithLayers = action.payload.filter(ind => (
+        ind.widgets && ind.widgets.length && ind.widgets.find(w => w.widget_type === 'map')
+      ));
+      const layers = flattenDeep(indicatorsWithLayers.map(ind => getIndicatorLayers(ind)));
       const newSpecific = Object.assign({}, state.specific,
         {
           list: action.payload,
@@ -220,19 +226,19 @@ export function addIndicator(id) {
       })
       .then((data) => {
         const specific = getState().indicators.specific;
+        const hasLayers = data[0].widgets && data[0].widgets.length &&
+          data[0].widgets.find(w => w.widget_type === 'map');
+
         // Update state attributes with new data
         const list = data[0] ? [data[0]].concat(specific.list) : specific.list;
-        const indicatorsWithLayers = data[0].layers && data[0].layers.length ?
+
+        const indicatorsWithLayers = hasLayers ?
           [data[0]].concat(specific.indicatorsWithLayers) :
           specific.indicatorsWithLayers;
 
-        const layers = data[0].layers && data[0].layers.length ?
-          [data[0].layers[0]].concat(specific.layers) :
-          specific.layers;
-
-        const layersActive = data[0].layers && data[0].layers.length ?
-          [data[0].layers[0].id].concat(specific.layersActive) :
-          specific.layersActive;
+        const indicatorLayers = flattenDeep(getIndicatorLayers(data[0]));
+        const layers = indicatorLayers.concat(specific.layers);
+        const layersActive = indicatorLayers.map(l => l.id).concat(specific.layersActive);
 
         const newSpecific = Object.assign({}, specific,
           { list, indicatorsWithLayers, layers, layersActive });

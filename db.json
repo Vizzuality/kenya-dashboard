@@ -17,82 +17,91 @@
       "widgets": [
         {
           "id": "w1-1",
+          "title":"w1-1",
+          "description": "description",
           "slug": "w1-1",
-          "type": "",
-          "default": "true",
+          "default": true,
+          "widget_type": "map",
+          "frequency": "years",
+          "granularity": 5,
+          "indicator_id": 1,
           "thumbnail": "",
-          "widgetConfig": {}
+          "json_config": {
+            "threshold": {
+              "fail": 0,
+              "medium": 100,
+              "success": 250
+            },
+            "config": {
+              "id": "9d295f2e-7626-4ed2-9e77-1e13356eaef7",
+              "type": "layer",
+              "attributes": {
+                "slug": "natural-resource-protection-and-child-health-indicators-2015-release-2010-2015-ciesin",
+                "userId": "58333dcfd9f39b189ca44c75",
+                "application": [
+                    "rw"
+                ],
+                "name": "Natural Resource Protection and Child Health Indicators, 2015 Release (2010 – 2015) (CIESIN)",
+                "default": true,
+                "indicator": 1,
+                "provider": "cartodb",
+                "iso": [],
+                "description": null,
+                "layerConfig": {
+                  "account": "wri-rw",
+                  "body": {
+                    "maxzoom": 18,
+                    "minzoom": 3,
+                    "layers": [
+                      {
+                        "type": "cartodb",
+                        "options": {
+                          "sql": "with a as (SELECT cartodb_id, the_geom, the_geom_webmercator, iso3, countryname, unnest(array[ 'nrpi_v2015_15', 'chi_v2015_15']) AS \"indicator\", unnest(array[ nrpi_v2015_15, chi_v2015_15]) AS \"value\" FROM \"wri-rw\".nrpi_chi_2015 where countryname != '' order by indicator, countryname asc) select cartodb_id, the_geom, the_geom_webmercator, iso3, countryname, avg(value) as value from a group by countryname, cartodb_id, the_geom, the_geom_webmercator, iso3 order by countryname",
+                          "cartocss": "#layer {  polygon-fill: ramp([value], (#64d1ed, #64d1ed, #59bad4, #37a3bf, #308da5), quantiles);  line-width: 1;  line-color: #FFF;  line-opacity: 0.5;  polygon-comp-op: src-over;}",
+                          "cartocss_version": "2.3.0"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "legendConfig": {
+                  "type": "choropleth",
+                  "items": [
+                    {
+                      "value": "0-49",
+                      "color": "#c3f1fc"
+                    },
+                    {
+                      "value": "49-66",
+                      "color": "#64d1ed"
+                    },
+                    {
+                      "value": "66-80",
+                      "color": "#59bad4"
+                    },
+                    {
+                      "value": "80-92",
+                      "color": "#37a3bf"
+                    },
+                    {
+                      "value": "92-100",
+                      "color": "#308da5"
+                    }
+                  ]
+                },
+                "applicationConfig": {},
+                "staticImageConfig": {}
+              }
+            }
+          }
         },
         {
           "id": "w1-2",
           "slug": "w1-2",
           "type": "",
-          "default": "true",
+          "default": false,
           "thumbnail": "",
           "widgetConfig": {}
-        }
-      ],
-      "layers": [
-        {
-          "id": "9d295f2e-7626-4ed2-9e77-1e13356eaef7",
-          "type": "layer",
-          "attributes": {
-            "slug": "natural-resource-protection-and-child-health-indicators-2015-release-2010-2015-ciesin",
-            "userId": "58333dcfd9f39b189ca44c75",
-            "application": [
-                "rw"
-            ],
-            "name": "Natural Resource Protection and Child Health Indicators, 2015 Release (2010 – 2015) (CIESIN)",
-            "default": true,
-            "indicator": 1,
-            "provider": "cartodb",
-            "iso": [],
-            "description": null,
-            "layerConfig": {
-              "account": "wri-rw",
-              "body": {
-                "maxzoom": 18,
-                "minzoom": 3,
-                "layers": [
-                  {
-                    "type": "cartodb",
-                    "options": {
-                      "sql": "with a as (SELECT cartodb_id, the_geom, the_geom_webmercator, iso3, countryname, unnest(array[ 'nrpi_v2015_15', 'chi_v2015_15']) AS \"indicator\", unnest(array[ nrpi_v2015_15, chi_v2015_15]) AS \"value\" FROM \"wri-rw\".nrpi_chi_2015 where countryname != '' order by indicator, countryname asc) select cartodb_id, the_geom, the_geom_webmercator, iso3, countryname, avg(value) as value from a group by countryname, cartodb_id, the_geom, the_geom_webmercator, iso3 order by countryname",
-                      "cartocss": "#layer {  polygon-fill: ramp([value], (#64d1ed, #64d1ed, #59bad4, #37a3bf, #308da5), quantiles);  line-width: 1;  line-color: #FFF;  line-opacity: 0.5;  polygon-comp-op: src-over;}",
-                      "cartocss_version": "2.3.0"
-                    }
-                  }
-                ]
-              }
-            },
-            "legendConfig": {
-              "type": "choropleth",
-              "items": [
-                {
-                  "value": "0-49",
-                  "color": "#c3f1fc"
-                },
-                {
-                  "value": "49-66",
-                  "color": "#64d1ed"
-                },
-                {
-                  "value": "66-80",
-                  "color": "#59bad4"
-                },
-                {
-                  "value": "80-92",
-                  "color": "#37a3bf"
-                },
-                {
-                  "value": "92-100",
-                  "color": "#308da5"
-                }
-              ]
-            },
-            "applicationConfig": {},
-            "staticImageConfig": {}
-          }
         }
       ]
     },
@@ -112,97 +121,114 @@
       },
       "widgets": [
         {
+          "id": "w2-2",
+          "title":"w2-2",
+          "description": "description",
+          "slug": "w2-2",
+          "default": true,
+          "widget_type": "map",
+          "frequency": "years",
+          "granularity": 5,
+          "indicator_id": 2,
+          "thumbnail": "",
+          "json_config": {
+            "threshold": {
+              "fail": 0,
+              "medium": 100,
+              "success": 250
+            },
+            "config": {
+              "id": "dabcca67-037c-4d11-afc4-69559edec4dc",
+              "type": "layer",
+              "attributes": {
+                "slug": "marine-and-terrestrial-protected-areas",
+                "userId": "58333dcfd9f39b189ca44c75",
+                "application": [
+                  "rw"
+                ],
+                "name": "Marine and Terrestrial Protected Areas",
+                "default": true,
+                "indicator": 2,
+                "provider": "cartodb",
+                "iso": [
+                  "global"
+                ],
+                "description": "Protected Planet, UNEP",
+                "layerConfig": {
+                  "account": "wri-01",
+                  "body": {
+                    "maxzoom": 18,
+                    "minzoom": 3,
+                    "layers": [
+                      {
+                        "type": "cartodb",
+                        "options": {
+                          "sql": "SELECT * FROM wdpa_protected_areas",
+                          "cartocss": "#wdpa_protected_areas {   polygon-opacity: 0.7;   line-color: #FFF;   line-width: 0.5;   line-opacity: 1;}#wdpa_protected_areas[iucn_cat='II'] {   polygon-fill: #0f3b82;}#wdpa_protected_areas[iucn_cat='III'] {   polygon-fill: #c9ddff;}#wdpa_protected_areas[iucn_cat='IV'] {   polygon-fill: #b9b2a1;}#wdpa_protected_areas[iucn_cat='Ia'] {   polygon-fill: #5ca2d1;}#wdpa_protected_areas[iucn_cat='Ib'] {   polygon-fill: #3e7bb6;}#wdpa_protected_areas[iucn_cat='Not Applicable'] {   polygon-fill: #eed54c;}#wdpa_protected_areas[iucn_cat='Not Assigned'] {   polygon-fill: #e7ab36;}#wdpa_protected_areas[iucn_cat='Not Reported'] {   polygon-fill: #fa894b;}#wdpa_protected_areas[iucn_cat='V'] {   polygon-fill: #ae847e;}#wdpa_protected_areas[iucn_cat='VI'] {   polygon-fill: #daa89b;}",
+                          "cartocss_version": "2.3.0"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "legendConfig": {
+                  "type": "basic",
+                  "items": [
+                    {
+                      "name": "Ia - Strict Nature Reserve",
+                      "color": "#5ca2d1"
+                    },
+                    {
+                      "name": "Ib - Wildnerness Area",
+                      "color": "#3e7bb6"
+                    },
+                    {
+                      "name": "II - National Park",
+                      "color": "#0f3b82"
+                    },
+                    {
+                      "name": "III - National Monument or Feature",
+                      "color": "#c9ddff"
+                    },
+                    {
+                      "name": "IV - Habitat and Species Management Area",
+                      "color": "#b9b2a1"
+                    },
+                    {
+                      "name": "V - Protected Landscape or Seascape",
+                      "color": "#ae847e"
+                    },
+                    {
+                      "name": "VI - Protected Area with Sustainable Use of Natural Resources",
+                      "color": "#daa89b"
+                    },
+                    {
+                      "name": "Not applicable",
+                      "color": "#eed54c"
+                    },
+                    {
+                      "name": "Not assigned",
+                      "color": "#e7ab36"
+                    },
+                    {
+                      "name": "Not reported",
+                      "color": "#fa894b"
+                    }
+                  ]
+                },
+                "applicationConfig": {},
+                "staticImageConfig": {}
+              }
+            }
+          }
+        },
+        {
           "id": "w2-1",
           "slug": "w2-1",
           "type": "",
-          "default": "true",
+          "default": false,
           "thumbnail": "",
           "widgetConfig": {}
-        }
-      ],
-      "layers": [
-        {
-          "id": "dabcca67-037c-4d11-afc4-69559edec4dc",
-          "type": "layer",
-          "attributes": {
-            "slug": "marine-and-terrestrial-protected-areas",
-            "userId": "58333dcfd9f39b189ca44c75",
-            "application": [
-              "rw"
-            ],
-            "name": "Marine and Terrestrial Protected Areas",
-            "default": true,
-            "indicator": 2,
-            "provider": "cartodb",
-            "iso": [
-              "global"
-            ],
-            "description": "Protected Planet, UNEP",
-            "layerConfig": {
-              "account": "wri-01",
-              "body": {
-                "maxzoom": 18,
-                "minzoom": 3,
-                "layers": [
-                  {
-                    "type": "cartodb",
-                    "options": {
-                      "sql": "SELECT * FROM wdpa_protected_areas",
-                      "cartocss": "#wdpa_protected_areas {   polygon-opacity: 0.7;   line-color: #FFF;   line-width: 0.5;   line-opacity: 1;}#wdpa_protected_areas[iucn_cat='II'] {   polygon-fill: #0f3b82;}#wdpa_protected_areas[iucn_cat='III'] {   polygon-fill: #c9ddff;}#wdpa_protected_areas[iucn_cat='IV'] {   polygon-fill: #b9b2a1;}#wdpa_protected_areas[iucn_cat='Ia'] {   polygon-fill: #5ca2d1;}#wdpa_protected_areas[iucn_cat='Ib'] {   polygon-fill: #3e7bb6;}#wdpa_protected_areas[iucn_cat='Not Applicable'] {   polygon-fill: #eed54c;}#wdpa_protected_areas[iucn_cat='Not Assigned'] {   polygon-fill: #e7ab36;}#wdpa_protected_areas[iucn_cat='Not Reported'] {   polygon-fill: #fa894b;}#wdpa_protected_areas[iucn_cat='V'] {   polygon-fill: #ae847e;}#wdpa_protected_areas[iucn_cat='VI'] {   polygon-fill: #daa89b;}",
-                      "cartocss_version": "2.3.0"
-                    }
-                  }
-                ]
-              }
-            },
-            "legendConfig": {
-              "type": "basic",
-              "items": [
-                {
-                  "name": "Ia - Strict Nature Reserve",
-                  "color": "#5ca2d1"
-                },
-                {
-                  "name": "Ib - Wildnerness Area",
-                  "color": "#3e7bb6"
-                },
-                {
-                  "name": "II - National Park",
-                  "color": "#0f3b82"
-                },
-                {
-                  "name": "III - National Monument or Feature",
-                  "color": "#c9ddff"
-                },
-                {
-                  "name": "IV - Habitat and Species Management Area",
-                  "color": "#b9b2a1"
-                },
-                {
-                  "name": "V - Protected Landscape or Seascape",
-                  "color": "#ae847e"
-                },
-                {
-                  "name": "VI - Protected Area with Sustainable Use of Natural Resources",
-                  "color": "#daa89b"
-                },
-                {
-                  "name": "Not applicable",
-                  "color": "#eed54c"
-                },
-                {
-                  "name": "Not assigned",
-                  "color": "#e7ab36"
-                },
-                {
-                  "name": "Not reported",
-                  "color": "#fa894b"
-                }
-              ]
-            },
-            "applicationConfig": {},
-            "staticImageConfig": {}
-          }
         }
       ]
     },
@@ -222,93 +248,110 @@
       },
       "widgets": [
         {
-          "id": "w3-1",
-          "slug": "w3-1",
-          "type": "",
-          "default": "true",
+          "id": "w2-2",
+          "title":"w2-2",
+          "description": "description",
+          "slug": "w2-2",
+          "default": true,
+          "widget_type": "map",
+          "frequency": "years",
+          "granularity": 5,
+          "indicator_id": 2,
           "thumbnail": "",
-          "widgetConfig": {}
-        }
-      ],
-      "layers": [
-        {
-          "id": "8cee7211-d495-4217-8f9a-f6f903c3cef1",
-          "type": "layer",
-          "attributes": {
-            "slug": "open-air-quality-pm2-5",
-            "userId": "58333dcfd9f39b189ca44c75",
-            "application": [
-              "rw"
-            ],
-            "name": "Open Air Quality: PM2.5.",
-            "default": true,
-            "indicator": 3,
-            "provider": "cartodb",
-            "iso": [
-              "global"
-            ],
-            "description": "",
-            "layerConfig": {
-              "account": "wri-rw",
-              "body": {
-                "maxzoom": 18,
-                "minzoom": 3,
-                "layers": [
-                  {
-                    "type": "mapnik",
-                    "options": {
-                      "sql": "SELECT * FROM pm2_5_pm10_no2_so2_o3_co_bc_openaq where parameter='pm25'",
-                      "cartocss": "#layer {  marker-width: 7;  marker-fill: ramp([value], (#f3cbd3, #eaa9bd, #dd88ac, #ca699d, #b14d8e, #91357d, #6c2167), quantiles);  marker-fill-opacity: 1;  marker-allow-overlap: true;  marker-line-width: 1;  marker-line-color: #FFF;  marker-line-opacity: 1;}",
-                      "cartocss_version": "2.3.0"
-                    }
+          "json_config": {
+            "threshold": {
+              "fail": 0,
+              "medium": 100,
+              "success": 250
+            },
+            "config": {
+              "id": "8cee7211-d495-4217-8f9a-f6f903c3cef1",
+              "type": "layer",
+              "attributes": {
+                "slug": "open-air-quality-pm2-5",
+                "userId": "58333dcfd9f39b189ca44c75",
+                "application": [
+                  "rw"
+                ],
+                "name": "Open Air Quality: PM2.5.",
+                "default": true,
+                "indicator": 3,
+                "provider": "cartodb",
+                "iso": [
+                  "global"
+                ],
+                "description": "",
+                "layerConfig": {
+                  "account": "wri-rw",
+                  "body": {
+                    "maxzoom": 18,
+                    "minzoom": 3,
+                    "layers": [
+                      {
+                        "type": "mapnik",
+                        "options": {
+                          "sql": "SELECT * FROM pm2_5_pm10_no2_so2_o3_co_bc_openaq where parameter='pm25'",
+                          "cartocss": "#layer {  marker-width: 7;  marker-fill: ramp([value], (#f3cbd3, #eaa9bd, #dd88ac, #ca699d, #b14d8e, #91357d, #6c2167), quantiles);  marker-fill-opacity: 1;  marker-allow-overlap: true;  marker-line-width: 1;  marker-line-color: #FFF;  marker-line-opacity: 1;}",
+                          "cartocss_version": "2.3.0"
+                        }
+                      }
+                    ]
                   }
-                ]
-              }
-            },
-            "legendConfig": {
-              "type": "gradient",
-              "items": [
-                {
-                  "value": "-1111 µg/m³",
-                  "color": "#f3cbd3"
                 },
-                {
-                  "value": "",
-                  "color": "#eaa9bd"
+                "legendConfig": {
+                  "type": "gradient",
+                  "items": [
+                    {
+                      "value": "-1111 µg/m³",
+                      "color": "#f3cbd3"
+                    },
+                    {
+                      "value": "",
+                      "color": "#eaa9bd"
+                    },
+                    {
+                      "value": "",
+                      "color": "#dd88ac"
+                    },
+                    {
+                      "value": "",
+                      "color": "#b14d8e"
+                    },
+                    {
+                      "value": "",
+                      "color": "#91357d"
+                    },
+                    {
+                      "value": "985 µg/m³",
+                      "color": "#6c2167"
+                    }
+                  ]
                 },
-                {
-                  "value": "",
-                  "color": "#dd88ac"
-                },
-                {
-                  "value": "",
-                  "color": "#b14d8e"
-                },
-                {
-                  "value": "",
-                  "color": "#91357d"
-                },
-                {
-                  "value": "985 µg/m³",
-                  "color": "#6c2167"
+                "applicationConfig": {},
+                "staticImageConfig": {
+                  "format": "png",
+                  "bbox": [
+                    -110,
+                    -65,
+                    110,
+                    65
+                  ],
+                  "width": 2048,
+                  "height": 1024,
+                  "srs": null,
+                  "urlTemplate": "https://{{account}}.carto.com/api/v1/map/static/bbox/{{token_groupid}}/{{bbox}}/{{width}}/{{height}}.{{format}}"
                 }
-              ]
-            },
-            "applicationConfig": {},
-            "staticImageConfig": {
-              "format": "png",
-              "bbox": [
-                -110,
-                -65,
-                110,
-                65
-              ],
-              "width": 2048,
-              "height": 1024,
-              "srs": null,
-              "urlTemplate": "https://{{account}}.carto.com/api/v1/map/static/bbox/{{token_groupid}}/{{bbox}}/{{width}}/{{height}}.{{format}}"
+              }
             }
           }
+        },
+        {
+          "id": "w2-1",
+          "slug": "w2-1",
+          "type": "",
+          "default": false,
+          "thumbnail": "",
+          "widgetConfig": {}
         }
       ]
     },
@@ -328,15 +371,19 @@
       },
       "widgets": [
         {
-          "id": "w4-1",
-          "slug": "w4-1",
-          "type": "",
-          "default": "true",
+          "id": "w4-4",
+          "title":"w4-4",
+          "description": "description",
+          "slug": "w4-4",
+          "default": true,
+          "widget_type": "line",
+          "frequency": "years",
+          "granularity": 5,
+          "indicator_id": 1,
           "thumbnail": "",
-          "widgetConfig": {}
+          "json_config": {}
         }
-      ],
-      "layers": []
+      ]
     },
     {
       "id": 5,
@@ -347,22 +394,21 @@
       "source": "S.R",
       "updatedAt": "date",
       "type": "B",
-      "threshold": {
-        "fail":0,
-        "medium":100,
-        "success": 250
-      },
       "widgets": [
         {
-          "id": "w5-1",
-          "slug": "w5-1",
-          "type": "",
-          "default": "true",
+          "id": "w5-5",
+          "title":"w5-5",
+          "description": "description",
+          "slug": "w5-5",
+          "default": true,
+          "widget_type": "bars",
+          "frequency": "years",
+          "granularity": 5,
+          "indicator_id": 1,
           "thumbnail": "",
-          "widgetConfig": {}
+          "json_config": {}
         }
-      ],
-      "layers": []
+      ]
     }
   ],
   "filter": {

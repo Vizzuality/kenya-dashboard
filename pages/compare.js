@@ -79,11 +79,12 @@ class ComparePage extends Page {
       this.setMapParams(params);
     }
 
+    // Epand map if in url
     if (url.query.expanded) {
       this.props.setMapExpansionFromUrl(!!url.query.expanded);
     }
 
-    // Get all indicators to set the add indicators list
+    // Get all indicators to set the add indicators list modal
     if (!Object.keys(this.props.indicatorsFilterList.list).length) {
       this.props.getIndicatorsFilterList();
     }
