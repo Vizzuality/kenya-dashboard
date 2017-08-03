@@ -1,16 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// Libraries
 import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+
+// Utils
+import { get } from 'utils/request';
+import { getTopicIcon } from 'utils/indicators';
 
 // Components
 import { Link } from 'routes';
 import TableType from 'components/indicators/table-type';
 import ArcType from 'components/indicators/arc-type';
 import Spinner from 'components/ui/spinner';
-
-// Utils
-import { get } from 'utils/request';
+import Icon from 'components/ui/icon';
+import Tooltip from 'components/ui/tooltip';
 
 // Constants
 import { EXAMPLE_QUERY_DATA } from 'constants/indicators';
@@ -23,6 +28,8 @@ export default class DashboardItem extends React.Component {
     this.state = {
       data: undefined
     };
+
+    this.defaultWidget = props.info.widgets.find(w => w.default);
 
     // Bindings
     this.setData = this.setData.bind(this);
@@ -57,42 +64,32 @@ export default class DashboardItem extends React.Component {
 
   getItemType() {
     switch (this.props.info.type) {
-      case 'A': return <TableType data={this.state.data} />;
-      case 'B': return <ArcType data={this.state.data} />;
+      case 'table': return <TableType data={this.state.data} />;
+      case 'arc': return <ArcType data={this.state.data} />;
       default: return '';
     }
   }
 
-  getContent() {
-    const { info } = this.props;
-
+  // Provisional
+  getItemTools() {
     return (
-      <div>
-        <h2>{info.category}</h2>
-        <h3>{info.name}</h3>
-
-        {/* Indicator type detail */}
-        <div className="type-detail">
-          <Spinner isLoading={this.state.data === undefined} />
-          {this.state.data !== undefined && !isEmpty(this.state.data) &&
-            this.getItemType()}
-        </div>
-
-        <p><span>{info.source}</span>/ <span>{info.updatedAt}</span></p>
-      </div>
+      <button>
+        <Icon name="icon-info" />
+      </button>
     );
   }
 
   getThreshold(thresholdVal) {
-    let currentThreshold;
+    // let currentThreshold;
+    //
+    // Object.keys(this.props.info.threshold).forEach((key) => {
+    //   if (+thresholdVal > +this.props.info.threshold[key]) {
+    //     currentThreshold = key;
+    //   }
+    // });
 
-    Object.keys(this.props.info.threshold).forEach((key) => {
-      if (+thresholdVal > +this.props.info.threshold[key]) {
-        currentThreshold = key;
-      }
-    });
-
-    return currentThreshold;
+    // return currentThreshold;
+    return 'provisional';
   }
 
   render() {
@@ -105,16 +102,54 @@ export default class DashboardItem extends React.Component {
       [className]: !!className,
       [`-${threshold || 'default'}`]: !!info.threshold && !isEmpty(info.threshold) && !!data && !!data.threshold
     });
-    const content = this.getContent();
 
     return (
-      <div className={classNames}>
-        <Link route="compare" params={{ indicators: info.id }}>
-          <a>
-            {content}
-          </a>
-        </Link>
-      </div>
+      <article className={classNames}>
+        {/* Header */}
+        <header className="item-header">
+          <h1 className="item-title">{info.name}</h1>
+          <div className="item-tools">
+            {this.getItemTools()}
+            {/* <ItemTools date /> */}
+          </div>
+        </header>
+
+        {/* Indicator type detail - Content */}
+        <section className="type-detail">
+          <Spinner isLoading={this.state.data === undefined} />
+          {this.state.data !== undefined && !isEmpty(this.state.data) &&
+            this.getItemType()}
+        </section>
+
+        {/* Footer */}
+        <footer className="item-footer">
+          <div className="info">
+            <div className="topic-container">
+              <span className="topic">
+                {getTopicIcon(info.category, '-small')}
+              </span>
+              <div className="c-tooltip">{info.category}</div>
+            </div>
+            {/* <Tooltip
+              target={(
+                <span className="topic">
+                  {getTopicIcon(info.category, '-small')}
+                </span>
+              )}
+              content={<div>{info.category}</div>}
+            /> */}
+
+            <span className="update">Last update: {info.updatedAt}</span>
+          </div>
+          <div className="">
+            <Link route="compare" params={{ indicators: info.id }}>
+              <a className="item-link">
+                <Icon name="icon-arrow_next" className="-smaller" />
+              </a>
+            </Link>
+          </div>
+        </footer>
+      </article>
     );
   }
 }
