@@ -15,7 +15,6 @@ import TableType from 'components/indicators/table-type';
 import ArcType from 'components/indicators/arc-type';
 import Spinner from 'components/ui/spinner';
 import Icon from 'components/ui/icon';
-import Tooltip from 'components/ui/tooltip';
 
 // Constants
 import { EXAMPLE_QUERY_DATA } from 'constants/indicators';
@@ -80,27 +79,28 @@ export default class DashboardItem extends React.Component {
   }
 
   getThreshold(thresholdVal) {
-    // let currentThreshold;
-    //
-    // Object.keys(this.props.info.threshold).forEach((key) => {
-    //   if (+thresholdVal > +this.props.info.threshold[key]) {
-    //     currentThreshold = key;
-    //   }
-    // });
+    const threshold = this.defaultWidget.json_config.threshold;
+    let currentThreshold;
 
-    // return currentThreshold;
-    return 'provisional';
+    Object.keys(threshold).forEach((key) => {
+      if (+thresholdVal > +threshold[key]) {
+        currentThreshold = key;
+      }
+    });
+
+    return currentThreshold;
   }
 
   render() {
     const { info, className } = this.props;
     const { data } = this.state;
+    const widgetThreshold = this.defaultWidget.json_config.threshold;
     const threshold = data && data.threshold ? this.getThreshold(data.threshold) : null;
 
     const classNames = classnames({
       'c-dashboard-item': true,
       [className]: !!className,
-      [`-${threshold || 'default'}`]: !!info.threshold && !isEmpty(info.threshold) && !!data && !!data.threshold
+      [`-${threshold || 'default'}`]: !!widgetThreshold && !isEmpty(widgetThreshold) && !!data && !!data.threshold
     });
 
     return (
@@ -130,15 +130,6 @@ export default class DashboardItem extends React.Component {
               </span>
               <div className="c-tooltip">{info.category}</div>
             </div>
-            {/* <Tooltip
-              target={(
-                <span className="topic">
-                  {getTopicIcon(info.category, '-small')}
-                </span>
-              )}
-              content={<div>{info.category}</div>}
-            /> */}
-
             <span className="update">Last update: {info.updatedAt}</span>
           </div>
           <div className="">

@@ -8,12 +8,6 @@
       "category": "wildlife",
       "source": "S.R",
       "updatedAt": "date",
-      "type": "A",
-      "threshold": {
-        "fail":0,
-        "medium":100,
-        "success": 250
-      },
       "widgets": [
         {
           "id": "w1-1",
@@ -113,12 +107,6 @@
       "category": "wildlife",
       "source": "S.R",
       "updatedAt": "date",
-      "type": "B",
-      "threshold": {
-        "fail":0,
-        "medium":100,
-        "success": 250
-      },
       "widgets": [
         {
           "id": "w2-2",
@@ -240,12 +228,6 @@
       "category": "wildlife",
       "source": "S.R",
       "updatedAt": "date",
-      "type": "B",
-      "threshold": {
-        "fail":0,
-        "medium":100,
-        "success": 250
-      },
       "widgets": [
         {
           "id": "w2-2",
@@ -363,12 +345,6 @@
       "category": "wildlife",
       "source": "S.R",
       "updatedAt": "date",
-      "type": "A",
-      "threshold": {
-        "fail":0,
-        "medium":100,
-        "success": 250
-      },
       "widgets": [
         {
           "id": "w4-4",
@@ -381,7 +357,13 @@
           "granularity": 5,
           "indicator_id": 1,
           "thumbnail": "",
-          "json_config": {}
+          "json_config": {
+            "threshold": {
+              "fail": 0,
+              "medium": 100,
+              "success": 250
+            }
+          }
         }
       ]
     },
@@ -393,7 +375,6 @@
       "category": "wildlife",
       "source": "S.R",
       "updatedAt": "date",
-      "type": "B",
       "widgets": [
         {
           "id": "w5-5",
@@ -406,7 +387,13 @@
           "granularity": 5,
           "indicator_id": 1,
           "thumbnail": "",
-          "json_config": {}
+          "json_config": {
+            "threshold": {
+              "fail": 0,
+              "medium": 100,
+              "success": 250
+            }
+          }
         }
       ]
     }
