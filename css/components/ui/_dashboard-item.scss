@@ -17,7 +17,6 @@
       font-weight: $font-weight-default;
       margin-bottom: 5px;
     }
-
   }
 
   /* Content */
@@ -38,31 +37,8 @@
       display: flex;
       align-items: center;
 
-      .topic-container {
-        position: relative;
-
-        &:hover {
-          .c-tooltip {
-            display: inherit;
-          }
-        }
-      }
-
       .topic {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 44px;
-        height: 24px;
-        margin-right: 8px;
-        background-color: $color-secondary;
-        border-radius: 100px;
         cursor: pointer;
-
-
-        .c-icon {
-          fill: $color-text-1;
-        }
       }
 
       .update {

@@ -5,12 +5,13 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Components
-import Icon from 'components/ui/icon';
+import TopicIcon from 'components/ui/topic-icon';
+
 
 export default function IndicatorInfo(props) {
   const { className, info } = props;
   const classNames = classnames({
-    'c-indicators-list': true,
+    'c-indicator-info': true,
     [className]: !!className
   });
 
@@ -19,10 +20,10 @@ export default function IndicatorInfo(props) {
       {/* Header */}
       <header className="info-header">
         <div>
-          <p>Update</p>
+          <p className="date">Update</p>
           <h1 className="title">{info.title}</h1>
-          <div>
-            <Icon name="" />
+          <div className="topic">
+            <TopicIcon topic={info.topic} />
             {info.topic}
           </div>
         </div>
@@ -35,14 +36,14 @@ export default function IndicatorInfo(props) {
       <section className="info-content">
         {/* Description */}
         <article>
-          <h2>Description</h2>
-          <p>{info.description}</p>
+          <h2 className="article-title">Description</h2>
+          <p className="article-text">{info.description}</p>
         </article>
 
         {/* Methodology */}
         <article>
-          <h2>Methodology</h2>
-          <p>{info.methodology}</p>
+          <h2 className="article-title">Methodology</h2>
+          <p className="article-text">{info.methodology}</p>
         </article>
       </section>
     </div>

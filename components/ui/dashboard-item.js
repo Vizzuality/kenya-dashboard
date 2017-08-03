@@ -7,7 +7,6 @@ import isEmpty from 'lodash/isEmpty';
 
 // Utils
 import { get } from 'utils/request';
-import { getTopicIcon } from 'utils/indicators';
 
 // Components
 import { Link } from 'routes';
@@ -16,6 +15,7 @@ import TableType from 'components/indicators/table-type';
 import ArcType from 'components/indicators/arc-type';
 import Spinner from 'components/ui/spinner';
 import Icon from 'components/ui/icon';
+import TopicIcon from 'components/ui/topic-icon';
 
 // Constants
 import { EXAMPLE_QUERY_DATA } from 'constants/indicators';
@@ -115,12 +115,7 @@ export default class DashboardItem extends React.Component {
         {/* Footer */}
         <footer className="item-footer">
           <div className="info">
-            <div className="topic-container">
-              <span className="topic">
-                {getTopicIcon(info.category, '-small')}
-              </span>
-              <div className="c-tooltip">{info.category}</div>
-            </div>
+            <TopicIcon topic={info.category} tooltip />
             <span className="update">Last update: {info.updatedAt}</span>
           </div>
           <div className="">

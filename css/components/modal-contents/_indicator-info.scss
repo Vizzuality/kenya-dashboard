@@ -1,0 +1,55 @@
+
+.c-indicator-info {
+  color: $color-text-1;
+  padding: 60px 80px;
+
+  .info-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .date {
+    font-size: 14px;
+    line-height: 17px;
+    margin-bottom: 8px;
+  }
+
+  .title {
+    font-size: $font-size-bigger;
+    line-height: 29px;
+    margin-bottom: 12px;
+  }
+
+  .topic {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 17px;
+    margin-bottom: 36px;
+
+    .c-topic-icon {
+      margin-right: 5px;
+    }
+  }
+
+  /* Content */
+  .info-content {
+    article {
+      margin-bottom: 32px;
+
+      &:last-child { margin-bottom: 0; }
+
+      .article-title {
+        font-size: $font-size-big;
+        line-height: 24px;
+        margin-bottom: 20px;
+      }
+
+      .article-text {
+        font-size: $font-size-default;
+        line-height: 19px;
+      }
+    }
+  }
+}

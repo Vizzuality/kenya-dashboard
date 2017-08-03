@@ -30,6 +30,7 @@
 
 // modal contents
 @import 'components/modal-contents/indicators-list';
+@import 'components/modal-contents/indicator-info';
 
 // - ui
 @import '../node_modules/react-select/dist/react-select';
@@ -55,4 +56,5 @@
 @import 'components/ui/switch';
 @import 'components/ui/title';
 @import 'components/ui/tooltip';
+@import 'components/ui/topic-icon';
 @import 'components/ui/zoom-control';

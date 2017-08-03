@@ -1,0 +1,25 @@
+
+.c-topic-icon {
+  position: relative;
+
+  &:hover {
+    .c-tooltip {
+      display: inherit;
+    }
+  }
+
+  .topic {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 24px;
+    margin-right: 8px;
+    background-color: $color-secondary;
+    border-radius: 100px;
+
+    .c-icon {
+      fill: $color-text-1;
+    }
+  }
+}
