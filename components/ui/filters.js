@@ -56,7 +56,7 @@ export default class Filters extends React.Component {
       <div className={classNames}>
         {/* Areas select */}
         <SelectCustom
-          label="Areas"
+          label="Location"
           name="areas"
           type="slider"
           list={options.areas}

@@ -84,7 +84,7 @@ export default class DashboardItem extends React.Component {
   }
 
   render() {
-    const { info, className } = this.props;
+    const { info, className, withTooltip } = this.props;
     const { data } = this.state;
     const widgetThreshold = this.defaultWidget.json_config.threshold;
     const threshold = data && data.threshold ? this.getThreshold(data.threshold) : null;
@@ -116,7 +116,7 @@ export default class DashboardItem extends React.Component {
         {/* Footer */}
         <footer className="item-footer">
           <div className="info">
-            <TopicIcon topic={info.category} tooltip />
+            <TopicIcon topic={info.topic} tooltip />
             <span className="update">Last update: {info.updatedAt}</span>
           </div>
           <div className="">

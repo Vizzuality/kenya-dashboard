@@ -50,7 +50,7 @@ export default class CompareToolbar extends React.Component {
   /* Add area */
   onAddArea() {
     Object.keys(this.props.areas).length < 3 &&
-      this.props.addArea();
+      this.props.addArea(this.props.url);
   }
 
   onToggleModal() {
@@ -73,17 +73,17 @@ export default class CompareToolbar extends React.Component {
 
     const classNames = classnames(
       'c-compare-toolbar',
-      {
-        [className]: !!className
-      }
+      { [className]: !!className }
     );
 
+    const addAreaClass = classnames(
+      'c-button btn-add-area',
+      { '-disabled': Object.keys(areas).length === 3 }
+    );
     return (
       <div className={classNames}>
-        {Object.keys(areas).length < 3 &&
-          <button className="c-button btn-add-area" onClick={this.onAddArea}>Add Area</button>
-        }
         <button className="c-button btn-add-indicator" onClick={this.onToggleModal}>Add Indicator</button>
+        <button className={addAreaClass} onClick={this.onAddArea}>Compare Location</button>
       </div>
     );
   }

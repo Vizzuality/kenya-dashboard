@@ -6,8 +6,8 @@ import classnames from 'classnames';
 
 // Components
 import Icon from 'components/ui/icon';
-
-// Utils
+import DashboardList from 'components/ui/dashboard-list';
+import Spinner from 'components/ui/spinner';
 
 // Constants
 
@@ -39,9 +39,11 @@ export default class AreaIndicators extends React.Component {
             {/* <Select /> */}
           </div>
           <div className="tools">
-            <button className="btn btn-toggle" onClick={e => this.props.onToggleAccordionItem(e, id)}>
-              <Icon name="icon-expand" className="" />
-            </button>
+            {numOfAreas > 1 &&
+              <button className="btn btn-toggle" onClick={e => this.props.onToggleAccordionItem(e, id)}>
+                <Icon name="icon-expand" className="" />
+              </button>
+            }
             {numOfAreas > 1 &&
               <button className="btn btn-remove" onClick={() => this.onRemoveArea(id)}>
                 <Icon name="icon-cross" className="" />
@@ -50,7 +52,8 @@ export default class AreaIndicators extends React.Component {
           </div>
         </header>
         <section>
-          {indicators.list.map((ind, i) => <p key={i}>{ind.name}</p>)}
+          {/* <Spinner isLoading={indicators.loading} /> */}
+          <DashboardList list={indicators.list} layout="grid" withGrid={numOfAreas === 1} />
         </section>
       </article>
     );

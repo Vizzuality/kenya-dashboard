@@ -7,7 +7,8 @@
 
   .accordion-section {
     &.-dynamic{
-      span {
+      /* Library span without class */
+      > span {
         display: flex;
         justify-content: flex-end;
       }

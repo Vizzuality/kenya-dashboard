@@ -45,7 +45,7 @@ class DashboardPage extends Page {
       >
         <div>
           <Spinner isLoading={indicators.loading} />
-          <DashboardList list={indicators.list} layout={layout} />
+          <DashboardList list={indicators.list} layout={layout} withGrid />
         </div>
       </Layout>
     );
