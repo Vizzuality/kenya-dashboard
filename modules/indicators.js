@@ -178,7 +178,7 @@ export function getSpecificIndicators(ids) {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicator?${query}&page[size]=999999999`, BASIC_QUERY_HEADER)
+    fetch(`${process.env.KENYA_API}/indicators?${query}&page[size]=999999999`, BASIC_QUERY_HEADER)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -219,7 +219,7 @@ export function addIndicator(id) {
   return (dispatch, getState) => {
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicator?id=${id}&page[size]=999999999`, BASIC_QUERY_HEADER)
+    fetch(`${process.env.KENYA_API}/indicators?id=${id}&page[size]=999999999`, BASIC_QUERY_HEADER)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -284,12 +284,13 @@ export function removeIndicator(id) {
   };
 }
 
+// Get indicators to set de filter list
 export function getIndicatorsFilterList() {
   return (dispatch) => {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_INDICATORS_FILTER_LIST_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicators?page[size]=999999999`, BASIC_QUERY_HEADER)
+    fetch(`${process.env.KENYA_API}/indicators-groups?page[size]=999999999`, BASIC_QUERY_HEADER)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);

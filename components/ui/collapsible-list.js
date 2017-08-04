@@ -13,7 +13,7 @@ export default class CollapsibleList extends React.Component {
     super(props);
 
     this.state = {
-      hidden: false,
+      hidden: props.hidden || false,
       activeItems: props.activeItems
     };
 
@@ -43,36 +43,49 @@ export default class CollapsibleList extends React.Component {
   }
 
   render() {
-    const { className, title, list, collapse } = this.props;
+    const { className, title, list, collapse, item, arrowPosition, hidden } = this.props;
     const classNames = classnames({
       'c-collapsible-list': true,
       [className]: !!className,
       '-hidden': this.state.hidden
     });
+    const arrowIconName = hidden ? 'icon-arrow-up' : 'icon-arrow-down';
 
     return (
       <div className={classNames}>
         <h1 className="collapsible-title">
+          {collapse && arrowPosition === 'left' &&
+            <button className="btn btn-collapse -left" onClick={this.onToggleList}>
+              <Icon name={arrowIconName} className="-smaller" />
+            </button>
+          }
           {title}
-          {collapse &&
-            <button className="btn btn-collapse" onClick={this.onToggleList}>
-              <Icon name="icon-arrow-down" className="-smaller" />
+          {collapse && arrowPosition === 'right' &&
+            <button className="btn btn-collapse -right" onClick={this.onToggleList}>
+              <Icon name={arrowIconName} className="-smaller" />
             </button>
           }
         </h1>
         <div className="collapsible-list-container">
-          <ul className="collapsible-list">
-            {list.map((l, i) => (
-              <li className="list-item" key={i}>
-                <span>{l.name}</span>
-                <Switch
-                  onClick={() => this.onSwitchItem(l.id)}
-                  on={this.state.activeItems.includes(l.id)}
-                  className="c-switch"
-                />
-              </li>
-            ))}
-          </ul>
+          {item &&
+            <div className="collapsible-list">
+              {item}
+            </div>
+          }
+          {list &&
+            <ul className="collapsible-list">
+              {list.map((l, i) => (
+                <li className="list-item" key={i}>
+                  <span>{l.name}</span>
+                  <Switch
+                    onClick={() => this.onSwitchItem(l.id)}
+                    on={this.state.activeItems.includes(l.id)}
+                    className="c-switch"
+                  />
+                </li>
+              ))}
+            </ul>
+          }
         </div>
       </div>
     );
@@ -80,8 +93,11 @@ export default class CollapsibleList extends React.Component {
 }
 
 CollapsibleList.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.any.isRequired,
   list: PropTypes.array,
+  item: PropTypes.any,
+  arrowPosition: PropTypes.string,
+  hidden: PropTypes.bool,
   activeItems: PropTypes.array,
   className: PropTypes.string,
   url: PropTypes.object,
@@ -92,5 +108,6 @@ CollapsibleList.propTypes = {
 };
 
 CollapsibleList.defaultProps = {
-  collapse: true
+  collapse: true,
+  arrowPosition: 'right'
 };
