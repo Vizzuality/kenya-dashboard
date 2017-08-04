@@ -11,11 +11,13 @@ import { get } from 'utils/request';
 // Components
 import { Link } from 'routes';
 import ItemTools from 'components/ui/item-tools';
-import TableType from 'components/indicators/table-type';
-import ArcType from 'components/indicators/arc-type';
 import Spinner from 'components/ui/spinner';
 import Icon from 'components/ui/icon';
 import TopicIcon from 'components/ui/topic-icon';
+// Widget types
+import TableType from 'components/indicators/table-type';
+import ArcType from 'components/indicators/arc-type';
+import LineType from 'components/indicators/line-type';
 
 // Constants
 import { EXAMPLE_QUERY_DATA } from 'constants/indicators';
@@ -66,6 +68,7 @@ export default class DashboardItem extends React.Component {
     switch (this.props.info.type) {
       case 'table': return <TableType data={this.state.data} />;
       case 'arc': return <ArcType data={this.state.data} />;
+      case 'line': return <LineType data={this.state.data} />;
       default: return '';
     }
   }

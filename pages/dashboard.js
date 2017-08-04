@@ -35,7 +35,7 @@ class DashboardPage extends Page {
 
   render() {
     const { url, session, indicators, layout } = this.props;
-
+console.log(indicators);
     return (
       <Layout
         title="Dashboard"
