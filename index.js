@@ -3,6 +3,7 @@
 const express = require('express');
 const passport = require('passport');
 const next = require('next');
+const sass = require('node-sass');
 const cookieSession = require('cookie-session');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -54,15 +55,26 @@ server.use(passport.session());
 // Initializing next app before express server
 app.prepare()
   .then(() => {
-    // Public/landing page
-    server.get('/', (req, res) => (
-      app.render(req, res, '/')
-    ));
+    // Add route to serve compiled SCSS from /assets/{build id}/main.css
+    // Note: This is is only used in production, in development it is inlined
+    const sassResult = sass.renderSync({ file: './css/index.scss', outputStyle: 'compressed' });
+    server.get('/assets/:id/index.css', (req, res) => {
+      res.setHeader('Content-Type', 'text/css');
+      res.setHeader('Cache-Control', 'public, max-age=2592000');
+      res.setHeader('Expires', new Date(Date.now() + 2592000000).toUTCString());
+      res.send(sassResult.css);
+    });
 
-    server.use(handle);
+    server.all('*', (req, res) => {
+      return handle(req, res);
+    });
 
     server.listen(port, (err) => {
       if (err) throw err;
-      console.log(`> Ready on http://localhost:${port}`);
+      console.info(`> Ready on http://localhost:${port}`);
     });
+  })
+  .catch((err) => {
+    console.error('An error occurred, unable to start the server');
+    console.error(err);
   });

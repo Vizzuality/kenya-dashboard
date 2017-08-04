@@ -4,7 +4,7 @@ const webpack = require('webpack');
 require('dotenv').load();
 
 module.exports = {
-  webpack: (config, { dev }) => {
+  webpack: (config) => {
     config.module.rules.push(
       {
         test: /\.(css|scss)/,
