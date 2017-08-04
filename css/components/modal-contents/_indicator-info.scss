@@ -21,7 +21,12 @@
     margin-bottom: 12px;
   }
 
-  .topic {
+  .logo-container {
+    max-height: 50px;
+    max-width: 150px;
+  }
+
+  .topic-container {
     display: flex;
     align-items: center;
     font-size: 14px;

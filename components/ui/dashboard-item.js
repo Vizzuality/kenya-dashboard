@@ -94,6 +94,7 @@ export default class DashboardItem extends React.Component {
       [className]: !!className,
       [`-${threshold || 'default'}`]: !!widgetThreshold && !isEmpty(widgetThreshold) && !!data && !!data.threshold
     });
+    const modalInfo = { ...this.defaultWidget, ...{ updatedAt: info.updatedAt } };
 
     return (
       <article className={classNames}>
@@ -101,7 +102,7 @@ export default class DashboardItem extends React.Component {
         <header className="item-header">
           <h1 className="item-title">{info.name}</h1>
           <div className="item-tools">
-            <ItemTools info={this.defaultWidget} />
+            <ItemTools info={modalInfo} />
           </div>
         </header>
 

@@ -20,9 +20,9 @@ export default function IndicatorInfo(props) {
       {/* Header */}
       <header className="info-header">
         <div>
-          <p className="date">Update</p>
+          <p className="date">Last update: {info.updatedAt}</p>
           <h1 className="title">{info.title}</h1>
-          <div className="topic">
+          <div className="topic-container">
             <TopicIcon topic={info.topic} />
             {info.topic}
           </div>

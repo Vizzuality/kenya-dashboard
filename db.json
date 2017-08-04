@@ -5,7 +5,7 @@
       "name": "Indicator1",
       "query": "",
       "slug": "indicator-1",
-      "category": "wildlife",
+      "topic": "wildlife",
       "source": "S.R",
       "updatedAt": "date",
       "widgets": [
@@ -14,6 +14,7 @@
           "title":"w1-1",
           "description": "description",
           "slug": "w1-1",
+          "topic": "wildlife",
           "default": true,
           "widget_type": "map",
           "frequency": "years",
@@ -93,6 +94,7 @@
           "id": "w1-2",
           "slug": "w1-2",
           "type": "",
+          "topic": "wildlife",
           "default": false,
           "thumbnail": "",
           "widgetConfig": {}
@@ -104,7 +106,7 @@
       "name": "Indicator2",
       "query": "",
       "slug": "indicator-2",
-      "category": "wildlife",
+      "topic": "wildlife",
       "source": "S.R",
       "updatedAt": "date",
       "widgets": [
@@ -114,6 +116,7 @@
           "description": "description",
           "slug": "w2-2",
           "default": true,
+          "topic": "wildlife",
           "widget_type": "map",
           "frequency": "years",
           "granularity": 5,
@@ -213,7 +216,8 @@
         {
           "id": "w2-1",
           "slug": "w2-1",
-          "type": "",
+          "type": "bars",
+          "topic": "wildlife",
           "default": false,
           "thumbnail": "",
           "widgetConfig": {}
@@ -225,7 +229,7 @@
       "name": "Indicator3",
       "query": "",
       "slug": "indicator-3",
-      "category": "wildlife",
+      "topic": "wildlife",
       "source": "S.R",
       "updatedAt": "date",
       "widgets": [
@@ -235,6 +239,7 @@
           "description": "description",
           "slug": "w2-2",
           "default": true,
+          "topic": "wildlife",
           "widget_type": "map",
           "frequency": "years",
           "granularity": 5,
@@ -331,6 +336,7 @@
           "id": "w2-1",
           "slug": "w2-1",
           "type": "",
+          "topic": "wildlife",
           "default": false,
           "thumbnail": "",
           "widgetConfig": {}
@@ -342,7 +348,7 @@
       "name": "Indicator4",
       "query": "",
       "slug": "indicator-4",
-      "category": "wildlife",
+      "topic": "wildlife",
       "source": "S.R",
       "updatedAt": "date",
       "widgets": [
@@ -351,6 +357,7 @@
           "title":"w4-4",
           "description": "description",
           "slug": "w4-4",
+          "topic": "wildlife",
           "default": true,
           "widget_type": "line",
           "frequency": "years",
@@ -372,7 +379,7 @@
       "name": "Indicator5",
       "query": "",
       "slug": "indicator-5",
-      "category": "wildlife",
+      "topic": "wildlife",
       "source": "S.R",
       "updatedAt": "date",
       "widgets": [
@@ -381,6 +388,7 @@
           "title":"w5-5",
           "description": "description",
           "slug": "w5-5",
+          "topic": "wildlife",
           "default": true,
           "widget_type": "bars",
           "frequency": "years",
@@ -423,14 +431,14 @@
     ],
     "categories": [
       { "id": "wildlife", "name": "Wildlife" },
-      { "id": "category1", "name": "category1" },
-      { "id": "category2", "name": "category2" },
-      { "id": "category3", "name": "category3" }
+      { "id": "topic1", "name": "topic1" },
+      { "id": "topic2", "name": "topic2" },
+      { "id": "topic3", "name": "topic3" }
     ],
     "sort": [
       { "id": "name", "name": "Name" },
       { "id": "county", "name": "County" },
-      { "id": "category", "name": "Category" },
+      { "id": "topic", "name": "Category" },
       { "id": "date", "name": "Date" }
     ]
   },
