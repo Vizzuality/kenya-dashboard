@@ -55,7 +55,7 @@ export default class DashboardItem extends React.Component {
     }
   }
 
-  setData(data) {
+  setData() {
     // TODO Provisional query data
     this.setState({ data: EXAMPLE_QUERY_DATA });
 

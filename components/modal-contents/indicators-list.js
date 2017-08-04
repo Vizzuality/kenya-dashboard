@@ -51,7 +51,7 @@ IndicatorsList.propTypes = {
   className: PropTypes.string,
   url: PropTypes.object,
   // Actions
-  addIndicator: PropTypes.func,
-  removeIndicator: PropTypes.func,
+  // addIndicator: PropTypes.func,
+  // removeIndicator: PropTypes.func,
   closeModal: PropTypes.func
 };

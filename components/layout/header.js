@@ -1,3 +1,4 @@
+/* eslint jsx-a11y/no-static-element-interactions: 0 */
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -128,6 +129,5 @@ export default class Header extends React.Component {
 }
 
 Header.propTypes = {
-  url: PropTypes.object.isRequired,
-  session: PropTypes.object
+  url: PropTypes.object.isRequired
 };

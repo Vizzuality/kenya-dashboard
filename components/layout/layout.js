@@ -16,39 +16,35 @@ if (process.env.NODE_ENV !== 'production') {
   // whyDidYouUpdate(React);
 }
 
-export default class Layout extends React.Component {
-  render() {
-    const { title, description, url, session, children, className } = this.props;
+export default function Layout(props) {
+  const { title, description, url, session, children, className } = props;
+  const classNames = classnames({
+    [className]: !!className
+  });
 
-    const classNames = classnames({
-      [className]: !!className
-    });
+  return (
+    <div className={`l-page c-page ${classNames}`}>
+      <Head
+        title={title}
+        description={description}
+      />
+      <Icons />
 
-    return (
-      <div className={`l-page c-page ${classNames}`}>
-        <Head
-          title={title}
-          description={description}
-        />
-        <Icons />
+      {/* Customs Header */}
+      <Header
+        url={url}
+        session={session}
+      />
 
-        {/* Customs Header */}
-        <Header
-          url={url}
-          session={session}
-        />
-
-        <div className={`l-main ${classNames}`}>
-          {children}
-        </div>
-
-        {/* {footer !== false && <Footer />} */}
-
-        <Modal />
+      <div className={`l-main ${classNames}`}>
+        {children}
       </div>
-    );
-  }
 
+      {/* {footer !== false && <Footer />} */}
+
+      <Modal />
+    </div>
+  );
 }
 
 Layout.propTypes = {
