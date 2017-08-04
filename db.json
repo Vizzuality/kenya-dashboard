@@ -1,5 +1,5 @@
 {
-  "indicator": [
+  "indicators": [
     {
       "id": 1,
       "name": "Indicator1",
@@ -401,7 +401,7 @@
       { "id": "date", "name": "Date" }
     ]
   },
-  "indicators": {
+  "indicators-groups": {
     "climate": [
       { "id": 1, "name": "Indicator1" }
     ],
