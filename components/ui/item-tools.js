@@ -33,7 +33,7 @@ export default class ItemTools extends React.Component {
 
 
   render() {
-    const { className } = this.props;
+    const { className, info, remove } = this.props;
     const classNames = classnames(
       'c-item-tools',
       { [className]: !!className }
@@ -41,15 +41,26 @@ export default class ItemTools extends React.Component {
 
     return (
       <div className={classNames}>
-        <button className="" onClick={this.onToggleModal}>
-          <Icon name="icon-info" />
-        </button>
-        <button>
-          <Icon name="icon-download" />
-        </button>
-        <button>
-          <Icon name="icon-remove" />
-        </button>
+        <div className="select-date">
+          {info.frequency && info.frequency !== '' &&
+            info.frequency === 'days' ?
+              'Pick days' :
+              'Pick date'
+          }
+        </div>
+        <div className="other-tools">
+          <button className="btn" onClick={this.onToggleModal}>
+            <Icon name="icon-info" />
+          </button>
+          <button className="btn">
+            <Icon name="icon-download" />
+          </button>
+          {remove &&
+            <button className="btn">
+              <Icon name="icon-remove" />
+            </button>
+          }
+        </div>
       </div>
     );
   }
@@ -57,5 +68,6 @@ export default class ItemTools extends React.Component {
 
 ItemTools.propTypes = {
   className: PropTypes.string,
-  info: PropTypes.object
+  info: PropTypes.object,
+  remove: PropTypes.bool
 };
