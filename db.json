@@ -390,7 +390,7 @@
           "slug": "w5-5",
           "topic": "wildlife",
           "default": true,
-          "widget_type": "bars",
+          "widget_type": "arc",
           "frequency": "years",
           "granularity": 5,
           "indicator_id": 1,

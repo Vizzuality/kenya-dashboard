@@ -40,11 +40,26 @@ function parseObjectToUrlParams(obj) {
   return query;
 }
 
+function getThreshold(thresholdVal, threshold) {
+  let currentThreshold = '';
+
+  if (thresholdVal && threshold) {
+    Object.keys(threshold).forEach((key) => {
+      if (+thresholdVal > +threshold[key]) {
+        currentThreshold = key;
+      }
+    });
+  }
+
+  return currentThreshold;
+}
+
 export {
   toBase64,
   encode,
   decode,
   parseSelectOptions,
   parseObjectSelectOptions,
-  parseObjectToUrlParams
+  parseObjectToUrlParams,
+  getThreshold
 };

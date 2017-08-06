@@ -13,4 +13,10 @@ const SELECT_SEARCH_OPTIONS = {
   keys: ['name', 'label']
 };
 
-export { HEADER_MENU_LINKS, SELECT_SEARCH_OPTIONS };
+const THRESHOLD_COLORS = {
+  fail: '#FF6161',
+  medium: '#FFA26E',
+  success: '#73A575'
+};
+
+export { HEADER_MENU_LINKS, SELECT_SEARCH_OPTIONS, THRESHOLD_COLORS };

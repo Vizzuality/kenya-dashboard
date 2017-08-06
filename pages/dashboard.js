@@ -11,6 +11,9 @@ import { store } from 'store';
 // Libraries
 import isEqual from 'lodash/isEqual';
 
+// Utils
+import { setIndicatorsWidgetsList } from 'utils/indicators';
+
 // Components
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
@@ -35,7 +38,7 @@ class DashboardPage extends Page {
 
   render() {
     const { url, session, indicators, layout } = this.props;
-console.log(indicators);
+
     return (
       <Layout
         title="Dashboard"
@@ -45,7 +48,7 @@ console.log(indicators);
       >
         <div>
           <Spinner isLoading={indicators.loading} />
-          <DashboardList list={indicators.list} layout={layout} withGrid />
+          <DashboardList list={setIndicatorsWidgetsList(indicators.list, true)} layout={layout} withGrid />
         </div>
       </Layout>
     );

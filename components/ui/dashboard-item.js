@@ -7,6 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 
 // Utils
 import { get } from 'utils/request';
+import { getThreshold } from 'utils/general';
 
 // Components
 import { Link } from 'routes';
@@ -30,8 +31,6 @@ export default class DashboardItem extends React.Component {
     this.state = {
       data: undefined
     };
-
-    this.defaultWidget = props.info.widgets.find(w => w.default);
 
     // Bindings
     this.setData = this.setData.bind(this);
@@ -65,47 +64,41 @@ export default class DashboardItem extends React.Component {
   }
 
   getItemType() {
-    switch (this.props.info.type) {
+    const { info } = this.props;
+    switch (info.widget_type) {
       case 'table': return <TableType data={this.state.data} />;
-      case 'arc': return <ArcType data={this.state.data} />;
+      case 'arc': return (
+        <ArcType
+          data={this.state.data}
+          threshold={info.json_config.threshold}
+        />
+      );
       case 'line': return <LineType data={this.state.data} />;
       default: return '';
     }
   }
 
-  getThreshold(thresholdVal) {
-    const threshold = this.defaultWidget.json_config.threshold;
-    let currentThreshold;
-
-    Object.keys(threshold).forEach((key) => {
-      if (+thresholdVal > +threshold[key]) {
-        currentThreshold = key;
-      }
-    });
-
-    return currentThreshold;
-  }
-
   render() {
-    const { info, className, withTooltip } = this.props;
+    const { info, className } = this.props;
     const { data } = this.state;
-    const widgetThreshold = this.defaultWidget.json_config.threshold;
-    const threshold = data && data.threshold ? this.getThreshold(data.threshold) : null;
+    const widgetThreshold = this.props.info.json_config.threshold;
+    const threshold = data && data.threshold ?
+      getThreshold(data.threshold, info.json_config.threshold) :
+      null;
 
     const classNames = classnames({
       'c-dashboard-item': true,
       [className]: !!className,
       [`-${threshold || 'default'}`]: !!widgetThreshold && !isEmpty(widgetThreshold) && !!data && !!data.threshold
     });
-    const modalInfo = { ...this.defaultWidget, ...{ updatedAt: info.updatedAt } };
 
     return (
       <article className={classNames}>
         {/* Header */}
         <header className="item-header">
-          <h1 className="item-title">{info.name}</h1>
+          <h1 className="item-title">{info.title}</h1>
           <div className="item-tools">
-            <ItemTools info={modalInfo} />
+            <ItemTools info={info} />
           </div>
         </header>
 
