@@ -9,6 +9,7 @@ import { store } from 'store';
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 
+
 class HomePage extends Page {
   render() {
     const { url, session } = this.props;
