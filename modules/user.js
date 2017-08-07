@@ -6,14 +6,17 @@ const SET_USER = 'SET_USER';
 const REMOVE_USER = 'REMOVE_USER';
 
 // REDUCER
-const initialState = (Cookies.get('user')) ? JSON.parse(Cookies.get('user')) : {};
+const initialState = {
+  user: (Cookies.get('user')) ? JSON.parse(Cookies.get('user')) : {},
+  logged: false
+};
 
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_USER:
-      return Object.assign({}, state, action.payload);
+      return Object.assign({}, state, { user: action.payload.user, logged: action.payload.logged });
     case REMOVE_USER:
-      return {};
+      return Object.assign({}, state, { user: {}, logged: false });
     default:
       return state;
   }
@@ -26,53 +29,40 @@ export function setUser(user) {
 }
 
 export function login({ email, password }) {
-  return dispatch => new Promise((resolve, reject) => {
+  return (dispatch) => {
     post({
-      url: `${process.env.KENYA_API}/auth?email=${email}&password=${password}`,
+      url: `${process.env.KENYA_API}/auth`,
       type: 'POST',
-      // body: { email: 'exapmle@example.com', password: 'password' },
+      body: { email, password },
       headers: [
         {
           key: 'Content-Type',
           value: 'application/json'
-        },
-        {
-          key: 'X-Host-Override',
-          value: 'http://kenya-dashboard.vizzuality.com'
-        },
-        {
-          key: 'Cookie',
-          value: ''
         }
-        // {
-        //   key: 'KENYA-API-KEY',
-        //   value: process.env.KENYA_API_KEY
-        // }
       ],
       onSuccess: (response) => {
         localStorage.setItem('token', response.auth_token);
         // Set cookie
         Cookies.set('user', JSON.stringify(response));
-
         // Dispatch action
-        dispatch({ type: SET_USER, payload: response });
-
-        resolve(response);
+        dispatch({ type: SET_USER, payload: { user: response, logged: true } });
       },
-      onError: (error) => {
-        reject(error);
+      onError: () => {
+        localStorage.setItem('token', '');
+        dispatch({ type: SET_USER, payload: { user: {}, logged: false } });
       }
     });
-  });
+  };
 }
 
 export function logout() {
   return (dispatch) => {
+    localStorage.setItem('token', '');
     // Set cookie
     Cookies.remove('user');
 
     // Dispatch action
-    dispatch({ type: REMOVE_USER, payload: {} });
+    dispatch({ type: REMOVE_USER });
   };
   // return dispatch => new Promise((resolve, reject) => {
   //   post({

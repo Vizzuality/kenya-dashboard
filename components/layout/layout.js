@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import Head from 'components/layout/head';
 import Icons from 'components/layout/icons';
 import Header from 'components/layout/header';
+import HeaderLogin from 'components/layout/header-login';
 import Modal from 'components/ui/modal';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -17,7 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export default function Layout(props) {
-  const { title, description, url, session, children, className } = props;
+  const { title, description, url, session, children, className, logged } = props;
   const classNames = classnames({
     [className]: !!className
   });
@@ -31,10 +32,16 @@ export default function Layout(props) {
       <Icons />
 
       {/* Customs Header */}
-      <Header
-        url={url}
-        session={session}
-      />
+      {logged ?
+        <Header
+          url={url}
+          session={session}
+        /> :
+        <HeaderLogin
+          url={url}
+          session={session}
+        />
+      }
 
       <div className={`l-main ${classNames}`}>
         {children}
@@ -53,5 +60,10 @@ Layout.propTypes = {
   children: PropTypes.any.isRequired,
   session: PropTypes.object,
   url: PropTypes.object.isRequired,
+  logged: PropTypes.bool.isRequired,
   className: PropTypes.string
+};
+
+Layout.defaultProps = {
+  logged: false
 };

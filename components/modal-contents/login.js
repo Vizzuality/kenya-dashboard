@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 // Libraries
 import classnames from 'classnames';
 
-// Services
-import modal from 'services/modal';
-
 // Components
 import Field from 'components/form/field';
 import Input from 'components/form/input';
@@ -50,6 +47,14 @@ export default class Login extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if ((nextProps.user.logged || (!this.props.user.logged && !nextProps.user.logged)) &&
+      this.state.submitting) {
+      this.setState({ submitting: false });
+      this.props.closeModal();
+    }
+  }
+
   /**
    * UI EVENTS
    * - onChange
@@ -74,23 +79,7 @@ export default class Login extends React.Component {
       if (valid) {
         // Start the submitting
         this.setState({ submitting: true });
-
-        // Save data
-        this.props.login(this.state.form)
-          .then(() => {
-            this.setState({ submitting: false });
-            modal.toggleModal(false);
-            // toastr.success('Success', `The widget "${data.id}" - "${data.title}" has been uploaded correctly`);
-
-            // if (this.props.onSubmit) this.props.onSubmit();
-          })
-          .catch((err) => {
-            this.setState({ submitting: false });
-            // toastr.error('Error', `Oops! There was an error, try again`);
-            console.error(err);
-          });
-      } else {
-        // toastr.error('Error', 'Fill all the required fields');
+        this.props.login(this.state.form);
       }
     }, 0);
   }
@@ -150,7 +139,7 @@ export default class Login extends React.Component {
                 type="submit"
                 name="commit"
                 disabled={submitting}
-                className={`c-button -secondary -expanded`}
+                className="c-button -secondary -expanded"
               >
                 Log in
               </button>
@@ -164,7 +153,8 @@ export default class Login extends React.Component {
 
 Login.propTypes = {
   className: PropTypes.string,
+  user: PropTypes.object,
   // Actions
-  login: PropTypes.func
-  // closeModal: PropTypes.func
+  login: PropTypes.func,
+  closeModal: PropTypes.func
 };
