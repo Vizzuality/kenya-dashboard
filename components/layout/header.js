@@ -171,9 +171,11 @@ class Header extends React.Component {
             <nav className="menu-main">
               <MainNav list={HEADER_MENU_LINKS} url={url} />
               {user.logged &&
-                <button onClick={this.onLogout}>
-                  Sign out
-                </button>
+                <div className="menu-tools">
+                  <button className="btn-logout" onClick={this.onLogout}>
+                    Sign out
+                  </button>
+                </div>
               }
             </nav>
           </div>
