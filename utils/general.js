@@ -32,10 +32,16 @@ function parseObjectSelectOptions(object) {
 }
 
 function parseObjectToUrlParams(obj) {
+  const FILTERS_KEYS = {
+    topics: 'filter[topic_id]',
+    regions: 'filter[region_id]',
+    sort: 'sort'
+  };
+
   let query = '';
   Object.keys(obj).forEach((key) => {
     if (obj[key].length) {
-      query += query === '' ? `${key}=${obj[key]}` : `&${key}=${obj[key]}`;
+      query += query === '' ? `&${FILTERS_KEYS[key]}=${obj[key]}` : `&${FILTERS_KEYS[key]}=${obj[key]}`;
     }
   });
 

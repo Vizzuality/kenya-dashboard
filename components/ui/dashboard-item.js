@@ -68,7 +68,7 @@ export default class DashboardItem extends React.Component {
 
     return (
       <div>
-        <h2>{info.topic}</h2>
+        <h2>{info.topic && info.topic.name}</h2>
         <h3>{info.name}</h3>
 
         {/* Indicator type detail */}
@@ -84,15 +84,16 @@ export default class DashboardItem extends React.Component {
   }
 
   getThreshold(thresholdVal) {
-    let currentThreshold;
-
-    Object.keys(this.props.info.threshold).forEach((key) => {
-      if (+thresholdVal > +this.props.info.threshold[key]) {
-        currentThreshold = key;
-      }
-    });
-
-    return currentThreshold;
+    // let currentThreshold;
+    //
+    // Object.keys(this.props.info.threshold).forEach((key) => {
+    //   if (+thresholdVal > +this.props.info.threshold[key]) {
+    //     currentThreshold = key;
+    //   }
+    // });
+    //
+    // return currentThreshold;
+    return 'default'
   }
 
   render() {

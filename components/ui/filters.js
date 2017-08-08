@@ -54,10 +54,10 @@ export default class Filters extends React.Component {
 
     return (
       <div className={classNames}>
-        {/* Areas select */}
+        {/* Region select */}
         <SelectCustom
           label="Locations"
-          name="regions"
+          name="region"
           type="slider"
           list={options.regions}
           setValue={this.setFilters}

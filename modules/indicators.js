@@ -1,4 +1,4 @@
-// import { Deserializer } from 'jsonapi-serializer';
+import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
 import Router from 'next/router';
 
@@ -49,7 +49,7 @@ const initialState = {
   }
 };
 
-// const DESERIALIZER = new Deserializer();
+const DESERIALIZER = new Deserializer();
 
 /* Reducer */
 export default function indicatorsReducer(state = initialState, action) {
@@ -133,22 +133,18 @@ export function getIndicators(filters) {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_INDICATORS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicator?${query}&include=topics,widgets&page[size]=999`, headers)
+    fetch(`${process.env.KENYA_API}/indicators?include=topic,widgets&page[size]=999${query}`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((data) => {
-        dispatch({
-          type: GET_INDICATORS,
-          payload: data.data
+        DESERIALIZER.deserialize(data, (err, dataParsed) => {
+          dispatch({
+            type: GET_INDICATORS,
+            payload: dataParsed
+          });
         });
-        // DESERIALIZER.deserialize(data, (err, dataParsed) => {
-        //   dispatch({
-        //     type: GET_INDICATORS,
-        //     payload: dataParsed
-        //   });
-        // });
       })
       .catch((err) => {
         // Fetch from server ko -> Dispatch error
@@ -172,28 +168,25 @@ export function setIndicatorsLayersActive(layersActive) {
 }
 
 export function getSpecificIndicators(ids) {
-  const query = ids.split(',').map(id => `id=${id}`).join('&');
+  // const query = ids.split(',').map(id => `id=${id}`).join('&');
+
   return (dispatch) => {
+    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicators?${query}&page[size]=999`, BASIC_QUERY_HEADER)
+    fetch(`${process.env.KENYA_API}/indicators?filter[id]=${ids}&include=topic,widgets&page[size]=999`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((data) => {
-        dispatch({
-          type: GET_SPECIFIC_INDICATORS,
-          payload: data
+        DESERIALIZER.deserialize(data, (err, dataParsed) => {
+          dispatch({
+            type: GET_SPECIFIC_INDICATORS,
+            payload: dataParsed
+          });
         });
-
-        // DESERIALIZER.deserialize(data, (err, dataParsed) => {
-        //   dispatch({
-        //     type: GET_INDICATORS,
-        //     payload: dataParsed
-        //   });
-        // });
       })
       .catch((err) => {
         // Fetch from server ko -> Dispatch error

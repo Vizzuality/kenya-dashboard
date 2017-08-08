@@ -1,9 +1,7 @@
 
 const SORT_OPTIONS = [
-  { id: 'name', name: 'Name' },
-  { id: 'county', name: 'County' },
-  { id: 'topic', name: 'Topic' },
-  { id: 'date', name: 'Date' }
+  { id: 'name', name: 'Name ascendant (A-Z)' },
+  { id: '-name', name: 'Name descendant (Z-A)' }
 ];
 
 const REGIONS_OPTIONS = [
