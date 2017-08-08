@@ -68,7 +68,7 @@ export default class DashboardItem extends React.Component {
 
     return (
       <div>
-        <h2>{info.category}</h2>
+        <h2>{info.topic}</h2>
         <h3>{info.name}</h3>
 
         {/* Indicator type detail */}

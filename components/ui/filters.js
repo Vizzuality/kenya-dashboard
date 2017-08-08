@@ -67,11 +67,11 @@ export default class Filters extends React.Component {
         {/* Categories select */}
         <SelectCustom
           label="Topics"
-          name="categories"
+          name="topics"
           type="checkbox"
-          list={options.categories}
+          list={options.topics}
           setValue={this.setFilters}
-          selected={selected.categories}
+          selected={selected.topics}
           multi
         />
 

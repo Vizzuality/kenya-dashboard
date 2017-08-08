@@ -1,3 +1,4 @@
+import { BASIC_QUERY_HEADER } from 'constants/query';
 
 function toBase64(file, cb) {
   const reader = new FileReader();
@@ -40,11 +41,24 @@ function parseObjectToUrlParams(obj) {
   return query;
 }
 
+function parseCustomSelectOptions (list) {
+  return list.map(l => (
+    { name: l.attributes.name, id: l.id }
+  ));
+}
+
+function setBasicQueryHeaderHeaders(headers) {
+  const newHeaders = { ...BASIC_QUERY_HEADER.headers, ...headers };
+  return { ...BASIC_QUERY_HEADER, ...{ headers: newHeaders } };
+}
+
 export {
   toBase64,
   encode,
   decode,
   parseSelectOptions,
   parseObjectSelectOptions,
-  parseObjectToUrlParams
+  parseObjectToUrlParams,
+  setBasicQueryHeaderHeaders,
+  parseCustomSelectOptions
 };

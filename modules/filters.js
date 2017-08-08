@@ -1,13 +1,16 @@
 // import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
-import { encode } from 'utils/general';
 import Router from 'next/router';
+
+// Utils
+import { encode, setBasicQueryHeaderHeaders, parseCustomSelectOptions } from 'utils/general';
 
 // Constants
 import { BASIC_QUERY_HEADER } from 'constants/query';
 
 /* Constants */
 const GET_FILTERS_OPTIONS = 'GET_FILTERS_OPTIONS';
+const GET_TOPICS_OPTIONS = 'GET_TOPICS_OPTIONS';
 const GET_FILTERS_LOADING = 'GET_FILTERS_LOADING';
 const GET_FILTERS_ERROR = 'GET_FILTERS_ERROR';
 const SET_SELECTED_FILTERS = 'SET_SELECTED_FILTERS';
@@ -15,10 +18,13 @@ const SET_DASHBOARD_LAYOUT = 'SET_DASHBOARD_LAYOUT';
 
 /* Initial state */
 const initialState = {
-  options: {},
+  options: {
+    areas: [],
+    topics: []
+  },
   selected: {
     areas: [],
-    categories: [],
+    topics: [],
     sort: []
   },
   loading: false,
@@ -33,6 +39,9 @@ export default function filtersReducer(state = initialState, action) {
   switch (action.type) {
     case GET_FILTERS_OPTIONS:
       return Object.assign({}, state, { options: action.payload, loading: false, error: null });
+    case GET_TOPICS_OPTIONS:
+      return Object.assign({}, state,
+        { options: { ...state.options, ...{ topics: action.payload } } });
     case GET_FILTERS_LOADING:
       return Object.assign({}, state, { loading: true, error: null });
     case GET_FILTERS_ERROR:
@@ -52,7 +61,7 @@ export function getFiltersOptions() {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_FILTERS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/filter?page[size]=999999999`, BASIC_QUERY_HEADER)
+    fetch(`${process.env.KENYA_API}/filter?page[size]=999`, BASIC_QUERY_HEADER)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -78,6 +87,41 @@ export function getFiltersOptions() {
       });
   };
 }
+
+/* Get topics options */
+export function getTopicsOptions() {
+  return (dispatch) => {
+    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+    // Waiting for fetch from server -> Dispatch loading
+    dispatch({ type: GET_FILTERS_LOADING });
+
+    fetch(`${process.env.KENYA_API}/topics?page[size]=999`, headers)
+      .then((response) => {
+        if (response.ok) return response.json();
+        throw new Error(response.statusText);
+      })
+      .then((data) => {
+        dispatch({
+          type: GET_TOPICS_OPTIONS,
+          payload: parseCustomSelectOptions(data.data)
+        });
+        // DESERIALIZER.deserialize(data, (err, dataParsed) => {
+        //   dispatch({
+        //     type: GET_FILTERS,
+        //     payload: dataParsed
+        //   });
+        // });
+      })
+      .catch((err) => {
+        // Fetch from server ko -> Dispatch error
+        dispatch({
+          type: GET_FILTERS_ERROR,
+          payload: err.message
+        });
+      });
+  };
+}
+
 
 export function setSelectedFilters(filters) {
   return (dispatch) => {
