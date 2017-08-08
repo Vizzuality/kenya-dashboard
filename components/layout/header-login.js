@@ -18,7 +18,8 @@ import classnames from 'classnames';
 // Components
 import { Link } from 'routes';
 import Login from 'components/modal-contents/login';
-import Icon from 'components/ui/icon';
+import MainNav from 'components/ui/main-nav';
+// import Icon from 'components/ui/icon';
 
 // Constants
 import { HEADER_LOGIN_MENU_LINKS } from 'constants/general';
@@ -99,36 +100,17 @@ class HeaderLogin extends React.Component {
               </div>
               <div className="header-content">
                 <nav className="menu-main">
-                  <ul className="nav-list">
-                    {HEADER_LOGIN_MENU_LINKS.map((item, i) => {
-                      const itemClasses = classnames(
-                        'nav-item',
-                        {
-                          '-active': `/${item.route}` === url.pathname ||
-                          // Index page has two different pathnames
-                          (url.pathname === '/' && item.route === 'home') ||
-                          (url.pathname === '/index' && item.route === 'home')
-                        }
-                      );
-                      return (
-                        <li className={itemClasses} key={i} >
-                          <Link route={item.route}>
-                            <a>{item.label}</a>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                    <li className="" key="login" >
-                      {user.logged ?
-                        <button onClick={this.onLogout}>
-                          Sign out
-                        </button> :
-                        <button onClick={this.onToggleModal}>
-                          Sign in
-                        </button>
-                      }
-                    </li>
-                  </ul>
+                  <MainNav list={HEADER_LOGIN_MENU_LINKS} url={url} />
+                  <div className="login-container" key="login" >
+                    {user.logged ?
+                      <button onClick={this.onLogout}>
+                        Sign out
+                      </button> :
+                      <button onClick={this.onToggleModal}>
+                        Sign in
+                      </button>
+                    }
+                  </div>
                 </nav>
               </div>
             </div>

@@ -1,0 +1,55 @@
+
+.c-header-login {
+  width: 100%;
+  padding: 10px 50px;
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* Header title */
+  .header-title {
+    a {
+      font-size: 35px;
+      line-height: 42px;
+    }
+  }
+
+  /* Header content nav */
+  .header-content {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    padding-left: 30px;
+
+    .menu-main {
+      display: flex;
+      margin-top: 6px;
+    }
+
+    .nav-list {
+      display: flex;
+      align-items: center;
+
+      .nav-item {
+        text-transform: uppercase;
+        padding: 0 20px;
+      }
+    }
+
+    .login-container {
+      display: flex;
+      align-items: center;
+      padding-left: 20px;
+      border-left: 1px solid $color-text-1;
+
+      button {
+        padding: 0;
+        text-transform: uppercase;
+        color: $color-text-1;
+      }
+    }
+  }
+
+}
