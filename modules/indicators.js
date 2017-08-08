@@ -5,8 +5,6 @@ import Router from 'next/router';
 // Utils
 import { setBasicQueryHeaderHeaders, parseObjectToUrlParams } from 'utils/general';
 
-// Constants
-import { BASIC_QUERY_HEADER } from 'constants/query';
 
 /* Constants */
 // All indicators
@@ -93,8 +91,12 @@ export default function indicatorsReducer(state = initialState, action) {
       return Object.assign({}, state, { specific: action.payload });
     // All indicators filter list
     case GET_INDICATORS_FILTER_LIST: {
-      const newFilterList = Object.assign({}, state.filterList,
-        { list: action.payload, loading: false, error: null });
+      const newList = {
+        ...state.filterList.list,
+        ...{ [action.payload.topic]: action.payload.list }
+      };
+      const newFilterList = { ...state.filterList, ...{ list: newList } };
+
       return Object.assign({}, state, { filterList: newFilterList });
     }
     case GET_INDICATORS_FILTER_LIST_LOADING: {
@@ -209,9 +211,11 @@ export function setIndicatorsLayers(layers) {
 
 export function addIndicator(id) {
   return (dispatch, getState) => {
+    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicators?id=${id}&page[size]=999`, BASIC_QUERY_HEADER)
+    fetch(`${process.env.KENYA_API}/indicators?id=${id}&page[size]=999`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -278,35 +282,29 @@ export function removeIndicator(id) {
 
 // Get indicators to set de filter list
 export function getIndicatorsFilterList() {
-  return (dispatch) => {
-    // Waiting for fetch from server -> Dispatch loading
-    dispatch({ type: GET_INDICATORS_FILTER_LIST_LOADING });
+  return (dispatch, getState) => {
+    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+    const topics = getState().filters.options.topics;
 
-    fetch(`${process.env.KENYA_API}/indicators-groups?page[size]=999`, BASIC_QUERY_HEADER)
+    topics.forEach((topic) => {
+      fetch(`${process.env.KENYA_API}/indicators?filter[topic_id]=${topic.id}&include=topic&page[size]=999`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((data) => {
-        dispatch({
-          type: GET_INDICATORS_FILTER_LIST,
-          payload: data
-        });
-
-        // DESERIALIZER.deserialize(data, (err, dataParsed) => {
-        //   dispatch({
-        //     type: GET_INDICATORS,
-        //     payload: dataParsed
-        //   });
-        // });
-      })
-      .catch((err) => {
-        // Fetch from server ko -> Dispatch error
-        dispatch({
-          type: GET_INDICATORS_FILTER_LIST_ERROR,
-          payload: err.message
+        DESERIALIZER.deserialize(data, (err, dataParsed) => {
+          dataParsed.length &&
+            dispatch({
+              type: GET_INDICATORS_FILTER_LIST,
+              payload: {
+                topic: dataParsed.length ? dataParsed[0].topic.name : '',
+                list: dataParsed.map(i => ({ name: i.name, id: i.id }))
+              }
+            });
         });
       });
+    });
   };
 }
 
