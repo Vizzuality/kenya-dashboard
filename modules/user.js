@@ -113,7 +113,7 @@ export function resetPassword(email) {
         dispatch({ type: RESET_PASSWORD, payload: data });
       },
       onError: (err) => {
-        dispatch({ type: RESET_PASSWORD, payload: { a: err } });
+        dispatch({ type: RESET_PASSWORD, payload: { error: err } });
       }
     });
   };

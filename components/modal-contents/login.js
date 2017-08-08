@@ -64,7 +64,7 @@ export default class Login extends React.Component {
       this.props.closeModal();
     }
 
-    if (nextProps.user.reset && !nextProps.user.reset.error && this.state.resetPassword) {
+    if ((nextProps.user.reset && !nextProps.user.reset.error) && this.state.resetPassword) {
       this.setState({ resetPassword: false });
     }
   }
