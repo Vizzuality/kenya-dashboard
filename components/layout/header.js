@@ -8,6 +8,7 @@ import classnames from 'classnames';
 // Components
 import { Link } from 'routes';
 import Icon from 'components/ui/icon';
+import MainNav from 'components/ui/main-nav';
 
 // Header components
 import DashboardHeaderContent from 'components/header-contents/dashboard/content';
@@ -100,26 +101,7 @@ export default class Header extends React.Component {
               <Icon name="icon-user" className="-extra-huge" />
             </section>
             <nav className="menu-main">
-              <ul className="nav-list">
-                {HEADER_MENU_LINKS.map((item, i) => {
-                  const itemClasses = classnames(
-                    'nav-item',
-                    {
-                      '-active': `/${item.route}` === url.pathname ||
-                      // Index page has two different pathnames
-                      (url.pathname === '/' && item.route === 'home') ||
-                      (url.pathname === '/index' && item.route === 'home')
-                    }
-                  );
-                  return (
-                    <li className={itemClasses} key={i} >
-                      <Link route={item.route}>
-                        <a>{item.label}</a>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
+              <MainNav list={HEADER_MENU_LINKS} url={url} />
             </nav>
           </div>
         </div>
