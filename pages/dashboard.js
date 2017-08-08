@@ -34,7 +34,7 @@ class DashboardPage extends Page {
   }
 
   render() {
-    const { url, session, indicators, layout } = this.props;
+    const { url, session, indicators, layout, user } = this.props;
 
     return (
       <Layout
@@ -42,6 +42,7 @@ class DashboardPage extends Page {
         description="Dashboard description..."
         url={url}
         session={session}
+        logged={user.logged}
       >
         <div>
           <Spinner isLoading={indicators.loading} />
@@ -62,7 +63,8 @@ export default withRedux(
   state => ({
     indicators: state.indicators,
     selectedFilters: state.filters.selected,
-    layout: state.filters.layout
+    layout: state.filters.layout,
+    user: state.user
   }),
   dispatch => ({
     getIndicators(filters) { dispatch(getIndicators(filters)); }

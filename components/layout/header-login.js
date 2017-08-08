@@ -10,7 +10,7 @@ import { store } from 'store';
 import modal from 'services/modal';
 
 // Modules
-import { login, logout } from 'modules/user';
+import { login, logout, resetPassword } from 'modules/user';
 
 // Libraries
 import classnames from 'classnames';
@@ -49,6 +49,7 @@ class HeaderLogin extends React.Component {
           url: nextProps.url,
           user: nextProps.user,
           login: nextProps.login,
+          resetPassword: this.props.resetPassword,
           closeModal: modal.toggleModal
         }
       };
@@ -71,6 +72,7 @@ class HeaderLogin extends React.Component {
         url: this.props.url,
         user: this.props.user,
         login: this.props.login,
+        resetPassword: this.props.resetPassword,
         closeModal: modal.toggleModal
       }
     };
@@ -181,7 +183,8 @@ HeaderLogin.propTypes = {
   modalOpened: PropTypes.bool,
   // Actions
   login: PropTypes.func,
-  logout: PropTypes.func
+  logout: PropTypes.func,
+  resetPassword: PropTypes.func
 };
 
 export default withRedux(
@@ -192,6 +195,7 @@ export default withRedux(
   }),
   dispatch => ({
     login(params) { dispatch(login(params)); },
-    logout() { dispatch(logout()); }
+    logout() { dispatch(logout()); },
+    resetPassword(email) { dispatch(resetPassword(email)); }
   })
 )(HeaderLogin);

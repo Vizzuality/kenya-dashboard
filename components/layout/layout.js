@@ -33,6 +33,7 @@ export default function Layout(props) {
 
       {/* Customs Header */}
       {logged ?
+      // {false ?
         <Header
           url={url}
           session={session}

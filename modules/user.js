@@ -4,11 +4,13 @@ import { post } from 'utils/request';
 // CONSTANTS
 const SET_USER = 'SET_USER';
 const REMOVE_USER = 'REMOVE_USER';
+const RESET_PASSWORD = 'RESET_PASSWORD';
 
 // REDUCER
 const initialState = {
   user: (Cookies.get('user')) ? JSON.parse(Cookies.get('user')) : {},
-  logged: false
+  logged: false,
+  reset: null
 };
 
 export default function (state = initialState, action) {
@@ -17,6 +19,8 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { user: action.payload.user, logged: action.payload.logged });
     case REMOVE_USER:
       return Object.assign({}, state, { user: {}, logged: false });
+    case RESET_PASSWORD:
+      return Object.assign({}, state, { reset: action.payload });
     default:
       return state;
   }
@@ -90,4 +94,27 @@ export function logout() {
   //     }
   //   });
   // });
+}
+
+export function resetPassword(email) {
+  return (dispatch) => {
+    post({
+      url: `${process.env.KENYA_API}/reset`,
+      type: 'POST',
+      body: { email },
+      headers: [
+        {
+          key: 'Content-Type',
+          value: 'application/json'
+        }
+      ],
+      onSuccess: (data) => {
+        // Dispatch action
+        dispatch({ type: RESET_PASSWORD, payload: data });
+      },
+      onError: (err) => {
+        dispatch({ type: RESET_PASSWORD, payload: { a: err } });
+      }
+    });
+  };
 }
