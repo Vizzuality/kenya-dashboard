@@ -7,10 +7,10 @@ const SORT_OPTIONS = [
 ];
 
 const REGIONS_OPTIONS = [
-  { name: 'Country', id: 'country' },
-  { name: 'County', id: 'county' },
-  { name: 'Protected Area', id: 'pa' },
-  { name: 'Water basin', id: 'waterb' }
+  { name: 'Country', id: 'country', list: [] },
+  { name: 'County', id: 'county', list: [] },
+  { name: 'Protected Area', id: 'pa', list: [] },
+  { name: 'Water basin', id: 'waterb', list: [] }
 ];
 
 export { SORT_OPTIONS, REGIONS_OPTIONS };

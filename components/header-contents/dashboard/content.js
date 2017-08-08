@@ -8,7 +8,7 @@ import { store } from 'store';
 // Modules
 import {
   getTopicsOptions,
-  getRegionsByRegionTypeOptions,
+  getRegionsOptions,
   setSelectedFilters,
   setFiltersUrl,
   setDashboardLayout
@@ -31,7 +31,7 @@ class DashboardHeaderContent extends React.Component {
     }
 
     if (isEmpty(this.props.filters.options.regions)) {
-      this.props.getRegionsByRegionTypeOptions('pa');
+      this.props.getRegionsOptions();
     }
   }
 
@@ -63,6 +63,7 @@ DashboardHeaderContent.propTypes = {
   url: PropTypes.object,
   // Actions
   getTopicsOptions: PropTypes.func,
+  getRegionsOptions: PropTypes.func,
   setSelectedFilters: PropTypes.func,
   setDashboardLayout: PropTypes.func
 };
@@ -74,7 +75,7 @@ export default withRedux(
   }),
   dispatch => ({
     getTopicsOptions() { dispatch(getTopicsOptions()); },
-    getRegionsByRegionTypeOptions(regionType) { dispatch(getRegionsByRegionTypeOptions(regionType)); },
+    getRegionsOptions() { dispatch(getRegionsOptions()); },
     setSelectedFilters(filters) {
       dispatch(setSelectedFilters(filters));
       dispatch(setFiltersUrl());

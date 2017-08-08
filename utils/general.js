@@ -1,4 +1,5 @@
 import { BASIC_QUERY_HEADER } from 'constants/query';
+import { REGIONS_OPTIONS } from 'constants/filters';
 
 function toBase64(file, cb) {
   const reader = new FileReader();
@@ -41,10 +42,24 @@ function parseObjectToUrlParams(obj) {
   return query;
 }
 
-function parseCustomSelectOptions (list) {
+function parseCustomSelectOptions(list) {
   return list.map(l => (
     { name: l.attributes.name, id: l.id }
   ));
+}
+
+function parseCustomSelectCascadeOptions(list) {
+  const partialParse = {};
+  REGIONS_OPTIONS.forEach(r => partialParse[r.id] = r);
+
+  list.forEach((l) => {
+    partialParse[l.attributes['region-type']].list.push({
+      name: l.attributes.name,
+      id: l.id
+    });
+  });
+
+  return Object.keys(partialParse).map(key => partialParse[key]);
 }
 
 function setBasicQueryHeaderHeaders(headers) {
@@ -60,5 +75,6 @@ export {
   parseObjectSelectOptions,
   parseObjectToUrlParams,
   setBasicQueryHeaderHeaders,
-  parseCustomSelectOptions
+  parseCustomSelectOptions,
+  parseCustomSelectCascadeOptions
 };

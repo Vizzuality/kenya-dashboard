@@ -56,12 +56,12 @@ export default class Filters extends React.Component {
       <div className={classNames}>
         {/* Areas select */}
         <SelectCustom
-          label="Areas"
-          name="areas"
+          label="Locations"
+          name="regions"
           type="slider"
-          list={options.areas}
+          list={options.regions}
           setValue={this.setFilters}
-          selected={selected.areas}
+          selected={selected.regions}
         />
 
         {/* Categories select */}

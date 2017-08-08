@@ -3,11 +3,16 @@ import fetch from 'isomorphic-fetch';
 import Router from 'next/router';
 
 // Utils
-import { encode, setBasicQueryHeaderHeaders, parseCustomSelectOptions } from 'utils/general';
+import {
+  encode,
+  setBasicQueryHeaderHeaders,
+  parseCustomSelectOptions,
+  parseCustomSelectCascadeOptions
+} from 'utils/general';
 
 // Constants
 import { BASIC_QUERY_HEADER } from 'constants/query';
-import { REGIONS_OPTIONS } from 'constants/filters';
+import { SORT_OPTIONS } from 'constants/filters';
 
 /* Constants */
 const GET_FILTERS_OPTIONS = 'GET_FILTERS_OPTIONS';
@@ -22,7 +27,8 @@ const SET_DASHBOARD_LAYOUT = 'SET_DASHBOARD_LAYOUT';
 const initialState = {
   options: {
     regions: [],
-    topics: REGIONS_OPTIONS
+    topics: [],
+    sort: SORT_OPTIONS
   },
   selected: {
     regions: [],
@@ -122,21 +128,21 @@ export function getTopicsOptions() {
 }
 
 /* Get locations options */
-export function getRegionsByRegionTypeOptions(regionType) {
+export function getRegionsOptions() {
   return (dispatch) => {
     const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_FILTERS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/regions?filter[region_type]=${regionType}&page[size]=999`, headers)
+    fetch(`${process.env.KENYA_API}/regions?page[size]=999`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((data) => {
         dispatch({
-          type: GET_TOPICS_OPTIONS,
-          payload: parseCustomSelectOptions(data.data)
+          type: GET_REGIONS_OPTIONS,
+          payload: parseCustomSelectCascadeOptions(data.data)
         });
       })
       .catch((err) => {
