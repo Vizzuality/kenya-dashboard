@@ -11,7 +11,7 @@ import { SELECT_SEARCH_OPTIONS } from 'constants/general';
 
 // Components
 import Icon from 'components/ui/icon';
-import Checkbox from 'components/ui/checkbox';
+import Checkbox from 'components/form/checkbox';
 
 
 export default class SelectList extends React.Component {

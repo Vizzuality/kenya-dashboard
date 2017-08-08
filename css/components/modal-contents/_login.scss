@@ -1,0 +1,64 @@
+
+.c-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 135px 50px;
+
+  .login-container {
+    width: 360px;
+    overflow-y: auto;
+  }
+
+  .login-header {
+    margin-bottom: 60px;
+
+    .title {
+      font-size: $font-size-bigger;
+      line-height: 29px;
+    }
+  }
+
+  .form-container {
+    .c-field {
+      width: 100%;
+
+      input { width: 100%; }
+    }
+  }
+
+  .login-options {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+
+    .remember {
+      display: flex;
+      align-items: center;
+      font-weight: $font-weight-light;
+
+      .c-checkbox {
+        margin-right: 8px;
+        margin-top: 2px;
+
+        .fake-checkbox {
+          border: 2px solid $color-border-1;
+        }
+      }
+    }
+
+    .forgot {
+      color: $color-primary;
+      font-weight: $font-weight-default;
+    }
+  }
+
+  .login-footer {
+    width: 100%;
+
+    .btn-login {
+      width: 100%;
+      margin-top: 72px;
+    }
+  }
+}

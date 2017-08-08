@@ -7,6 +7,7 @@ import classnames from 'classnames';
 // Components
 import Field from 'components/form/field';
 import Input from 'components/form/input';
+import Checkbox from 'components/form/checkbox';
 import Spinner from 'components/ui/spinner';
 
 // Constants
@@ -88,64 +89,76 @@ export default class Login extends React.Component {
     const { className } = this.props;
     const { submitting } = this.state;
     const classNames = classnames({
-      'c-indicators-list': true,
+      'c-login': true,
       [className]: !!className
     });
 
     return (
       <div className={classNames}>
-        <Spinner isLoading={this.state.submitting} />
-        <header className="list-header">
-          <h1 className="title">Sign in to Kenya Dashboard</h1>
-        </header>
-        <section>
-          <form className="c-form" onSubmit={this.onSubmit} noValidate>
-            {/* EMAIL */}
-            <Field
-              ref={(c) => { if (c) FORM_ELEMENTS.elements.email = c; }}
-              onChange={value => this.onChange({ email: value })}
-              validations={['required', 'email']}
-              className="-fluid"
-              properties={{
-                name: 'email',
-                label: 'Email',
-                type: 'email',
-                required: true,
-                default: this.state.form.email
-              }}
-            >
-              {Input}
-            </Field>
-
-            {/* PASSWORD */}
-            <Field
-              ref={(c) => { if (c) FORM_ELEMENTS.elements.password = c; }}
-              onChange={value => this.onChange({ password: value })}
-              validations={['required']}
-              className="-fluid"
-              properties={{
-                name: 'password',
-                label: 'Password',
-                type: 'password',
-                required: true,
-                default: this.state.form.password
-              }}
-            >
-              {Input}
-            </Field>
-
-            <footer className="">
-              <button
-                type="submit"
-                name="commit"
-                disabled={submitting}
-                className="c-button -secondary -expanded"
+        <div className="login-container">
+          <Spinner isLoading={this.state.submitting} />
+          <header className="login-header">
+            <h1 className="title">Sign in to Kenya Dashboard</h1>
+          </header>
+          <section className="form-container">
+            <form className="c-form" onSubmit={this.onSubmit} noValidate>
+              {/* EMAIL */}
+              <Field
+                ref={(c) => { if (c) FORM_ELEMENTS.elements.email = c; }}
+                onChange={value => this.onChange({ email: value })}
+                validations={['required', 'email']}
+                className="-fluid"
+                properties={{
+                  name: 'email',
+                  placeholder: 'Email',
+                  type: 'email',
+                  required: true,
+                  default: this.state.form.email
+                }}
               >
-                Log in
-              </button>
-            </footer>
-          </form>
-        </section>
+                {Input}
+              </Field>
+
+              {/* PASSWORD */}
+              <Field
+                ref={(c) => { if (c) FORM_ELEMENTS.elements.password = c; }}
+                onChange={value => this.onChange({ password: value })}
+                validations={['required']}
+                className="-fluid"
+                properties={{
+                  name: 'password',
+                  placeholder: 'Password',
+                  type: 'password',
+                  required: true,
+                  default: this.state.form.password
+                }}
+              >
+                {Input}
+              </Field>
+
+              <div className="login-options">
+                <div className="remember">
+                  <Checkbox />
+                  Remember me
+                </div>
+                <button onClick="" className="forgot">
+                  Forgot password?
+                </button>
+              </div>
+
+              <footer className="login-footer">
+                <button
+                  type="submit"
+                  name="commit"
+                  disabled={submitting}
+                  className="c-button -secondary -expanded btn-login"
+                >
+                  Log in
+                </button>
+              </footer>
+            </form>
+          </section>
+        </div>
       </div>
     );
   }
