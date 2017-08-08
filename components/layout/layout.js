@@ -6,7 +6,6 @@ import classnames from 'classnames';
 import Head from 'components/layout/head';
 import Icons from 'components/layout/icons';
 import Header from 'components/layout/header';
-import HeaderLogin from 'components/layout/header-login';
 import Modal from 'components/ui/modal';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -32,17 +31,11 @@ export default function Layout(props) {
       <Icons />
 
       {/* Customs Header */}
-      {logged ?
-      // {false ?
-        <Header
-          url={url}
-          session={session}
-        /> :
-        <HeaderLogin
-          url={url}
-          session={session}
-        />
-      }
+      <Header
+        url={url}
+        session={session}
+        logged={logged}
+      />
 
       <div className={`l-main ${classNames}`}>
         {children}

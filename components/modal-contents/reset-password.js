@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// Libraries
-import classnames from 'classnames';
-
 // Components
 import Field from 'components/form/field';
 import Input from 'components/form/input';
@@ -86,54 +83,47 @@ export default class ResetPassword extends React.Component {
   }
 
   render() {
-    const { className } = this.props;
     const { submitting, form } = this.state;
-    const classNames = classnames({
-      'c-login': true,
-      [className]: !!className
-    });
 
     return (
-      <div className={classNames}>
-        <div className="login-container">
-          <Spinner isLoading={submitting} />
-          <header className="login-header">
-            <h1 className="title">Forgot passwrod?</h1>
-            <p>Enter the email address associated with your account,
-              and we’ll email you a link to reset your password.</p>
-          </header>
-          <section className="form-container">
-            <form className="c-form" onSubmit={this.onReset} noValidate>
-              {/* EMAIL */}
-              <Field
-                ref={(c) => { if (c) FORM_ELEMENTS.elements.email = c; }}
-                onChange={value => this.onChange({ email: value })}
-                validations={['required', 'email']}
-                className="-fluid"
-                properties={{
-                  name: 'email',
-                  placeholder: 'Email',
-                  type: 'email',
-                  required: true,
-                  default: form.email
-                }}
-              >
-                {Input}
-              </Field>
+      <div className="login-container">
+        <Spinner isLoading={submitting} />
+        <header className="login-header">
+          <h1 className="title">Forgot passwrod?</h1>
+          <p>Enter the email address associated with your account,
+            and we’ll email you a link to reset your password.</p>
+        </header>
+        <section className="form-container">
+          <form className="c-form" onSubmit={this.onReset} noValidate>
+            {/* EMAIL */}
+            <Field
+              ref={(c) => { if (c) FORM_ELEMENTS.elements.email = c; }}
+              onChange={value => this.onChange({ email: value })}
+              validations={['required', 'email']}
+              className="-fluid"
+              properties={{
+                name: 'email',
+                placeholder: 'Email',
+                type: 'email',
+                required: true,
+                default: form.email
+              }}
+            >
+              {Input}
+            </Field>
 
-              <footer className="login-footer">
-                <button
-                  type="submit"
-                  name="commit"
-                  disabled={submitting}
-                  className="c-button -expanded btn-reset"
-                >
-                  Reset Password
-                </button>
-              </footer>
-            </form>
-          </section>
-        </div>
+            <footer className="login-footer">
+              <button
+                type="submit"
+                name="commit"
+                disabled={submitting}
+                className="c-button -expanded btn-reset"
+              >
+                Reset Password
+              </button>
+            </footer>
+          </form>
+        </section>
       </div>
     );
   }

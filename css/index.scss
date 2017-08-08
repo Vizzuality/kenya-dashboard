@@ -19,7 +19,6 @@
 // Components
 // - layout
 @import 'components/layout/header';
-@import 'components/layout/header-login';
 @import 'components/layout/footer';
 
 // - map
@@ -47,6 +46,7 @@
 @import 'components/ui/compare-toolbar';
 @import 'components/ui/filters';
 @import 'components/ui/icon';
+@import 'components/ui/login-nav';
 @import 'components/ui/modal';
 @import 'components/ui/dashboard-item';
 @import 'components/ui/dashboard-list';

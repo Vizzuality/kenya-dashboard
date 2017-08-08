@@ -2,13 +2,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Redux
+import withRedux from 'next-redux-wrapper';
+import { store } from 'store';
+
+// Services
+import modal from 'services/modal';
+
+// Modules
+import { login, logout, resetPassword } from 'modules/user';
 // Libraries
 import classnames from 'classnames';
 
 // Components
 import { Link } from 'routes';
-import Icon from 'components/ui/icon';
+import LoginNav from 'components/ui/login-nav';
 import MainNav from 'components/ui/main-nav';
+import Login from 'components/modal-contents/login';
+import Icon from 'components/ui/icon';
 
 // Header components
 import DashboardHeaderContent from 'components/header-contents/dashboard/content';
@@ -16,7 +27,8 @@ import DashboardHeaderContent from 'components/header-contents/dashboard/content
 // Constants
 import { HEADER_MENU_LINKS } from 'constants/general';
 
-export default class Header extends React.Component {
+
+class Header extends React.Component {
   constructor(props) {
     super(props);
 
@@ -26,39 +38,93 @@ export default class Header extends React.Component {
 
     // Bindings
     this.onToggleMenu = this.onToggleMenu.bind(this);
+    this.onLogout = this.onLogout.bind(this);
+    this.onToggleModal = this.onToggleModal.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { modalOpened } = this.props;
+
+    // Update modal content props
+    if (modalOpened && nextProps.modalOpened) {
+      const opts = {
+        children: Login,
+        childrenProps: {
+          url: nextProps.url,
+          user: nextProps.user,
+          login: nextProps.login,
+          resetPassword: this.props.resetPassword,
+          closeModal: modal.toggleModal
+        }
+      };
+      modal.setModalOptions(opts);
+    }
   }
 
   onToggleMenu() {
     this.setState({ open: !this.state.open });
   }
 
-  getCustomContentByPage() {
-    const { url } = this.props;
+  onLogout() {
+    this.props.logout();
+    this.setState({ open: false });
+  }
 
-    switch (url.pathname) {
-      // Different pathnames for the index
-      case '/index': return { title: <h1>Kenya</h1> };
-      case '/': return { title: <h1>Kenya</h1> };
-      case '/dashboard': return {
-        title: <h1>Dashboard</h1>,
-        content: <DashboardHeaderContent url={url} />
-      };
-      case '/compare': return {
-        title: (
-          <Link route="dashboard">
-            <a className="title-link">
-              <Icon name="icon-arrow-left2" className="-normal" /><h1>Go to dashboard</h1>
-            </a>
-          </Link>
+  onToggleModal() {
+    const opts = {
+      children: Login,
+      childrenProps: {
+        url: this.props.url,
+        user: this.props.user,
+        login: this.props.login,
+        resetPassword: this.props.resetPassword,
+        closeModal: modal.toggleModal
+      }
+    };
+    modal.toggleModal(true, opts);
+  }
+
+  getCustomContentByPage() {
+    const { url, user } = this.props;
+
+    if (user.logged) {
+      switch (url.pathname) {
+        // Different pathnames for the index
+        case '/index': return { title: <h1>Kenya</h1> };
+        case '/': return { title: <h1>Kenya</h1> };
+        case '/dashboard': return {
+          title: <h1>Dashboard</h1>,
+          content: <DashboardHeaderContent url={url} />
+        };
+        case '/compare': return {
+          title: (
+            <Link route="dashboard">
+              <a className="title-link">
+                <Icon name="icon-arrow-left2" className="-normal" /><h1>Go to dashboard</h1>
+              </a>
+            </Link>
+          )
+        };
+        case '/about': return { title: <h1>About the Alliance</h1> };
+        default: return {};
+      }
+    } else {
+      return {
+        title: <h1><Link route="home"><a>Kenya dashboard</a></Link></h1>,
+        content: (
+          <LoginNav
+            url={url}
+            user={user}
+            logout={this.onLogout}
+            toggleModal={this.onToggleModal}
+          />
         )
       };
-      case '/about': return { title: <h1>About the Alliance</h1> };
-      default: return {};
     }
   }
 
   render() {
-    const { url } = this.props;
+    const { url, user } = this.props;
     const toggleMenuClasses = classnames(
       'toggle-menu',
       { '-open': this.state.open }
@@ -73,9 +139,11 @@ export default class Header extends React.Component {
           <div className="column small-12">
             <div className="header-container">
               <div className="header-title">
-                <button className="btn-menu" onClick={this.onToggleMenu}>
-                  <Icon name="icon-menu" className="-big" />
-                </button>
+                {user.logged &&
+                  <button className="btn-menu" onClick={this.onToggleMenu}>
+                    <Icon name="icon-menu" className="-big" />
+                  </button>
+                }
                 {customContentByPage.title}
               </div>
               {customContentByPage.content &&
@@ -102,6 +170,11 @@ export default class Header extends React.Component {
             </section>
             <nav className="menu-main">
               <MainNav list={HEADER_MENU_LINKS} url={url} />
+              {user.logged &&
+                <button onClick={this.onLogout}>
+                  Sign out
+                </button>
+              }
             </nav>
           </div>
         </div>
@@ -111,5 +184,25 @@ export default class Header extends React.Component {
 }
 
 Header.propTypes = {
-  url: PropTypes.object.isRequired
+  url: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+  modalOpened: PropTypes.bool,
+  // Actions
+  login: PropTypes.func,
+  logout: PropTypes.func,
+  resetPassword: PropTypes.func
 };
+
+
+export default withRedux(
+  store,
+  state => ({
+    user: state.user,
+    modalOpened: state.modal.opened
+  }),
+  dispatch => ({
+    login(params) { dispatch(login(params)); },
+    logout() { dispatch(logout()); },
+    resetPassword(email) { dispatch(resetPassword(email)); }
+  })
+)(Header);

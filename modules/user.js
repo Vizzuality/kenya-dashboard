@@ -98,23 +98,26 @@ export function logout() {
 
 export function resetPassword(email) {
   return (dispatch) => {
-    post({
-      url: `${process.env.KENYA_API}/reset`,
-      type: 'POST',
-      body: { email },
-      headers: [
-        {
-          key: 'Content-Type',
-          value: 'application/json'
-        }
-      ],
-      onSuccess: (data) => {
-        // Dispatch action
-        dispatch({ type: RESET_PASSWORD, payload: data });
-      },
-      onError: (err) => {
-        dispatch({ type: RESET_PASSWORD, payload: { error: err } });
-      }
-    });
+    // post({
+    //   url: `${process.env.KENYA_API}/reset`,
+    //   type: 'POST',
+    //   body: { email },
+    //   headers: [
+    //     {
+    //       key: 'Content-Type',
+    //       value: 'application/json'
+    //     }
+    //   ],
+    //   onSuccess: (data) => {
+    //     // Dispatch action
+    //     dispatch({ type: RESET_PASSWORD, payload: data });
+    //   },
+    //   onError: (err) => {
+    //     dispatch({ type: RESET_PASSWORD, payload: { error: err } });
+    //   }
+    // });
+
+    // Provisional
+    dispatch({ type: RESET_PASSWORD, payload: { error: 'err' } });
   };
 }
