@@ -6,7 +6,13 @@ import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
 // Modules
-import { getTopicsOptions, setSelectedFilters, setFiltersUrl, setDashboardLayout } from 'modules/filters';
+import {
+  getTopicsOptions,
+  getRegionsByRegionTypeOptions,
+  setSelectedFilters,
+  setFiltersUrl,
+  setDashboardLayout
+} from 'modules/filters';
 
 // Libraries
 import isEmpty from 'lodash/isEmpty';
@@ -22,6 +28,10 @@ class DashboardHeaderContent extends React.Component {
   componentWillMount() {
     if (isEmpty(this.props.filters.options.topics)) {
       this.props.getTopicsOptions();
+    }
+
+    if (isEmpty(this.props.filters.options.regions)) {
+      this.props.getRegionsByRegionTypeOptions('pa');
     }
   }
 
@@ -64,6 +74,7 @@ export default withRedux(
   }),
   dispatch => ({
     getTopicsOptions() { dispatch(getTopicsOptions()); },
+    getRegionsByRegionTypeOptions(regionType) { dispatch(getRegionsByRegionTypeOptions(regionType)); },
     setSelectedFilters(filters) {
       dispatch(setSelectedFilters(filters));
       dispatch(setFiltersUrl());

@@ -60,8 +60,8 @@ export default class Login extends React.Component {
       this.setState({ submitting: false });
     }
 
-    if (nextProps.user.logged) {
-      this.props.closeModal();
+    if (nextProps.user.logged && this.props.modalOpened) {
+      this.props.toggleModal(false);
     }
 
     if ((nextProps.user.reset && !nextProps.user.reset.error) && this.state.resetPassword) {
@@ -211,8 +211,9 @@ export default class Login extends React.Component {
 Login.propTypes = {
   className: PropTypes.string,
   user: PropTypes.object,
+  modalOpened: PropTypes.bool,
   // Actions
   login: PropTypes.func,
   resetPassword: PropTypes.func,
-  closeModal: PropTypes.func
+  toggleModal: PropTypes.func
 };

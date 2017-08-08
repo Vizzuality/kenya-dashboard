@@ -1,8 +1,11 @@
 // import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
 import Router from 'next/router';
-import { parseObjectToUrlParams } from 'utils/general';
 
+// Utils
+import { setBasicQueryHeaderHeaders, parseObjectToUrlParams } from 'utils/general';
+
+// Constants
 import { BASIC_QUERY_HEADER } from 'constants/query';
 
 /* Constants */
@@ -125,10 +128,12 @@ export function getIndicators(filters) {
   const query = parseObjectToUrlParams(filters);
 
   return (dispatch) => {
+    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_INDICATORS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicators?${query}&page[size]=999999999`, BASIC_QUERY_HEADER)
+    fetch(`${process.env.KENYA_API}/indicator?${query}&include=topics,widgets&page[size]=999`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -136,7 +141,7 @@ export function getIndicators(filters) {
       .then((data) => {
         dispatch({
           type: GET_INDICATORS,
-          payload: data
+          payload: data.data
         });
         // DESERIALIZER.deserialize(data, (err, dataParsed) => {
         //   dispatch({

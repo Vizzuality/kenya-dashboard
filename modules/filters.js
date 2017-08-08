@@ -7,10 +7,12 @@ import { encode, setBasicQueryHeaderHeaders, parseCustomSelectOptions } from 'ut
 
 // Constants
 import { BASIC_QUERY_HEADER } from 'constants/query';
+import { REGIONS_OPTIONS } from 'constants/filters';
 
 /* Constants */
 const GET_FILTERS_OPTIONS = 'GET_FILTERS_OPTIONS';
 const GET_TOPICS_OPTIONS = 'GET_TOPICS_OPTIONS';
+const GET_REGIONS_OPTIONS = 'GET_REGIONS_OPTIONS';
 const GET_FILTERS_LOADING = 'GET_FILTERS_LOADING';
 const GET_FILTERS_ERROR = 'GET_FILTERS_ERROR';
 const SET_SELECTED_FILTERS = 'SET_SELECTED_FILTERS';
@@ -19,11 +21,11 @@ const SET_DASHBOARD_LAYOUT = 'SET_DASHBOARD_LAYOUT';
 /* Initial state */
 const initialState = {
   options: {
-    areas: [],
-    topics: []
+    regions: [],
+    topics: REGIONS_OPTIONS
   },
   selected: {
-    areas: [],
+    regions: [],
     topics: [],
     sort: []
   },
@@ -42,6 +44,9 @@ export default function filtersReducer(state = initialState, action) {
     case GET_TOPICS_OPTIONS:
       return Object.assign({}, state,
         { options: { ...state.options, ...{ topics: action.payload } } });
+    case GET_REGIONS_OPTIONS:
+      return Object.assign({}, state,
+        { options: { ...state.options, ...{ regions: action.payload } } });
     case GET_FILTERS_LOADING:
       return Object.assign({}, state, { loading: true, error: null });
     case GET_FILTERS_ERROR:
@@ -105,12 +110,34 @@ export function getTopicsOptions() {
           type: GET_TOPICS_OPTIONS,
           payload: parseCustomSelectOptions(data.data)
         });
-        // DESERIALIZER.deserialize(data, (err, dataParsed) => {
-        //   dispatch({
-        //     type: GET_FILTERS,
-        //     payload: dataParsed
-        //   });
-        // });
+      })
+      .catch((err) => {
+        // Fetch from server ko -> Dispatch error
+        dispatch({
+          type: GET_FILTERS_ERROR,
+          payload: err.message
+        });
+      });
+  };
+}
+
+/* Get locations options */
+export function getRegionsByRegionTypeOptions(regionType) {
+  return (dispatch) => {
+    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+    // Waiting for fetch from server -> Dispatch loading
+    dispatch({ type: GET_FILTERS_LOADING });
+
+    fetch(`${process.env.KENYA_API}/regions?filter[region_type]=${regionType}&page[size]=999`, headers)
+      .then((response) => {
+        if (response.ok) return response.json();
+        throw new Error(response.statusText);
+      })
+      .then((data) => {
+        dispatch({
+          type: GET_TOPICS_OPTIONS,
+          payload: parseCustomSelectOptions(data.data)
+        });
       })
       .catch((err) => {
         // Fetch from server ko -> Dispatch error
