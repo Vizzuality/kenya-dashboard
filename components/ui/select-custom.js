@@ -76,7 +76,7 @@ export default class SelectCustom extends React.Component {
     window.addEventListener('click', (e) => {
       const el = e.target;
       const isNotTooltipOrChild = this.el && el !== this.el && !this.el.contains(el);
-      const isNotTooltipBtn = el !== this.btn && !this.btn.contains(el);
+      const isNotTooltipBtn = this.btn && el !== this.btn && !this.btn.contains(el);
 
       if (isNotTooltipOrChild && isNotTooltipBtn && this.state.open) {
         this.setState({ open: false });
