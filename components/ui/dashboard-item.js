@@ -17,9 +17,6 @@ import Spinner from 'components/ui/spinner';
 import Icon from 'components/ui/icon';
 import TopicIcon from 'components/ui/topic-icon';
 
-// Constants
-import { EXAMPLE_QUERY_DATA } from 'constants/indicators';
-
 
 export default class DashboardItem extends React.Component {
   constructor(props) {
@@ -56,9 +53,8 @@ export default class DashboardItem extends React.Component {
       // token, widget_id, region, start_date, end_date
       const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
       const query = `select * from get_widget('${token}',
-        ${this.defaultWidget.id}, ${region || ''},
-        ${this.state.date},
-        '')`; // End date ?
+        ${this.defaultWidget.id})`;
+        // End date ?
 
       get({
         url: `${url}?q=${query}`,
@@ -66,18 +62,14 @@ export default class DashboardItem extends React.Component {
         onError: this.setData
       });
     } else {
-      // TODO Provisional query data
-      this.setState({ data: EXAMPLE_QUERY_DATA });
-
-      // this.setState({ data: null });
+      this.setState({ data: {} });
     }
   }
 
   setData(data) {
-    // TODO Provisional query data
-    this.setState({ data: EXAMPLE_QUERY_DATA });
-
-    // this.setState({ data });
+    this.setState({
+      data: data && data.rows && data.rows.length ? data.rows[0] : {}
+    });
   }
 
   getItemType() {
@@ -103,6 +95,7 @@ export default class DashboardItem extends React.Component {
 
   render() {
     const { info, className } = this.props;
+    this.state.data && console.log(this.state.data);
     // const { data } = this.state;
     // const widgetThreshold = this.defaultWidget.json_config.threshold;
     // const threshold = data && data.threshold ? this.getThreshold(data.threshold) : 'default';
