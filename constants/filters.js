@@ -4,4 +4,10 @@ const SHOW_BY_OPTION = [
   { value: 'county', label: 'Show by County' }
 ];
 
-export { SHOW_BY_OPTION };
+const FILTERS_BAR_LABELS = {
+  areas: 'Location',
+  categories: 'Topics',
+  sort: 'Sorted by'
+};
+
+export { SHOW_BY_OPTION, FILTERS_BAR_LABELS };

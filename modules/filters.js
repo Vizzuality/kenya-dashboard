@@ -11,6 +11,7 @@ const GET_FILTERS_OPTIONS = 'GET_FILTERS_OPTIONS';
 const GET_FILTERS_LOADING = 'GET_FILTERS_LOADING';
 const GET_FILTERS_ERROR = 'GET_FILTERS_ERROR';
 const SET_SELECTED_FILTERS = 'SET_SELECTED_FILTERS';
+const REMOVE_SELECTED_FILTER = 'REMOVE_SELECTED_FILTER';
 const SET_DASHBOARD_LAYOUT = 'SET_DASHBOARD_LAYOUT';
 
 /* Initial state */
@@ -38,6 +39,8 @@ export default function filtersReducer(state = initialState, action) {
     case GET_FILTERS_ERROR:
       return Object.assign({}, state, { options: {}, loading: false, error: action.payload });
     case SET_SELECTED_FILTERS:
+      return Object.assign({}, state, { selected: action.payload });
+    case REMOVE_SELECTED_FILTER:
       return Object.assign({}, state, { selected: action.payload });
     case SET_DASHBOARD_LAYOUT:
       return Object.assign({}, state, { layout: action.payload });
@@ -84,6 +87,21 @@ export function setSelectedFilters(filters) {
     dispatch({
       type: SET_SELECTED_FILTERS,
       payload: filters
+    });
+  };
+}
+
+export function removeSelectedFilter(type, value) {
+  return (dispatch, getState) => {
+    const selected = { ...getState().filters.selected };
+    const index = selected[type].indexOf(value);
+    const newTypefilters = selected[type].slice();
+    newTypefilters.splice(index, 1);
+    selected[type] = newTypefilters;
+
+    dispatch({
+      type: REMOVE_SELECTED_FILTER,
+      payload: selected
     });
   };
 }

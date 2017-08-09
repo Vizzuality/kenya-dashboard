@@ -1,0 +1,52 @@
+
+.c-filters-selected-bar {
+  display: flex;
+  padding: 10px 30px;
+  font-size: $font-size-small;
+  line-height: 16px;
+  border: 1px solid $color-border-1;
+  border-top: 0;
+
+  .bar-label {
+    display: inline-block;
+    margin-right: 20px;
+  }
+
+  .bar-filters {
+    display: flex;
+    align-items: center;
+  }
+
+  .filters-type-container {
+    display: flex;
+    align-items: center;
+
+    .filter-label {
+      display: inline-block;
+      margin-right: 6px;
+      color: rgba($color-text-1, .5);
+    }
+
+    .filter-value-container {
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
+
+      .filter-value {
+        display: inline-block;
+        margin-right: 4px;
+      }
+
+      .btn-remove {
+        display: flex;
+        align-items: center;
+        padding: 0;
+        cursor: pointer;
+
+        .c-icon {
+          fill: rgba($color-text-1, .5);
+        }
+      }
+    }
+  }
+}

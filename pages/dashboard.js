@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // Modules
 import { getIndicators } from 'modules/indicators';
+import { removeSelectedFilter, setFiltersUrl } from 'modules/filters';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
@@ -14,6 +15,7 @@ import isEqual from 'lodash/isEqual';
 // Components
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
+import FiltersSelectedBar from 'components/ui/filters-selected-bar';
 import DashboardList from 'components/ui/dashboard-list';
 import Spinner from 'components/ui/spinner';
 
@@ -34,7 +36,7 @@ class DashboardPage extends Page {
   }
 
   render() {
-    const { url, session, indicators, layout, user } = this.props;
+    const { url, session, indicators, layout, user, selectedFilters } = this.props;
 
     return (
       <Layout
@@ -46,6 +48,10 @@ class DashboardPage extends Page {
       >
         <div>
           <Spinner isLoading={indicators.loading} />
+          <FiltersSelectedBar
+            selected={selectedFilters}
+            removeFilter={this.props.removeSelectedFilter}
+          />
           <DashboardList list={indicators.list} layout={layout} />
         </div>
       </Layout>
@@ -67,6 +73,10 @@ export default withRedux(
     user: state.user
   }),
   dispatch => ({
-    getIndicators(filters) { dispatch(getIndicators(filters)); }
+    getIndicators(filters) { dispatch(getIndicators(filters)); },
+    removeSelectedFilter(type, value) {
+      dispatch(removeSelectedFilter(type, value));
+      dispatch(setFiltersUrl());
+    }
   })
 )(DashboardPage);
