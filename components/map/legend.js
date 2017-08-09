@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 // Libraries
 import classnames from 'classnames';
 
-
 // Components
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
 import ExpandMap from 'components/ui/expand-map';
 import Icon from 'components/ui/icon';
+import CollapsibleList from 'components/ui/collapsible-list';
 
 
 const SortableItem = SortableElement(({ value }) => value);
@@ -20,7 +20,7 @@ const DragHandle = SortableHandle(() => (
 ));
 
 const SortableList = SortableContainer(({ items }) => (
-  <ul className="legend-list">
+  <ul className="legend-list row">
     {items.map((value, index) =>
       <SortableItem key={`item-${index}`} index={index} value={value} />
     )}
@@ -96,24 +96,40 @@ class Legend extends React.Component {
   getLegendItems() {
     // Reverse layers to show first the last one added
     const layersActiveReversed = this.props.list.slice().reverse();
-    return layersActiveReversed.map((layer, i) => (
-      <li key={i} className={`legend-item -${layer.attributes.legendConfig.type}`}>
-        <header className="item-header">
-          <div className="item-header">
+    return layersActiveReversed.map((layer, i) => {
+      const itemHeader = (
+        <header className="legend-item-header">
+          <div className="item-title">
+            <span className="layer-name">{i + 1}. {layer.attributes.name}</span>
+          </div>
+          <div className="item-tools">
             <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>
               <Icon name="icon-eye" className="" />
             </button>
-            <span className="layer-name">{layer.attributes.name}</span>
-          </div>
-          <div className="item-tools">
             <DragHandle />
           </div>
         </header>
-        <div className="layer-visual">
-          {this.getVisualByLayerType(layer)}
+      );
+
+      const itemContent = (
+        <div>
+          <div className="layer-visual">
+            {this.getVisualByLayerType(layer)}
+          </div>
         </div>
-      </li>
-    ));
+      );
+      return (
+        <li key={i} className={`legend-item column small-12 medium-6 -${layer.attributes.legendConfig.type}`}>
+          <CollapsibleList
+            title={itemHeader}
+            arrowPosition="left"
+            item={itemContent}
+            hidden
+            collapse
+          />
+        </li>
+      );
+    });
   }
 
   render() {
@@ -126,32 +142,31 @@ class Legend extends React.Component {
 
     return (
       <div className={classNames}>
-        <div className="row">
-          <div className="column small-12">
-            <header className="legend-header">
-              <h2 className="title">
-                Legend
-                <button className="btn btn-close" onClick={this.onToggle}>
-                  <Icon name="icon-arrow-up" className="-smaller" />
-                </button>
-              </h2>
-              <div className="tools">
-                <ExpandMap
-                  url={url}
-                  expanded={expanded}
-                  setMapExpansion={this.props.setMapExpansion}
-                />
-              </div>
-            </header>
-            <div className="legend-content">
+        <header className="legend-header">
+          <h2 className="title">
+            <button className="btn btn-close" onClick={this.onToggle}>
+              Legend
+              <Icon name="icon-arrow-up" className="-smaller" />
+            </button>
+          </h2>
+          <div className="tools">
+            <ExpandMap
+              url={url}
+              expanded={expanded}
+              setMapExpansion={this.props.setMapExpansion}
+            />
+          </div>
+        </header>
+        <div className="legend-content">
+          <div className="row">
+            <div className="column small-12">
               <SortableList
                 items={this.getLegendItems()}
                 helperClass="c-legend-unit -sort"
                 onSortEnd={this.onSortEnd}
                 onSortStart={this.onSortStart}
                 onSortMove={this.onSortMove}
-                axis="y"
-                lockAxis="y"
+                axis="xy"
                 lockToContainerEdges
                 lockOffset="50%"
                 useDragHandle

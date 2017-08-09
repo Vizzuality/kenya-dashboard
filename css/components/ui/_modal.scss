@@ -43,6 +43,7 @@
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     box-shadow: 0 7px 15px 0 rgba($color-black, 0.15);
+    border: 1px solid $color-border-1;
   }
 
   .modal-close {

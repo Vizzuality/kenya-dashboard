@@ -1,7 +1,11 @@
 
 .c-dashboard-item {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
   width: 100%;
   min-width: 100px;
+  height: 100%;
   border: 1px solid $color-border-1;
   padding: 24px;
 

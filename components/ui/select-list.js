@@ -11,7 +11,7 @@ import { SELECT_SEARCH_OPTIONS } from 'constants/general';
 
 // Components
 import Icon from 'components/ui/icon';
-import Checkbox from 'components/ui/checkbox';
+import Checkbox from 'components/form/checkbox';
 
 
 export default class SelectList extends React.Component {
@@ -94,7 +94,7 @@ export default class SelectList extends React.Component {
         {/* List */}
         <ul className="list">
           {this.state.filteredList.map((l, i) => {
-            const isSelected = selected && selected.includes(l.id);
+            const isSelected = selected && selected.includes(`${l.id}` || l.id);
             const itemClassNames = classnames(
               'item',
               { '-selected': type !== 'checkbox' && isSelected }

@@ -5,13 +5,28 @@
 
   &.-hidden {
     .btn-collapse {
+      padding-bottom: 0;
       transform: rotate(180deg);
       transition: all .3s ease;
+
+      &.-left {
+        padding-left: 10px;
+        padding-right: 0;
+      }
+      &.-right {
+        padding-right: 10px;
+        padding-left: 0;
+      }
     }
 
     .collapsible-list {
       position: relative;
       transform: translateY(-200%);
+      transition: all .3s ease;
+    }
+
+    .collapsible-list-container {
+      max-height: 0;
       transition: all .3s ease;
     }
   }
@@ -29,7 +44,7 @@
 
     .btn {
       padding: 0;
-      margin-left: 10px;
+      padding-bottom: 3px;
     }
 
     .c-icon {
@@ -40,10 +55,15 @@
   .btn-collapse {
     transform: rotate(0);
     transition: all .3s ease;
+
+    &.-left { padding-right: 10px; }
+    &.-right { padding-left: 10px; }
   }
 
   .collapsible-list-container {
     overflow: hidden;
+    max-height: 300px;
+    transition: all .3s ease;
   }
 
   .collapsible-list {

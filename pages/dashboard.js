@@ -3,10 +3,14 @@ import PropTypes from 'prop-types';
 
 // Modules
 import { getIndicators } from 'modules/indicators';
+import { removeSelectedFilter, setFiltersUrl } from 'modules/filters';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
+
+// Selectors
+import { getSelectedFilterOptions } from 'selectors/filters';
 
 // Libraries
 import isEqual from 'lodash/isEqual';
@@ -14,6 +18,7 @@ import isEqual from 'lodash/isEqual';
 // Components
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
+import FiltersSelectedBar from 'components/ui/filters-selected-bar';
 import DashboardList from 'components/ui/dashboard-list';
 import Spinner from 'components/ui/spinner';
 
@@ -33,8 +38,17 @@ class DashboardPage extends Page {
     }
   }
 
+
   render() {
-    const { url, session, indicators, layout } = this.props;
+    const {
+      url,
+      session,
+      indicators,
+      layout,
+      user,
+      selectedFilterOptions,
+      filterOptions
+    } = this.props;
 
     return (
       <Layout
@@ -42,9 +56,15 @@ class DashboardPage extends Page {
         description="Dashboard description..."
         url={url}
         session={session}
+        logged={user.logged}
       >
         <div>
           <Spinner isLoading={indicators.loading} />
+          <FiltersSelectedBar
+            filterOptions={filterOptions}
+            selected={selectedFilterOptions}
+            removeFilter={this.props.removeSelectedFilter}
+          />
           <DashboardList list={indicators.list} layout={layout} withGrid />
         </div>
       </Layout>
@@ -61,10 +81,16 @@ export default withRedux(
   store,
   state => ({
     indicators: state.indicators,
+    selectedFilterOptions: getSelectedFilterOptions(state),
     selectedFilters: state.filters.selected,
-    layout: state.filters.layout
+    layout: state.filters.layout,
+    user: state.user
   }),
   dispatch => ({
-    getIndicators(filters) { dispatch(getIndicators(filters)); }
+    getIndicators(filters) { dispatch(getIndicators(filters)); },
+    removeSelectedFilter(type, value) {
+      dispatch(removeSelectedFilter(type, value));
+      dispatch(setFiltersUrl());
+    }
   })
 )(DashboardPage);

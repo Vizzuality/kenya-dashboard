@@ -76,7 +76,7 @@ export default class SelectCustom extends React.Component {
     window.addEventListener('click', (e) => {
       const el = e.target;
       const isNotDropdownOrChild = this.el && el !== this.el && !this.el.contains(el);
-      const isNotDropdownBtn = el !== this.btn && !this.btn.contains(el);
+      const isNotDropdownBtn = this.btn && el !== this.btn && !this.btn.contains(el);
 
       if (isNotDropdownOrChild && isNotDropdownBtn && this.state.open) {
         this.setState({ open: false });

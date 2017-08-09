@@ -18,12 +18,15 @@ export default class ExpandMap extends React.Component {
   }
 
   render() {
+    const { expanded } = this.props;
+
     return (
       <button className="c-expand-map" onClick={this.onSetMapExpansion}>
-        {this.props.expanded ?
+        {expanded ?
           <Icon name="icon-retract" className="" /> :
           <Icon name="icon-enlarge" className="" />
         }
+        {expanded ? 'Collapse map' : 'Expand map' }
       </button>
     );
   }
