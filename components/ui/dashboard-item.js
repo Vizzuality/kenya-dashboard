@@ -95,7 +95,6 @@ export default class DashboardItem extends React.Component {
 
   render() {
     const { info, className } = this.props;
-    this.state.data && console.log(this.state.data);
     // const { data } = this.state;
     // const widgetThreshold = this.defaultWidget.json_config.threshold;
     // const threshold = data && data.threshold ? this.getThreshold(data.threshold) : 'default';
