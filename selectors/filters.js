@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { getValueMatchFromCascadeList } from 'utils/general';
 
 // Get specific indicators
 const getFiltersOptions = state => state.filters.options;
@@ -15,7 +16,7 @@ const getSelectedFilterOptions = createSelector(
       const selectedFilterKeyList = [];
 
       selectedFilters[key].forEach((s) => {
-        const option = filtersOptions[key].find(fo => fo.id === s);
+        const option = getValueMatchFromCascadeList(filtersOptions[key], s);
         option && selectedFilterKeyList.push(option);
       });
       selectedFiltersOptions[key] = selectedFilterKeyList;

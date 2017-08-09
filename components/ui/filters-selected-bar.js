@@ -25,6 +25,7 @@ export default class FiltersSelectedBar extends React.Component {
 
   getFilters() {
     const { selected } = this.props;
+    console.log(selected);
 
     return Object.keys(selected).map((key, i) => (
       selected[key] && selected[key].length ?

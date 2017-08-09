@@ -73,6 +73,18 @@ function setBasicQueryHeaderHeaders(headers) {
   return { ...BASIC_QUERY_HEADER, ...{ headers: newHeaders } };
 }
 
+function getValueMatchFromCascadeList(itemList, id) {
+  let item = null;
+  for (let i = 0; i < itemList.length && !item; i++) {
+    if (itemList[i].list && itemList[i].list.length && itemList[i].id !== id) {
+      item = getValueMatchFromCascadeList(itemList[i].list, id);
+    } else if (itemList[i].id === id) {
+      item = itemList[i];
+    }
+  }
+  return item;
+}
+
 export {
   toBase64,
   encode,
@@ -82,5 +94,6 @@ export {
   parseObjectToUrlParams,
   setBasicQueryHeaderHeaders,
   parseCustomSelectOptions,
-  parseCustomSelectCascadeOptions
+  parseCustomSelectCascadeOptions,
+  getValueMatchFromCascadeList
 };

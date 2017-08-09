@@ -11,8 +11,8 @@ const REGIONS_OPTIONS = [
 ];
 
 const FILTERS_BAR_LABELS = {
-  areas: 'Location',
-  categories: 'Topics',
+  regions: 'Location',
+  topics: 'Topics',
   sort: 'Sorted by'
 };
 
