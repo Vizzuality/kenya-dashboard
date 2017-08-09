@@ -25,7 +25,6 @@ export default class FiltersSelectedBar extends React.Component {
 
   getFilters() {
     const { selected } = this.props;
-    console.log(selected);
 
     return Object.keys(selected).map((key, i) => (
       selected[key] && selected[key].length ?
@@ -53,9 +52,9 @@ export default class FiltersSelectedBar extends React.Component {
     return (
       <nav className={classNames}>
         <span className="bar-label">You are currently viewing: </span>
-        <div className="bar-filters">
+        {/* <div className="bar-filters"> */}
           {this.getFilters()}
-        </div>
+        {/* </div> */}
       </nav>
     );
   }
