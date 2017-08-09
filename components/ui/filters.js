@@ -47,7 +47,6 @@ export default class Filters extends React.Component {
       'c-filters',
       { [className]: !!className }
     );
-    console.log(selected.topics);
     const btnGridClasses = classnames(
       'btn-grid',
       { '-active': layout === 'grid' }
