@@ -29,6 +29,7 @@ export default class Filters extends React.Component {
 
   setFilters(opts, key) {
     let newOpts = isArray(opts) ? opts.slice() : [opts];
+
     if (key === 'topics' && opts.includes('all')) {
       newOpts = this.props.options.topics.map(t => t.id);
     } else if (key === 'topics' && !opts.includes('all') && this.props.selected.topics.includes('all')) {
@@ -62,7 +63,7 @@ export default class Filters extends React.Component {
         {/* Region select */}
         <SelectCustom
           label="Locations"
-          name="region"
+          name="regions"
           type="slider"
           list={options.regions}
           setValue={this.setFilters}
@@ -97,7 +98,6 @@ export default class Filters extends React.Component {
         <button className={btnListClasses} data-layout="list" onClick={this.onSetDashboardLayout}>
           <Icon name="icon-list" className="-small" />
         </button>
-
       </div>
     );
   }

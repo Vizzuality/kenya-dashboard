@@ -40,7 +40,7 @@ function parseObjectToUrlParams(obj) {
 
   let query = '';
   Object.keys(obj).forEach((key) => {
-    if (obj[key].length) {
+    if (obj[key].length && key !== 'regions') {
       query += query === '' ? `&${FILTERS_KEYS[key]}=${obj[key]}` : `&${FILTERS_KEYS[key]}=${obj[key]}`;
     }
   });
