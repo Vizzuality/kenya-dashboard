@@ -6,10 +6,12 @@ const SET_USER = 'SET_USER';
 const REMOVE_USER = 'REMOVE_USER';
 const RESET_PASSWORD = 'RESET_PASSWORD';
 
+const userCookie = Cookies.get('user') ? JSON.parse(Cookies.get('user')) : {};
+
 // REDUCER
 const initialState = {
-  user: (Cookies.get('user')) ? JSON.parse(Cookies.get('user')) : {},
-  logged: false,
+  user: userCookie,
+  logged: userCookie && userCookie.auth_token && userCookie.auth_token !== '',
   reset: null
 };
 
