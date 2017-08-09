@@ -47,6 +47,7 @@ class DashboardPage extends Page {
       layout,
       user,
       selectedFilterOptions,
+      selectedFilters,
       filterOptions
     } = this.props;
 
@@ -65,7 +66,15 @@ class DashboardPage extends Page {
             selected={selectedFilterOptions}
             removeFilter={this.props.removeSelectedFilter}
           />
-          <DashboardList list={indicators.list} layout={layout} />
+          <DashboardList
+            list={indicators.list}
+            layout={layout}
+            withGrid
+            region={
+              selectedFilters.regions && selectedFilters.regions.length ?
+                selectedFilters.regions[0] : ''
+            }
+          />
         </div>
       </Layout>
     );

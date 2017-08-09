@@ -52,7 +52,7 @@ export default class SelectList extends React.Component {
     if (!isParent) {
       const totalValue = this.getValues(value);
       this.props.setValue(totalValue, this.props.name);
-      !this.type && this.props.onToggleTooltip && this.props.onToggleTooltip();
+      !this.type && this.props.onToggleDropdown && this.props.onToggleDropdown();
     // If is parent in slider
     } else {
       this.props.onToggle('next', value);
@@ -137,7 +137,7 @@ SelectList.propTypes = {
   // Actions
   setValue: PropTypes.func,
   onToggle: PropTypes.func,
-  onToggleTooltip: PropTypes.func
+  onToggleDropdown: PropTypes.func
 };
 
 SelectList.defaultProps = {

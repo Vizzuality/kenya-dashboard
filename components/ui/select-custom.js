@@ -20,20 +20,20 @@ export default class SelectCustom extends React.Component {
     };
 
     // Bindiings
-    this.onToggleTooltip = this.onToggleTooltip.bind(this);
+    this.onToggleDropdown = this.onToggleDropdown.bind(this);
   }
 
   /**
     Lifecycle
   */
   componentDidMount() {
-    this.handleTooltipOpening();
+    this.handleDropdownOpening();
   }
 
   /**
    UI events
   */
-  onToggleTooltip() {
+  onToggleDropdown() {
     this.setState({ open: !this.state.open });
   }
 
@@ -45,7 +45,7 @@ export default class SelectCustom extends React.Component {
           list={this.props.list}
           selected={this.props.selected}
           setValue={this.props.setValue}
-          onToggleTooltip={this.onToggleTooltip}
+          onToggleDropdown={this.onToggleDropdown}
         />
       );
       case 'checkbox': return (
@@ -65,20 +65,20 @@ export default class SelectCustom extends React.Component {
           list={this.props.list}
           selected={this.props.selected}
           setValue={this.props.setValue}
-          onToggleTooltip={this.onToggleTooltip}
+          onToggleDropdown={this.onToggleDropdown}
         />
       );
     }
   }
 
-  // Close tooltip when clicking outside
-  handleTooltipOpening() {
+  // Close dropdown when clicking outside
+  handleDropdownOpening() {
     window.addEventListener('click', (e) => {
       const el = e.target;
-      const isNotTooltipOrChild = this.el && el !== this.el && !this.el.contains(el);
-      const isNotTooltipBtn = this.btn && el !== this.btn && !this.btn.contains(el);
+      const isNotDropdownOrChild = this.el && el !== this.el && !this.el.contains(el);
+      const isNotDropdownBtn = this.btn && el !== this.btn && !this.btn.contains(el);
 
-      if (isNotTooltipOrChild && isNotTooltipBtn && this.state.open) {
+      if (isNotDropdownOrChild && isNotDropdownBtn && this.state.open) {
         this.setState({ open: false });
       }
     }, false);
@@ -101,16 +101,16 @@ export default class SelectCustom extends React.Component {
             pin: true
           }]}
           classes={{
-            element: 'c-tooltip -arrow-top'
+            element: 'c-dropdown -arrow-top'
           }}
           offset="-14px 0"
         >
-          <button className="btn-tooltip" onClick={this.onToggleTooltip} ref={(node) => { this.btn = node; }}>
+          <button className="btn-dropdown" onClick={this.onToggleDropdown} ref={(node) => { this.btn = node; }}>
             <h1 className="label">{label}</h1>
             <Icon name="icon-arrow-down" className="-smaller" />
           </button>
           {this.state.open &&
-            <div ref={(node) => { this.el = node; }} className="tooltip-container">
+            <div ref={(node) => { this.el = node; }} className="dropdown-container">
               {this.getContent()}
             </div>
           }

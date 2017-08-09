@@ -90,6 +90,7 @@ class ComparePage extends Page {
       this.setMapParams(params);
     }
 
+    // Epand map if in url
     if (url.query.expanded) {
       this.props.setMapExpansionFromUrl(!!url.query.expanded);
     }

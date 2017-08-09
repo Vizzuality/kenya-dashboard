@@ -61,7 +61,7 @@ export default class SelectSlider extends React.Component {
     return newSpecificList;
   }
 
-  /* Tooltip content */
+  /* Dropdown content */
   getPrincipalListContent() {
     const classNames = classnames(
       'slider-item',
@@ -106,10 +106,10 @@ export default class SelectSlider extends React.Component {
     );
   }
 
-  /* Set value and close tooltip */
+  /* Set value and close dropdown */
   setValue(value, type) {
     this.props.setValue(value, type);
-    this.props.onToggleTooltip();
+    this.props.onToggleDropdown();
   }
 
   render() {
@@ -138,5 +138,5 @@ SelectSlider.propTypes = {
   selected: PropTypes.array,
   // Actions
   setValue: PropTypes.func,
-  onToggleTooltip: PropTypes.func
+  onToggleDropdown: PropTypes.func
 };
