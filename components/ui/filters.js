@@ -28,9 +28,15 @@ export default class Filters extends React.Component {
   }
 
   setFilters(opts, key) {
+    let newOpts = isArray(opts) ? opts.slice() : [opts];
+    if (key === 'topics' && opts.includes('all')) {
+      newOpts = this.props.options.topics.map(t => t.id);
+    } else if (key === 'topics' && !opts.includes('all') && this.props.selected.topics.includes('all')) {
+      newOpts = [];
+    }
     const newFilters = {
       ...this.props.selected,
-      [key]: isArray(opts) ? opts.map(o => o) : [opts]
+      [key]: newOpts
     };
     this.props.onSetFilters(newFilters);
   }
@@ -41,7 +47,7 @@ export default class Filters extends React.Component {
       'c-filters',
       { [className]: !!className }
     );
-
+    console.log(selected.topics);
     const btnGridClasses = classnames(
       'btn-grid',
       { '-active': layout === 'grid' }

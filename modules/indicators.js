@@ -135,7 +135,7 @@ export function getIndicators(filters) {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_INDICATORS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicators?include=topic,widgets&page[size]=999${query}`, headers)
+    fetch(`${process.env.KENYA_API}/indicators?include=topic,widgets,agency&page[size]=999${query}`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -177,7 +177,7 @@ export function getSpecificIndicators(ids) {
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicators?filter[id]=${ids}&include=topic,widgets&page[size]=999`, headers)
+    fetch(`${process.env.KENYA_API}/indicators?filter[id]=${ids}&include=topic,widgets,agency&page[size]=999`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);

@@ -65,11 +65,12 @@ export default class DashboardItem extends React.Component {
 
   getContent() {
     const { info } = this.props;
+    const widget = info.widgets.find(w => w.default);
 
     return (
       <div>
         <h2>{info.topic && info.topic.name}</h2>
-        <h3>{info.name}</h3>
+        <h3>{widget && widget.title}</h3>
 
         {/* Indicator type detail */}
         <div className="type-detail">
@@ -78,7 +79,7 @@ export default class DashboardItem extends React.Component {
             this.getItemType()}
         </div>
 
-        <p><span>{info.source}</span>/ <span>{info.updatedAt}</span></p>
+        <p><span>{info.agency.name}</span>/ <span>{info.updatedAt}</span></p>
       </div>
     );
   }

@@ -33,8 +33,10 @@ class DashboardPage extends Page {
     }
   }
 
+
   render() {
     const { url, session, indicators, layout, user } = this.props;
+    console.log(indicators.list);
 
     return (
       <Layout

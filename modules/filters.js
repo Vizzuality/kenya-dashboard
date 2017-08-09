@@ -67,38 +67,6 @@ export default function filtersReducer(state = initialState, action) {
 }
 
 /* Action creators */
-export function getFiltersOptions() {
-  return (dispatch) => {
-    // Waiting for fetch from server -> Dispatch loading
-    dispatch({ type: GET_FILTERS_LOADING });
-
-    fetch(`${process.env.KENYA_API}/filter?page[size]=999`, BASIC_QUERY_HEADER)
-      .then((response) => {
-        if (response.ok) return response.json();
-        throw new Error(response.statusText);
-      })
-      .then((data) => {
-        dispatch({
-          type: GET_FILTERS_OPTIONS,
-          payload: data
-        });
-        // DESERIALIZER.deserialize(data, (err, dataParsed) => {
-        //   dispatch({
-        //     type: GET_FILTERS,
-        //     payload: dataParsed
-        //   });
-        // });
-      })
-      .catch((err) => {
-        // Fetch from server ko -> Dispatch error
-        dispatch({
-          type: GET_FILTERS_ERROR,
-          payload: err.message
-        });
-      });
-  };
-}
-
 /* Get topics options */
 export function getTopicsOptions() {
   return (dispatch) => {
@@ -112,9 +80,11 @@ export function getTopicsOptions() {
         throw new Error(response.statusText);
       })
       .then((data) => {
+        const addedData = [{ id: 'all', attributes: { name: 'All' } }].concat(data.data);
+
         dispatch({
           type: GET_TOPICS_OPTIONS,
-          payload: parseCustomSelectOptions(data.data)
+          payload: parseCustomSelectOptions(addedData)
         });
       })
       .catch((err) => {
