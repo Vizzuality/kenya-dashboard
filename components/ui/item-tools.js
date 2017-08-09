@@ -26,7 +26,6 @@ export default class ItemTools extends React.Component {
       children: IndicatorInfo,
       childrenProps: {
         info: this.props.info
-        // closeModal: modal.toggleModal
       }
     };
     modal.toggleModal(true, opts);

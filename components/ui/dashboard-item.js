@@ -112,7 +112,10 @@ export default class DashboardItem extends React.Component {
       [className]: !!className
       // [`-${threshold || 'default'}`]: !!widgetThreshold && !isEmpty(widgetThreshold) && !!data && !!data.threshold
     });
-    const modalInfo = { ...this.defaultWidget, ...{ updatedAt: info.updatedAt } };
+    const modalInfo = {
+      ...this.defaultWidget,
+      ...{ updatedAt: info.updatedAt, agency: info.agency, topic: info.topic }
+    };
 
     return (
       <article className={classNames}>
@@ -134,7 +137,7 @@ export default class DashboardItem extends React.Component {
         {/* Footer */}
         <footer className="item-footer">
           <div className="info">
-            <TopicIcon topic={info.topic ? info.topic.name : ''} tooltip />
+            <TopicIcon topic={info.topic ? info.topic.name : ''} tooltip={info.topic && !!info.topic.name} />
             <span className="update">Last update: {info.updatedAt}</span>
           </div>
           <div className="">
