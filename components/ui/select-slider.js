@@ -70,7 +70,7 @@ export default class SelectSlider extends React.Component {
 
     return (
       <SelectList
-        name="areas"
+        name="regions"
         type="slider"
         className={classNames}
         list={this.props.list}
@@ -94,7 +94,7 @@ export default class SelectSlider extends React.Component {
           Back
         </button>
         <SelectList
-          name="areas"
+          name="regions"
           type="slider"
           list={this.state.specificList}
           selected={this.props.selected}

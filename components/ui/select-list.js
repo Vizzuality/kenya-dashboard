@@ -94,7 +94,7 @@ export default class SelectList extends React.Component {
         {/* List */}
         <ul className="list">
           {this.state.filteredList.map((l, i) => {
-            const isSelected = selected && selected.includes(l.id);
+            const isSelected = selected && selected.includes(`${l.id}` || l.id);
             const itemClassNames = classnames(
               'item',
               { '-selected': type !== 'checkbox' && isSelected }

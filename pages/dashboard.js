@@ -9,6 +9,9 @@ import { removeSelectedFilter, setFiltersUrl } from 'modules/filters';
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
+// Selectors
+import { getSelectedFilterOptions } from 'selectors/filters';
+
 // Libraries
 import isEqual from 'lodash/isEqual';
 
@@ -35,8 +38,17 @@ class DashboardPage extends Page {
     }
   }
 
+
   render() {
-    const { url, session, indicators, layout, user, selectedFilters } = this.props;
+    const {
+      url,
+      session,
+      indicators,
+      layout,
+      user,
+      selectedFilterOptions,
+      filterOptions
+    } = this.props;
 
     return (
       <Layout
@@ -49,7 +61,8 @@ class DashboardPage extends Page {
         <div>
           <Spinner isLoading={indicators.loading} />
           <FiltersSelectedBar
-            selected={selectedFilters}
+            filterOptions={filterOptions}
+            selected={selectedFilterOptions}
             removeFilter={this.props.removeSelectedFilter}
           />
           <DashboardList list={indicators.list} layout={layout} />
@@ -68,6 +81,7 @@ export default withRedux(
   store,
   state => ({
     indicators: state.indicators,
+    selectedFilterOptions: getSelectedFilterOptions(state),
     selectedFilters: state.filters.selected,
     layout: state.filters.layout,
     user: state.user

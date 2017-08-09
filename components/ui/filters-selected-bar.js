@@ -25,14 +25,15 @@ export default class FiltersSelectedBar extends React.Component {
 
   getFilters() {
     const { selected } = this.props;
+
     return Object.keys(selected).map((key, i) => (
       selected[key] && selected[key].length ?
         <div className="filters-type-container" key={i}>
           <span className="filter-label">{FILTERS_BAR_LABELS[key]}:</span>
-          {selected[key].map((value, j) => (
+          {selected[key].map((item, j) => (
             <div key={j} className="filter-value-container">
-              <span className="filter-value">{value}</span>
-              <button className="btn-remove" onClick={() => this.onRemoveFilter(key, value)}>
+              <span className="filter-value">{item.name}</span>
+              <button className="btn-remove" onClick={() => this.onRemoveFilter(key, item.id)}>
                 <Icon name="icon-cross" className="-medium" />
               </button>
             </div>
@@ -51,9 +52,9 @@ export default class FiltersSelectedBar extends React.Component {
     return (
       <nav className={classNames}>
         <span className="bar-label">You are currently viewing: </span>
-        <div className="bar-filters">
+        {/* <div className="bar-filters"> */}
           {this.getFilters()}
-        </div>
+        {/* </div> */}
       </nav>
     );
   }

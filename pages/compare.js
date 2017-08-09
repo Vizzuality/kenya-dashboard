@@ -23,6 +23,10 @@ import {
   setAreasParamsUrl
 } from 'modules/maps';
 
+import {
+  getTopicsOptions
+} from 'modules/filters';
+
 // Selectors
 import { getIndicatorsWithLayers } from 'selectors/indicators';
 
@@ -32,6 +36,7 @@ import { store } from 'store';
 
 // Libraries
 import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 import classnames from 'classnames';
 
 // Utils
@@ -71,7 +76,13 @@ class ComparePage extends Page {
   componentDidMount() {
     const { url } = this.props;
 
+    // Get indicators from url
     url.query.indicators && this.props.getSpecificIndicators(url.query.indicators);
+
+    // Get topics to select grouped indicators
+    if (isEmpty(this.props.filters.options.topics)) {
+      this.props.getTopicsOptions();
+    }
 
     // Update areas with url params
     if (url.query.maps) {
@@ -84,7 +95,8 @@ class ComparePage extends Page {
     }
 
     // Get all indicators to set the add indicators list
-    if (!Object.keys(this.props.indicatorsFilterList.list).length) {
+    if (!Object.keys(this.props.indicatorsFilterList.list).length &&
+      !this.props.filters.options.topics.length) {
       this.props.getIndicatorsFilterList();
     }
   }
@@ -92,6 +104,10 @@ class ComparePage extends Page {
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props.url.query, nextProps.url.query)) {
       this.url = nextProps.url;
+    }
+
+    if (nextProps.filters.options.topics && isEmpty(nextProps.indicatorsFilterList.list)) {
+      this.props.getIndicatorsFilterList();
     }
   }
 
@@ -198,8 +214,8 @@ class ComparePage extends Page {
 
     return (
       <Layout
-        title="Panel"
-        description="Panel description..."
+        title="Detail"
+        description="Detail description..."
         url={url}
         session={session}
       >
@@ -255,13 +271,17 @@ export default withRedux(
       ),
       indicatorsFilterList: state.indicators.filterList,
       mapState: state.maps,
-      modal: state.modal
+      modal: state.modal,
+      filters: state.filters
     }
   ),
   dispatch => ({
     // Indicators
     getSpecificIndicators(ids) {
       dispatch(getSpecificIndicators(ids));
+    },
+    getTopicsOptions() {
+      dispatch(getTopicsOptions());
     },
     getIndicatorsFilterList() {
       dispatch(getIndicatorsFilterList());

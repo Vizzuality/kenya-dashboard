@@ -1,6 +1,7 @@
 
 .c-filters-selected-bar {
   display: flex;
+  flex-flow: row wrap;
   padding: 10px 30px;
   font-size: $font-size-small;
   line-height: 16px;
@@ -19,6 +20,7 @@
 
   .filters-type-container {
     display: flex;
+    flex-flow: row wrap;
     align-items: center;
 
     .filter-label {

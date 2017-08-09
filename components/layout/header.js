@@ -46,7 +46,7 @@ class Header extends React.Component {
     const { modalOpened } = this.props;
 
     // Update modal content props
-    if (modalOpened && nextProps.modalOpened) {
+    if (modalOpened) {
       const opts = {
         children: Login,
         childrenProps: {
@@ -54,7 +54,8 @@ class Header extends React.Component {
           user: nextProps.user,
           login: nextProps.login,
           resetPassword: this.props.resetPassword,
-          closeModal: modal.toggleModal
+          toggleModal: modal.toggleModal,
+          modalOpened: nextProps.modalOpened
         }
       };
       modal.setModalOptions(opts);
@@ -78,7 +79,8 @@ class Header extends React.Component {
         user: this.props.user,
         login: this.props.login,
         resetPassword: this.props.resetPassword,
-        closeModal: modal.toggleModal
+        toggleModal: modal.toggleModal,
+        modalOpened: this.props.modalOpened
       }
     };
     modal.toggleModal(true, opts);

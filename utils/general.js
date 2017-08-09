@@ -1,3 +1,5 @@
+import { BASIC_QUERY_HEADER } from 'constants/query';
+import { REGIONS_OPTIONS } from 'constants/filters';
 
 function toBase64(file, cb) {
   const reader = new FileReader();
@@ -30,14 +32,57 @@ function parseObjectSelectOptions(object) {
 }
 
 function parseObjectToUrlParams(obj) {
+  const FILTERS_KEYS = {
+    topics: 'filter[topic_id]',
+    regions: 'filter[region_id]',
+    sort: 'sort'
+  };
+
   let query = '';
   Object.keys(obj).forEach((key) => {
-    if (obj[key].length) {
-      query += query === '' ? `${key}=${obj[key]}` : `&${key}=${obj[key]}`;
+    if (obj[key].length && key !== 'regions') {
+      query += query === '' ? `&${FILTERS_KEYS[key]}=${obj[key]}` : `&${FILTERS_KEYS[key]}=${obj[key]}`;
     }
   });
 
   return query;
+}
+
+function parseCustomSelectOptions(list) {
+  return list.map(l => (
+    { name: l.attributes.name, id: l.id }
+  ));
+}
+
+function parseCustomSelectCascadeOptions(list) {
+  const partialParse = {};
+  REGIONS_OPTIONS.forEach(r => partialParse[r.id] = r);
+
+  list.forEach((l) => {
+    partialParse[l.attributes['region-type']].list.push({
+      name: l.attributes.name,
+      id: l.id
+    });
+  });
+
+  return Object.keys(partialParse).map(key => partialParse[key]);
+}
+
+function setBasicQueryHeaderHeaders(headers) {
+  const newHeaders = { ...BASIC_QUERY_HEADER.headers, ...headers };
+  return { ...BASIC_QUERY_HEADER, ...{ headers: newHeaders } };
+}
+
+function getValueMatchFromCascadeList(itemList, id) {
+  let item = null;
+  for (let i = 0; i < itemList.length && !item; i++) {
+    if (itemList[i].list && itemList[i].list.length && itemList[i].id !== id) {
+      item = getValueMatchFromCascadeList(itemList[i].list, id);
+    } else if (itemList[i].id === id) {
+      item = itemList[i];
+    }
+  }
+  return item;
 }
 
 export {
@@ -46,5 +91,9 @@ export {
   decode,
   parseSelectOptions,
   parseObjectSelectOptions,
-  parseObjectToUrlParams
+  parseObjectToUrlParams,
+  setBasicQueryHeaderHeaders,
+  parseCustomSelectOptions,
+  parseCustomSelectCascadeOptions,
+  getValueMatchFromCascadeList
 };
