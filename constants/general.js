@@ -5,6 +5,11 @@ const HEADER_MENU_LINKS = [
   { label: 'About the Alliance', route: 'about' }
 ];
 
+const HEADER_LOGIN_MENU_LINKS = [
+  { label: 'Dashboard', route: 'dashboard' },
+  { label: 'About the Alliance', route: 'about' }
+];
+
 const SELECT_SEARCH_OPTIONS = {
   shouldSort: true,
   threshold: 0.6,
@@ -13,4 +18,4 @@ const SELECT_SEARCH_OPTIONS = {
   keys: ['name', 'label']
 };
 
-export { HEADER_MENU_LINKS, SELECT_SEARCH_OPTIONS };
+export { HEADER_MENU_LINKS, SELECT_SEARCH_OPTIONS, HEADER_LOGIN_MENU_LINKS };

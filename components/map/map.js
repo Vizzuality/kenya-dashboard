@@ -245,13 +245,13 @@ export default class Map extends React.Component {
 
 Map.propTypes = {
   className: PropTypes.string,
-  mapOptions: React.PropTypes.object,
-  mapMethods: React.PropTypes.object,
-  layers: React.PropTypes.array,
-  indicatorsLayersActive: React.PropTypes.array,
-  markers: React.PropTypes.array,
-  markerIcon: React.PropTypes.object,
-  listeners: React.PropTypes.object
+  mapOptions: PropTypes.object,
+  mapMethods: PropTypes.object,
+  layers: PropTypes.array,
+  indicatorsLayersActive: PropTypes.array,
+  markers: PropTypes.array,
+  markerIcon: PropTypes.object,
+  listeners: PropTypes.object
 };
 
 Map.defaultProps = {

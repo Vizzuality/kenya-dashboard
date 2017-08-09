@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+// Libraries
 import classnames from 'classnames';
 
 // Components
@@ -59,10 +62,10 @@ export default class ZoomControl extends React.Component {
 }
 
 ZoomControl.propTypes = {
-  zoom: React.PropTypes.number,
-  maxZoom: React.PropTypes.number,
-  minZoom: React.PropTypes.number,
-  onZoomChange: React.PropTypes.func
+  zoom: PropTypes.number,
+  maxZoom: PropTypes.number,
+  minZoom: PropTypes.number,
+  onZoomChange: PropTypes.func
 };
 
 ZoomControl.defaultProps = {
