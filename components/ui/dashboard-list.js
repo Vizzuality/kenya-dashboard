@@ -5,18 +5,18 @@ import PropTypes from 'prop-types';
 import DashboardItem from 'components/ui/dashboard-item';
 
 
-export default function DashboardList({ list, layout, withGrid }) {
+export default function DashboardList({ list, layout, withGrid, region }) {
   return (
     <div className="c-dashboard-list">
       {withGrid &&
         <div className="row collapse">
           {list.map((ind, i) => (
             layout === 'grid' ?
-              <div key={i} className="column small-12 medium-4 large-2">
-                <DashboardItem info={ind} />
+              <div key={i} className="column small-12 medium-4 large-3">
+                <DashboardItem info={ind} region={region} />
               </div> :
               <div key={i} className="column small-12">
-                <DashboardItem info={ind} />
+                <DashboardItem info={ind} region={region} />
               </div>
           ))}
         </div>
@@ -35,7 +35,8 @@ export default function DashboardList({ list, layout, withGrid }) {
 DashboardList.propTypes = {
   list: PropTypes.array,
   layout: PropTypes.string,
-  withGrid: PropTypes.bool
+  withGrid: PropTypes.bool,
+  region: PropTypes.string
 };
 
 DashboardList.defaultProps = {

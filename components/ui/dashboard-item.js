@@ -26,24 +26,42 @@ export default class DashboardItem extends React.Component {
     super(props);
 
     this.state = {
-      data: undefined
+      data: undefined,
+      date: ''
     };
 
     this.defaultWidget = props.info.widgets.find(w => w.default);
 
     // Bindings
     this.setData = this.setData.bind(this);
+    this.onSetDate = this.onSetDate.bind(this);
   }
 
   componentWillMount() {
     this.getIndicatorData();
   }
 
+  /* Set widget date */
+  onSetDate(e) {
+    // const value = e.currentTarget.value;
+    // this.setState({ date: value });
+    // this.getIndicatorData();
+  }
+
   getIndicatorData() {
-    const { query } = this.props.info;
-    if (query && query !== '') {
+    const { region } = this.props;
+    const token = localStorage.getItem('token');
+
+    if (this.defaultWidget) {
+      // token, widget_id, region, start_date, end_date
+      const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
+      const query = `select * from get_widget('${token}',
+        ${this.defaultWidget.id}, ${region || ''},
+        ${this.state.date},
+        '')`; // End date ?
+
       get({
-        url: query,
+        url: `${url}?q=${query}`,
         onSuccess: this.setData,
         onError: this.setData
       });
@@ -55,7 +73,7 @@ export default class DashboardItem extends React.Component {
     }
   }
 
-  setData() {
+  setData(data) {
     // TODO Provisional query data
     this.setState({ data: EXAMPLE_QUERY_DATA });
 
@@ -80,14 +98,14 @@ export default class DashboardItem extends React.Component {
     // });
     //
     // return currentThreshold;
-    return 'default'
+    return 'default';
   }
 
   render() {
     const { info, className } = this.props;
-    const { data } = this.state;
+    // const { data } = this.state;
     // const widgetThreshold = this.defaultWidget.json_config.threshold;
-    // const threshold = data && data.threshold ? this.getThreshold(data.threshold) : null;
+    // const threshold = data && data.threshold ? this.getThreshold(data.threshold) : 'default';
 
     const classNames = classnames({
       'c-dashboard-item': true,
@@ -102,7 +120,7 @@ export default class DashboardItem extends React.Component {
         <header className="item-header">
           <h1 className="item-title">{this.defaultWidget && this.defaultWidget.title}</h1>
           <div className="item-tools">
-            <ItemTools info={modalInfo} />
+            <ItemTools info={modalInfo} setDate={this.onSetDate} />
           </div>
         </header>
 
@@ -133,8 +151,9 @@ export default class DashboardItem extends React.Component {
 }
 
 DashboardItem.propTypes = {
+  className: PropTypes.string,
   info: PropTypes.object,
-  className: PropTypes.string
+  region: PropTypes.string
 };
 
 DashboardItem.defaultProps = {
