@@ -27,17 +27,17 @@ class DashboardPage extends Page {
   componentDidMount() {
     const { selectedFilters } = this.props;
 
-    if (!this.props.indicators.list.length) {
+    if (this.props.user.logged && !this.props.indicators.list.length) {
       this.props.getIndicators(selectedFilters);
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(this.props.selectedFilters, nextProps.selectedFilters)) {
+    if ((!this.props.user.logged && nextProps.user.logged) ||
+      (nextProps.user.logged && !isEqual(this.props.selectedFilters, nextProps.selectedFilters))) {
       this.props.getIndicators(nextProps.selectedFilters);
     }
   }
-
 
   render() {
     const {
@@ -59,23 +59,25 @@ class DashboardPage extends Page {
         session={session}
         logged={user.logged}
       >
-        <div>
-          <Spinner isLoading={indicators.loading} />
-          <FiltersSelectedBar
-            filterOptions={filterOptions}
-            selected={selectedFilterOptions}
-            removeFilter={this.props.removeSelectedFilter}
-          />
-          <DashboardList
-            list={indicators.list}
-            layout={layout}
-            withGrid
-            region={
-              selectedFilters.regions && selectedFilters.regions.length ?
-                selectedFilters.regions[0] : ''
-            }
-          />
-        </div>
+        {user.logged ?
+          <div>
+            <Spinner isLoading={indicators.loading} />
+            <FiltersSelectedBar
+              filterOptions={filterOptions}
+              selected={selectedFilterOptions}
+              removeFilter={this.props.removeSelectedFilter}
+            />
+            <DashboardList
+              list={indicators.list}
+              layout={layout}
+              withGrid
+              region={
+                selectedFilters.regions && selectedFilters.regions.length ?
+                  selectedFilters.regions[0] : ''
+              }
+            />
+          </div> : <div className="row collapse" style={{ margin: '30px' }}><div className="column small-12"><p>Sign in</p></div></div>
+        }
       </Layout>
     );
   }
