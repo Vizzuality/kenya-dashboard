@@ -1,0 +1,25 @@
+
+.c-line-type {
+  width: 100%;
+  height: 200px;
+
+  .recharts-text.recharts-label {
+    fill: $color-text-1;
+  }
+
+  .recharts-cartesian-grid-horizontal {
+    line {
+      stroke: $color-border-1;
+      stroke-width: 1px;
+    }
+  }
+
+  /* Legend */
+  .recharts-legend-wrapper {
+    transform: translateY(30px);
+
+    .recharts-default-legend {
+      text-align: left !important;
+    }
+  }
+}

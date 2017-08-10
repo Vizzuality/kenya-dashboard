@@ -16,9 +16,9 @@ import Spinner from 'components/ui/spinner';
 import Icon from 'components/ui/icon';
 import TopicIcon from 'components/ui/topic-icon';
 // Widget types
-import TableType from 'components/indicators/table-type';
-import PieType from 'components/indicators/pie-type';
-import LineType from 'components/indicators/line-type';
+import TableType from 'components/charts/table-type';
+import PieType from 'components/charts/pie-type';
+import LineType from 'components/charts/line-type';
 
 // Constants
 import { THRESHOLD_EXAMPLE } from 'constants/general';
@@ -84,17 +84,18 @@ export default class DashboardItem extends React.Component {
     if (this.state.data && this.state.data.data) {
       // switch (this.defaultWidget['json-config'].type) {
       //   case 'table': return <TableType data={this.state.data} />;
-      //   case 'arc': return (
+      //   case 'pie': return (
       //     <PieType
-      //       data={this.state.data}
-      //       threshold={info.json_config.threshold}
-      //     />
+              //   data={this.state.data.data}
+              //   // threshold={info.json_config.threshold}
+              //   threshold={THRESHOLD_EXAMPLE}
+              // />
       //   );
       //   case 'line': return <LineType data={this.state.data} />;
       //   default: return '';
       // }
       return (
-        <PieType
+        <LineType
           data={this.state.data.data}
           // threshold={info.json_config.threshold}
           threshold={THRESHOLD_EXAMPLE}
