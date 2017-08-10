@@ -1,6 +1,7 @@
 
 .c-checkbox {
   position: relative;
+  cursor: pointer;
 
   &.-checked {
     .fake-checkbox {
@@ -13,6 +14,7 @@
     position: absolute;
     z-index: 1;
     opacity: 0;
+    cursor: pointer;
   }
 
   .fake-checkbox {
@@ -23,5 +25,6 @@
     width: 15px;
     height: 15px;
     border: 1px solid $color-text-2;
+    cursor: pointer;
   }
 }

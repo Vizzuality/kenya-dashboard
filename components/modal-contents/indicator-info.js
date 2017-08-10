@@ -22,14 +22,18 @@ export default function IndicatorInfo(props) {
         <div>
           <p className="date">Last update: {info.updatedAt}</p>
           <h1 className="title">{info.title}</h1>
-          <div className="topic-container">
-            <TopicIcon topic={info.topic} />
-            {info.topic}
+          {info.topic &&
+            <div className="topic-container">
+              <TopicIcon topic={info.topic.name} />
+              {info.topic.name}
+            </div>
+          }
+        </div>
+        {info.agency &&
+          <div className="logo-container">
+            <img src="" alt={info.agency.name} />
           </div>
-        </div>
-        <div className="logo-container">
-          <img src="" alt="logo" />
-        </div>
+        }
       </header>
 
       {/* Info Content */}

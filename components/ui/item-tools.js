@@ -18,6 +18,7 @@ export default class ItemTools extends React.Component {
 
     // Bindings
     this.onToggleModal = this.onToggleModal.bind(this);
+    this.onSetDate = this.onSetDate.bind(this);
   }
 
   onToggleModal() {
@@ -25,10 +26,13 @@ export default class ItemTools extends React.Component {
       children: IndicatorInfo,
       childrenProps: {
         info: this.props.info
-        // closeModal: modal.toggleModal
       }
     };
     modal.toggleModal(true, opts);
+  }
+
+  onSetDate(e) {
+    this.props.setDate(e);
   }
 
 
@@ -41,7 +45,7 @@ export default class ItemTools extends React.Component {
 
     return (
       <div className={classNames}>
-        <div className="select-date">
+        <div className="select-date" onClick={this.onSetDate}>
           {info.frequency && info.frequency !== '' &&
             info.frequency === 'days' ?
               'Pick days' :
@@ -69,5 +73,7 @@ export default class ItemTools extends React.Component {
 ItemTools.propTypes = {
   className: PropTypes.string,
   info: PropTypes.object,
-  remove: PropTypes.bool
+  remove: PropTypes.bool,
+  // Actions
+  setDate: PropTypes.func
 };

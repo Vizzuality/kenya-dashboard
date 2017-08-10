@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export default function Layout(props) {
-  const { title, description, url, session, children, className } = props;
+  const { title, description, url, session, children, className, logged } = props;
   const classNames = classnames({
     [className]: !!className
   });
@@ -34,6 +34,7 @@ export default function Layout(props) {
       <Header
         url={url}
         session={session}
+        logged={logged}
       />
 
       <div className={`l-main ${classNames}`}>
@@ -53,5 +54,10 @@ Layout.propTypes = {
   children: PropTypes.any.isRequired,
   session: PropTypes.object,
   url: PropTypes.object.isRequired,
+  logged: PropTypes.bool.isRequired,
   className: PropTypes.string
+};
+
+Layout.defaultProps = {
+  logged: false
 };

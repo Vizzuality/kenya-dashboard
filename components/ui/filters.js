@@ -28,9 +28,16 @@ export default class Filters extends React.Component {
   }
 
   setFilters(opts, key) {
+    let newOpts = isArray(opts) ? opts.slice() : [opts];
+
+    if (key === 'topics' && opts.includes('all')) {
+      newOpts = this.props.options.topics.map(t => t.id);
+    } else if (key === 'topics' && !opts.includes('all') && this.props.selected.topics.includes('all')) {
+      newOpts = [];
+    }
     const newFilters = {
       ...this.props.selected,
-      [key]: isArray(opts) ? opts.map(o => o) : [opts]
+      [key]: newOpts
     };
     this.props.onSetFilters(newFilters);
   }
@@ -41,7 +48,6 @@ export default class Filters extends React.Component {
       'c-filters',
       { [className]: !!className }
     );
-
     const btnGridClasses = classnames(
       'btn-grid',
       { '-active': layout === 'grid' }
@@ -54,24 +60,24 @@ export default class Filters extends React.Component {
 
     return (
       <div className={classNames}>
-        {/* Areas select */}
+        {/* Region select */}
         <SelectCustom
           label="Location"
-          name="areas"
+          name="regions"
           type="slider"
-          list={options.areas}
+          list={options.regions}
           setValue={this.setFilters}
-          selected={selected.areas}
+          selected={selected.regions}
         />
 
         {/* Categories select */}
         <SelectCustom
           label="Topics"
-          name="categories"
+          name="topics"
           type="checkbox"
-          list={options.categories}
+          list={options.topics}
           setValue={this.setFilters}
-          selected={selected.categories}
+          selected={selected.topics}
           multi
         />
 
@@ -92,7 +98,6 @@ export default class Filters extends React.Component {
         <button className={btnListClasses} data-layout="list" onClick={this.onSetDashboardLayout}>
           <Icon name="icon-list" className="-small" />
         </button>
-
       </div>
     );
   }

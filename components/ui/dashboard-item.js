@@ -20,47 +20,57 @@ import TableType from 'components/indicators/table-type';
 import ArcType from 'components/indicators/arc-type';
 import LineType from 'components/indicators/line-type';
 
-// Constants
-import { EXAMPLE_QUERY_DATA } from 'constants/indicators';
-
 
 export default class DashboardItem extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      data: undefined
+      data: undefined,
+      date: ''
     };
 
     // Bindings
     this.setData = this.setData.bind(this);
+    this.onSetDate = this.onSetDate.bind(this);
   }
 
   componentWillMount() {
     this.getIndicatorData();
   }
 
+  /* Set widget date */
+  onSetDate(e) {
+    // const value = e.currentTarget.value;
+    // this.setState({ date: value });
+    // this.getIndicatorData();
+  }
+
   getIndicatorData() {
-    const { query } = this.props.info;
-    if (query && query !== '') {
+    const { region } = this.props;
+    const token = localStorage.getItem('token');
+
+    if (this.defaultWidget) {
+      // token, widget_id, region, start_date, end_date
+      const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
+      const query = `select * from get_widget('${token}',
+        ${this.defaultWidget.id})`;
+        // End date ?
+
       get({
-        url: query,
+        url: `${url}?q=${query}`,
         onSuccess: this.setData,
         onError: this.setData
       });
     } else {
-      // TODO Provisional query data
-      this.setState({ data: EXAMPLE_QUERY_DATA });
-
-      // this.setState({ data: null });
+      this.setState({ data: {} });
     }
   }
 
-  setData() {
-    // TODO Provisional query data
-    this.setState({ data: EXAMPLE_QUERY_DATA });
-
-    // this.setState({ data });
+  setData(data) {
+    this.setState({
+      data: data && data.rows && data.rows.length ? data.rows[0] : {}
+    });
   }
 
   getItemType() {
@@ -80,25 +90,29 @@ export default class DashboardItem extends React.Component {
 
   render() {
     const { info, className } = this.props;
-    const { data } = this.state;
-    const widgetThreshold = this.props.info.json_config.threshold;
-    const threshold = data && data.threshold ?
-      getThreshold(data.threshold, info.json_config.threshold) :
-      null;
+    // const { data } = this.state;
+    // const widgetThreshold = this.props.info.json_config.threshold;
+    // const threshold = data && data.threshold ?
+    //   getThreshold(data.threshold, info.json_config.threshold) :
+    //   null;
 
     const classNames = classnames({
       'c-dashboard-item': true,
-      [className]: !!className,
-      [`-${threshold || 'default'}`]: !!widgetThreshold && !isEmpty(widgetThreshold) && !!data && !!data.threshold
+      [className]: !!className
+      // [`-${threshold || 'default'}`]: !!widgetThreshold && !isEmpty(widgetThreshold) && !!data && !!data.threshold
     });
+    const modalInfo = {
+      ...this.defaultWidget,
+      ...{ updatedAt: info.updatedAt, agency: info.agency, topic: info.topic }
+    };
 
     return (
       <article className={classNames}>
         {/* Header */}
         <header className="item-header">
-          <h1 className="item-title">{info.title}</h1>
+          <h1 className="item-title">{this.defaultWidget && this.defaultWidget.title}</h1>
           <div className="item-tools">
-            <ItemTools info={info} />
+            <ItemTools info={modalInfo} setDate={this.onSetDate} />
           </div>
         </header>
 
@@ -112,7 +126,7 @@ export default class DashboardItem extends React.Component {
         {/* Footer */}
         <footer className="item-footer">
           <div className="info">
-            <TopicIcon topic={info.topic} tooltip />
+            <TopicIcon topic={info.topic ? info.topic.name : ''} tooltip={info.topic && !!info.topic.name} />
             <span className="update">Last update: {info.updatedAt}</span>
           </div>
           <div className="">
@@ -129,8 +143,9 @@ export default class DashboardItem extends React.Component {
 }
 
 DashboardItem.propTypes = {
+  className: PropTypes.string,
   info: PropTypes.object,
-  className: PropTypes.string
+  region: PropTypes.string
 };
 
 DashboardItem.defaultProps = {
