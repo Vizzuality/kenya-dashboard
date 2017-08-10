@@ -16,22 +16,6 @@ import { THRESHOLD_COLORS } from 'constants/general';
 
 
 export default class LineType extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      title: '',
-      text: ''
-    };
-
-    // Bindings
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-  }
-
-  onMouseEnter(props) {
-    this.setState({ title: `${Math.round(props.percent * 100)}%`, text: props.x });
-  }
-
   getLineRefs() {
     const { data } = this.props;
     return data.length ? Object.keys(data[0]).filter(key => key !== 'x') : [];
@@ -58,10 +42,22 @@ export default class LineType extends React.Component {
               const color = THRESHOLD_COLORS[getThreshold(value, threshold)];
 
               return (
-                <Line key={i} onMouseOver={() => {}} type="monotone" dataKey={key} stroke={color} strokeWidth={2} activeDot={{ r: 3 }} dot={false} />
+                <Line
+                  key={i}
+                  type="monotone"
+                  dataKey={key}
+                  stroke={color}
+                  strokeWidth={2}
+                  activeDot={{ r: 3 }}
+                  dot={false}
+                />
               );
             })}
-            <Tooltip offset={40} cursor={{ stroke: 'transparent', strokeWidth: 0 }} content={<TooltipChart />} />
+            <Tooltip
+              isAnimationActive={false}
+              cursor={{ stroke: 'white', strokeWidth: 1 }}
+              content={<TooltipChart />}
+            />
             <Legend />
           </LineChart>
         </ResponsiveContainer>
