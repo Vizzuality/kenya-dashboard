@@ -22,9 +22,6 @@ import LineType from 'components/charts/line-type';
 import BarsType from 'components/charts/bars-type';
 import BarsLineType from 'components/charts/bars-line-type';
 
-// Constants
-import { THRESHOLD_EXAMPLE } from 'constants/general';
-
 
 export default class DashboardItem extends React.Component {
   constructor(props) {
@@ -54,7 +51,7 @@ export default class DashboardItem extends React.Component {
   }
 
   getIndicatorData() {
-    const { region } = this.props;
+    // const { region } = this.props;
     const token = localStorage.getItem('token');
 
     if (this.defaultWidget) {
@@ -81,57 +78,74 @@ export default class DashboardItem extends React.Component {
   }
 
   getItemType() {
-    // const { info } = this.props;
+    if (this.state.data && this.state.data.data && this.defaultWidget['json-config'] &&
+      this.defaultWidget['json-config'].type && this.defaultWidget['json-config'].threshold) {
+      const threshold = this.defaultWidget['json-config'].type['secondary-axe'] ?
+        this.defaultWidget['json-config'].threshold :
+        this.defaultWidget['json-config'].threshold.y;
 
-    if (this.state.data && this.state.data.data) {
-      // switch (this.defaultWidget['json-config'].type) {
-      //   case 'table': return <TableType data={this.state.data} />;
-      //   case 'pie': return (
-      //     <PieType
-              //   data={this.state.data.data}
-              //   // threshold={info.json_config.threshold}
-              //   threshold={THRESHOLD_EXAMPLE}
-              // />
-      //   );
-      //   case 'bars': return (
-      //     <BarsType
-            //   data={this.state.data.data}
-            //   // threshold={info.json_config.threshold}
-            //   threshold={THRESHOLD_EXAMPLE}
-            // />
-      //   );
-      //   case 'line': return (
-          //   <LineType
-          //     data={this.state.data.data}
-          //     // threshold={info.json_config.threshold}
-          //     threshold={THRESHOLD_EXAMPLE}
-          //   />
-          // );
-      //   default: return '';
-      // }
-      return (
-        <BarsLineType
-          data={this.state.data.data}
-          // threshold={info.json_config.threshold}
-          threshold={THRESHOLD_EXAMPLE}
-        />
-      );
+      switch (this.defaultWidget['json-config'].type.visual) {
+        case 'table': return <TableType data={this.state.data} />;
+        case 'pie': return (
+          <PieType
+            data={this.state.data.data}
+            threshold={threshold}
+          />
+        );
+        case 'line': return (
+          <LineType
+            data={this.state.data.data}
+            threshold={threshold}
+          />
+        );
+        case 'bars': return (
+          <BarsType
+            data={this.state.data.data}
+            threshold={threshold}
+          />
+        );
+        case 'barsLine': return (
+          <BarsLineType
+            data={this.state.data.data}
+            threshold={threshold}
+          />
+        );
+        default: return '';
+      }
     }
     return '';
   }
 
+  getThresholdQualification() {
+    const { data } = this.state;
+    if (data && data.data && this.defaultWidget['json-config'] &&
+      this.defaultWidget['json-config'].type && this.defaultWidget['json-config'].threshold) {
+      const threshold = this.defaultWidget['json-config'].threshold.y;
+
+      switch (this.defaultWidget['json-config'].type.visual) {
+        case 'table': case 'pie': case 'bars': case 'barsLine': {
+          const values = data.data.map(v => v.y);
+          const value = threshold.direction === 'asc' ? Math.min(...values) : Math.max(...values);
+          return getThreshold(value, threshold['break-points']);
+        }
+        case 'line': {
+          const value = data.data[data.data.length - 1].y;
+          return getThreshold(value, threshold['break-points']);
+        }
+        default: return 'default';
+      }
+    }
+    return null;
+  }
+
   render() {
     const { info, className } = this.props;
-    // const { data } = this.state;
-    // const widgetThreshold = this.props.info.json_config.threshold;
-    // const threshold = data && data.threshold ?
-    //   getThreshold(data.threshold, info.json_config.threshold) :
-    //   null;
+    const threshold = this.getThresholdQualification();
 
     const classNames = classnames({
       'c-dashboard-item': true,
-      [className]: !!className
-      // [`-${threshold || 'default'}`]: !!widgetThreshold && !isEmpty(widgetThreshold) && !!data && !!data.threshold
+      [className]: !!className,
+      [threshold]: threshold
     });
     const modalInfo = {
       ...this.defaultWidget,

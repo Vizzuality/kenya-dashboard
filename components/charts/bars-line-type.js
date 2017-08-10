@@ -39,7 +39,7 @@ export default class BarsType extends React.Component {
   render() {
     const { className, threshold, data } = this.props;
     const classNames = classnames({
-      'c-bars-type': true,
+      'c-bars-line-type': true,
       [className]: !!className
     });
     const value = data[data.length - 1].y1;
