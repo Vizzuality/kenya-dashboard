@@ -19,6 +19,7 @@ import TopicIcon from 'components/ui/topic-icon';
 import TableType from 'components/charts/table-type';
 import PieType from 'components/charts/pie-type';
 import LineType from 'components/charts/line-type';
+import BarsType from 'components/charts/bars-type';
 
 // Constants
 import { THRESHOLD_EXAMPLE } from 'constants/general';
@@ -91,11 +92,17 @@ export default class DashboardItem extends React.Component {
               //   threshold={THRESHOLD_EXAMPLE}
               // />
       //   );
-      //   case 'line': return <LineType data={this.state.data} />;
+      //   case 'line': return (
+          //   <LineType
+          //     data={this.state.data.data}
+          //     // threshold={info.json_config.threshold}
+          //     threshold={THRESHOLD_EXAMPLE}
+          //   />
+          // );
       //   default: return '';
       // }
       return (
-        <LineType
+        <BarsType
           data={this.state.data.data}
           // threshold={info.json_config.threshold}
           threshold={THRESHOLD_EXAMPLE}
