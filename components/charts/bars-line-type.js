@@ -48,7 +48,7 @@ export default class BarsType extends React.Component {
     return (
       <div className={classNames}>
         <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart width={600} height={400} data={data}>
+          <ComposedChart data={data}>
             <XAxis dataKey="x" axisLine={false} tickLine={false} />
             <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
             <YAxis dataKey="y1" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
