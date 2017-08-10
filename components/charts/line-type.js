@@ -8,8 +8,8 @@ import classnames from 'classnames';
 import { getThreshold } from 'utils/general';
 
 // Components
-// import { ResponsiveContainer, PieChart, Pie, Cell, Label, Tooltip } from 'recharts';
 import { ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip, Legend } from 'recharts';
+import TooltipChart from 'components/charts/tooltip-chart';
 
 // Constants
 import { THRESHOLD_COLORS } from 'constants/general';
@@ -58,10 +58,10 @@ export default class LineType extends React.Component {
               const color = THRESHOLD_COLORS[getThreshold(value, threshold)];
 
               return (
-                <Line key={i} type="monotone" dataKey={key} stroke={color} strokeWidth={2} activeDot={{ r: 3 }} dot={false} />
+                <Line key={i} onMouseOver={() => {}} type="monotone" dataKey={key} stroke={color} strokeWidth={2} activeDot={{ r: 3 }} dot={false} />
               );
             })}
-            <Tooltip />
+            <Tooltip offset={40} cursor={{ stroke: 'transparent', strokeWidth: 0 }} content={<TooltipChart />} />
             <Legend />
           </LineChart>
         </ResponsiveContainer>
