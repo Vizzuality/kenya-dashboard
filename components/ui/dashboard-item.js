@@ -17,8 +17,11 @@ import Icon from 'components/ui/icon';
 import TopicIcon from 'components/ui/topic-icon';
 // Widget types
 import TableType from 'components/indicators/table-type';
-import ArcType from 'components/indicators/arc-type';
+import PieType from 'components/indicators/pie-type';
 import LineType from 'components/indicators/line-type';
+
+// Constants
+import { THRESHOLD_EXAMPLE } from 'constants/general';
 
 
 export default class DashboardItem extends React.Component {
@@ -29,6 +32,8 @@ export default class DashboardItem extends React.Component {
       data: undefined,
       date: ''
     };
+
+    this.defaultWidget = props.info.widgets.find(w => w.default);
 
     // Bindings
     this.setData = this.setData.bind(this);
@@ -74,18 +79,29 @@ export default class DashboardItem extends React.Component {
   }
 
   getItemType() {
-    const { info } = this.props;
-    switch (info.widget_type) {
-      case 'table': return <TableType data={this.state.data} />;
-      case 'arc': return (
-        <ArcType
-          data={this.state.data}
-          threshold={info.json_config.threshold}
+    // const { info } = this.props;
+
+    if (this.state.data && this.state.data.data) {
+      // switch (this.defaultWidget['json-config'].type) {
+      //   case 'table': return <TableType data={this.state.data} />;
+      //   case 'arc': return (
+      //     <PieType
+      //       data={this.state.data}
+      //       threshold={info.json_config.threshold}
+      //     />
+      //   );
+      //   case 'line': return <LineType data={this.state.data} />;
+      //   default: return '';
+      // }
+      return (
+        <PieType
+          data={this.state.data.data}
+          // threshold={info.json_config.threshold}
+          threshold={THRESHOLD_EXAMPLE}
         />
       );
-      case 'line': return <LineType data={this.state.data} />;
-      default: return '';
     }
+    return '';
   }
 
   render() {

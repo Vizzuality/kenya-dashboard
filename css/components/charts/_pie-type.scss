@@ -1,0 +1,13 @@
+
+.c-pie-type {
+  width: 100%;
+  height: 200px;
+
+  .recharts-layer.recharts-pie-sector {
+    cursor: pointer;
+  }
+
+  .recharts-text.recharts-label {
+    fill: $color-text-1;
+  }
+}

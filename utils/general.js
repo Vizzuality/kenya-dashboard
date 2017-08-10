@@ -48,18 +48,25 @@ function parseObjectToUrlParams(obj) {
   return query;
 }
 
-function getThreshold(thresholdVal, threshold) {
-  let currentThreshold = '';
+function getThreshold(value, threshold) {
+  const thresholdLength = Object.keys(threshold).length;
+  let currentThreshold = null;
+  let allThresholdNames = ['fail', 'weak', 'medium', 'good', 'success'];
 
-  if (thresholdVal && threshold) {
+  if (value && threshold) {
+    currentThreshold = 0;
     Object.keys(threshold).forEach((key) => {
-      if (+thresholdVal > +threshold[key]) {
-        currentThreshold = key;
-      }
+      if (+value > +threshold[+key]) { currentThreshold = +key; }
     });
   }
 
-  return currentThreshold;
+  if (thresholdLength === 1) {
+    allThresholdNames = ['fail', 'success'];
+  } else if (thresholdLength === 2) {
+    allThresholdNames = ['fail', 'medium', 'success'];
+  }
+
+  return currentThreshold !== null ? allThresholdNames[currentThreshold] : 'unknown';
 }
 
 function parseCustomSelectOptions(list) {

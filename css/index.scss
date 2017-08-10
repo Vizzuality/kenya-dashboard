@@ -36,6 +36,10 @@
 // - form
 @import 'components/form/field';
 @import 'components/form/checkbox';
+
+// - charts
+@import 'components/charts/pie-type';
+
 // - ui
 @import '../node_modules/react-select/dist/react-select';
 @import '../node_modules/react-toggle-switch/dist/css/switch.min';
