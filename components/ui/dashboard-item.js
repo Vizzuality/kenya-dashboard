@@ -20,6 +20,7 @@ import TableType from 'components/charts/table-type';
 import PieType from 'components/charts/pie-type';
 import LineType from 'components/charts/line-type';
 import BarsType from 'components/charts/bars-type';
+import BarsLineType from 'components/charts/bars-line-type';
 
 // Constants
 import { THRESHOLD_EXAMPLE } from 'constants/general';
@@ -92,6 +93,13 @@ export default class DashboardItem extends React.Component {
               //   threshold={THRESHOLD_EXAMPLE}
               // />
       //   );
+      //   case 'bars': return (
+      //     <BarsType
+            //   data={this.state.data.data}
+            //   // threshold={info.json_config.threshold}
+            //   threshold={THRESHOLD_EXAMPLE}
+            // />
+      //   );
       //   case 'line': return (
           //   <LineType
           //     data={this.state.data.data}
@@ -102,7 +110,7 @@ export default class DashboardItem extends React.Component {
       //   default: return '';
       // }
       return (
-        <BarsType
+        <BarsLineType
           data={this.state.data.data}
           // threshold={info.json_config.threshold}
           threshold={THRESHOLD_EXAMPLE}
