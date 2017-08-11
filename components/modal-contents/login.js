@@ -60,7 +60,7 @@ export default class Login extends React.Component {
       this.setState({ submitting: false });
     }
 
-    if (nextProps.user.logged && this.props.modalOpened) {
+    if (nextProps.user.logged && nextProps.modalOpened) {
       this.props.toggleModal(false);
     }
 
