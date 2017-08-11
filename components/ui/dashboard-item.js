@@ -17,6 +17,7 @@ import Icon from 'components/ui/icon';
 import TopicIcon from 'components/ui/topic-icon';
 // Widget types
 import TableType from 'components/charts/table-type';
+import TrendType from 'components/charts/trend-type';
 import PieType from 'components/charts/pie-type';
 import LineType from 'components/charts/line-type';
 import BarsType from 'components/charts/bars-type';
@@ -84,8 +85,15 @@ export default class DashboardItem extends React.Component {
       const y2Axis = this.defaultWidget['json-config'].type['secondary-axe'];
 
       switch (this.defaultWidget['json-config'].type.visual) {
-        case 'line': return (
+        case 'table': return (
           <TableType
+            data={this.state.data.data}
+            threshold={threshold}
+            axis={this.defaultWidget['json-config'].axes}
+          />
+        );
+        case 'line': return (
+          <TrendType
             data={this.state.data.data}
             threshold={threshold}
             axis={this.defaultWidget['json-config'].axes}
