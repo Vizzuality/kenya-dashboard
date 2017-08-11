@@ -49,24 +49,20 @@ function parseObjectToUrlParams(obj) {
 }
 
 function getThreshold(value, threshold) {
-  const thresholdLength = Object.keys(threshold).length;
-  let currentThreshold = null;
-  let allThresholdNames = ['fail', 'weak', 'medium', 'good', 'success'];
-
   if (value && threshold) {
-    currentThreshold = 0;
-    Object.keys(threshold).forEach((key) => {
-      if (+value > +threshold[+key]) { currentThreshold = +key; }
-    });
+    const status = {
+      2: ['fail', 'success'],
+      3: ['fail', 'medium', 'success'],
+      4: ['fail', 'weak', 'medium', 'success'],
+      5: ['fail', 'weak', 'medium', 'good', 'success']
+    };
+    const values = Object.values(threshold);
+    const len = values.filter(v => value > v).length;
+
+    return status[values.length + 1][len];
   }
 
-  if (thresholdLength === 1) {
-    allThresholdNames = ['fail', 'success'];
-  } else if (thresholdLength === 2) {
-    allThresholdNames = ['fail', 'medium', 'success'];
-  }
-
-  return currentThreshold !== null ? allThresholdNames[currentThreshold] : 'unknown';
+  return 'unknown';
 }
 
 function parseCustomSelectOptions(list) {

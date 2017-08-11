@@ -42,11 +42,11 @@ export default class BarsType extends React.Component {
   }
 
   render() {
-    const { className, threshold, data } = this.props;
-    const classNames = classnames({
-      'c-bars-type': true,
-      [className]: !!className
-    });
+    const { className, threshold, data, y2Axis } = this.props;
+    const classNames = classnames(
+      'c-bars-type',
+      { [className]: !!className }
+    );
     const yRefs = this.getBarsRefs();
 
     return (
@@ -54,7 +54,10 @@ export default class BarsType extends React.Component {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} maxBarSize={20}>
             <XAxis dataKey="x" axisLine={false} tickLine={false} />
-            <YAxis axisLine={false} tickLine={false} />
+            <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
+            {y2Axis &&
+              <YAxis dataKey="y1" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
+            }
             <CartesianGrid vertical={false} />
             <Tooltip
               offset={10}
@@ -67,10 +70,13 @@ export default class BarsType extends React.Component {
                 key={i}
                 dataKey={key}
                 fill="#2E3D3D"
+                yAxisId={y2Axis ? 'right' : 'left'}
               >
                 {/* Set each bar hover color */}
                 {data.map((item, j) => {
-                  const color = THRESHOLD_COLORS[getThreshold(item[key], threshold)];
+                  const barsThreshold = y2Axis && key === 'y2' ?
+                    threshold.y2['break-points'] : threshold.y['break-points'];
+                  const color = THRESHOLD_COLORS[getThreshold(item[key], barsThreshold)];
                   return (
                     <Cell
                       key={j}
@@ -93,5 +99,6 @@ export default class BarsType extends React.Component {
 BarsType.propTypes = {
   className: PropTypes.string,
   threshold: PropTypes.object,
-  data: PropTypes.array
+  data: PropTypes.array,
+  y2Axis: PropTypes.bool
 };

@@ -33,10 +33,11 @@ export default class PieType extends React.Component {
 
   render() {
     const { className, threshold, data } = this.props;
-    const classNames = classnames({
-      'c-pie-type': true,
-      [className]: !!className
-    });
+    const classNames = classnames(
+      'c-pie-type',
+      { [className]: !!className }
+    );
+    const pieThresold = threshold.y['break-points'];
 
     return (
       <div className={classNames}>
@@ -49,7 +50,7 @@ export default class PieType extends React.Component {
               innerRadius="85%"
               outerRadius="100%"
               fill="#fff"
-              paddingAngle={.05}
+              paddingAngle={0.05}
               dataKey={item => item.y}
               activeIndex={0}
               onMouseEnter={this.onMouseEnter}
@@ -59,7 +60,7 @@ export default class PieType extends React.Component {
               <Label value={this.state.text} dy={13} position="center" />
               {
                 data.map((item, i) => {
-                  const color = THRESHOLD_COLORS[getThreshold(item.y, threshold)];
+                  const color = THRESHOLD_COLORS[getThreshold(item.y, pieThresold)];
                   return (
                     <Cell
                       key={i}
@@ -71,7 +72,6 @@ export default class PieType extends React.Component {
                 })
               }
             </Pie>
-            {/* <Tooltip /> */}
           </PieChart>
         </ResponsiveContainer>
       </div>

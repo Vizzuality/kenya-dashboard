@@ -80,9 +80,12 @@ export default class DashboardItem extends React.Component {
   getItemType() {
     if (this.state.data && this.state.data.data && this.defaultWidget['json-config'] &&
       this.defaultWidget['json-config'].type && this.defaultWidget['json-config'].threshold) {
-      const threshold = this.defaultWidget['json-config'].type['secondary-axe'] ?
-        this.defaultWidget['json-config'].threshold :
-        this.defaultWidget['json-config'].threshold.y;
+        // const threshold = this.defaultWidget['json-config'].type['secondary-axe'] ?
+        //   this.defaultWidget['json-config'].threshold :
+        //   this.defaultWidget['json-config'].threshold.y;
+
+      const threshold = this.defaultWidget['json-config'].threshold;
+      const y2Axis = this.defaultWidget['json-config'].type['secondary-axe'];
 
       switch (this.defaultWidget['json-config'].type.visual) {
         case 'table': return <TableType data={this.state.data} />;
@@ -96,18 +99,21 @@ export default class DashboardItem extends React.Component {
           <LineType
             data={this.state.data.data}
             threshold={threshold}
+            y2Axis={y2Axis}
           />
         );
         case 'bars': return (
           <BarsType
             data={this.state.data.data}
             threshold={threshold}
+            y2Axis={y2Axis}
           />
         );
         case 'barsLine': return (
           <BarsLineType
             data={this.state.data.data}
             threshold={threshold}
+            y2Axis={y2Axis}
           />
         );
         default: return '';
