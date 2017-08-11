@@ -38,11 +38,12 @@
 @import 'components/form/checkbox';
 
 // - charts
+@import 'components/charts/tooltip-chart';
 @import 'components/charts/pie-type';
 @import 'components/charts/line-type';
 @import 'components/charts/bars-type';
 @import 'components/charts/bars-line-type';
-@import 'components/charts/tooltip-chart';
+@import 'components/charts/table-type';
 
 // - ui
 @import '../node_modules/react-select/dist/react-select';

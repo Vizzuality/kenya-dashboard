@@ -80,22 +80,21 @@ export default class DashboardItem extends React.Component {
   getItemType() {
     if (this.state.data && this.state.data.data && this.defaultWidget['json-config'] &&
       this.defaultWidget['json-config'].type && this.defaultWidget['json-config'].threshold) {
-        // const threshold = this.defaultWidget['json-config'].type['secondary-axe'] ?
-        //   this.defaultWidget['json-config'].threshold :
-        //   this.defaultWidget['json-config'].threshold.y;
-
       const threshold = this.defaultWidget['json-config'].threshold;
       const y2Axis = this.defaultWidget['json-config'].type['secondary-axe'];
 
       switch (this.defaultWidget['json-config'].type.visual) {
-        case 'table': return <TableType data={this.state.data} />;
-        case 'pie': return (
-          <PieType
+        case 'line': return (
+          <TableType
             data={this.state.data.data}
             threshold={threshold}
+            axis={this.defaultWidget['json-config'].axes}
           />
         );
-        case 'line': return (
+        case 'pie': return (
+          <PieType data={this.state.data.data} threshold={threshold} />
+        );
+        case 'lines': return (
           <LineType
             data={this.state.data.data}
             threshold={threshold}

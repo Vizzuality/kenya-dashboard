@@ -1,0 +1,58 @@
+
+.c-table-type {
+
+  th {
+    font-size: $font-size-small;
+    line-height: 16px;
+    text-transform: uppercase;
+    text-align: right;
+
+    &:first-child {
+      text-align: left;
+    }
+  }
+
+  td {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: $font-size-default;
+    line-height: 19px;
+    text-align: right;
+
+    &:first-child {
+      display: table-cell;
+      text-align: left;
+    }
+
+    /* Threshold color */
+    &.-success {
+      color: $color-threshold-success;
+      .c-icon { fill: $color-threshold-success; }
+    }
+
+    &.-good {
+      color: $color-threshold-good;
+      .c-icon { fill: $color-threshold-good; }
+    }
+
+    &.-medium {
+      color: $color-threshold-medium;
+      .c-icon { fill: $color-threshold-medium; }
+    }
+
+    &.-weak {
+      color: $color-threshold-weak;
+      .c-icon { fill: $color-threshold-weak; }
+    }
+
+    &.-fail {
+      color: $color-threshold-fail;
+      .c-icon { fill: $color-threshold-fail; }
+    }
+
+    .c-icon {
+      margin-left: 2px;
+    }
+  }
+}
