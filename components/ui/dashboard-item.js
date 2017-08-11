@@ -18,6 +18,7 @@ import TopicIcon from 'components/ui/topic-icon';
 // Widget types
 import TableType from 'components/charts/table-type';
 import TrendType from 'components/charts/trend-type';
+import ExtremesType from 'components/charts/extremes-type';
 import PieType from 'components/charts/pie-type';
 import LineType from 'components/charts/line-type';
 import BarsType from 'components/charts/bars-type';
@@ -92,8 +93,15 @@ export default class DashboardItem extends React.Component {
             axis={this.defaultWidget['json-config'].axes}
           />
         );
-        case 'line': return (
+        case 'trend': return (
           <TrendType
+            data={this.state.data.data}
+            threshold={threshold}
+            axis={this.defaultWidget['json-config'].axes}
+          />
+        );
+        case 'line': return (
+          <ExtremesType
             data={this.state.data.data}
             threshold={threshold}
             axis={this.defaultWidget['json-config'].axes}
