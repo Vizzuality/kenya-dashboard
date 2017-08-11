@@ -22,7 +22,7 @@ export default class LineType extends React.Component {
   }
 
   render() {
-    const { className, threshold, data } = this.props;
+    const { className, threshold, data, y2Axis } = this.props;
     const classNames = classnames({
       'c-line-type': true,
       [className]: !!className
@@ -38,7 +38,10 @@ export default class LineType extends React.Component {
             <CartesianGrid vertical={false} />
             {yRefs.map((key, i) => {
               const value = data[data.length - 1][key];
-              const color = THRESHOLD_COLORS[getThreshold(value, threshold['break-points'])];
+              const lineThreshold = y2Axis && key === 'y2' ?
+                threshold.y2['break-points'] :
+                threshold.y['break-points'];
+              const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
 
               return (
                 <Line
@@ -68,5 +71,6 @@ export default class LineType extends React.Component {
 LineType.propTypes = {
   className: PropTypes.string,
   threshold: PropTypes.object,
-  data: PropTypes.array
+  data: PropTypes.array,
+  y2Axis: PropTypes.bool
 };

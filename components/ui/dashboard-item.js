@@ -100,7 +100,7 @@ export default class DashboardItem extends React.Component {
             axis={this.defaultWidget['json-config'].axes}
           />
         );
-        case 'line': return (
+        case 'extremes': return (
           <ExtremesType
             data={this.state.data.data}
             threshold={threshold}
@@ -110,7 +110,7 @@ export default class DashboardItem extends React.Component {
         case 'pie': return (
           <PieType data={this.state.data.data} threshold={threshold} />
         );
-        case 'lines': return (
+        case 'line': return (
           <LineType
             data={this.state.data.data}
             threshold={threshold}
