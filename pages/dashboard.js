@@ -15,6 +15,9 @@ import { getSelectedFilterOptions } from 'selectors/filters';
 // Libraries
 import isEqual from 'lodash/isEqual';
 
+// Utils
+import { setIndicatorsWidgetsList } from 'utils/indicators';
+
 // Components
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
@@ -68,6 +71,7 @@ class DashboardPage extends Page {
               removeFilter={this.props.removeSelectedFilter}
             />
             <DashboardList
+              // list={setIndicatorsWidgetsList(indicators.list, true)}
               list={indicators.list}
               layout={layout}
               withGrid
@@ -76,7 +80,11 @@ class DashboardPage extends Page {
                   selectedFilters.regions[0] : ''
               }
             />
-          </div> : <div className="row collapse" style={{ margin: '30px' }}><div className="column small-12"><p>Sign in</p></div></div>
+          </div> :
+          // Provisional
+          <div className="row collapse" style={{ margin: '30px' }}>
+            <div className="column small-12"><p>Sign in</p></div>
+          </div>
         }
       </Layout>
     );

@@ -18,4 +18,24 @@ const SELECT_SEARCH_OPTIONS = {
   keys: ['name', 'label']
 };
 
-export { HEADER_MENU_LINKS, SELECT_SEARCH_OPTIONS, HEADER_LOGIN_MENU_LINKS };
+const THRESHOLD_COLORS = {
+  unknown: '#EAEAEA',
+  fail: '#FF6161',
+  weak: '#FF6165',
+  medium: '#FFA26E',
+  good: '#FFA28E',
+  success: '#73A575'
+};
+
+const THRESHOLD_EXAMPLE = {
+  1: 50,
+  2: 80
+};
+
+export {
+  HEADER_MENU_LINKS,
+  SELECT_SEARCH_OPTIONS,
+  HEADER_LOGIN_MENU_LINKS,
+  THRESHOLD_COLORS,
+  THRESHOLD_EXAMPLE
+};

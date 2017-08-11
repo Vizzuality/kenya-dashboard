@@ -1,0 +1,57 @@
+
+.c-trend-type {
+  width: 100%;
+  height: 100%;
+
+  .trend-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+
+    /* Threshold color */
+    &.-success {
+      color: $color-threshold-success;
+      .c-icon { fill: $color-threshold-success; }
+    }
+
+    &.-good {
+      color: $color-threshold-good;
+      .c-icon { fill: $color-threshold-good; }
+    }
+
+    &.-medium {
+      color: $color-threshold-medium;
+      .c-icon { fill: $color-threshold-medium; }
+    }
+
+    &.-weak {
+      color: $color-threshold-weak;
+      .c-icon { fill: $color-threshold-weak; }
+    }
+
+    &.-fail {
+      color: $color-threshold-fail;
+      .c-icon { fill: $color-threshold-fail; }
+    }
+  }
+
+  .value-container {
+    .value {
+      font-size: 35px;
+      line-height: 38px;
+    }
+
+    .title {
+      font-size: $font-size-default;
+      line-height: 18px;
+      text-transform: uppercase;
+      color: $color-text-1;
+      font-weight: $font-weight-light;
+    }
+  }
+
+  .trend-icon-container {
+    display: flex;
+    align-items: center;
+  }
+}

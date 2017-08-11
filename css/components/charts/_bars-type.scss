@@ -1,0 +1,46 @@
+
+.c-bars-type {
+  width: 100%;
+  height: 200px;
+
+  /* Axis */
+  .recharts-cartesian-axis {
+    text tspan {
+      font-size: 11px;
+      line-height: 13px;
+      fill: $color-text-1;
+    }
+
+    &.yAxis {
+      text tspan {
+        fill: rgba($color-text-1, .5);
+      }
+    }
+  }
+
+  /* Bars */
+  .recharts-layer.recharts-bar-rectangle {
+    cursor: pointer;
+  }
+
+  .recharts-text.recharts-label {
+    fill: $color-text-1;
+  }
+
+  /* Grid */
+  .recharts-cartesian-grid-horizontal {
+    line {
+      stroke: $color-border-1;
+      stroke-width: 1px;
+    }
+  }
+
+  /* Legend */
+  .recharts-legend-wrapper {
+    transform: translateY(30px);
+
+    .recharts-default-legend {
+      text-align: left !important;
+    }
+  }
+}

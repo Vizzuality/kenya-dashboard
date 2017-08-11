@@ -1,0 +1,26 @@
+
+.c-tooltip-chart {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  padding: 5px 14px 19px;
+  background-color: $color-bg-dark;
+  color: $color-text-1;
+  border-radius: 2px;
+  border: 1px solid $color-light-green;
+  box-shadow: 0 0 6px 0 rgba($color-black, .19);
+
+  .title {
+    font-size: $font-size-small;
+    line-height: 20px;
+    text-align: center;
+    font-weight: $font-weight-light;
+    margin-bottom: 3px;
+  }
+
+  .value {
+    font-size: $font-size-big;
+    line-height: 22px;
+    text-align: center;
+  }
+}

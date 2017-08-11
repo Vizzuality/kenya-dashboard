@@ -15,7 +15,26 @@ function getTopicIcon(topic, className) {
   return <Icon name={name} className={className} />;
 }
 
+function setIndicatorsWidgetsList(list, onlyDefaultWidget) {
+  const extendedList = [];
+
+  list.forEach((l) => {
+    if (l.widgets && l.widgets.length) {
+      if (onlyDefaultWidget) {
+        const defaultWidget = l.widgets.find(w => w.default);
+        defaultWidget && extendedList.push({ ...defaultWidget, ...{ updatedAt: l.updatedAt } });
+      } else {
+        l.widgets.forEach((w) => {
+          extendedList.push({ ...w, ...{ updatedAt: l.updatedAt } });
+        });
+      }
+    }
+  });
+  return extendedList;
+}
+
 export {
   getIndicatorLayers,
-  getTopicIcon
+  getTopicIcon,
+  setIndicatorsWidgetsList
 };

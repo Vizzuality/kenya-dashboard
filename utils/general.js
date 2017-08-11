@@ -48,6 +48,23 @@ function parseObjectToUrlParams(obj) {
   return query;
 }
 
+function getThreshold(value, threshold) {
+  if (value && threshold) {
+    const status = {
+      2: ['fail', 'success'],
+      3: ['fail', 'medium', 'success'],
+      4: ['fail', 'weak', 'medium', 'success'],
+      5: ['fail', 'weak', 'medium', 'good', 'success']
+    };
+    const values = Object.values(threshold);
+    const len = values.filter(v => value > v).length;
+
+    return status[values.length + 1][len];
+  }
+
+  return 'unknown';
+}
+
 function parseCustomSelectOptions(list) {
   return list.map(l => (
     { name: l.attributes.name, id: l.id }
@@ -92,6 +109,7 @@ export {
   parseSelectOptions,
   parseObjectSelectOptions,
   parseObjectToUrlParams,
+  getThreshold,
   setBasicQueryHeaderHeaders,
   parseCustomSelectOptions,
   parseCustomSelectCascadeOptions,
