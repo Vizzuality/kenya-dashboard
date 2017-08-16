@@ -10,7 +10,6 @@ import { setIndicatorsWidgetsList } from 'utils/indicators';
 // Components
 import Icon from 'components/ui/icon';
 import DashboardList from 'components/ui/dashboard-list';
-// import Spinner from 'components/ui/spinner';
 
 
 export default class AreaIndicators extends React.Component {
@@ -28,10 +27,10 @@ export default class AreaIndicators extends React.Component {
   render() {
     const { id, className, indicators, numOfAreas } = this.props;
 
-    const classNames = classnames({
-      'c-area-indicators': true,
-      [className]: !!className
-    });
+    const classNames = classnames(
+      'c-area-indicators',
+      { [className]: !!className }
+    );
 
     return (
       <article className={classNames}>
@@ -53,12 +52,10 @@ export default class AreaIndicators extends React.Component {
           </div>
         </header>
         <section>
-          {/* <Spinner isLoading={indicators.loading} /> */}
           <DashboardList
-            // list={indicators.list}
+            list={setIndicatorsWidgetsList(indicators.list, false)}
             layout="grid"
             withGrid={numOfAreas === 1}
-            list={setIndicatorsWidgetsList(indicators.list, false)}
           />
         </section>
       </article>

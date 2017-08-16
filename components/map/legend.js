@@ -66,7 +66,7 @@ class Legend extends React.Component {
 
   /* Legend visual contents by type */
   getBasicContent(layer) {
-    return layer.attributes.legendConfig.items.map((item, i) => (
+    return layer['json-config']['legend-config'].items.map((item, i) => (
       <div key={i} className="visual-item">
         <span className="color" style={{ backgroundColor: item.color }} />
         <span className="value">{item.name || item.value}</span>
@@ -75,7 +75,7 @@ class Legend extends React.Component {
   }
 
   getChoroplethGradientContent(layer) {
-    return layer.attributes.legendConfig.items.map((item, i) => (
+    return layer['json-config']['legend-config'].items.map((item, i) => (
       <div key={i} className="visual-item">
         <span className="color" style={{ backgroundColor: item.color }} />
         <span className="value">{item.value}</span>
@@ -84,7 +84,7 @@ class Legend extends React.Component {
   }
 
   getVisualByLayerType(layer) {
-    switch (layer.attributes.legendConfig.type) {
+    switch (layer['json-config']['legend-config'].type) {
       case 'choropleth': return this.getChoroplethGradientContent(layer);
       case 'gradient': return this.getChoroplethGradientContent(layer);
       case 'basic': return this.getBasicContent(layer);
@@ -100,7 +100,7 @@ class Legend extends React.Component {
       const itemHeader = (
         <header className="legend-item-header">
           <div className="item-title">
-            <span className="layer-name">{i + 1}. {layer.attributes.name}</span>
+            <span className="layer-name">{i + 1}. {layer.title}</span>
           </div>
           <div className="item-tools">
             <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>
@@ -119,7 +119,7 @@ class Legend extends React.Component {
         </div>
       );
       return (
-        <li key={i} className={`legend-item column small-12 medium-6 -${layer.attributes.legendConfig.type}`}>
+        <li key={i} className={`legend-item column small-12 medium-6 -${layer['json-config']['legend-config'] ? layer['json-config']['legend-config'].type : ''}`}>
           <CollapsibleList
             title={itemHeader}
             arrowPosition="left"

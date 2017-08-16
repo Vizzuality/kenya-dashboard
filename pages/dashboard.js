@@ -64,7 +64,6 @@ class DashboardPage extends Page {
       >
         {user.logged ?
           <div>
-            <Spinner isLoading={indicators.loading} />
             <FiltersSelectedBar
               filterOptions={filterOptions}
               selected={selectedFilterOptions}

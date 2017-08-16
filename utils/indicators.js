@@ -2,8 +2,7 @@ import React from 'react';
 import Icon from 'components/ui/icon';
 
 function getIndicatorLayers(indicator) {
-  const mapWidgets = indicator.widgets.filter(w => w.widget_type === 'map');
-  return mapWidgets.map(mw => mw.json_config.config);
+  return indicator.widgets.filter(w => w['widget-type'] === 'layer') || [];
 }
 
 function getTopicIcon(topic, className) {
