@@ -14,10 +14,10 @@ import FitBoundsControl from 'components/ui/fit-bounds-control';
 import { MAP_OPTIONS, MAP_METHODS } from 'constants/map';
 
 export default class AreaMap extends React.Component {
-  setListeners(url, id, area) {
+  setListeners(url, id) {
     return {
       moveend: (map) => {
-        this.updateMap(map, url, id, area);
+        this.updateMap(map, url, id);
       }
     };
   }
@@ -25,8 +25,7 @@ export default class AreaMap extends React.Component {
   getMapOptions(area) {
     return {
       zoom: area.zoom,
-      fitBounds: area.fitBounds,
-      bounds: area.bounds,
+      bounds: this.props.bounds,
       minZoom: MAP_OPTIONS.minZoom,
       maxZoom: MAP_OPTIONS.maxZoom,
       zoomControl: MAP_OPTIONS.zoomControl,
@@ -34,10 +33,10 @@ export default class AreaMap extends React.Component {
     };
   }
 
-  updateMap(map, url, id, area) {
+  updateMap(map, url, id) {
     this.props.setSingleMapParams(
       {
-        ...area,
+        ...this.props.area,
         ...{
           zoom: map.getZoom(),
           center: map.getCenter(),
@@ -53,7 +52,7 @@ export default class AreaMap extends React.Component {
       'c-area-map',
       { '-expanded': mapState.expanded }
     );
-    const listeners = this.setListeners(url, id, area);
+    const listeners = this.setListeners(url, id);
     const mapOptions = this.getMapOptions(area);
 
     return (
@@ -91,6 +90,7 @@ AreaMap.propTypes = {
   layers: PropTypes.array,
   layersActive: PropTypes.array,
   mapState: PropTypes.object,
+  bounds: PropTypes.object,
   // Actions
   setSingleMapParams: PropTypes.func,
   fitAreaBounds: PropTypes.func

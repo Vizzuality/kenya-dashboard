@@ -10,6 +10,7 @@ import { setIndicatorsWidgetsList } from 'utils/indicators';
 // Components
 import Icon from 'components/ui/icon';
 import DashboardList from 'components/ui/dashboard-list';
+import SelectCustom from 'components/ui/select-custom';
 
 
 export default class AreaIndicators extends React.Component {
@@ -18,15 +19,19 @@ export default class AreaIndicators extends React.Component {
 
     // Bindings
     this.onRemoveArea = this.onRemoveArea.bind(this);
+    this.onSetRegion = this.onSetRegion.bind(this);
   }
 
   onRemoveArea(id) {
     this.props.onRemoveArea(id);
   }
 
-  render() {
-    const { id, className, indicators, numOfAreas } = this.props;
+  onSetRegion(region) {
+    this.props.onSelectRegion(region, this.props.id, this.props.url);
+  }
 
+  render() {
+    const { id, className, indicators, numOfAreas, regions, selectedRegion } = this.props;
     const classNames = classnames(
       'c-area-indicators',
       { [className]: !!className }
@@ -36,7 +41,15 @@ export default class AreaIndicators extends React.Component {
       <article className={classNames}>
         <header className="area-indicators-header">
           <div className="location-seletct-container">
-            {/* <Select /> */}
+            {/* Region select */}
+            <SelectCustom
+              label="Location"
+              name="regions"
+              type="slider"
+              list={regions}
+              setValue={this.onSetRegion}
+              selected={[selectedRegion]}
+            />
           </div>
           <div className="tools">
             {numOfAreas > 1 &&
@@ -56,6 +69,7 @@ export default class AreaIndicators extends React.Component {
             list={setIndicatorsWidgetsList(indicators.list, false)}
             layout="grid"
             withGrid={numOfAreas === 1}
+            region={selectedRegion}
           />
         </section>
       </article>
@@ -65,11 +79,15 @@ export default class AreaIndicators extends React.Component {
 
 AreaIndicators.propTypes = {
   className: PropTypes.string,
+  url: PropTypes.object,
   id: PropTypes.string,
   indicators: PropTypes.object,
+  regions: PropTypes.array,
+  selectedRegion: PropTypes.any,
   numOfAreas: PropTypes.number,
   onRemoveArea: PropTypes.func,
-  onToggleAccordionItem: PropTypes.func
+  onToggleAccordionItem: PropTypes.func,
+  onSelectRegion: PropTypes.func
 };
 
 AreaIndicators.defaultProps = {

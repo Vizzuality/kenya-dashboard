@@ -8,6 +8,7 @@ import { MAP_OPTIONS } from 'constants/map';
 const SET_MAP_PARAMS = 'SET_MAP_PARAMS';
 const SET_MAP_EXPANSION = 'SET_MAP_EXPANSION';
 const ADD_AREA = 'ADD_AREA';
+const SELECT_REGION = 'SELECT_REGION';
 const REMOVE_AREA = 'REMOVE_AREA';
 
 const DEFAULT_AREA_PARAMS = {
@@ -16,8 +17,7 @@ const DEFAULT_AREA_PARAMS = {
     lng: MAP_OPTIONS.center[1]
   },
   zoom: MAP_OPTIONS.zoom,
-  type: '',
-  name: ''
+  region: '281'
 };
 
 /* Initial state */
@@ -43,6 +43,9 @@ export default function mapsReducer(state = initialState, action) {
       });
       return Object.assign({}, state, { areas: newAreaParams });
     }
+    case SELECT_REGION: {
+      return Object.assign({}, state, { areas: action.payload });
+    }
     case REMOVE_AREA:
       return Object.assign({}, state, { areas: action.payload });
     default:
@@ -63,11 +66,13 @@ export function setSingleMapParams(params, key) {
 export function setSingleMapParamsUrl(params, url) {
   return () => {
     const urlParams = url.query.maps ? decode(url.query.maps) : {};
-    const lat = params.center.lat.toFixed(2);
-    const lng = params.center.lng.toFixed(2);
-    const zoom = params.zoom;
-    const newAreasParams = Object.assign({}, urlParams, { [params.key]: { lat, lng, zoom } });
-
+    const newAreasParams = Object.assign({}, urlParams,
+      { [params.key]: {
+        lat: params.center.lat,
+        lng: params.center.lng,
+        zoom: params.zoom,
+        region: params.region || '281'
+      } });
     const location = {
       pathname: url.pathname,
       query: Object.assign({}, url.query, { maps: encode(newAreasParams) })
@@ -118,6 +123,18 @@ export function addArea() {
   };
 }
 
+export function selectRegion(region, area) {
+  return (dispatch, getState) => {
+    const newArea = Object.assign({}, getState().maps.areas[area], { region });
+    const newAreas = Object.assign({}, getState().maps.areas, { [area]: newArea });
+
+    dispatch({
+      type: SELECT_REGION,
+      payload: newAreas
+    });
+  };
+}
+
 export function removeArea(id) {
   return (dispatch, getState) => {
     const areas = getState().maps.areas;
@@ -140,8 +157,11 @@ export function setAreasParamsUrl(url) {
     const newAreas = {};
 
     Object.keys(areas).forEach((key) => {
-      newAreas[key] = { ...areas[key].zoom,
-        ...{ lat: areas[key].center.lat, lng: areas[key].center.lng }
+      newAreas[key] = {
+        zoom: areas[key].zoom,
+        region: areas[key].region,
+        lat: areas[key].center.lat,
+        lng: areas[key].center.lng
       };
     });
 

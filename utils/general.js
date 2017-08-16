@@ -74,11 +74,11 @@ function parseCustomSelectOptions(list) {
 function parseCustomSelectCascadeOptions(list) {
   const partialParse = {};
   REGIONS_OPTIONS.forEach(r => partialParse[r.id] = r);
-
   list.forEach((l) => {
     partialParse[l.attributes['region-type']].list.push({
       name: l.attributes.name,
-      id: l.id
+      id: l.id,
+      boundingBox: JSON.parse(l.attributes['bounding-box'])
     });
   });
 
