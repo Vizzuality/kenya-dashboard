@@ -71,8 +71,7 @@ class DashboardPage extends Page {
               removeFilter={this.props.removeSelectedFilter}
             />
             <DashboardList
-              // list={setIndicatorsWidgetsList(indicators.list, true)}
-              list={indicators.list}
+              list={setIndicatorsWidgetsList(indicators.list, true)}
               layout={layout}
               withGrid
               region={

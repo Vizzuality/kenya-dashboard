@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 // Libraries
 import classnames from 'classnames';
 
+// Utils
+import { setIndicatorsWidgetsList } from 'utils/indicators';
+
 // Components
 import Icon from 'components/ui/icon';
 import DashboardList from 'components/ui/dashboard-list';
-import Spinner from 'components/ui/spinner';
-
-// Constants
+// import Spinner from 'components/ui/spinner';
 
 
 export default class AreaIndicators extends React.Component {
@@ -53,7 +54,12 @@ export default class AreaIndicators extends React.Component {
         </header>
         <section>
           {/* <Spinner isLoading={indicators.loading} /> */}
-          <DashboardList list={indicators.list} layout="grid" withGrid={numOfAreas === 1} />
+          <DashboardList
+            // list={indicators.list}
+            layout="grid"
+            withGrid={numOfAreas === 1}
+            list={setIndicatorsWidgetsList(indicators.list, false)}
+          />
         </section>
       </article>
     );

@@ -176,8 +176,6 @@ export function setIndicatorsLayersActive(layersActive) {
 }
 
 export function getSpecificIndicators(ids) {
-  // const query = ids.split(',').map(id => `id=${id}`).join('&');
-
   return (dispatch) => {
     const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
     // Waiting for fetch from server -> Dispatch loading

@@ -22,10 +22,22 @@ function setIndicatorsWidgetsList(list, onlyDefaultWidget) {
     if (l.widgets && l.widgets.length) {
       if (onlyDefaultWidget) {
         const defaultWidget = l.widgets.find(w => w.default);
-        defaultWidget && extendedList.push({ ...defaultWidget, ...{ updatedAt: l.updatedAt } });
+        if (defaultWidget) {
+          extendedList.push({
+            ...defaultWidget,
+            ...{ updatedAt: l.updatedAt, agency: l.agency, topic: l.topic, indicator_id: l.id }
+          });
+        } else {
+          extendedList.push({
+            ...{ updatedAt: l.updatedAt, agency: l.agency, topic: l.topic, indicator_id: l.id }
+          });
+        }
       } else {
         l.widgets.forEach((w) => {
-          extendedList.push({ ...w, ...{ updatedAt: l.updatedAt } });
+          w['widget-type'] !== 'layer' && extendedList.push({
+            ...w,
+            ...{ updatedAt: l.updatedAt, agency: l.agency, topic: l.topic, indicator_id: l.id }
+          });
         });
       }
     }

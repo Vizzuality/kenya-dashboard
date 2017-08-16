@@ -34,8 +34,6 @@ export default class DashboardItem extends React.Component {
       date: ''
     };
 
-    this.defaultWidget = props.info.widgets.find(w => w.default);
-
     // Bindings
     this.setData = this.setData.bind(this);
     this.onSetDate = this.onSetDate.bind(this);
@@ -56,11 +54,11 @@ export default class DashboardItem extends React.Component {
     // const { region } = this.props;
     const token = localStorage.getItem('token');
 
-    if (this.defaultWidget) {
+    if (this.props.info) {
       // token, widget_id, region, start_date, end_date
       const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
       const query = `select * from get_widget('${token}',
-        ${this.defaultWidget.id})`;
+        ${this.props.info.id})`;
         // End date ?
 
       get({
@@ -80,53 +78,56 @@ export default class DashboardItem extends React.Component {
   }
 
   getItemType() {
-    if (this.state.data && this.state.data.data && this.defaultWidget['json-config'] &&
-      this.defaultWidget['json-config'].type && this.defaultWidget['json-config'].threshold) {
-      const threshold = this.defaultWidget['json-config'].threshold;
-      const y2Axis = this.defaultWidget['json-config'].type['secondary-axe'];
+    const { info } = this.props;
+    const { data } = this.state;
 
-      switch (this.defaultWidget['json-config'].type.visual) {
+    if (data && data.data && info['json-config'] &&
+      info['json-config'].type && info['json-config'].threshold) {
+      const threshold = info['json-config'].threshold;
+      const y2Axis = info['json-config'].type['secondary-axe'];
+
+      switch (info['json-config'].type.visual) {
         case 'table': return (
           <TableType
-            data={this.state.data.data}
+            data={data.data}
             threshold={threshold}
-            axis={this.defaultWidget['json-config'].axes}
+            axis={info['json-config'].axes}
           />
         );
         case 'trend': return (
           <TrendType
-            data={this.state.data.data}
+            data={data.data}
             threshold={threshold}
-            axis={this.defaultWidget['json-config'].axes}
+            axis={info['json-config'].axes}
           />
         );
         case 'extremes': return (
           <ExtremesType
-            data={this.state.data.data}
+            data={data.data}
             threshold={threshold}
-            axis={this.defaultWidget['json-config'].axes}
+            axis={info['json-config'].axes}
           />
         );
         case 'pie': return (
-          <PieType data={this.state.data.data} threshold={threshold} />
+          <PieType data={data.data} threshold={threshold} />
         );
         case 'line': return (
           <LineType
-            data={this.state.data.data}
+            data={data.data}
             threshold={threshold}
             y2Axis={y2Axis}
           />
         );
         case 'bars': return (
           <BarsType
-            data={this.state.data.data}
+            data={data.data}
             threshold={threshold}
             y2Axis={y2Axis}
           />
         );
         case 'barsLine': return (
           <BarsLineType
-            data={this.state.data.data}
+            data={data.data}
             threshold={threshold}
             y2Axis={y2Axis}
           />
@@ -138,12 +139,14 @@ export default class DashboardItem extends React.Component {
   }
 
   getThresholdQualification() {
+    const { info } = this.props;
     const { data } = this.state;
-    if (data && data.data && this.defaultWidget['json-config'] &&
-      this.defaultWidget['json-config'].type && this.defaultWidget['json-config'].threshold) {
-      const threshold = this.defaultWidget['json-config'].threshold.y;
 
-      switch (this.defaultWidget['json-config'].type.visual) {
+    if (data && data.data && info['json-config'] &&
+      info['json-config'].type && info['json-config'].threshold) {
+      const threshold = info['json-config'].threshold.y;
+
+      switch (info['json-config'].type.visual) {
         case 'table': case 'pie': case 'bars': case 'barsLine': {
           const values = data.data.map(v => v.y);
           const value = threshold.direction === 'asc' ? Math.min(...values) : Math.max(...values);
@@ -168,18 +171,14 @@ export default class DashboardItem extends React.Component {
       [className]: !!className,
       [threshold]: threshold
     });
-    const modalInfo = {
-      ...this.defaultWidget,
-      ...{ updatedAt: info.updatedAt, agency: info.agency, topic: info.topic }
-    };
 
     return (
       <article className={classNames}>
         {/* Header */}
         <header className="item-header">
-          <h1 className="item-title">{this.defaultWidget && this.defaultWidget.title}</h1>
+          <h1 className="item-title">{this.props.info && this.props.info.title}</h1>
           <div className="item-tools">
-            <ItemTools info={modalInfo} setDate={this.onSetDate} />
+            <ItemTools info={info} setDate={this.onSetDate} />
           </div>
         </header>
 
@@ -197,7 +196,7 @@ export default class DashboardItem extends React.Component {
             <span className="update">Last update: {info.updatedAt}</span>
           </div>
           <div className="">
-            <Link route="compare" params={{ indicators: info.id }}>
+            <Link route="compare" params={{ indicators: info.indicator_id }}>
               <a className="item-link">
                 <Icon name="icon-arrow_next" className="-smaller" />
               </a>
