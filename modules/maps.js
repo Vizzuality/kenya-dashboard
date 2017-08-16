@@ -3,6 +3,7 @@ import { encode, decode } from 'utils/general';
 
 // Constants
 import { MAP_OPTIONS } from 'constants/map';
+import { KENYA_CARTO_ID } from 'constants/filters';
 
 /* Constants */
 const SET_MAP_PARAMS = 'SET_MAP_PARAMS';
@@ -17,7 +18,7 @@ const DEFAULT_AREA_PARAMS = {
     lng: MAP_OPTIONS.center[1]
   },
   zoom: MAP_OPTIONS.zoom,
-  region: '281'
+  region: KENYA_CARTO_ID
 };
 
 /* Initial state */
@@ -71,7 +72,7 @@ export function setSingleMapParamsUrl(params, url) {
         lat: params.center.lat,
         lng: params.center.lng,
         zoom: params.zoom,
-        region: params.region || '281'
+        region: params.region || KENYA_CARTO_ID
       } });
     const location = {
       pathname: url.pathname,

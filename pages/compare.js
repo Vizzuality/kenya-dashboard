@@ -56,6 +56,7 @@ import CompareToolbar from 'components/ui/compare-toolbar';
 
 // Constants
 import { MAP_OPTIONS } from 'constants/map';
+import { KENYA_CARTO_ID } from 'constants/filters';
 
 
 class ComparePage extends Page {
@@ -152,7 +153,7 @@ class ComparePage extends Page {
           lat: +params[key].lat || MAP_OPTIONS.center[0],
           lng: +params[key].lng || MAP_OPTIONS.center[1]
         },
-        region: params[key].region || '281'
+        region: params[key].region || KENYA_CARTO_ID
       };
       this.props.setSingleMapParamsFromUrl(mapParams, key);
     });
@@ -161,7 +162,6 @@ class ComparePage extends Page {
   /* Creat all maps with their own properties */
   getAreaMaps(layers) {
     const { mapState, indicators, filters } = this.props;
-
     return Object.keys(mapState.areas).map((key) => {
       const region = getValueMatchFromCascadeList(filters.options.regions,
         mapState.areas[key].region);
@@ -195,7 +195,7 @@ class ComparePage extends Page {
             url={this.props.url}
             indicators={indicators}
             numOfAreas={Object.keys(areas).length}
-            selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : '281'}
+            selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
             regions={this.props.filters.options.regions}
             onToggleAccordionItem={this.onToggleAccordionItem}
             onRemoveArea={this.onRemoveArea}

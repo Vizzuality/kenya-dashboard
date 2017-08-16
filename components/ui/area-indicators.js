@@ -40,7 +40,7 @@ export default class AreaIndicators extends React.Component {
     return (
       <article className={classNames}>
         <header className="area-indicators-header">
-          <div className="location-seletct-container">
+          <div className="location-select-container">
             {/* Region select */}
             <SelectCustom
               label="Location"

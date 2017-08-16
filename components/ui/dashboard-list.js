@@ -24,8 +24,8 @@ export default function DashboardList({ list, layout, withGrid, region }) {
       {!withGrid &&
         list.map((wid, i) => (
           layout === 'grid' ?
-            <DashboardItem info={wid} key={i} className="-grid" /> :
-            <DashboardItem info={wid} key={i} className="-list" />
+            <DashboardItem info={wid} key={i} className="-grid" region={region} /> :
+            <DashboardItem info={wid} key={i} className="-list" region={region} />
         ))
       }
     </div>

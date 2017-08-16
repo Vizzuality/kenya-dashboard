@@ -77,7 +77,7 @@ function parseCustomSelectCascadeOptions(list) {
   list.forEach((l) => {
     partialParse[l.attributes['region-type']].list.push({
       name: l.attributes.name,
-      id: l.id,
+      id: l.attributes && l.attributes['carto-id'] || l.id,
       boundingBox: JSON.parse(l.attributes['bounding-box'])
     });
   });
@@ -93,9 +93,9 @@ function setBasicQueryHeaderHeaders(headers) {
 function getValueMatchFromCascadeList(itemList, id) {
   let item = null;
   for (let i = 0; i < itemList.length && !item; i++) {
-    if (itemList[i].list && itemList[i].list.length && itemList[i].id !== id) {
+    if (itemList[i].list && itemList[i].list.length && `${itemList[i].id}` !== `${id}`) {
       item = getValueMatchFromCascadeList(itemList[i].list, id);
-    } else if (itemList[i].id === id) {
+    } else if (`${itemList[i].id}` === `${id}`) {
       item = itemList[i];
     }
   }

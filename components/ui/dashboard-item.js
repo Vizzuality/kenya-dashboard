@@ -51,15 +51,17 @@ export default class DashboardItem extends React.Component {
   }
 
   getIndicatorData() {
-    // const { region } = this.props;
-
+    const { region } = this.props;
     if (this.props.info) {
       const token = localStorage.getItem('token');
       // token, widget_id, region, start_date, end_date
       const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
-      const query = `select * from get_widget('${token}',
-        ${this.props.info.id})`;
-        // End date ?
+      // Params
+      let params = `'${token}', ${this.props.info.id}`;
+      if (region && region !== '') params += `, '${region}'`;
+      // start / End date ?
+
+      const query = `select * from get_widget(${params})`;
 
       get({
         url: `${url}?q=${query}`,
