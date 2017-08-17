@@ -21,7 +21,7 @@ export default function TrendType(props) {
   return (
     <div className={classNames}>
       {data.map((row, i) => {
-        const thresholdValue = getThreshold(row.y, threshold.y['break-points']);
+        const thresholdValue = getThreshold(row.y, threshold.y['break_points']);
         const trendClasses = classnames(
           'trend-container',
           { [`-${thresholdValue}`]: !!thresholdValue }

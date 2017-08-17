@@ -44,8 +44,8 @@ export default class LineType extends React.Component {
             {yRefs.map((key, i) => {
               const value = data[data.length - 1][key];
               const lineThreshold = y2Axis && key === 'y2' ?
-                threshold.y2['break-points'] :
-                threshold.y['break-points'];
+                threshold.y2['break_points'] :
+                threshold.y['break_points'];
               const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
 
               return (

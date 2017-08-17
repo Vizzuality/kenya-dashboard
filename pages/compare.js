@@ -21,7 +21,8 @@ import {
   addArea,
   selectRegion,
   removeArea,
-  setAreasParamsUrl
+  setAreasParamsUrl,
+  addLayer
 } from 'modules/maps';
 
 import {
@@ -79,16 +80,17 @@ class ComparePage extends Page {
   componentDidMount() {
     const { url } = this.props;
 
+    // Get regions options
+    if (isEmpty(this.props.filters.options.regions)) {
+      this.props.getRegionsOptions();
+    }
+
     // Get indicators from url
     url.query.indicators && this.props.getSpecificIndicators(url.query.indicators);
 
     // Get topics to select grouped indicators
     if (isEmpty(this.props.filters.options.topics)) {
       this.props.getTopicsOptions();
-    }
-
-    if (isEmpty(this.props.filters.options.regions)) {
-      this.props.getRegionsOptions();
     }
 
     // Update areas with url params
@@ -116,6 +118,10 @@ class ComparePage extends Page {
 
     if (nextProps.filters.options.topics && isEmpty(nextProps.indicatorsFilterList.list)) {
       this.props.getIndicatorsFilterList();
+    }
+
+    if (!isEqual(this.props.indicators.list, nextProps.indicators.list)) {
+      // this.props.setLayers();
     }
   }
 
@@ -178,6 +184,7 @@ class ComparePage extends Page {
             mapState={mapState}
             setSingleMapParams={this.props.setSingleMapParams}
             bounds={region ? region.boundingBox : null}
+            addLayer={this.props.addLayer}
           />
         )
       };
@@ -296,9 +303,7 @@ export default withRedux(
     getRegionsOptions() { dispatch(getRegionsOptions()); },
     getTopicsOptions() { dispatch(getTopicsOptions()); },
     // Indicators
-    getSpecificIndicators(ids) {
-      dispatch(getSpecificIndicators(ids));
-    },
+    getSpecificIndicators(ids) { dispatch(getSpecificIndicators(ids)); },
     getIndicatorsFilterList() {
       dispatch(getIndicatorsFilterList());
     },
@@ -345,6 +350,8 @@ export default withRedux(
     removeArea(id, url) {
       dispatch(removeArea(id));
       dispatch(setAreasParamsUrl(url));
-    }
+    },
+    // Area layers
+    addLayer(layer, area, region) { dispatch(addLayer(layer, area, region)); } //
   })
 )(ComparePage);

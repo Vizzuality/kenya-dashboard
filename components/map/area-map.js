@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
+// import isEqual from 'lodash/isEqual';
 
 // Components
 import Map from 'components/map/map';
@@ -14,6 +15,20 @@ import FitBoundsControl from 'components/ui/fit-bounds-control';
 import { MAP_OPTIONS, MAP_METHODS } from 'constants/map';
 
 export default class AreaMap extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.layers.length && nextProps.layers.length) {
+      nextProps.layers.forEach((l) => {
+        this.props.addLayer(l, nextProps.id, nextProps.area.region);
+      });
+    }
+
+    if (this.props.area.region !== nextProps.area.region) {
+      nextProps.layers.forEach((l) => {
+        this.props.addLayer(l, nextProps.id, nextProps.area.region);
+      });
+    }
+  }
+
   setListeners(url, id) {
     return {
       moveend: (map) => {
@@ -54,6 +69,9 @@ export default class AreaMap extends React.Component {
     );
     const listeners = this.setListeners(url, id);
     const mapOptions = this.getMapOptions(area);
+    const parsedLayers = layers.map(l => Object.assign({}, l, {
+      url: area.layers && area.layers[l.id] ? area.layers[l.id].url : ''
+    }));
 
     return (
       <div className={classNames}>
@@ -73,7 +91,7 @@ export default class AreaMap extends React.Component {
           mapOptions={mapOptions}
           mapMethods={MAP_METHODS}
           listeners={listeners}
-          layers={layers}
+          layers={parsedLayers}
           indicatorsLayersActive={layersActive}
           markers={[]}
           markerIcon={{}}
@@ -93,5 +111,6 @@ AreaMap.propTypes = {
   bounds: PropTypes.object,
   // Actions
   setSingleMapParams: PropTypes.func,
-  fitAreaBounds: PropTypes.func
+  fitAreaBounds: PropTypes.func,
+  addLayer: PropTypes.func
 };

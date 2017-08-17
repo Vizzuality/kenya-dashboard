@@ -29,7 +29,7 @@ export default function TableType(props) {
           {data.map((row, i) => (
             <tr key={i}>
               {Object.values(row).map((value, j) => {
-                const thresholdValue = getThreshold(value, threshold.y['break-points']);
+                const thresholdValue = getThreshold(value, threshold.y['break_points']);
                 return (
                   <td key={j} className={j !== 0 ? `-${thresholdValue}` : ''}>
                     {value}

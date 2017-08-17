@@ -75,7 +75,7 @@ export default class BarsType extends React.Component {
                 {/* Set each bar hover color */}
                 {data.map((item, j) => {
                   const barsThreshold = y2Axis && key === 'y2' ?
-                    threshold.y2['break-points'] : threshold.y['break-points'];
+                    threshold.y2['break_points'] : threshold.y['break_points'];
                   const color = THRESHOLD_COLORS[getThreshold(item[key], barsThreshold)];
                   return (
                     <Cell

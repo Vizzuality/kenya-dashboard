@@ -152,11 +152,11 @@ export default class DashboardItem extends React.Component {
         case 'table': case 'pie': case 'bars': case 'barsLine': {
           const values = data.data.map(v => v.y);
           const value = threshold.direction === 'asc' ? Math.min(...values) : Math.max(...values);
-          return getThreshold(value, threshold['break-points']);
+          return getThreshold(value, threshold['break_points']);
         }
         case 'line': {
           const value = data.data[data.data.length - 1].y;
-          return getThreshold(value, threshold['break-points']);
+          return getThreshold(value, threshold['break_points']);
         }
         default: return 'default';
       }
