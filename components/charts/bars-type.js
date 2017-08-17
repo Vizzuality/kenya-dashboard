@@ -56,7 +56,7 @@ export default class BarsType extends React.Component {
             <XAxis dataKey="x" axisLine={false} tickLine={false} />
             <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
             {y2Axis &&
-              <YAxis dataKey="y1" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
+              <YAxis dataKey="y2" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
             }
             <CartesianGrid vertical={false} />
             <Tooltip
@@ -74,9 +74,14 @@ export default class BarsType extends React.Component {
               >
                 {/* Set each bar hover color */}
                 {data.map((item, j) => {
-                  const barsThreshold = y2Axis && key === 'y2' ?
+                  let barsThreshold = {};
+                  if (threshold && threshold.y) {
+                    barsThreshold = y2Axis && key === 'y2' && threshold.y2 ?
                     threshold.y2['break-points'] : threshold.y['break-points'];
-                  const color = THRESHOLD_COLORS[getThreshold(item[key], barsThreshold)];
+                  }
+                  const color = threshold && threshold.y ?
+                    THRESHOLD_COLORS[getThreshold(item[key], barsThreshold)] :
+                    '#fff';
                   return (
                     <Cell
                       key={j}
