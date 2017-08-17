@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Redux
-import withRedux from 'next-redux-wrapper';
+import { connect } from 'react-redux';
 import { store } from 'store';
 
 // Modules
@@ -68,8 +68,7 @@ DashboardHeaderContent.propTypes = {
   setDashboardLayout: PropTypes.func
 };
 
-export default withRedux(
-  store,
+export default connect(
   state => ({
     filters: state.filters
   }),
