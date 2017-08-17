@@ -137,8 +137,9 @@ class ComparePage extends Page {
 
     return list.map((l, i) => {
       const className = classnames(
-        'accordion-item',
-        { '-collapsed': activeArea !== null && l.id !== activeArea }
+        `accordion-item -large-${list.length}`,
+        { '-collapsed': activeArea !== null && l.id !== activeArea },
+        { '-active': activeArea !== null && l.id === activeArea }
       );
 
       return (
@@ -168,6 +169,7 @@ class ComparePage extends Page {
   /* Creat all maps with their own properties */
   getAreaMaps(layers) {
     const { mapState, indicators, filters } = this.props;
+
     return Object.keys(mapState.areas).map((key) => {
       const region = getValueMatchFromCascadeList(filters.options.regions,
         mapState.areas[key].region);

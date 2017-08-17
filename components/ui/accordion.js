@@ -39,6 +39,7 @@ export default function Accordion(props) {
 
 Accordion.propTypes = {
   className: PropTypes.string,
+  numOfDivisions: PropTypes.number,
   sections: PropTypes.array
 };
 
