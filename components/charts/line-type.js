@@ -8,7 +8,7 @@ import classnames from 'classnames';
 import { getThreshold } from 'utils/general';
 
 // Components
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid, Tooltip, Legend } from 'recharts';
 import TooltipChart from 'components/charts/tooltip-chart';
 
 // Constants
@@ -35,6 +35,11 @@ export default class LineType extends React.Component {
           <LineChart
             data={data}
           >
+            {/* <XAxis dataKey="x" axisLine={false} tickLine={false} />
+            <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
+            {y2Axis &&
+              <YAxis dataKey="y1" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
+            } */}
             <CartesianGrid vertical={false} />
             {yRefs.map((key, i) => {
               const value = data[data.length - 1][key];
@@ -52,6 +57,7 @@ export default class LineType extends React.Component {
                   strokeWidth={2}
                   activeDot={{ r: 3 }}
                   dot={false}
+                  yAxisId={y2Axis ? 'right' : 'left'}
                 />
               );
             })}

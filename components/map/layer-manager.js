@@ -25,9 +25,10 @@ export default class LayerManager {
 
   /* Public methods */
   addLayer(layer, opts = {}) {
-    const method = {
-      cartodb: this._addCartoLayer
-    }[layer.attributes.provider];
+    // const method = {
+    //   cartodb: this._addCartoLayer
+    // }[layer.attributes.provider];
+    const method = this._addDefinedLayer;
 
     method && method.call(this, layer, opts);
   }
@@ -93,5 +94,19 @@ export default class LayerManager {
     });
 
     return request;
+  }
+
+  /* Add layer when tile url given */
+  _addDefinedLayer(layer) {
+    const layerZIndex = layer.zIndex || 500;
+    const tileUrl = layer.url;
+
+    this._mapLayers[layer.id] = L.tileLayer(tileUrl).addTo(this._map).setZIndex(layerZIndex);
+    this._mapLayers[layer.id].on('load', () => {
+      this._onLayerAddedSuccess();
+    });
+    this._mapLayers[layer.id].on('tileerror', () => {
+      this._onLayerAddedError();
+    });
   }
 }

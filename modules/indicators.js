@@ -8,6 +8,7 @@ import flattenDeep from 'lodash/flattenDeep';
 // Utils
 import { setBasicQueryHeaderHeaders, parseObjectToUrlParams } from 'utils/general';
 import { getIndicatorLayers } from 'utils/indicators';
+import { get } from 'utils/request';
 
 
 /* Constants */
@@ -28,6 +29,7 @@ const GET_INDICATORS_FILTER_LIST_ERROR = 'GET_INDICATORS_FILTER_LIST_ERROR';
 // Layers
 const SET_SPECIFIC_LAYERS_ACTIVE = 'SET_SPECIFIC_LAYERS_ACTIVE';
 const SET_INDICATORS_LAYERS = 'SET_INDICATORS_LAYERS';
+const ADD_LAYER = 'ADD_LAYER';
 
 
 /* Initial state */
@@ -65,20 +67,24 @@ export default function indicatorsReducer(state = initialState, action) {
       return Object.assign({}, state, { list: [], loading: false, error: action.payload });
     // Specific indicators
     case GET_SPECIFIC_INDICATORS: {
-      const indicatorsWithLayers = action.payload.filter(ind => (
-        ind.widgets && ind.widgets.length && ind.widgets.find(w => w.widget_type === 'map')
-      ));
-      const layers = flattenDeep(indicatorsWithLayers.map(ind => getIndicatorLayers(ind)));
-      const newSpecific = Object.assign({}, state.specific,
-        {
-          list: action.payload,
-          loading: false,
-          error: null,
-          indicatorsWithLayers,
-          layers,
-          layersActive: layers.map(ind => ind.id)
-        });
-      return Object.assign({}, state, { specific: newSpecific });
+      // const indicatorsWithLayers = action.payload.filter(ind => (
+      //   ind.widgets && ind.widgets.length && ind.widgets.find(w => w['widget-type'] === 'layer')
+      // ));
+      // // const layers = flattenDeep(indicatorsWithLayers.map(ind => getIndicatorLayers(ind)));
+      // const newSpecific = Object.assign({}, state.specific,
+      //   {
+      //     list: action.payload,
+      //     loading: false,
+      //     error: null,
+      //     indicatorsWithLayers
+      //     // layers,
+      //     // layersActive: layers.map(ind => ind.id)
+      //   });
+      //
+      // indicatorsWithLayers.forEach((ind) => {
+      //   getIndicatorLayers(ind).forEach(l => addLayer(l));
+      // });
+      return Object.assign({}, state, { specific: action.payload });
     }
     case GET_SPECIFIC_INDICATORS_LOADING: {
       const newSpecific = Object.assign({}, state.specific,
@@ -124,6 +130,13 @@ export default function indicatorsReducer(state = initialState, action) {
     case SET_INDICATORS_LAYERS: {
       const newSpecific = Object.assign({}, state.specific,
         { layers: action.payload });
+      return Object.assign({}, state, { specific: newSpecific });
+    }
+    case ADD_LAYER: {
+      const newLayers = state.specific.layers.slice();
+      newLayers.push(action.payload);
+      const newSpecific = Object.assign({}, state.specific,
+        { layers: newLayers, layersActive: newLayers.map(l => l.id) });
       return Object.assign({}, state, { specific: newSpecific });
     }
     default:
@@ -175,10 +188,26 @@ export function setIndicatorsLayersActive(layersActive) {
   };
 }
 
-export function getSpecificIndicators(ids) {
-  // const query = ids.split(',').map(id => `id=${id}`).join('&');
+export function addLayer(dispatch, layer) {
+  const token = localStorage.getItem('token');
+  const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
+  const query = `select * from get_widget('${token}',
+    ${layer.id})`;
+    // End date ?
 
-  return (dispatch) => {
+  get({
+    url: `${url}?q=${query}`,
+    onSuccess: (data) => {
+      dispatch({
+        type: ADD_LAYER,
+        payload: { ...layer, ...{ url: data.rows[0].data[0].url } }
+      });
+    }
+  });
+}
+
+export function getSpecificIndicators(ids) {
+  return (dispatch, getState) => {
     const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
@@ -190,9 +219,21 @@ export function getSpecificIndicators(ids) {
       })
       .then((data) => {
         DESERIALIZER.deserialize(data, (err, dataParsed) => {
+          const state = getState().indicators;
+          const indicatorsWithLayers = dataParsed.filter(ind => (
+            ind.widgets && ind.widgets.length && ind.widgets.find(w => w['widget-type'] === 'layer')
+          ));
+          const newSpecific = Object.assign({}, state.specific,
+            { list: dataParsed, loading: false, error: null, indicatorsWithLayers });
+
           dispatch({
             type: GET_SPECIFIC_INDICATORS,
-            payload: dataParsed
+            payload: newSpecific
+          });
+
+          // Set layers
+          indicatorsWithLayers.forEach((ind) => {
+            getIndicatorLayers(ind).forEach(l => addLayer(dispatch, l));
           });
         });
       })
@@ -229,7 +270,7 @@ export function addIndicator(id) {
       .then((data) => {
         const specific = getState().indicators.specific;
         const hasLayers = data[0].widgets && data[0].widgets.length &&
-          data[0].widgets.find(w => w.widget_type === 'map');
+          data[0].widgets.find(w => w['widget-type'] === 'layer');
 
         // Update state attributes with new data
         const list = data[0] ? [data[0]].concat(specific.list) : specific.list;

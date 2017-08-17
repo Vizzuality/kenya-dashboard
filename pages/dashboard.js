@@ -64,15 +64,13 @@ class DashboardPage extends Page {
       >
         {user.logged ?
           <div>
-            <Spinner isLoading={indicators.loading} />
             <FiltersSelectedBar
               filterOptions={filterOptions}
               selected={selectedFilterOptions}
               removeFilter={this.props.removeSelectedFilter}
             />
             <DashboardList
-              // list={setIndicatorsWidgetsList(indicators.list, true)}
-              list={indicators.list}
+              list={setIndicatorsWidgetsList(indicators.list, true)}
               layout={layout}
               withGrid
               region={
