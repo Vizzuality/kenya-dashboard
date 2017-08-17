@@ -23,7 +23,9 @@ export default function TableType(props) {
     <div className={classNames}>
       <table>
         <thead>
-          {titlesValues.map((spec, i) => <th key={i}>{spec.title}</th>)}
+          <tr>
+            {titlesValues.map((spec, i) => <th key={i}>{spec.title}</th>)}
+          </tr>
         </thead>
         <tbody>
           {data.map((row, i) => (
