@@ -39,8 +39,14 @@ export default class DashboardItem extends React.Component {
     this.onSetDate = this.onSetDate.bind(this);
   }
 
-  componentWillMount() {
-    this.getIndicatorData();
+  componentDidMount() {
+    this.getIndicatorData(this.props.region);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.region !== nextProps.region) {
+      this.getIndicatorData(nextProps.region);
+    }
   }
 
   /* Set widget date */
@@ -50,8 +56,7 @@ export default class DashboardItem extends React.Component {
     // this.getIndicatorData();
   }
 
-  getIndicatorData() {
-    const { region } = this.props;
+  getIndicatorData(region) {
     if (this.props.info) {
       const token = localStorage.getItem('token');
       // token, widget_id, region, start_date, end_date
@@ -152,11 +157,11 @@ export default class DashboardItem extends React.Component {
         case 'table': case 'pie': case 'bars': case 'barsLine': {
           const values = data.data.map(v => v.y);
           const value = threshold.direction === 'asc' ? Math.min(...values) : Math.max(...values);
-          return getThreshold(value, threshold['break_points']);
+          return getThreshold(value, threshold['break-points']);
         }
         case 'line': {
           const value = data.data[data.data.length - 1].y;
-          return getThreshold(value, threshold['break_points']);
+          return getThreshold(value, threshold['break-points']);
         }
         default: return 'default';
       }

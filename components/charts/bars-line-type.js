@@ -53,8 +53,8 @@ export default class BarsType extends React.Component {
       'c-bars-line-type',
       { [className]: !!className }
     );
-    const barsThreshold = threshold.y['break_points'];
-    const lineThreshold = y2Axis ? threshold.y1['break_points'] : threshold.y['break_points'];
+    const barsThreshold = threshold.y['break-points'];
+    const lineThreshold = y2Axis ? threshold.y1['break-points'] : threshold.y['break-points'];
     const value = data[data.length - 1].y1;
     const lineColor = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
 

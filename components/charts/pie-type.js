@@ -37,7 +37,7 @@ export default class PieType extends React.Component {
       'c-pie-type',
       { [className]: !!className }
     );
-    const pieThresold = threshold.y['break_points'];
+    const pieThresold = threshold.y['break-points'];
 
     return (
       <div className={classNames}>

@@ -28,7 +28,7 @@ export default class LineType extends React.Component {
       [className]: !!className
     });
     const yRefs = this.getLineRefs();
-
+    
     return (
       <div className={classNames}>
         <ResponsiveContainer width="100%" height="100%">
@@ -44,8 +44,8 @@ export default class LineType extends React.Component {
             {yRefs.map((key, i) => {
               const value = data[data.length - 1][key];
               const lineThreshold = y2Axis && key === 'y2' ?
-                threshold.y2['break_points'] :
-                threshold.y['break_points'];
+                threshold.y2['break-points'] :
+                threshold.y['break-points'];
               const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
 
               return (
