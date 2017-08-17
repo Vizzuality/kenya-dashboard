@@ -6,9 +6,10 @@ const reducer = combineReducers({
   ...reducers
 });
 
-const store = () =>
+const store = (initialState = {}) =>
   createStore(
     reducer,
+    initialState,
     compose(
       /* The router middleware MUST be before thunk otherwise the URL changes
       * inside a thunk function won't work properly */
