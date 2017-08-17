@@ -158,7 +158,7 @@ class Legend extends React.Component {
           </div>
         </header>
         <div className="legend-content">
-          <div className="row">
+          <div className="row collapse">
             <div className="column small-12">
               <SortableList
                 items={this.getLegendItems()}

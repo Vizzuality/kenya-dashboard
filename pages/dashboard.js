@@ -23,7 +23,7 @@ import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import FiltersSelectedBar from 'components/ui/filters-selected-bar';
 import DashboardList from 'components/ui/dashboard-list';
-import Spinner from 'components/ui/spinner';
+// import Spinner from 'components/ui/spinner';
 
 
 class DashboardPage extends Page {

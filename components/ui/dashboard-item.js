@@ -39,8 +39,14 @@ export default class DashboardItem extends React.Component {
     this.onSetDate = this.onSetDate.bind(this);
   }
 
-  componentWillMount() {
-    this.getIndicatorData();
+  componentDidMount() {
+    this.getIndicatorData(this.props.region);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.region !== nextProps.region) {
+      this.getIndicatorData(nextProps.region);
+    }
   }
 
   /* Set widget date */
@@ -50,16 +56,17 @@ export default class DashboardItem extends React.Component {
     // this.getIndicatorData();
   }
 
-  getIndicatorData() {
-    // const { region } = this.props;
-
+  getIndicatorData(region) {
     if (this.props.info) {
       const token = localStorage.getItem('token');
       // token, widget_id, region, start_date, end_date
       const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
-      const query = `select * from get_widget('${token}',
-        ${this.props.info.id})`;
-        // End date ?
+      // Params
+      let params = `'${token}', ${this.props.info.id}`;
+      if (region && region !== '') params += `, '${region}'`;
+      // start / End date ?
+
+      const query = `select * from get_widget(${params})`;
 
       get({
         url: `${url}?q=${query}`,

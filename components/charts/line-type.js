@@ -38,7 +38,7 @@ export default class LineType extends React.Component {
             {/* <XAxis dataKey="x" axisLine={false} tickLine={false} />
             <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
             {y2Axis &&
-              <YAxis dataKey="y1" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
+              <YAxis dataKey="y2" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
             } */}
             <CartesianGrid vertical={false} />
             {yRefs.map((key, i) => {

@@ -6,7 +6,10 @@
   .area-indicators-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
+    height: 36px;
+    padding: 0 0 0 30px;
     background-color: rgba($color-secondary, .4);
     border-bottom: 1px solid $color-border-1;
 
@@ -18,7 +21,7 @@
         align-items: center;
         justify-content: center;
         width: 36px;
-        height: 36px;
+        height: 100%;
         border-left: 1px solid $color-border-1;
 
         .c-icon {

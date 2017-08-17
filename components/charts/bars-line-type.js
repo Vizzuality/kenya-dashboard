@@ -53,9 +53,9 @@ export default class BarsType extends React.Component {
       'c-bars-line-type',
       { [className]: !!className }
     );
-    const barsThreshold = threshold.y['break-points'];
-    const lineThreshold = y2Axis ? threshold.y1['break-points'] : threshold.y['break-points'];
-    const value = data[data.length - 1].y1;
+    const barsThreshold = threshold && threshold.y ? threshold.y['break-points'] : {};
+    const lineThreshold = y2Axis ? threshold.y2['break-points'] : threshold.y['break-points'];
+    const value = data[data.length - 1].y2;
     const lineColor = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
 
     return (
@@ -65,7 +65,7 @@ export default class BarsType extends React.Component {
             <XAxis dataKey="x" axisLine={false} tickLine={false} />
             <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
             {y2Axis &&
-              <YAxis dataKey="y1" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
+              <YAxis dataKey="y2" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
             }
             <CartesianGrid vertical={false} />
             <Tooltip
@@ -99,7 +99,7 @@ export default class BarsType extends React.Component {
             <Line
               type="monotone"
               yAxisId={y2Axis ? 'right' : 'left'}
-              dataKey="y1"
+              dataKey="y2"
               stroke={lineColor}
               strokeWidth={2}
               activeDot={{ r: 3 }}

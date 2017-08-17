@@ -19,12 +19,15 @@ import {
   setMapExpansionUrl,
   fitAreaBounds,
   addArea,
+  selectRegion,
   removeArea,
-  setAreasParamsUrl
+  setAreasParamsUrl,
+  addLayer
 } from 'modules/maps';
 
 import {
-  getTopicsOptions
+  getTopicsOptions,
+  getRegionsOptions
 } from 'modules/filters';
 
 // Selectors
@@ -41,7 +44,7 @@ import classnames from 'classnames';
 
 // Utils
 import { setLayersZIndex } from 'utils/map';
-import { decode } from 'utils/general';
+import { decode, getValueMatchFromCascadeList } from 'utils/general';
 
 // Components
 import Page from 'components/layout/page';
@@ -54,6 +57,7 @@ import CompareToolbar from 'components/ui/compare-toolbar';
 
 // Constants
 import { MAP_OPTIONS } from 'constants/map';
+import { KENYA_CARTO_ID } from 'constants/filters';
 
 
 class ComparePage extends Page {
@@ -76,6 +80,11 @@ class ComparePage extends Page {
   componentDidMount() {
     const { url } = this.props;
 
+    // Get regions options
+    if (isEmpty(this.props.filters.options.regions)) {
+      this.props.getRegionsOptions();
+    }
+
     // Get indicators from url
     url.query.indicators && this.props.getSpecificIndicators(url.query.indicators);
 
@@ -90,7 +99,7 @@ class ComparePage extends Page {
       this.setMapParams(params);
     }
 
-    // Epand map if in url
+    // Expand map if in url
     if (url.query.expanded) {
       this.props.setMapExpansionFromUrl(!!url.query.expanded);
     }
@@ -110,6 +119,10 @@ class ComparePage extends Page {
     if (nextProps.filters.options.topics && isEmpty(nextProps.indicatorsFilterList.list)) {
       this.props.getIndicatorsFilterList();
     }
+
+    if (!isEqual(this.props.indicators.list, nextProps.indicators.list)) {
+      // this.props.setLayers();
+    }
   }
 
   /* Accordion methods */
@@ -124,8 +137,9 @@ class ComparePage extends Page {
 
     return list.map((l, i) => {
       const className = classnames(
-        'accordion-item',
-        { '-collapsed': activeArea !== null && l.id !== activeArea }
+        `accordion-item -large-${list.length}`,
+        { '-collapsed': activeArea !== null && l.id !== activeArea },
+        { '-active': activeArea !== null && l.id === activeArea }
       );
 
       return (
@@ -145,7 +159,8 @@ class ComparePage extends Page {
         center: {
           lat: +params[key].lat || MAP_OPTIONS.center[0],
           lng: +params[key].lng || MAP_OPTIONS.center[1]
-        }
+        },
+        region: params[key].region || KENYA_CARTO_ID
       };
       this.props.setSingleMapParamsFromUrl(mapParams, key);
     });
@@ -153,10 +168,13 @@ class ComparePage extends Page {
 
   /* Creat all maps with their own properties */
   getAreaMaps(layers) {
-    const { mapState, indicators } = this.props;
+    const { mapState, indicators, filters } = this.props;
 
-    return Object.keys(mapState.areas).map(key => (
-      {
+    return Object.keys(mapState.areas).map((key) => {
+      const region = getValueMatchFromCascadeList(filters.options.regions,
+        mapState.areas[key].region);
+
+      return {
         id: key,
         el: (
           <AreaMap
@@ -167,10 +185,12 @@ class ComparePage extends Page {
             layersActive={indicators.layersActive}
             mapState={mapState}
             setSingleMapParams={this.props.setSingleMapParams}
+            bounds={region ? region.boundingBox : null}
+            addLayer={this.props.addLayer}
           />
         )
-      }
-    ));
+      };
+    });
   }
 
   /* Create all indicators */
@@ -181,10 +201,14 @@ class ComparePage extends Page {
         el: (
           <AreaIndicators
             id={key}
+            url={this.props.url}
             indicators={indicators}
             numOfAreas={Object.keys(areas).length}
+            selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
+            regions={this.props.filters.options.regions}
             onToggleAccordionItem={this.onToggleAccordionItem}
             onRemoveArea={this.onRemoveArea}
+            onSelectRegion={this.props.selectRegion}
           />
         )
       }
@@ -277,13 +301,11 @@ export default withRedux(
     }
   ),
   dispatch => ({
+    // Filters
+    getRegionsOptions() { dispatch(getRegionsOptions()); },
+    getTopicsOptions() { dispatch(getTopicsOptions()); },
     // Indicators
-    getSpecificIndicators(ids) {
-      dispatch(getSpecificIndicators(ids));
-    },
-    getTopicsOptions() {
-      dispatch(getTopicsOptions());
-    },
+    getSpecificIndicators(ids) { dispatch(getSpecificIndicators(ids)); },
     getIndicatorsFilterList() {
       dispatch(getIndicatorsFilterList());
     },
@@ -323,9 +345,15 @@ export default withRedux(
       dispatch(addArea());
       dispatch(setAreasParamsUrl(url));
     },
+    selectRegion(region, areas, url) {
+      dispatch(selectRegion(region, areas));
+      dispatch(setAreasParamsUrl(url));
+    },
     removeArea(id, url) {
       dispatch(removeArea(id));
       dispatch(setAreasParamsUrl(url));
-    }
+    },
+    // Area layers
+    addLayer(layer, area, region) { dispatch(addLayer(layer, area, region)); } //
   })
 )(ComparePage);

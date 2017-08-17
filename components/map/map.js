@@ -65,13 +65,12 @@ export default class Map extends React.Component {
     // Add layers
     this.initLayerManager();
     this.props.layers.length && this.addLayer(this.props.layers);
-    // this.props.markers.length && this.addMarker(this.props.markers);
   }
 
   componentWillReceiveProps(nextProps) {
     // Fitbounds
-    if (!isEqual(this.props.mapOptions.fitBounds, nextProps.mapOptions.fitBounds)) {
-      // TODO fit area bounds
+    if (!isEqual(this.props.mapOptions.bounds, nextProps.mapOptions.bounds)) {
+      this.setBounds(nextProps.mapOptions.bounds.coordinates[0]);
     }
 
     // Layers
@@ -155,6 +154,12 @@ export default class Map extends React.Component {
 
   setAttribution() {
     this.map.attributionControl.addAttribution(this.props.mapMethods.attribution);
+  }
+
+  setBounds(coordinates) {
+    const latLngs = coordinates.map(b => L.latLng(b[1], b[0]));
+    const bounds = L.latLngBounds(latLngs);
+    this.map.fitBounds(bounds);
   }
 
   setZoomControlPosition() {

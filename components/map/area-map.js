@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
+// import isEqual from 'lodash/isEqual';
 
 // Components
 import Map from 'components/map/map';
@@ -14,10 +15,24 @@ import FitBoundsControl from 'components/ui/fit-bounds-control';
 import { MAP_OPTIONS, MAP_METHODS } from 'constants/map';
 
 export default class AreaMap extends React.Component {
-  setListeners(url, id, area) {
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.layers.length && nextProps.layers.length) {
+      nextProps.layers.forEach((l) => {
+        this.props.addLayer(l, nextProps.id, nextProps.area.region);
+      });
+    }
+
+    if (this.props.area.region !== nextProps.area.region) {
+      nextProps.layers.forEach((l) => {
+        this.props.addLayer(l, nextProps.id, nextProps.area.region);
+      });
+    }
+  }
+
+  setListeners(url, id) {
     return {
       moveend: (map) => {
-        this.updateMap(map, url, id, area);
+        this.updateMap(map, url, id);
       }
     };
   }
@@ -25,8 +40,7 @@ export default class AreaMap extends React.Component {
   getMapOptions(area) {
     return {
       zoom: area.zoom,
-      fitBounds: area.fitBounds,
-      bounds: area.bounds,
+      bounds: this.props.bounds,
       minZoom: MAP_OPTIONS.minZoom,
       maxZoom: MAP_OPTIONS.maxZoom,
       zoomControl: MAP_OPTIONS.zoomControl,
@@ -34,10 +48,10 @@ export default class AreaMap extends React.Component {
     };
   }
 
-  updateMap(map, url, id, area) {
+  updateMap(map, url, id) {
     this.props.setSingleMapParams(
       {
-        ...area,
+        ...this.props.area,
         ...{
           zoom: map.getZoom(),
           center: map.getCenter(),
@@ -53,8 +67,11 @@ export default class AreaMap extends React.Component {
       'c-area-map',
       { '-expanded': mapState.expanded }
     );
-    const listeners = this.setListeners(url, id, area);
+    const listeners = this.setListeners(url, id);
     const mapOptions = this.getMapOptions(area);
+    const parsedLayers = layers.map(l => Object.assign({}, l, {
+      url: area.layers && area.layers[l.id] ? area.layers[l.id].url : ''
+    }));
 
     return (
       <div className={classNames}>
@@ -74,7 +91,7 @@ export default class AreaMap extends React.Component {
           mapOptions={mapOptions}
           mapMethods={MAP_METHODS}
           listeners={listeners}
-          layers={layers}
+          layers={parsedLayers}
           indicatorsLayersActive={layersActive}
           markers={[]}
           markerIcon={{}}
@@ -91,7 +108,9 @@ AreaMap.propTypes = {
   layers: PropTypes.array,
   layersActive: PropTypes.array,
   mapState: PropTypes.object,
+  bounds: PropTypes.object,
   // Actions
   setSingleMapParams: PropTypes.func,
-  fitAreaBounds: PropTypes.func
+  fitAreaBounds: PropTypes.func,
+  addLayer: PropTypes.func
 };
