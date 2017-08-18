@@ -76,12 +76,16 @@ export default class CollapsibleList extends React.Component {
             <ul className="collapsible-list">
               {list.map((l, i) => (
                 <li className="list-item" key={i}>
-                  <span>{l.name}</span>
-                  <Switch
-                    onClick={() => this.onSwitchItem(l.id)}
-                    on={this.state.activeItems.includes(l.id)}
-                    className="c-switch"
-                  />
+                  <div className="child-container">
+                    <span>{l.name}</span>
+                  </div>
+                  <div className="child-container">
+                    <Switch
+                      onClick={() => this.onSwitchItem(l.id)}
+                      on={this.state.activeItems.includes(l.id)}
+                      className="c-switch"
+                    />
+                  </div>
                 </li>
               ))}
             </ul>

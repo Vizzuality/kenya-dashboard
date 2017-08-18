@@ -98,6 +98,15 @@ $br-desktop: 1200px;
 $space-1: 8px;
 
 /**
+ * Media queries
+ */
+ // Breakpoints
+$bp-medium: 40em;
+
+// Medias
+$mq-medium: 'screen and (min-width: #{$bp-medium})';
+
+/**
  * ANIMATIONS
  * - Times
  * - Eases
