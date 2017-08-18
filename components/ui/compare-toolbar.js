@@ -83,7 +83,7 @@ export default class CompareToolbar extends React.Component {
     return (
       <div className={classNames}>
         <button className="c-button btn-add-indicator" onClick={this.onToggleModal}>Add Indicator</button>
-        <button className={addAreaClass} onClick={this.onAddArea}>Compare Location</button>
+        <button className={addAreaClass} onClick={this.onAddArea}>Add Location</button>
       </div>
     );
   }

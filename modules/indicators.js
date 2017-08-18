@@ -234,41 +234,36 @@ export function addIndicator(id) {
 
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicators?id=${id}&page[size]=999`, headers)
+    fetch(`${process.env.KENYA_API}/indicators?filter[id]=${id}&include=topic,widgets,agency&page[size]=999`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((data) => {
-        const specific = getState().indicators.specific;
-        const hasLayers = data[0].widgets && data[0].widgets.length &&
-          data[0].widgets.find(w => w['widget-type'] === 'layer');
+        DESERIALIZER.deserialize(data, (err, dataParsed) => {
+          const specific = getState().indicators.specific;
+          const hasLayers = dataParsed[0].widgets && dataParsed[0].widgets.length &&
+          dataParsed[0].widgets.find(w => w['widget-type'] === 'layer');
 
-        // Update state attributes with new data
-        const list = data[0] ? [data[0]].concat(specific.list) : specific.list;
+          // Update state attributes with new data
+          const list = dataParsed[0] ? [dataParsed[0]].concat(specific.list) : specific.list;
 
-        const indicatorsWithLayers = hasLayers ?
-          [data[0]].concat(specific.indicatorsWithLayers) :
+          const indicatorsWithLayers = hasLayers ?
+          [dataParsed[0]].concat(specific.indicatorsWithLayers) :
           specific.indicatorsWithLayers;
 
-        const indicatorLayers = flattenDeep(getIndicatorLayers(data[0]));
-        const layers = indicatorLayers.concat(specific.layers);
-        const layersActive = indicatorLayers.map(l => l.id).concat(specific.layersActive);
+          const indicatorLayers = flattenDeep(getIndicatorLayers(dataParsed[0]));
+          const layers = indicatorLayers.concat(specific.layers);
+          const layersActive = indicatorLayers.map(l => l.id).concat(specific.layersActive);
 
-        const newSpecific = Object.assign({}, specific,
-          { list, indicatorsWithLayers, layers, layersActive });
+          const newSpecific = Object.assign({}, specific,
+            { list, indicatorsWithLayers, layers, layersActive });
 
-        dispatch({
-          type: ADD_INDICATOR,
-          payload: newSpecific
+          dispatch({
+            type: ADD_INDICATOR,
+            payload: newSpecific
+          });
         });
-
-        // DESERIALIZER.deserialize(data, (err, dataParsed) => {
-        //   dispatch({
-        //     type: GET_INDICATORS,
-        //     payload: dataParsed
-        //   });
-        // });
       })
       .catch((err) => {
         // Fetch from server ko -> Dispatch error
@@ -286,7 +281,7 @@ export function removeIndicator(id) {
     // Update state with new data
     const list = state.list.filter(ind => ind.id !== id);
     const indicatorsWithLayers = state.indicatorsWithLayers.filter(ind => ind.id !== id);
-    const layers = state.layers.filter(lay => lay.attributes.indicator !== id);
+    const layers = state.layers.filter(lay => `${lay['indicator-id']}` !== `${id}`);
     const layersActive = layers.map(l => l.id);
 
     const newSpecific = Object.assign({}, state,

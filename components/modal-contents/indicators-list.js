@@ -20,19 +20,19 @@ export default function IndicatorsList(props) {
         <h1 className="title">Customise Indicators</h1>
       </header>
       <section className="list-content">
-        <div className="row">
+        <div className="groups-container">
           {Object.keys(indicators.list).map((key, i) => (
-            <div className="column small-12 medium-4" key={i}>
-              <CollapsibleList
-                title={key}
-                list={indicators.list[key]}
-                activeItems={activeIndicators}
-                addItem={props.addIndicator}
-                removeItem={props.removeIndicator}
-                url={props.url}
-                collapse={false}
-              />
-            </div>
+            <CollapsibleList
+              key={i}
+              className="topic-group"
+              title={key}
+              list={indicators.list[key]}
+              activeItems={activeIndicators}
+              addItem={props.addIndicator}
+              removeItem={props.removeIndicator}
+              url={props.url}
+              collapse={false}
+            />
           ))}
         </div>
         <footer className="actions-container">
