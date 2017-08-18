@@ -6,7 +6,7 @@
 
   @media #{$mq-medium} {
     padding: 42px 48px 26px;
-    width: 90%;
+    width: 80vw;
   }
 
   .list-header {
@@ -70,7 +70,6 @@
 
         .collapsible-list-container { padding-left: 0; }
       }
-
     }
   }
 

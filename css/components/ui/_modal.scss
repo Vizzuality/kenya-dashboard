@@ -55,6 +55,7 @@
 
     @media #{$mq-medium} {
       max-height: 95vh; // Be careful with iOS devices
+      width: auto;
     }
   }
 
