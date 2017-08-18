@@ -20,11 +20,11 @@ export default function IndicatorsList(props) {
         <h1 className="title">Customise Indicators</h1>
       </header>
       <section className="list-content">
-        <div className="groups roww">
+        <div className="groups-container">
           {Object.keys(indicators.list).map((key, i) => (
-            // <div className="group columnw small-12 medium-4" key={i}>
             <CollapsibleList
               key={i}
+              className="topic-group"
               title={key}
               list={indicators.list[key]}
               activeItems={activeIndicators}
@@ -33,7 +33,6 @@ export default function IndicatorsList(props) {
               url={props.url}
               collapse={false}
             />
-            // </div>
           ))}
         </div>
         <footer className="actions-container">

@@ -1,53 +1,104 @@
 
 .c-indicators-list {
-  padding: 42px 48px 26px;
+  position: relative;
+  padding: 30px 0;
   width: 100%;
 
   @media #{$mq-medium} {
+    padding: 42px 48px 26px;
     width: 90%;
   }
 
   .list-header {
     width: 100%;
-    margin-bottom: 30px;
+    padding: 0 20px 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid $color-border-1;
+
+    @media #{$mq-medium} {
+      margin-bottom: 30px;
+      border: 0;
+    }
 
     .title {
-      text-align: center;
+      text-align: left;
+
+      @media #{$mq-medium} {
+        text-align: center;
+      }
     }
   }
 
   .list-content {
     display: flex;
     flex-flow: column;
+    padding: 0 20px;
 
-    .groups {
-    	-webkit-column-count: 3;
-    	-webkit-column-gap: 10px;
-    	-webkit-column-fill: auto;
-    	-moz-column-count: 3;
-    	-moz-column-gap: 10px;
-    	-moz-column-fill: auto;
-    	column-count: 3;
-    	column-gap: 40px;
-    	column-fill: auto;
-      transform: translateX(0);
+    .groups-container {
+      display: flex;
+      flex-flow: column;
+      margin-bottom: 25px;
+
+      @media #{$mq-medium} {
+        display: inline-block;
+        -webkit-column-count: 3;
+        -webkit-column-gap: 10px;
+        -webkit-column-fill: auto;
+        -moz-column-count: 3;
+        -moz-column-gap: 10px;
+        -moz-column-fill: auto;
+        column-count: 3;
+        column-gap: 40px;
+        column-fill: auto;
+        margin-bottom: 0;
+        transform: translateX(0);
+      }
     }
 
-    .c-collapsible-list {
-    	// display: inline-block;
-      width: 100%;
-    	margin-bottom: 15px;
-    	-webkit-column-break-inside: avoid;
-    	-moz-column-break-inside: avoid;
-    	column-break-inside: avoid;
-      margin-bottom: 50px;
-    }
+    .topic-group {
+      margin-bottom: 25px;
 
+      .collapsible-list-container { padding-left: 15px; }
+
+      @media #{$mq-medium} {
+        width: 100%;
+        margin-bottom: 15px;
+        -webkit-column-break-inside: avoid;
+        -moz-column-break-inside: avoid;
+        column-break-inside: avoid;
+        margin-bottom: 50px;
+
+        .collapsible-list-container { padding-left: 0; }
+      }
+
+    }
   }
 
   .actions-container {
+    position: fixed;
+    left: 0;
+    bottom: 0;
     display: flex;
     justify-content: center;
+    width: 100%;
+    padding: 25px 20px;
     margin-top: 26px;
+    z-index: 1;
+    background-color: $color-bg-dark;
+
+    .c-button {
+      width: 100%;
+    }
+
+    @media #{$mq-medium} {
+      position: relative;
+      left: auto;
+      bottom: auto;
+
+      .c-button {
+        width: auto;
+        padding: 12px 34px;
+      }
+    }
   }
 }
