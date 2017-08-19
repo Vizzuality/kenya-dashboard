@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 // Libraries
 import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 
 // Utils
 import { get } from 'utils/request';
@@ -30,8 +31,7 @@ export default class DashboardItem extends React.Component {
     super(props);
 
     this.state = {
-      data: undefined,
-      date: ''
+      data: undefined
     };
 
     // Bindings
@@ -40,23 +40,21 @@ export default class DashboardItem extends React.Component {
   }
 
   componentDidMount() {
-    this.getIndicatorData(this.props.region);
+    const { region, dates } = this.props;
+    this.getIndicatorData(region, dates);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.region !== nextProps.region) {
-      this.getIndicatorData(nextProps.region);
+    if (this.props.region !== nextProps.region || !isEqual(this.props.dates, nextProps.dates)) {
+      this.getIndicatorData(nextProps.region, nextProps.dates);
     }
   }
 
-  /* Set widget date */
-  onSetDate(e) {
-    // const value = e.currentTarget.value;
-    // this.setState({ date: value });
-    // this.getIndicatorData();
+  onSetDate(start, end) {
+    this.props.onSetDate(this.props.info['indicator-id'], { start, end });
   }
 
-  getIndicatorData(region) {
+  getIndicatorData(region, dates) {
     if (this.props.info) {
       const token = localStorage.getItem('token');
       // token, widget_id, region, start_date, end_date
@@ -64,7 +62,7 @@ export default class DashboardItem extends React.Component {
       // Params
       let params = `'${token}', ${this.props.info.id}`;
       if (region && region !== '') params += `, '${region}'`;
-      // start / End date ?
+      if (dates) params += `, '${dates.start}', '${dates.end}'`;
 
       const query = `select * from get_widget(${params})`;
 
@@ -185,7 +183,7 @@ export default class DashboardItem extends React.Component {
         <header className="item-header">
           <h1 className="item-title">{this.props.info && this.props.info.title}</h1>
           <div className="item-tools">
-            <ItemTools info={info} setDate={this.onSetDate} />
+            <ItemTools info={info} onSetDate={this.onSetDate} />
           </div>
         </header>
 
@@ -218,7 +216,10 @@ export default class DashboardItem extends React.Component {
 DashboardItem.propTypes = {
   className: PropTypes.string,
   info: PropTypes.object,
-  region: PropTypes.string
+  region: PropTypes.string,
+  dates: PropTypes.object,
+  // Actions
+  onSetDate: PropTypes.func
 };
 
 DashboardItem.defaultProps = {
