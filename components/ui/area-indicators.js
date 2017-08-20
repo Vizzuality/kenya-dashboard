@@ -93,7 +93,6 @@ AreaIndicators.propTypes = {
   // Actions
   onRemoveArea: PropTypes.func,
   onToggleAccordionItem: PropTypes.func,
-  setIndicatorDates: PropTypes.func,
   onSelectRegion: PropTypes.func,
   onSetDate: PropTypes.func
 };

@@ -169,7 +169,7 @@ class ComparePage extends Page {
 
   /* Creat all maps with their own properties */
   getAreaMaps(layers) {
-    const { mapState, indicators, filters } = this.props;
+    const { mapState, indicators, filters, dates } = this.props;
 
     return Object.keys(mapState.areas).map((key) => {
       const region = getValueMatchFromCascadeList(filters.options.regions,
@@ -182,6 +182,7 @@ class ComparePage extends Page {
             url={this.props.url}
             id={key}
             area={mapState.areas[key]}
+            dates={dates}
             layers={layers}
             layersActive={indicators.layersActive}
             mapState={mapState}
