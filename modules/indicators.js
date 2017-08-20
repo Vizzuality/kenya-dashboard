@@ -350,8 +350,17 @@ export function setIndicatorsParamsUrl(indicatorId, type, url) {
 
 export function setIndicatorDates(indicator, dates) {
   return (dispatch, getState) => {
-    const indicatorsDates = Object.assign({}, getState().indicators.dates);
-    indicatorsDates[indicator] = dates;
+    let indicatorsDates = Object.assign({}, getState().indicators.dates);
+
+    if (dates) { // Add or update dates
+      indicatorsDates[indicator] = dates;
+    } else { // remove dates
+      const newIndicatorsDates = {};
+      Object.keys(indicatorsDates).forEach((key) => {
+        if (`${key}` !== `${indicator}`) newIndicatorsDates[key] = indicatorsDates[key];
+      });
+      indicatorsDates = newIndicatorsDates;
+    }
 
     dispatch({
       type: SET_INDICATOR_DATES,

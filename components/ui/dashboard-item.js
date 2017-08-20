@@ -51,7 +51,8 @@ export default class DashboardItem extends React.Component {
   }
 
   onSetDate(start, end) {
-    this.props.onSetDate(this.props.info['indicator-id'], { start, end });
+    const dates = start && end ? { start, end } : null;
+    this.props.onSetDate(this.props.info['indicator-id'], dates);
   }
 
   getIndicatorData(region, dates) {
@@ -61,8 +62,13 @@ export default class DashboardItem extends React.Component {
       const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
       // Params
       let params = `'${token}', ${this.props.info.id}`;
-      if (region && region !== '') params += `, '${region}'`;
-      if (dates) params += `, '${dates.start}', '${dates.end}'`;
+      params += region && region !== '' ? `, '${region}'` : ", '779'";
+
+      if (dates) {
+        const start = `${dates.start.year}-${dates.start.month}-${dates.start.day}`;
+        const end = `${dates.end.year}-${dates.end.month}-${dates.end.day}`;
+        params += `, '${start}', '${end}'`;
+      }
 
       const query = `select * from get_widget(${params})`;
 
@@ -168,7 +174,7 @@ export default class DashboardItem extends React.Component {
   }
 
   render() {
-    const { info, className } = this.props;
+    const { info, className, dates } = this.props;
     const threshold = this.getThresholdQualification();
 
     const classNames = classnames({
@@ -183,7 +189,7 @@ export default class DashboardItem extends React.Component {
         <header className="item-header">
           <h1 className="item-title">{this.props.info && this.props.info.title}</h1>
           <div className="item-tools">
-            <ItemTools info={info} onSetDate={this.onSetDate} />
+            <ItemTools info={info} dates={dates} onSetDate={this.onSetDate} />
           </div>
         </header>
 

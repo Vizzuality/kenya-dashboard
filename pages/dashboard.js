@@ -54,8 +54,6 @@ class DashboardPage extends Page {
       filterOptions
     } = this.props;
 
-    console.log(indicators.dates);
-
     return (
       <Layout
         title="Dashboard"

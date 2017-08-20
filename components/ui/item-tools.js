@@ -32,7 +32,7 @@ export default class ItemTools extends React.Component {
   }
 
   render() {
-    const { className, info, remove } = this.props;
+    const { info, className, dates, remove } = this.props;
     const classNames = classnames(
       'c-item-tools',
       { [className]: !!className }
@@ -40,16 +40,11 @@ export default class ItemTools extends React.Component {
 
     return (
       <div className={classNames}>
-        {/* <div className="select-date" onClick={this.onSetDate}>
-          {info.frequency && info.frequency !== '' &&
-            info.frequency === 'days' ?
-              'Pick days' :
-              'Pick date'
-          }
-        </div> */}
-        <div className="select-date">
-          <PickDate itemId={info['indicator-id']} onChange={this.props.onSetDate} />
-        </div>
+        {info.granularity !== null &&
+          <div className="select-date">
+            <PickDate dates={dates} onChange={this.props.onSetDate} />
+          </div>
+        }
         <div className="other-tools">
           <button className="btn" onClick={this.onToggleModal}>
             <Icon name="icon-info" />
@@ -71,6 +66,7 @@ export default class ItemTools extends React.Component {
 ItemTools.propTypes = {
   className: PropTypes.string,
   info: PropTypes.object,
+  dates: PropTypes.object,
   remove: PropTypes.bool,
   // Actions
   onSetDate: PropTypes.func
