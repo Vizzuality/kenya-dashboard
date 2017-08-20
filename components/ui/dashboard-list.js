@@ -29,7 +29,7 @@ export default function DashboardList({ list, layout, withGrid, region, dates, o
             key={i}
             className={layout === 'grid' ? '-grid' : '-list'}
             region={region}
-            setIndicatorDates={onSetDate}
+            onSetDate={onSetDate}
           />
         ))
       }

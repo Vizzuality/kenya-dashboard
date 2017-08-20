@@ -5,15 +5,20 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Components
-// import Icon from 'components/ui/icon';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
+import Icon from 'components/ui/icon';
 
 
 export default class ItemTools extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      open: false
+    };
+
     // Bindings
+    this.onToggle = this.onToggle.bind(this);
     this.onApply = this.onApply.bind(this);
     this.onCancel = this.onCancel.bind(this);
   }
@@ -30,6 +35,10 @@ export default class ItemTools extends React.Component {
     this.props.onChange(null, null);
   }
 
+  onToggle() {
+    this.setState({ open: !this.state.open });
+  }
+
   render() {
     const { className, dates } = this.props;
     const classNames = classnames(
@@ -43,18 +52,19 @@ export default class ItemTools extends React.Component {
 
     return (
       <div className={classNames}>
-        {/* <div>
-          <span>Date</span>
-          <Icon name="icon-arrow-down" />
-        </div> */}
         <DateRangePicker
           startDate={start}
           endDate={end}
           opens="center"
           onApply={this.onApply}
           onCancel={this.onCancel}
+          onShow={this.onToggle}
+          onHide={this.onToggle}
         >
-          <div>Date</div>
+          <div>
+            Date
+            <Icon name={`icon-arrow-${this.state.open ? 'up' : 'down'}`} />
+          </div>
         </DateRangePicker>
       </div>
     );

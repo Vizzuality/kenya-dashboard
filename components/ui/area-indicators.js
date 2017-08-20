@@ -31,11 +31,13 @@ export default class AreaIndicators extends React.Component {
   }
 
   render() {
-    const { id, className, indicators, numOfAreas, regions, selectedRegion } = this.props;
+    const { id, className, indicators, numOfAreas, regions, selectedRegion, dates } = this.props;
     const classNames = classnames(
       'c-area-indicators',
       { [className]: !!className }
     );
+
+    console.log(dates);
 
     return (
       <article className={classNames}>
@@ -66,10 +68,12 @@ export default class AreaIndicators extends React.Component {
         </header>
         <section>
           <DashboardList
-            list={setIndicatorsWidgetsList(indicators.list, false)}
             layout="grid"
             withGrid={numOfAreas === 1}
+            list={setIndicatorsWidgetsList(indicators.list, false)}
             region={selectedRegion}
+            dates={dates}
+            onSetDate={this.props.onSetDate}
           />
         </section>
       </article>
@@ -83,11 +87,15 @@ AreaIndicators.propTypes = {
   id: PropTypes.string,
   indicators: PropTypes.object,
   regions: PropTypes.array,
+  dates: PropTypes.object,
   selectedRegion: PropTypes.any,
   numOfAreas: PropTypes.number,
+  // Actions
   onRemoveArea: PropTypes.func,
   onToggleAccordionItem: PropTypes.func,
-  onSelectRegion: PropTypes.func
+  setIndicatorDates: PropTypes.func,
+  onSelectRegion: PropTypes.func,
+  onSetDate: PropTypes.func
 };
 
 AreaIndicators.defaultProps = {

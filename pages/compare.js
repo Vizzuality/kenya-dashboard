@@ -9,7 +9,8 @@ import {
   getIndicatorsFilterList,
   addIndicator,
   removeIndicator,
-  setIndicatorsParamsUrl
+  setIndicatorsParamsUrl,
+  setIndicatorDates
 } from 'modules/indicators';
 
 import {
@@ -194,7 +195,7 @@ class ComparePage extends Page {
   }
 
   /* Create all indicators */
-  getAreaIndicators(areas, indicators) {
+  getAreaIndicators(areas, indicators, dates) {
     return Object.keys(areas).map(key => (
       {
         id: key,
@@ -203,12 +204,14 @@ class ComparePage extends Page {
             id={key}
             url={this.props.url}
             indicators={indicators}
+            dates={dates}
             numOfAreas={Object.keys(areas).length}
             selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
             regions={this.props.filters.options.regions}
             onToggleAccordionItem={this.onToggleAccordionItem}
             onRemoveArea={this.onRemoveArea}
             onSelectRegion={this.props.selectRegion}
+            onSetDate={this.props.setIndicatorDates}
           />
         )
       }
@@ -232,10 +235,10 @@ class ComparePage extends Page {
   }
 
   render() {
-    const { url, mapState, indicators, session, indicatorsFilterList, modal } = this.props;
+    const { url, mapState, indicators, session, indicatorsFilterList, modal, dates } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(layers);
-    const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators);
+    const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators, dates);
 
     return (
       <Layout
@@ -294,6 +297,7 @@ export default withRedux(
         state.indicators.specific,
         { indicatorsWithLayers: getIndicatorsWithLayers(state) }
       ),
+      dates: state.indicators.dates,
       indicatorsFilterList: state.indicators.filterList,
       mapState: state.maps,
       modal: state.modal,
@@ -317,6 +321,7 @@ export default withRedux(
       dispatch(removeIndicator(id));
       dispatch(setIndicatorsParamsUrl(id, 'remove', url));
     },
+    setIndicatorDates(indicator, dates) { dispatch(setIndicatorDates(indicator, dates)); },
     // Layers
     setIndicatorsLayersActive(indicatorsLayersActive) {
       dispatch(setIndicatorsLayersActive(indicatorsLayersActive));
