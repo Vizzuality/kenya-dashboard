@@ -17,6 +17,9 @@
 @import 'animations';
 
 // Components
+// - pages
+@import 'components/pages/about';
+
 // - layout
 @import 'components/layout/header';
 @import 'components/layout/footer';
@@ -59,6 +62,7 @@
 @import 'components/ui/filters';
 @import 'components/ui/filters-selected-bar';
 @import 'components/ui/icon';
+@import 'components/ui/intro';
 @import 'components/ui/item-tools';
 @import 'components/ui/login-nav';
 @import 'components/ui/modal';

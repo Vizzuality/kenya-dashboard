@@ -1,0 +1,28 @@
+
+.p-about {
+  background-color: $color-bg-light;
+
+  /* Header fits */
+  .c-header {
+    color: $color-text-2;
+    border: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: transparent;
+
+    a,
+    button,
+    .c-login-nav .login-container button {
+      color: $color-text-2;
+    }
+  }
+
+  /* Intro */
+  .c-intro {
+    background-image: url('static/images/aboutalliance.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
