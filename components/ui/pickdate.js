@@ -56,14 +56,23 @@ export default class ItemTools extends React.Component {
           startDate={start}
           endDate={end}
           opens="center"
+          showDropdowns
+          minDate="1/1/1900"
+          maxDate={currentEndDate}
+          locale={{
+            applyLabel: 'Apply',
+            cancelLabel: 'Remove',
+            fromLabel: 'From',
+            toLabel: 'To'
+          }}
           onApply={this.onApply}
           onCancel={this.onCancel}
           onShow={this.onToggle}
           onHide={this.onToggle}
         >
-          <div>
-            Date
-            <Icon name={`icon-arrow-${this.state.open ? 'up' : 'down'}`} />
+          <div className="label">
+            <span className="literal">Date</span>
+            <Icon name={`icon-arrow-${this.state.open ? 'up' : 'down'}`} className="-tiny" />
           </div>
         </DateRangePicker>
       </div>
