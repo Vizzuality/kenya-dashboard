@@ -1,11 +1,17 @@
 
 .c-table-type {
+  width: 100%;
+
+  table {
+    width: 100%;
+  }
 
   th {
     font-size: $font-size-small;
     line-height: 16px;
     text-transform: uppercase;
     text-align: right;
+    padding: 5px 0;
 
     &:first-child {
       text-align: left;
@@ -19,6 +25,7 @@
     font-size: $font-size-default;
     line-height: 19px;
     text-align: right;
+    padding: 5px 0;
 
     &:first-child {
       display: table-cell;
