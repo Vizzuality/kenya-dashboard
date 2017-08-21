@@ -189,13 +189,19 @@ export function setAreasParamsUrl(url) {
 
 /* Area layers */
 // Add layer
-export function addLayer(layer, area, region) {
+export function addLayer(layer, area, region, dates) {
   return (dispatch, getState) => {
     const token = localStorage.getItem('token');
     const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
     let params = `'${token}', ${layer.id}`;
+
     if (region && region !== '') params += `, '${region}'`;
-    // start / End date ?
+
+    if (dates) {
+      const start = `${dates.start.year}-${dates.start.month}-${dates.start.day}`;
+      const end = `${dates.end.year}-${dates.end.month}-${dates.end.day}`;
+      params += `, '${start}', '${end}'`;
+    }
 
     const query = `select * from get_widget(${params})`;
     get({

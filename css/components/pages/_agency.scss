@@ -1,21 +1,25 @@
 
 .p-agency {
-  background-color: $color-bg-light;
+  background-color: $color-bg-dark;
 
-  /* Header fits */
-  .c-header {
-    color: $color-text-1;
-    border: 0;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    background-color: transparent;
+  &.-logged {
+    background-color: $color-bg-light;
 
-    a,
-    button,
-    .c-login-nav .login-container button {
+    /* Header fits */
+    .c-header {
+      position: absolute;
       color: $color-text-1;
+      border: 0;
+      left: 0;
+      top: 0;
+      width: 100%;
+      background-color: transparent;
+
+      a,
+      button,
+      .c-login-nav .login-container button {
+        color: $color-text-1;
+      }
     }
   }
 
@@ -36,6 +40,10 @@
 
     a {
       color: $color-watermelon;
+    }
+
+    .indicator-container {
+      margin-bottom: 32px;
     }
   }
 

@@ -1,0 +1,156 @@
+
+.c-pickdate {
+  height: 100%;
+  cursor: pointer;
+
+  .label {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    .literal {
+      line-height: 16px;
+      margin-bottom: 2px;
+    }
+
+    .c-icon {
+      fill: rgba($color-text-1, .5);
+      margin-left: 5px;
+    }
+  }
+}
+
+
+/* Override Dropdown */
+.daterangepicker.dropdown-menu {
+  display: none;
+  max-width: 518px;
+
+  .daterangepicker_input {
+    input {
+      padding: 0;
+      border: 0;
+      text-align: center;
+      border-bottom: 1px solid $color-border-3;
+      border-radius: 0;
+      font-size: $font-size-default;
+      line-height: 18px;
+      font-family: $font-family-1;
+    }
+  }
+
+  .calendar-table {
+    .table-condensed {
+      thead {
+        color: $color-text-2;
+
+        tr {
+          th {
+            font-weight: $font-weight-light;
+          }
+
+          &:nth-child(1) {
+            th {
+              font-size: $font-size-default;
+              line-height: 18px;
+              text-transform: uppercase;
+              margin-bottom: 10px;
+            }
+
+            .month {
+              select {
+                position: relative;
+                width: auto;
+                font-size: $font-size-default;
+                line-height: 18px;
+                border: 0;
+                -webkit-appearance: none;
+                padding-right: 12px;
+                background: url('static/icons/SVG/arrow-down.svg') no-repeat right;
+                background-size: 8px;
+                cursor: pointer;
+
+                &:focus { outline: none; }
+
+                &.monthselect { margin-right: 10px;}
+              }
+            }
+          }
+
+          &:nth-child(2) {
+            th {
+              font-size: $font-size-small;
+              line-height: 16px;
+              text-transform: lowercase;
+            }
+          }
+
+          .prev.available {
+
+          }
+        }
+      }
+
+      tbody {
+        td {
+          color: $color-text-2;
+          font-weight: $font-weight-light;
+          font-size: $font-size-small;
+          line-height: 27px;
+        }
+
+        .available {
+          &.active {
+            &.start-date,
+            &.end-date {
+              background-color: $color-primary;
+              font-weight: $font-weight-default;
+            }
+          }
+
+          &.off {
+            color: rgba($color-text-2, .5);
+          }
+
+          &.in-range {
+            font-weight: $font-weight-bold;
+            background-color: $color-tertiary;
+          }
+        }
+
+        .weekend {
+          font-weight: $font-weight-default;
+        }
+      }
+    }
+  }
+
+  /* Actions */
+  .ranges {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 8px;
+
+    .range_inputs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: $font-family-1;
+      font-size: $font-size-default;
+      line-height: 18px;
+
+      button {
+        text-transform: uppercase;
+        margin-right: 10px;
+
+        &:last-child {
+          margin: 0;
+        }
+
+        &:hover {
+          opacity: .5;
+        }
+      }
+    }
+  }
+}

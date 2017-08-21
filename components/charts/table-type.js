@@ -28,19 +28,21 @@ export default function TableType(props) {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, i) => (
-            <tr key={i}>
-              {Object.values(row).map((value, j) => {
-                const thresholdValue = getThreshold(value, threshold.y['break-points']);
-                return (
-                  <td key={j} className={j !== 0 ? `-${thresholdValue}` : ''}>
-                    {value}
-                    {j !== 0 && <Icon name="icon-arrow-down" />}
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
+          {data.map((row, i) => {
+            const thresholdValue = getThreshold(row.y, threshold.y['break-points']);
+
+            return (
+              <tr key={i}>
+                <td>
+                  {row.x}
+                </td>
+                <td className={`-${thresholdValue}`}>
+                  {row.y}
+                  <Icon name={`icon-arrow-${row.trend > 0 ? 'up' : 'down'}`} className="-smaller" />
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

@@ -28,7 +28,7 @@ class AgencyPage extends Page {
   }
 
   render() {
-    const { url, session, info } = this.props;
+    const { url, session, info, user } = this.props;
 
     return (
       <Layout
@@ -36,53 +36,62 @@ class AgencyPage extends Page {
         description="Agency description..."
         url={url}
         session={session}
-        className="p-agency"
+        className={user.logged ? 'p-agency -logged' : 'p-about'}
+        logged={user.logged}
       >
-        {/* Page intro */}
-        <Intro>
-          <div className="row">
-            <div className="column small-12 medium-10 medium-offset-1">
-              <h1 className="title -medium">{info.name}</h1>
-              <p className="description">{info.description}</p>
-            </div>
-          </div>
-        </Intro>
-
-        {/* Agencies list */}
-        <section className="c-section indicators-list">
-          <div className="row">
-            <div className="column small-12 medium-10 medium-offset-1">
-              <h1 className="section-title">Contributions to Data</h1>
-              <p className="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-            </div>
-          </div>
-          <div className="row">
-            {info.indicators && info.indicators.map((ind, i) => (
-              <div key={i} className="column small-12 medium-4 large-3">
-                <Link route={`/compare?indicator=${ind.id}`}>
-                  <a>{ind.name}</a>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Contributors */}
-        {info.contributors &&
-          <section className="c-section contributors-list">
-            <div className="row">
-              <div className="column small-12 medium-10 medium-offset-1">
-                <h1 className="section-title">Contributors Name</h1>
-              </div>
-            </div>
-            <div className="row">
-              {info.contributors.map((ind, i) => (
-                <div key={i} className="column small-12 medium-4 large-3">
-                  <span>{ind.name}</span>
+        {user.logged ?
+          <div>
+            {/* Page intro */}
+            <Intro>
+              <div className="row">
+                <div className="column small-12 medium-10 medium-offset-1">
+                  <h1 className="title -medium">{info.name}</h1>
+                  <p className="description">{info.description}</p>
                 </div>
-              ))}
-            </div>
-          </section>
+              </div>
+            </Intro>
+
+            {/* Agencies list */}
+            <section className="c-section indicators-list">
+              <div className="row">
+                <div className="column small-12 medium-10 medium-offset-1">
+                  <h1 className="section-title">Contributions to Data</h1>
+                  <p className="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                </div>
+              </div>
+              <div className="row">
+                {info.indicators && info.indicators.map((ind, i) => (
+                  <div key={i} className="column small-12 medium-4 large-3 indicator-container">
+                    <Link route={`/compare?indicator=${ind.id}`}>
+                      <a>{ind.name}</a>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Contributors */}
+            {info.contributors &&
+              <section className="c-section contributors-list">
+                <div className="row">
+                  <div className="column small-12 medium-10 medium-offset-1">
+                    <h1 className="section-title">Contributors Name</h1>
+                  </div>
+                </div>
+                <div className="row">
+                  {info.contributors.map((ind, i) => (
+                    <div key={i} className="column small-12 medium-4 large-3">
+                      <span>{ind.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            }
+          </div> :
+          // Provisional
+          <div className="row collapse" style={{ margin: '30px' }}>
+            <div className="column small-12"><p>Sign in</p></div>
+          </div>
         }
       </Layout>
     );
@@ -97,7 +106,8 @@ AgencyPage.propTypes = {
 export default withRedux(
   store,
   state => ({
-    info: state.agencies.agency
+    info: state.agencies.agency,
+    user: state.user
   }),
   dispatch => ({
     getAgency(id) { dispatch(getAgency(id)); }

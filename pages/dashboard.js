@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// Modules
-import { getIndicators } from 'modules/indicators';
-import { removeSelectedFilter, setFiltersUrl } from 'modules/filters';
-
 // Redux
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
+
+// Modules
+import { getIndicators, setIndicatorDates } from 'modules/indicators';
+import { removeSelectedFilter, setFiltersUrl } from 'modules/filters';
 
 // Selectors
 import { getSelectedFilterOptions } from 'selectors/filters';
@@ -71,12 +71,14 @@ class DashboardPage extends Page {
             />
             <DashboardList
               list={setIndicatorsWidgetsList(indicators.list, true)}
+              dates={indicators.dates}
               layout={layout}
               withGrid
               region={
                 selectedFilters.regions && selectedFilters.regions.length ?
                   selectedFilters.regions[0] : ''
               }
+              onSetDate={this.props.setIndicatorDates}
             />
           </div> :
           // Provisional
@@ -104,7 +106,10 @@ export default withRedux(
     user: state.user
   }),
   dispatch => ({
+    // Indicators
     getIndicators(filters) { dispatch(getIndicators(filters)); },
+    setIndicatorDates(indicator, dates) { dispatch(setIndicatorDates(indicator, dates)); },
+    // Filters
     removeSelectedFilter(type, value) {
       dispatch(removeSelectedFilter(type, value));
       dispatch(setFiltersUrl());

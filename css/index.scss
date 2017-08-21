@@ -54,6 +54,7 @@
 // - ui
 @import '../node_modules/react-select/dist/react-select';
 @import '../node_modules/react-toggle-switch/dist/css/switch.min';
+@import '../node_modules/react-bootstrap-daterangepicker/css/daterangepicker';
 @import 'components/ui/accordion';
 @import 'components/ui/area-indicators';
 @import 'components/ui/button';
@@ -70,6 +71,7 @@
 @import 'components/ui/modal';
 @import 'components/ui/dashboard-item';
 @import 'components/ui/dashboard-list';
+@import 'components/ui/pickdate';
 @import 'components/ui/section';
 @import 'components/ui/select';
 @import 'components/ui/select-custom';
