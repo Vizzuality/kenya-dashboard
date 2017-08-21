@@ -1,0 +1,61 @@
+
+.p-home {
+  background-color: $color-bg-light;
+
+  /* Header fits */
+  .c-header {
+    position: absolute;
+    color: $color-text-2;
+    border: 0;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: transparent;
+
+    a,
+    button,
+    .c-login-nav .login-container button {
+      color: $color-text-2;
+    }
+  }
+
+  /* Intro */
+  .c-intro {
+    background-image: url('/static/images/home_1.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: $color-bg-light;
+    color: $color-text-2;
+  }
+
+  .dashboard {
+    .image-overlapped {
+      margin-top: -128px;
+      margin-bottom: 50px;
+    }
+
+    .topics-list {
+      margin-top: 60px;
+
+      .topic {
+        padding: 0 10px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .about {
+    background-image: url('/static/images/home_2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: $color-bg-dark;
+    color: $color-text-1;
+
+    .link {
+      display: inline-block;;
+      margin-top: 50px;
+      padding: 11px 58px;
+    }
+  }
+
+}

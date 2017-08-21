@@ -19,14 +19,32 @@
   &.-fullheight { height: 100%; }
 
 
-
   // THEMES
+  // - inverted
   // - primary
   // - secondary
   // - tertiary
   // - facebook
   // - twitter
   // - linkedin
+  &.-dark {
+    background-color: $color-bg-dark;
+    color: $color-text-1;
+    text-transform: capitalize;
+    font-size: 17px;
+    line-height: 20px;
+    padding: 12px 22px;
+  }
+
+  &.-light {
+    background-color: $color-bg-light;
+    color: $color-text-2;
+    text-transform: capitalize;
+    font-size: 17px;
+    line-height: 20px;
+    padding: 12px 22px;
+  }
+
   &.-primary {
     border-color: $color-border-1;
     color: $color-text-1;

@@ -16,6 +16,10 @@ const FILTERS_BAR_LABELS = {
   sort: 'Sorted by'
 };
 
+const TOPICS_ICONS_SRC = {
+  wildlife: 'wildlife.svg'
+};
+
 const KENYA_CARTO_ID = '779';
 
-export { SORT_OPTIONS, REGIONS_OPTIONS, FILTERS_BAR_LABELS, KENYA_CARTO_ID };
+export { SORT_OPTIONS, REGIONS_OPTIONS, FILTERS_BAR_LABELS, KENYA_CARTO_ID, TOPICS_ICONS_SRC };
