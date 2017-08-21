@@ -1,0 +1,22 @@
+
+.c-section {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 30px 75px;
+  color: $color-text-2;
+  text-align: center;
+
+  .section-title {
+    font-size: $font-size-big;
+    line-height: 25px;
+    margin-bottom: 12px;
+    font-weight: $font-weight-light;
+  }
+
+  .section-text {
+    font-size: $font-size-default;
+    line-height: 21px;
+  }
+}
