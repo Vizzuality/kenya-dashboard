@@ -21,6 +21,7 @@ const GET_SPECIFIC_INDICATORS_LOADING = 'GET_SPECIFIC_INDICATORS_LOADING';
 const GET_SPECIFIC_INDICATORS_ERROR = 'GET_SPECIFIC_INDICATORS_ERROR';
 const ADD_INDICATOR = 'ADD_INDICATOR';
 const REMOVE_INDICATOR = 'REMOVE_INDICATOR';
+const SET_INDICATOR_DATES = 'SET_INDICATOR_DATES';
 // All indicators filter list
 const GET_INDICATORS_FILTER_LIST = 'GET_INDICATORS_FILTER_LIST';
 const GET_INDICATORS_FILTER_LIST_LOADING = 'GET_INDICATORS_FILTER_LIST_LOADING';
@@ -35,6 +36,7 @@ const initialState = {
   list: [],
   loading: false,
   error: null,
+  dates: {},
   // Specific indicators
   specific: {
     list: [],
@@ -113,13 +115,9 @@ export default function indicatorsReducer(state = initialState, action) {
         { layers: action.payload });
       return Object.assign({}, state, { specific: newSpecific });
     }
-    // case ADD_LAYER: {
-    //   const newLayers = state.specific.layers.slice();
-    //   newLayers.push(action.payload);
-    //   const newSpecific = Object.assign({}, state.specific,
-    //     { layers: newLayers, layersActive: newLayers.map(l => l.id) });
-    //   return Object.assign({}, state, { specific: newSpecific });
-    // }
+    case SET_INDICATOR_DATES: {
+      return Object.assign({}, state, { dates: action.payload });
+    }
     default:
       return state;
   }
@@ -347,5 +345,26 @@ export function setIndicatorsParamsUrl(indicatorId, type, url) {
 
     const location = { pathname: url.pathname, query: newQuery };
     Router.replace(location);
+  };
+}
+
+export function setIndicatorDates(indicator, dates) {
+  return (dispatch, getState) => {
+    let indicatorsDates = Object.assign({}, getState().indicators.dates);
+
+    if (dates) { // Add or update dates
+      indicatorsDates[indicator] = dates;
+    } else { // remove dates
+      const newIndicatorsDates = {};
+      Object.keys(indicatorsDates).forEach((key) => {
+        if (`${key}` !== `${indicator}`) newIndicatorsDates[key] = indicatorsDates[key];
+      });
+      indicatorsDates = newIndicatorsDates;
+    }
+
+    dispatch({
+      type: SET_INDICATOR_DATES,
+      payload: indicatorsDates
+    });
   };
 }

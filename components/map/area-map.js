@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
-// import isEqual from 'lodash/isEqual';
+import isEqual from 'lodash/isEqual';
 
 // Components
 import Map from 'components/map/map';
@@ -18,13 +18,14 @@ export default class AreaMap extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.layers.length && nextProps.layers.length) {
       nextProps.layers.forEach((l) => {
-        this.props.addLayer(l, nextProps.id, nextProps.area.region);
+        this.props.addLayer(l, nextProps.id, nextProps.area.region, nextProps.dates[l['indicator-id']]);
       });
     }
 
-    if (this.props.area.region !== nextProps.area.region) {
+    if (this.props.area.region !== nextProps.area.region ||
+      !isEqual(this.props.dates, nextProps.dates)) {
       nextProps.layers.forEach((l) => {
-        this.props.addLayer(l, nextProps.id, nextProps.area.region);
+        this.props.addLayer(l, nextProps.id, nextProps.area.region, nextProps.dates[l['indicator-id']]);
       });
     }
   }
@@ -105,6 +106,7 @@ AreaMap.propTypes = {
   url: PropTypes.object,
   id: PropTypes.string,
   area: PropTypes.object,
+  dates: PropTypes.object,
   layers: PropTypes.array,
   layersActive: PropTypes.array,
   mapState: PropTypes.object,
