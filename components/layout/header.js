@@ -108,6 +108,7 @@ class Header extends React.Component {
           )
         };
         case '/about': return { title: <h1>About the Alliance</h1> };
+        case '/agency': return { title: <h1>Agency</h1> };
         default: return {};
       }
     } else {

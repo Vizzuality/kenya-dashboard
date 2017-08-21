@@ -1,0 +1,57 @@
+
+.p-agency {
+  background-color: $color-bg-dark;
+
+  &.-logged {
+    background-color: $color-bg-light;
+
+    /* Header fits */
+    .c-header {
+      position: absolute;
+      color: $color-text-1;
+      border: 0;
+      left: 0;
+      top: 0;
+      width: 100%;
+      background-color: transparent;
+
+      a,
+      button,
+      .c-login-nav .login-container button {
+        color: $color-text-1;
+      }
+    }
+  }
+
+  /* Intro */
+  .c-intro {
+    background-image: url('/static/images/aboutalliance.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: $color-bg-dark;
+    color: $color-text-1;
+  }
+
+  /* Section */
+  .indicators-list {
+    .section-description {
+      margin-bottom: 55px;
+    }
+
+    a {
+      color: $color-watermelon;
+    }
+
+    .indicator-container {
+      margin-bottom: 32px;
+    }
+  }
+
+  .contributors-list {
+    background-image: url('/static/images/home_1.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: $color-bg-light;
+    color: $color-text-2;
+  }
+}

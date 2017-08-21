@@ -6,8 +6,8 @@ const routes = nextRoutes();
 // ========================= APP ROUTES =====================
 routes.add('home', '/', 'index');
 routes.add('dashboard', '/dashboard', 'dashboard');
-routes.add('indicator', '/indicator/:indicators', 'indicator');
 routes.add('compare', '/compare', 'compare');
 routes.add('about', '/about', 'about');
+routes.add('agency', '/agency/:id', 'agency');
 
 module.exports = routes;

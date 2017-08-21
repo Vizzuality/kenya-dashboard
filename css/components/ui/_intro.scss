@@ -1,0 +1,40 @@
+
+.c-intro {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: $color-text-2;
+  min-height: 580px;
+  padding: 100px 30px;
+
+  .title {
+    position: relative;
+    font-size: 53px;
+    line-height: 58px;
+    padding-bottom: 23px;
+    font-weight: $font-weight-light;
+    margin-bottom: 18px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 45px;
+      height: 3px;
+      background-color: $color-watermelon;
+      transform: translateX(-50%);
+    }
+
+    &.-medium {
+      font-size: 35px;
+    }
+  }
+
+  .description {
+    font-size: $font-size-big;
+    line-height: 32px;
+  }
+}

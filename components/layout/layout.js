@@ -37,7 +37,7 @@ export default function Layout(props) {
         logged={logged}
       />
 
-      <div className={`l-main ${classNames}`}>
+      <div className="l-main">
         {children}
       </div>
 

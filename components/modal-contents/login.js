@@ -181,8 +181,8 @@ export default class Login extends React.Component {
 
                 <div className="login-options">
                   <div className="remember">
-                    <Checkbox checked={remember} onChange={this.onChangeRemember} />
-                    Remember me
+                    {/* <Checkbox checked={remember} onChange={this.onChangeRemember} />
+                    Remember me */}
                   </div>
                   <button onClick={() => this.setState({ resetPassword: true })} className="btn-reset-password">
                     Forgot password?

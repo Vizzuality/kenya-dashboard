@@ -1,0 +1,59 @@
+
+.p-about {
+  background-color: $color-bg-dark;
+
+  &.-logged {
+    background-color: $color-bg-light;
+
+    /* Header fits */
+    .c-header {
+      color: $color-text-2;
+      border: 0;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      background-color: transparent;
+
+      a,
+      button,
+      .c-login-nav .login-container button {
+        color: $color-text-2;
+      }
+    }
+  }
+
+  /* Intro */
+  .c-intro {
+    background-image: url('/static/images/aboutalliance.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  /* Section */
+  .agencies-list {
+    position: relative;
+
+    .agencies-logo {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 20px;
+
+      img {
+        max-width: 130px;
+        max-height: 88px;
+      }
+    }
+
+    .section-description {
+      margin-bottom: 100px;
+    }
+
+    .agency-container {
+      padding: 0 10px;
+      height: 360px;
+      margin-bottom: 20px;
+    }
+  }
+}
