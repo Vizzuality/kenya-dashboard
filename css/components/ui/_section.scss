@@ -9,6 +9,26 @@
   text-align: center;
 
   .section-title {
+    position: relative;
+    font-size: 35px;
+    line-height: 35px;
+    margin-bottom: 28px;
+    font-weight: $font-weight-light;
+    padding-bottom: 24px;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      width: 45px;
+      height: 3px;
+      background-color: $color-watermelon;
+      transform: translateX(-50%);
+    }
+  }
+
+  .section-subtitle {
     font-size: $font-size-big;
     line-height: 25px;
     margin-bottom: 12px;
@@ -17,6 +37,6 @@
 
   .section-text {
     font-size: $font-size-default;
-    line-height: 21px;
+    line-height: 27px;
   }
 }

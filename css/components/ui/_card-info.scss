@@ -19,6 +19,8 @@
 
   a {
     color: $color-text-2;
+
+    &:hover { opacity: .5; }
   }
 
   .card-title {
@@ -26,6 +28,8 @@
     font-size: $font-size-big;
     line-height: 25px;
     font-weight: $font-weight-light;
+
+    &:hover { opacity: .5; }
   }
 
   .card-description {

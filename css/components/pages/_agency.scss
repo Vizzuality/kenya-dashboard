@@ -1,10 +1,10 @@
 
-.p-about {
+.p-agency {
   background-color: $color-bg-light;
 
   /* Header fits */
   .c-header {
-    color: $color-text-2;
+    color: $color-text-1;
     border: 0;
     position: absolute;
     left: 0;
@@ -15,7 +15,7 @@
     a,
     button,
     .c-login-nav .login-container button {
-      color: $color-text-2;
+      color: $color-text-1;
     }
   }
 
@@ -24,32 +24,26 @@
     background-image: url('/static/images/aboutalliance.png');
     background-repeat: no-repeat;
     background-size: cover;
+    background-color: $color-bg-dark;
+    color: $color-text-1;
   }
 
   /* Section */
-  .agencies-list {
-    position: relative;
-
-    .agencies-logo {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      margin-bottom: 20px;
-
-      img {
-        max-width: 130px;
-        max-height: 88px;
-      }
-    }
-
+  .indicators-list {
     .section-description {
-      margin-bottom: 100px;
+      margin-bottom: 55px;
     }
 
-    .agency-container {
-      padding: 0 10px;
-      height: 360px;
-      margin-bottom: 20px;
+    a {
+      color: $color-watermelon;
     }
+  }
+
+  .contributors-list {
+    background-image: url('/static/images/home_1.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: $color-bg-light;
+    color: $color-text-2;
   }
 }

@@ -6,7 +6,7 @@ import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
 // modules
-import { getAgencies, getAgency } from 'modules/agencies';
+import { getAgencies } from 'modules/agencies';
 
 // Libraries
 import isEmpty from 'lodash/isEmpty';
@@ -55,8 +55,8 @@ class AboutPage extends Page {
               <div className="agencies-logo">
                 <img src="static/images/about_logo.png" alt="about logo" />
               </div>
-              <h1 className="section-title">Ministry of Environment & Natural Resources</h1>
-              <p className="section-text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+              <h1 className="section-subtitle">Ministry of Environment & Natural Resources</h1>
+              <p className="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
             </div>
           </div>
           {/* List */}
@@ -87,7 +87,6 @@ export default withRedux(
     agencies: state.agencies
   }),
   dispatch => ({
-    getAgencies() { dispatch(getAgencies()); },
-    getAgency(id) { dispatch(getAgency(id)); }
+    getAgencies() { dispatch(getAgencies()); }
   })
 )(AboutPage);

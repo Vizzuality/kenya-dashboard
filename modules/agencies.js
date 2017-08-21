@@ -34,8 +34,9 @@ export default function (state = initialState, action) {
       return Object.assign({}, state, { loading: true });
     case GET_AGENCIES_ERROR:
       return Object.assign({}, state, { error: action.payload, loading: false });
+    // Agency
     case GET_AGENCY:
-      return Object.assign({}, state, { user: {}, logged: false });
+      return Object.assign({}, state, { agency: action.payload, logged: false });
     case GET_AGENCY_LOADING:
       return Object.assign({}, state, { loading: true });
     case GET_AGENCY_ERROR:
@@ -81,7 +82,7 @@ export function getAgency(id) {
     const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
     dispatch({ type: GET_AGENCY_LOADING });
 
-    fetch(`${process.env.KENYA_API}/agencies/${id}?page[size]=999`, headers)
+    fetch(`${process.env.KENYA_API}/agencies/${id}?include=indicators&page[size]=999`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
