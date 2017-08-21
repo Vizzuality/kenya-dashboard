@@ -49,14 +49,14 @@ export default class ItemTools extends React.Component {
           <button className="btn" onClick={this.onToggleModal}>
             <Icon name="icon-info" />
           </button>
-          <button className="btn">
+          {/* <button className="btn">
             <Icon name="icon-download" />
           </button>
           {remove &&
             <button className="btn">
               <Icon name="icon-remove" />
             </button>
-          }
+          } */}
         </div>
       </div>
     );
