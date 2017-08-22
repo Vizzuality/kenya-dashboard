@@ -10,8 +10,8 @@ export default function DashboardList({ list, layout, withGrid, region, dates, o
     <div className="c-dashboard-list">
       {withGrid &&
         <div className="row collapse">
-          {list.map((wid, i) => (
-            <div key={i} className={layout === 'grid' ? 'column small-12 medium-4 large-3' : 'column small-12'}>
+          {list.map(wid => (
+            <div key={wid.id} className={layout === 'grid' ? 'column small-12 medium-4 large-3' : 'column small-12'}>
               <DashboardItem
                 info={wid}
                 region={region}

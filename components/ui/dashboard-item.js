@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
-import isEmpty from 'lodash/isEmpty';
 import isEqual from 'lodash/isEqual';
 
 // Utils
