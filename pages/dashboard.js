@@ -8,6 +8,7 @@ import { store } from 'store';
 // Modules
 import { getIndicators, setIndicatorDates } from 'modules/indicators';
 import { removeSelectedFilter, setFiltersUrl } from 'modules/filters';
+import { setUser } from 'modules/user';
 
 // Selectors
 import { getSelectedFilterOptions } from 'selectors/filters';
@@ -29,6 +30,11 @@ import DashboardList from 'components/ui/dashboard-list';
 class DashboardPage extends Page {
   componentDidMount() {
     const { selectedFilters } = this.props;
+
+    // Set user
+    if (localStorage.token && localStorage.token !== '') {
+      this.props.setUser({ auth_token: localStorage.token });
+    }
 
     if (this.props.user.logged && !this.props.indicators.list.length) {
       this.props.getIndicators(selectedFilters);
@@ -106,6 +112,8 @@ export default withRedux(
     user: state.user
   }),
   dispatch => ({
+    // User
+    setUser(user) { dispatch(setUser(user)); },
     // Indicators
     getIndicators(filters) { dispatch(getIndicators(filters)); },
     setIndicatorDates(indicator, dates) { dispatch(setIndicatorDates(indicator, dates)); },

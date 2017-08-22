@@ -8,7 +8,7 @@ import classnames from 'classnames';
 import ResetPassword from 'components/modal-contents/reset-password';
 import Field from 'components/form/field';
 import Input from 'components/form/input';
-import Checkbox from 'components/form/checkbox';
+// import Checkbox from 'components/form/checkbox';
 import Spinner from 'components/ui/spinner';
 
 // Constants

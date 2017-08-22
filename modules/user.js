@@ -31,7 +31,7 @@ export default function (state = initialState, action) {
 
 // ACTIONS
 export function setUser(user) {
-  return { type: SET_USER, payload: user };
+  return { type: SET_USER, payload: { user, logged: true } };
 }
 
 export function login({ email, password }) {

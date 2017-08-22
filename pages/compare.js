@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Modules
+import { setUser } from 'modules/user';
 import {
   getSpecificIndicators,
   setIndicatorsLayersActive,
@@ -80,6 +81,11 @@ class ComparePage extends Page {
   /* Lifecycle */
   componentDidMount() {
     const { url } = this.props;
+
+    // Set user
+    if (localStorage.token && localStorage.token !== '') {
+      this.props.setUser({ auth_token: localStorage.token });
+    }
 
     // Get regions options
     if (isEmpty(this.props.filters.options.regions)) {
@@ -236,7 +242,7 @@ class ComparePage extends Page {
   }
 
   render() {
-    const { url, mapState, indicators, session, indicatorsFilterList, modal, dates } = this.props;
+    const { url, mapState, indicators, session, indicatorsFilterList, modal, dates, user } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(layers);
     const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators, dates);
@@ -247,38 +253,47 @@ class ComparePage extends Page {
         description="Detail description..."
         url={url}
         session={session}
+        logged={user.logged}
       >
-        <CompareToolbar
-          indicatorsFilterList={indicatorsFilterList}
-          indicatorsList={indicators.list}
-          areas={mapState.areas}
-          modalOpened={modal.opened}
-          url={url}
-          addArea={this.props.addArea}
-          addIndicator={this.props.addIndicator}
-          removeIndicator={this.props.removeIndicator}
-        />
-        <Accordion
-          sections={[
-            { type: 'dynamic', items: this.getList(areaMaps) },
-            {
-              type: 'static',
-              items: [
-                <Legend
-                  key="legend"
-                  url={url}
-                  list={layers}
-                  indicatorsLayersActive={indicators.layersActive}
-                  setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
-                  setIndicatorsLayers={this.props.setIndicatorsLayers}
-                  expanded={mapState.expanded}
-                  setMapExpansion={this.props.setMapExpansion}
-                />
-              ]
-            },
-            { type: 'dynamic', items: this.getList(indicatorsWidgets) }
-          ]}
-        />
+        {user.logged ?
+          <div>
+            <CompareToolbar
+              indicatorsFilterList={indicatorsFilterList}
+              indicatorsList={indicators.list}
+              areas={mapState.areas}
+              modalOpened={modal.opened}
+              url={url}
+              addArea={this.props.addArea}
+              addIndicator={this.props.addIndicator}
+              removeIndicator={this.props.removeIndicator}
+            />
+            <Accordion
+              sections={[
+                { type: 'dynamic', items: this.getList(areaMaps) },
+                {
+                  type: 'static',
+                  items: [
+                    <Legend
+                      key="legend"
+                      url={url}
+                      list={layers}
+                      indicatorsLayersActive={indicators.layersActive}
+                      setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
+                      setIndicatorsLayers={this.props.setIndicatorsLayers}
+                      expanded={mapState.expanded}
+                      setMapExpansion={this.props.setMapExpansion}
+                    />
+                  ]
+                },
+                { type: 'dynamic', items: this.getList(indicatorsWidgets) }
+              ]}
+            />
+          </div> :
+          // Provisional
+          <div className="row collapse" style={{ margin: '30px' }}>
+            <div className="column small-12"><p>Sign in</p></div>
+          </div>
+        }
       </Layout>
     );
   }
@@ -302,10 +317,13 @@ export default withRedux(
       indicatorsFilterList: state.indicators.filterList,
       mapState: state.maps,
       modal: state.modal,
-      filters: state.filters
+      filters: state.filters,
+      user: state.user
     }
   ),
   dispatch => ({
+    // User
+    setUser(user) { dispatch(setUser(user)); },
     // Filters
     getRegionsOptions() { dispatch(getRegionsOptions()); },
     getTopicsOptions() { dispatch(getTopicsOptions()); },

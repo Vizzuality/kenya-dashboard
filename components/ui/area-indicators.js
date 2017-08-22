@@ -37,8 +37,6 @@ export default class AreaIndicators extends React.Component {
       { [className]: !!className }
     );
 
-    console.log(dates);
-
     return (
       <article className={classNames}>
         <header className="area-indicators-header">

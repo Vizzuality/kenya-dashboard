@@ -84,7 +84,7 @@ export default class DashboardItem extends React.Component {
 
   setData(data) {
     this.setState({
-      data: data && data.rows && data.rows.length ? data.rows[0] : {}
+      data: data && data.rows && data.rows.length ? data.rows[0] : null
     });
   }
 
@@ -146,7 +146,7 @@ export default class DashboardItem extends React.Component {
         default: return '';
       }
     }
-    return '';
+    return <p className="no-data">No data available</p>;
   }
 
   getThresholdQualification() {
@@ -196,8 +196,7 @@ export default class DashboardItem extends React.Component {
         {/* Indicator type detail - Content */}
         <section className="type-detail">
           <Spinner isLoading={this.state.data === undefined} />
-          {this.state.data !== undefined && !isEmpty(this.state.data) &&
-            this.getItemType()}
+          {this.state.data !== undefined && this.getItemType()}
         </section>
 
         {/* Footer */}

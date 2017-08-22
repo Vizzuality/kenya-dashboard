@@ -6,6 +6,7 @@ import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
 // modules
+import { setUser } from 'modules/user';
 import { getAgencies } from 'modules/agencies';
 
 // Libraries
@@ -21,6 +22,11 @@ import CardInfo from 'components/ui/card-info';
 
 class AboutPage extends Page {
   componentDidMount() {
+    // Set user
+    if (localStorage.token && localStorage.token !== '') {
+      this.props.setUser({ auth_token: localStorage.token });
+    }
+
     // If no agencies
     if (isEmpty(this.props.agencies.list)) {
       this.props.getAgencies();
@@ -97,6 +103,9 @@ export default withRedux(
     user: state.user
   }),
   dispatch => ({
+    // User
+    setUser(user) { dispatch(setUser(user)); },
+    // Agencies
     getAgencies() { dispatch(getAgencies()); }
   })
 )(AboutPage);
