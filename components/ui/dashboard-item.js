@@ -209,7 +209,7 @@ export default class DashboardItem extends React.Component {
           <div className="">
             <Link route="compare" params={{ indicators: info.indicator_id }}>
               <a className="item-link">
-                <Icon name="icon-arrow_next" className="-smaller" />
+                <Icon name="icon-arrow_next2" className="-smaller" />
               </a>
             </Link>
           </div>

@@ -17,7 +17,18 @@ const FILTERS_BAR_LABELS = {
 };
 
 const TOPICS_ICONS_SRC = {
-  wildlife: 'wildlife.svg'
+  agriculture: 'agriculture',
+  climate: 'climate',
+  conservancies: 'infrastructure',
+  contextual: 'population',
+  integration: 'poverty',
+  landcover: 'boundarie',
+  livestock: 'livestock',
+  protected_areas: 'protectedareas',
+  protected_forests: 'landcover',
+  socioeconomic: 'urban',
+  water: 'water',
+  wildlife: 'wildlife'
 };
 
 const TOPICS_BACKGROUNDS_SRC = {

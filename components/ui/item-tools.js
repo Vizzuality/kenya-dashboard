@@ -47,7 +47,7 @@ export default class ItemTools extends React.Component {
         }
         <div className="other-tools">
           <button className="btn" onClick={this.onToggleModal}>
-            <Icon name="icon-info" />
+            <Icon name="icon-info" className="-smaller" />
           </button>
           {/* <button className="btn">
             <Icon name="icon-download" />

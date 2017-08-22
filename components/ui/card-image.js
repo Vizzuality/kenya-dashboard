@@ -29,13 +29,15 @@ export default class CardImage extends React.Component {
     );
     const url = this.getDashboardTopicFilterUrl();
     const backgroundUrl = `url('/static/images/topics/${TOPICS_BACKGROUNDS_SRC[typeClass]}')`;
-    const iconName = TOPICS_ICONS_SRC[info.name] || 'plus';
+    const iconName = TOPICS_ICONS_SRC[typeClass] || 'plus';
 
     return (
       <div className={classNames} style={{ backgroundImage: backgroundUrl }}>
         <Link route={url}>
           <a className="link">
-            <Icon name={`icon-${iconName}`} className="-medium" />
+            <div className="type-container">
+              <Icon name={`icon-${iconName}`} className="-bigger" />
+            </div>
             <h1 className="type-title">{info.name}</h1>
           </a>
         </Link>

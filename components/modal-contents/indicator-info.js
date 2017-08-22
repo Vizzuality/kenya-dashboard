@@ -25,6 +25,7 @@ export default function IndicatorInfo(props) {
           {info.topic &&
             <div className="topic-container">
               <TopicIcon topic={info.topic.name} />
+              {/* <Icon name={`icon-${TOPICS_ICONS_SRC[typeClass]}`} clasName="" /> */}
               {info.topic.name}
             </div>
           }
