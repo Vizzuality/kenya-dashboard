@@ -6,6 +6,7 @@ import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
 // modules
+import { setUser } from 'modules/user';
 import { getAgency } from 'modules/agencies';
 
 // Libraries
@@ -22,6 +23,11 @@ const fakeDescription = 'Sed ut perspiciatis unde omnis iste natus error sit vol
 
 class AgencyPage extends Page {
   componentDidMount() {
+    // Set user
+    if (localStorage.token && localStorage.token !== '') {
+      this.props.setUser({ auth_token: localStorage.token });
+    }
+
     // If no agency info
     if (isEmpty(this.props.info)) {
       this.props.getAgency(this.props.url.query.id);
@@ -112,6 +118,9 @@ export default withRedux(
     user: state.user
   }),
   dispatch => ({
+    // User
+    setUser(user) { dispatch(setUser(user)); },
+    // Agency
     getAgency(id) { dispatch(getAgency(id)); }
   })
 )(AgencyPage);

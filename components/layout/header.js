@@ -108,7 +108,13 @@ class Header extends React.Component {
           )
         };
         case '/about': return { title: <h1>About the Alliance</h1> };
-        case '/agency': return { title: <h1>Agency</h1> };
+        case '/agency': return { title: (
+          <Link route="about">
+            <a className="title-link">
+              <Icon name="icon-arrow-left2" className="-normal" /><h1>Go to About the Alliance</h1>
+            </a>
+          </Link>
+        ) };
         default: return {};
       }
     } else {

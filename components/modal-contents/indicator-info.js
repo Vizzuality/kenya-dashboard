@@ -7,6 +7,8 @@ import classnames from 'classnames';
 // Components
 import TopicIcon from 'components/ui/topic-icon';
 
+const fakeDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+const fakeMethodology = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
 
 export default function IndicatorInfo(props) {
   const { className, info } = props;
@@ -42,13 +44,13 @@ export default function IndicatorInfo(props) {
         {/* Description */}
         <article>
           <h2 className="article-title">Description</h2>
-          <p className="article-text">{info.description}</p>
+          <p className="article-text">{info.description && info.description !== '' ? info.description : fakeDescription}</p>
         </article>
 
         {/* Methodology */}
         <article>
           <h2 className="article-title">Methodology</h2>
-          <p className="article-text">{info.methodology}</p>
+          <p className="article-text">{info.methodology && info.methodology !== '' ? info.methodology : fakeMethodology }</p>
         </article>
       </section>
     </div>

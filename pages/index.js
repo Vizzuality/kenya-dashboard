@@ -6,9 +6,8 @@ import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
 // Modules
-import {
-  getTopicsOptions
-} from 'modules/filters';
+import { getTopicsOptions } from 'modules/filters';
+import { setUser } from 'modules/user';
 
 // Libraries
 import isEmpty from 'lodash/isEmpty';
@@ -37,6 +36,10 @@ class HomePage extends Page {
 
   componentDidMount() {
     this.getNumberOftopicsToLoad();
+
+    if (localStorage.token && localStorage.token !== '') {
+      this.props.setUser({ auth_token: localStorage.token });
+    }
 
     if (isEmpty(this.props.topics)) {
       this.props.getTopicsOptions();
@@ -149,6 +152,7 @@ export default withRedux(
     topics: state.filters.options.topics.filter(t => t.id !== 'all')
   }),
   dispatch => ({
-    getTopicsOptions() { dispatch(getTopicsOptions()); }
+    getTopicsOptions() { dispatch(getTopicsOptions()); },
+    setUser(user) { dispatch(setUser(user)); }
   })
 )(HomePage);
