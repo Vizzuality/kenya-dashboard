@@ -78,9 +78,9 @@ export default class BarsType extends React.Component {
 
             {/* Shapes */}
             <Bar
-              dataKey="y"
+              dataKey="y2"
               fill="#2E3D3D"
-              yAxisId="left"
+              yAxisId={y2Axis ? 'right' : 'left'}
             >
               {/* Set each bar hover color */}
               {data.map((item, j) => {
@@ -98,8 +98,8 @@ export default class BarsType extends React.Component {
             </Bar>
             <Line
               type="monotone"
-              yAxisId={y2Axis ? 'right' : 'left'}
-              dataKey="y2"
+              yAxisId="left"
+              dataKey="y"
               stroke={lineColor}
               strokeWidth={2}
               activeDot={{ r: 3 }}
