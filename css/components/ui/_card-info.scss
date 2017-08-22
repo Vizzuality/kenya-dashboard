@@ -1,6 +1,6 @@
 
 .c-card-info {
-  padding: 50px 25px 30px;
+  padding: 35px 25px 18px;
   border: 1px solid rgba(30, 39, 39, .2);
   height: 100%;
   text-align: left;
@@ -8,7 +8,7 @@
   .card-logo {
     display: flex;
     width: 100%;
-    margin-bottom: 36px;
+    margin-bottom: 26px;
 
     img {
       max-width: 180px;
@@ -23,7 +23,7 @@
   }
 
   .card-title {
-    margin-bottom: 36px;
+    margin-bottom: 16px;
     font-size: $font-size-big;
     line-height: 25px;
     font-weight: $font-weight-light;

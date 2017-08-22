@@ -1,6 +1,6 @@
 
 .p-home {
-  background-color: $color-bg-light;
+  background-color: $color-bg-cream;
 
   /* Header fits */
   .c-header {
@@ -59,6 +59,10 @@
     background-color: $color-bg-dark;
     background-position: center;
     color: $color-text-1;
+
+    .section-description {
+      line-height: 27px;
+    }
 
     .link {
       display: inline-block;;
