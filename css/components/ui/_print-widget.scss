@@ -1,0 +1,13 @@
+
+/* Widget print */
+.c-dashboard-item.-print {
+
+    /* Print */
+    &.-print {
+
+      .item-footer .info {
+        flex-flow: column;
+        align-items: flex-start;
+      }
+    }
+}
