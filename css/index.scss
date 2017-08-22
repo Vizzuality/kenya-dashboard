@@ -26,6 +26,9 @@
 @import 'components/layout/footer';
 @import 'components/layout/header';
 
+// - print
+@import 'components/ui/print-widget';
+
 // - map
 @import '../node_modules/leaflet/dist/leaflet';
 @import 'components/map/area-map';

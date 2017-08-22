@@ -7,7 +7,11 @@ import classnames from 'classnames';
 // Services
 import modal from 'services/modal';
 
+// utils
+import { encode } from 'utils/general';
+
 // Components
+import { Link } from 'routes';
 import IndicatorInfo from 'components/modal-contents/indicator-info';
 import Icon from 'components/ui/icon';
 import PickDate from 'components/ui/pickdate';
@@ -32,11 +36,12 @@ export default class ItemTools extends React.Component {
   }
 
   render() {
-    const { info, className, dates, remove } = this.props;
+    const { info, className, dates, options, remove } = this.props;
     const classNames = classnames(
       'c-item-tools',
       { [className]: !!className }
     );
+    const encodedFilters = encode(options);
 
     return (
       <div className={classNames}>
@@ -49,14 +54,16 @@ export default class ItemTools extends React.Component {
           <button className="btn" onClick={this.onToggleModal}>
             <Icon name="icon-info" className="-smaller" />
           </button>
-          {/* <button className="btn">
-            <Icon name="icon-download" />
-          </button>
+          <Link route={`/widget/${info['indicator-id']}?options=${encodedFilters}`}>
+            <a className="btn">
+              <Icon name="icon-download" className="-smaller" />
+            </a>
+          </Link>
           {remove &&
             <button className="btn">
-              <Icon name="icon-remove" />
+              <Icon name="icon-remove" className="-smaller" />
             </button>
-          } */}
+          }
         </div>
       </div>
     );
@@ -66,6 +73,7 @@ export default class ItemTools extends React.Component {
 ItemTools.propTypes = {
   className: PropTypes.string,
   info: PropTypes.object,
+  options: PropTypes.object,
   dates: PropTypes.object,
   remove: PropTypes.bool,
   // Actions

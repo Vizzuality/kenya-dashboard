@@ -24,7 +24,6 @@ export default function TopicIcon({ topic, className, tooltip }) {
     <div className={classNames}>
       <span className="topic">
         <Icon name={`icon-${TOPICS_ICONS_SRC[typeClass]}`} clasName="" />
-        {/* {getTopicIcon(topic, '-small')} */}
       </span>
       {tooltip && <div className="c-tooltip">{topic}</div>}
     </div>
