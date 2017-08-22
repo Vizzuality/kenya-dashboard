@@ -30,16 +30,24 @@
 
   .dashboard {
     .image-overlapped {
+      display: flex;
+      justify-content: center;
       margin-top: -128px;
       margin-bottom: 50px;
     }
 
     .topics-list {
+      width: 100%;
       margin-top: 60px;
 
       .topic {
         padding: 0 10px;
         margin-bottom: 20px;
+      }
+
+      .load-more {
+        margin-top: 55px;
+        padding: 11px 62px;
       }
     }
   }
@@ -49,6 +57,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-color: $color-bg-dark;
+    background-position: center;
     color: $color-text-1;
 
     .link {

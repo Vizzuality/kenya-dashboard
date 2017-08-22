@@ -11,7 +11,7 @@ import { Link } from 'routes';
 import Icon from 'components/ui/icon';
 
 // Constants
-import { TOPICS_ICONS_SRC } from 'constants/filters';
+import { TOPICS_ICONS_SRC, TOPICS_BACKGROUNDS_SRC } from 'constants/filters';
 
 
 export default class CardImage extends React.Component {
@@ -22,16 +22,17 @@ export default class CardImage extends React.Component {
 
   render() {
     const { className, info } = this.props;
-    const typeClass = lowerCase(info.name.split(' ').join('_'));
+    const typeClass = lowerCase(info.name).split(' ').join('_');
     const classNames = classnames(
       `c-card-image -${typeClass}`,
       { [className]: !!className }
     );
     const url = this.getDashboardTopicFilterUrl();
+    const backgroundUrl = `url('/static/images/topics/${TOPICS_BACKGROUNDS_SRC[typeClass]}')`;
     const iconName = TOPICS_ICONS_SRC[info.name] || 'plus';
 
     return (
-      <div className={classNames}>
+      <div className={classNames} style={{ backgroundImage: backgroundUrl }}>
         <Link route={url}>
           <a className="link">
             <Icon name={`icon-${iconName}`} className="-medium" />

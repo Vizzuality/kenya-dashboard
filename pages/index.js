@@ -12,6 +12,7 @@ import {
 
 // Libraries
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 
 // Components
 import { Link } from 'routes';
@@ -22,10 +23,46 @@ import CardImage from 'components/ui/card-image';
 
 
 class HomePage extends Page {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      topics: [],
+      numLoaded: this.numOfTopicsToLoad || 0
+    };
+
+    // Bindings
+    this.onLoadMore = this.onLoadMore.bind(this);
+  }
+
   componentDidMount() {
+    this.getNumberOftopicsToLoad();
+
     if (isEmpty(this.props.topics)) {
       this.props.getTopicsOptions();
+    } else {
+      const topicsToLoad = this.props.topics.slice(0, this.numOfTopicsToLoad);
+      // Necessary to get window size and set topics to show
+      this.setState({ topics: topicsToLoad, numLoaded: this.numOfTopicsToLoad });
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps.topics)) {
+      const topicsToLoad = nextProps.topics.slice(0, this.numOfTopicsToLoad);
+      this.setState({ topics: topicsToLoad, numLoaded: this.numOfTopicsToLoad });
+    }
+  }
+
+  getNumberOftopicsToLoad() {
+    const width = document.body.clientWidth;
+    this.numOfTopicsToLoad = width > 1025 ? 4 : 3;
+  }
+
+  onLoadMore() {
+    const numToLoad = this.state.numLoaded + this.numOfTopicsToLoad;
+    const topicsToLoad = this.props.topics.slice(0, numToLoad);
+    this.setState({ topics: topicsToLoad, numLoaded: numToLoad });
   }
 
   render() {
@@ -68,12 +105,15 @@ class HomePage extends Page {
           {/* Topics list */}
           <div className="topics-list">
             <div className="row">
-              {topics.map((t, i) => (
-                <div key={i} className="column small-12 medium-4 topic">
+              {this.state.topics.map((t, i) => (
+                <div key={i} className="column small-12 medium-4 large-3 topic">
                   <CardImage info={t} />
                 </div>
               ))}
             </div>
+            {this.state.topics.length < topics.length &&
+              <button className="c-button -dark load-more" onClick={this.onLoadMore}>Load more</button>
+            }
           </div>
         </section>
 
@@ -106,7 +146,7 @@ export default withRedux(
   store,
   state => ({
     user: state.user,
-    topics: state.filters.options.topics
+    topics: state.filters.options.topics.filter(t => t.id !== 'all')
   }),
   dispatch => ({
     getTopicsOptions() { dispatch(getTopicsOptions()); }
