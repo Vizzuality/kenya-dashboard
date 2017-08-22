@@ -20,21 +20,22 @@
 // - pages
 @import 'components/pages/about';
 @import 'components/pages/agency';
+@import 'components/pages/home';
 
 // - layout
-@import 'components/layout/header';
 @import 'components/layout/footer';
+@import 'components/layout/header';
 
 // - map
 @import '../node_modules/leaflet/dist/leaflet';
 @import 'components/map/area-map';
-@import 'components/map/map';
 @import 'components/map/legend';
+@import 'components/map/map';
 @import 'components/map/map-controls';
 
 // - modal contents
-@import 'components/modal-contents/indicators-list';
 @import 'components/modal-contents/indicator-info';
+@import 'components/modal-contents/indicators-list';
 @import 'components/modal-contents/login';
 
 // - form
@@ -42,14 +43,14 @@
 @import 'components/form/checkbox';
 
 // - charts
-@import 'components/charts/tooltip-chart';
-@import 'components/charts/pie-type';
-@import 'components/charts/line-type';
 @import 'components/charts/bars-type';
 @import 'components/charts/bars-line-type';
-@import 'components/charts/table-type';
-@import 'components/charts/trend-type';
 @import 'components/charts/extremes-type';
+@import 'components/charts/line-type';
+@import 'components/charts/pie-type';
+@import 'components/charts/table-type';
+@import 'components/charts/tooltip-chart';
+@import 'components/charts/trend-type';
 
 // - ui
 @import '../node_modules/react-select/dist/react-select';
@@ -59,6 +60,7 @@
 @import 'components/ui/area-indicators';
 @import 'components/ui/button';
 @import 'components/ui/dropdown';
+@import 'components/ui/card-image';
 @import 'components/ui/card-info';
 @import 'components/ui/collapsible-list';
 @import 'components/ui/compare-toolbar';

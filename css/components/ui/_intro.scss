@@ -17,6 +17,10 @@
     font-weight: $font-weight-light;
     margin-bottom: 18px;
 
+    &.-no-underline {
+      &:after { display: none; }
+    }
+
     &:after {
       content: '';
       position: absolute;
@@ -36,5 +40,10 @@
   .description {
     font-size: $font-size-big;
     line-height: 32px;
+  }
+
+  .link {
+    display: inline-block;
+    margin-top: 95px;
   }
 }

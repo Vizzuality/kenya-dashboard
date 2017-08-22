@@ -18,6 +18,7 @@ import Layout from 'components/layout/layout';
 import Intro from 'components/ui/intro';
 // import Spinner from 'components/ui/spinner';
 
+const fakeDescription = 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur.';
 
 class AgencyPage extends Page {
   componentDidMount() {
@@ -46,7 +47,8 @@ class AgencyPage extends Page {
               <div className="row">
                 <div className="column small-12 medium-10 medium-offset-1">
                   <h1 className="title -medium">{info.name}</h1>
-                  <p className="description">{info.description}</p>
+                  <p className="description">{info.description && info.description !== '' ?
+                    info.description : fakeDescription}</p>
                 </div>
               </div>
             </Intro>
