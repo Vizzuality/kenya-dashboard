@@ -15,6 +15,7 @@
 @import 'fonts';
 @import 'layout';
 @import 'animations';
+@import 'print';
 
 // Components
 // - pages
@@ -26,9 +27,6 @@
 // - layout
 @import 'components/layout/footer';
 @import 'components/layout/header';
-
-// - print
-@import 'components/ui/print-widget';
 
 // - map
 @import '../node_modules/leaflet/dist/leaflet';

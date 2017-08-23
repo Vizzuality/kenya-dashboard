@@ -49,11 +49,11 @@ class WidgetPage extends Page {
     this.getIndicator(this.options.indicator);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (!nextProps.user.logged) {
-  //     window.location.pathname = '/';
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.user.logged) {
+      window.location.pathname = '/';
+    }
+  }
 
   getIndicator(id) {
     const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });

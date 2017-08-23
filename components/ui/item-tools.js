@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
+import fetch from 'isomorphic-fetch';
 
 // Services
 import modal from 'services/modal';
 
 // utils
 import { encode } from 'utils/general';
+import { post } from 'utils/request';
 
 // Components
 import IndicatorInfo from 'components/modal-contents/indicator-info';
@@ -22,6 +24,7 @@ export default class ItemTools extends React.Component {
 
     // Bindings
     this.onToggleModal = this.onToggleModal.bind(this);
+    this.onDownloadWidget = this.onDownloadWidget.bind(this);
   }
 
   onToggleModal() {
@@ -34,13 +37,20 @@ export default class ItemTools extends React.Component {
     modal.toggleModal(true, opts);
   }
 
+  onDownloadWidget() {
+    const { info, options } = this.props;
+    const encodedFilters = encode(options);
+    const name = info.title.split(' ').join('_');
+    const url = `${window.location.origin}/widget/${info.id}?options=${encodedFilters}`;
+    window.location.href = `https://staging-api.globalforestwatch.org/v1/webshot/pdf?url=${url}&name=${name}`;
+  }
+
   render() {
-    const { info, className, dates, options, remove } = this.props;
+    const { info, className, dates, remove } = this.props;
     const classNames = classnames(
       'c-item-tools',
       { [className]: !!className }
     );
-    const encodedFilters = encode(options);
 
     return (
       <div className={classNames}>
@@ -53,9 +63,11 @@ export default class ItemTools extends React.Component {
           <button className="btn" onClick={this.onToggleModal}>
             <Icon name="icon-info" className="-smaller" />
           </button>
-          <a className="btn" href={`/widget/${info.id}?options=${encodedFilters}`} target="_blank">
+          {/* <a className="btn" href={`/widget/${info.id}?options=${encodedFilters}`} target="_blank">
+          </a> */}
+          <button className="btn" onClick={this.onDownloadWidget}>
             <Icon name="icon-download" className="-smaller" />
-          </a>
+          </button>
           {remove &&
             <button className="btn">
               <Icon name="icon-remove" className="-smaller" />
