@@ -77,7 +77,7 @@ export default class DashboardItem extends React.Component {
         onError: this.setData
       });
     } else {
-      this.setState({ data: {} });
+      this.setState({ data: null });
     }
   }
 
@@ -173,7 +173,7 @@ export default class DashboardItem extends React.Component {
   }
 
   render() {
-    const { info, className, dates } = this.props;
+    const { info, className, dates, region } = this.props;
     const threshold = this.getThresholdQualification();
 
     const classNames = classnames({
@@ -186,9 +186,14 @@ export default class DashboardItem extends React.Component {
       <article className={classNames}>
         {/* Header */}
         <header className="item-header">
-          <h1 className="item-title">{this.props.info && this.props.info.title}</h1>
+          <h1 className="item-title">{info && info.title}</h1>
           <div className="item-tools">
-            <ItemTools info={info} dates={dates} onSetDate={this.onSetDate} />
+            <ItemTools
+              info={info}
+              dates={dates}
+              options={{ dates, region, threshold, indicator: info['indicator-id'] }}
+              onSetDate={this.onSetDate}
+            />
           </div>
         </header>
 

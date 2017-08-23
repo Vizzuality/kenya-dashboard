@@ -14,7 +14,7 @@ function encode(obj) {
 }
 
 function decode(obj) {
-  return JSON.parse(atob(obj));
+  return JSON.parse(window.atob(obj));
 }
 
 function parseSelectOptions(options) {
