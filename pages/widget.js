@@ -20,6 +20,7 @@ import { get } from 'utils/request';
 
 // Components
 import Page from 'components/layout/page';
+import Layout from 'components/layout/layout';
 import Icon from 'components/ui/icon';
 // Widget types
 import TableType from 'components/charts/table-type';
@@ -50,7 +51,6 @@ class WidgetPage extends Page {
   }
 
   componentDidMount() {
-    const { url } = this.props;
     this.options = typeof window !== 'undefined' ? decode(this.props.url.query.options) : {};
 
     // Set user
@@ -58,7 +58,7 @@ class WidgetPage extends Page {
       this.props.setUser({ auth_token: localStorage.token });
     }
 
-    this.getIndicator(url.query.id);
+    this.getIndicator(this.options.indicator);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -70,15 +70,17 @@ class WidgetPage extends Page {
   getIndicator(id) {
     const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
 
-    fetch(`${process.env.KENYA_API}/indicators/${id}?include=topic,widgets,agency&page[size]=999$`, headers)
+    fetch(`${process.env.KENYA_API}/indicators/${id}?include=topic,widgets&page[size]=999$`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((data) => {
         DESERIALIZER.deserialize(data, (err, dataParsed) => {
-          const info = dataParsed.widgets && dataParsed.widgets.find(w => w.default);
-          this.setState({ info }, () => this.getData(info));
+          const info = dataParsed.widgets &&
+            dataParsed.widgets.find(w => w.id === this.props.url.query.id);
+          const parsedInfo = { ...info, ...{ topic: dataParsed.topic } };
+          this.setState({ info: parsedInfo }, () => this.getData(parsedInfo));
         });
       })
       .catch(() => {
@@ -174,7 +176,7 @@ class WidgetPage extends Page {
             y2Axis={y2Axis}
           />
         );
-        default: return '';
+        default: return 'No type';
       }
     }
     return <p className="no-data">No data available</p>;
@@ -182,18 +184,26 @@ class WidgetPage extends Page {
 
   render() {
     const { info } = this.state;
-    const { className } = this.props;
+    const { className, url, session, user } = this.props;
     const classNames = classnames({
       'c-dashboard-item': true,
       [className]: !!className
       // [this.options.threshold]: this.options ? this.options.threshold : false
     });
-    const typeClass = info ? lowerCase(info.topic).split(' ').join('_') : '';
+    const typeClass = info ? lowerCase(info.topic.name).split(' ').join('_') : '';
     const content = this.getItemType();
 
     return (
-      <div>
-        {info &&
+      <Layout
+        title="Widget"
+        description="Widget description..."
+        url={url}
+        session={session}
+        hasHeader={false}
+        hasFooter={false}
+        logged={user.logged}
+      >
+        {info ?
           <article className={classNames}>
             {/* Header */}
             <header className="item-header">
@@ -208,20 +218,23 @@ class WidgetPage extends Page {
             {/* Footer */}
             <footer className="item-footer">
               <div className="info">
-                <Icon name={`icon-${TOPICS_ICONS_SRC[typeClass]}`} clasName="" />
-                <div className="c-tooltip">{info.topic}</div>
+                <div>
+                  <Icon name={`icon-${TOPICS_ICONS_SRC[typeClass]}`} clasName="-small" />
+                  <span className="">{info.topic.name}</span>
+                </div>
                 <span className="update">Last update: {info.updatedAt}</span>
               </div>
             </footer>
-          </article>
+          </article> : ''
         }
-      </div>
+      </Layout>
     );
   }
 }
 
 WidgetPage.propTypes = {
-  url: PropTypes.object
+  url: PropTypes.object,
+  session: PropTypes.object
 };
 
 export default withRedux(

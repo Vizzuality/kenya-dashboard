@@ -11,7 +11,6 @@ import modal from 'services/modal';
 import { encode } from 'utils/general';
 
 // Components
-import { Link } from 'routes';
 import IndicatorInfo from 'components/modal-contents/indicator-info';
 import Icon from 'components/ui/icon';
 import PickDate from 'components/ui/pickdate';
@@ -54,11 +53,9 @@ export default class ItemTools extends React.Component {
           <button className="btn" onClick={this.onToggleModal}>
             <Icon name="icon-info" className="-smaller" />
           </button>
-          <Link route={`/widget/${info['indicator-id']}?options=${encodedFilters}`}>
-            <a className="btn">
-              <Icon name="icon-download" className="-smaller" />
-            </a>
-          </Link>
+          <a className="btn" href={`/widget/${info.id}?options=${encodedFilters}`} target="_blank">
+            <Icon name="icon-download" className="-smaller" />
+          </a>
           {remove &&
             <button className="btn">
               <Icon name="icon-remove" className="-smaller" />

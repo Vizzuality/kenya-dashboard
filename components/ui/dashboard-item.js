@@ -191,7 +191,7 @@ export default class DashboardItem extends React.Component {
             <ItemTools
               info={info}
               dates={dates}
-              options={{ dates, region, threshold }}
+              options={{ dates, region, threshold, indicator: info['indicator-id'] }}
               onSetDate={this.onSetDate}
             />
           </div>
