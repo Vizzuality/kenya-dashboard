@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export default function Layout(props) {
-  const { title, description, url, session, children, className, logged } = props;
+  const { title, description, url, session, children, className, logged, hasHeader, hasFooter } = props;
   const classNames = classnames({
     [className]: !!className
   });
@@ -31,17 +31,19 @@ export default function Layout(props) {
       <Icons />
 
       {/* Customs Header */}
-      <Header
-        url={url}
-        session={session}
-        logged={logged}
-      />
+      {hasHeader &&
+        <Header
+          url={url}
+          session={session}
+          logged={logged}
+        />
+      }
 
       <div className="l-main">
         {children}
       </div>
 
-      {/* {footer !== false && <Footer />} */}
+      {/* {hasFooter && <Footer />} */}
 
       <Modal />
     </div>
@@ -53,11 +55,15 @@ Layout.propTypes = {
   description: PropTypes.string.isRequired,
   children: PropTypes.any.isRequired,
   session: PropTypes.object,
+  hasHeader: PropTypes.bool,
+  hasFooter: PropTypes.bool,
   url: PropTypes.object.isRequired,
   logged: PropTypes.bool.isRequired,
   className: PropTypes.string
 };
 
 Layout.defaultProps = {
-  logged: false
+  logged: false,
+  hasHeader: true,
+  hasFooter: true
 };

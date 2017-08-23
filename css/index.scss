@@ -15,12 +15,14 @@
 @import 'fonts';
 @import 'layout';
 @import 'animations';
+@import 'print';
 
 // Components
 // - pages
 @import 'components/pages/about';
 @import 'components/pages/agency';
 @import 'components/pages/home';
+@import 'components/pages/widget';
 
 // - layout
 @import 'components/layout/footer';
@@ -62,6 +64,7 @@
 @import 'components/ui/dropdown';
 @import 'components/ui/card-image';
 @import 'components/ui/card-info';
+@import 'components/ui/chart';
 @import 'components/ui/collapsible-list';
 @import 'components/ui/compare-toolbar';
 @import 'components/ui/filters';
