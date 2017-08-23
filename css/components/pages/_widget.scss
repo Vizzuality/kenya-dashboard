@@ -24,9 +24,14 @@
             margin-right: 8px;
           }
         }
-        .info .update {
-          color: $color-text-2;
-          margin-top: 1px;
+        .info {
+          flex-flow: column;
+          align-items: flex-start;
+          
+          .update {
+            color: $color-text-2;
+            margin-top: 1px;
+          }
         }
       }
 

@@ -36,6 +36,9 @@ class WidgetPage extends Page {
     this.state = {
       info: null
     };
+
+    // Bindings
+    this.onPrint = this.onPrint.bind(this);
   }
 
   componentDidMount() {
@@ -76,6 +79,11 @@ class WidgetPage extends Page {
       });
   }
 
+  onPrint() {
+    window.print();
+    window.history.back();
+  }
+
   render() {
     const { info } = this.state;
     const { className, url, session, user } = this.props;
@@ -110,6 +118,7 @@ class WidgetPage extends Page {
                 info={this.state.info}
                 dates={this.options.dates}
                 region={this.options.region}
+                onPrint={this.onPrint}
               />
             </section>
 

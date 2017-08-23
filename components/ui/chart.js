@@ -49,6 +49,10 @@ export default class Chart extends React.Component {
       const threshold = info['json-config'].threshold;
       const y2Axis = info['json-config'].type['secondary-axe'];
 
+      setTimeout(() => {
+        this.props.onPrint();
+      }, 1500);
+
       switch (info['json-config'].type.visual) {
         case 'table': return (
           <TableType
@@ -155,5 +159,7 @@ Chart.propTypes = {
   className: PropTypes.string,
   info: PropTypes.object,
   region: PropTypes.string,
-  dates: PropTypes.object
+  dates: PropTypes.object,
+  // Actions
+  onPrint: PropTypes.func
 };
