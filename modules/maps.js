@@ -198,8 +198,8 @@ export function setAreasParamsUrl(url) {
       newAreas[key] = {
         zoom: areas[key].zoom,
         region: areas[key].region,
-        layers: [],
-        removedWidgets: areas[key].removedWidgets,
+        layers: areas[key].layers || {},
+        removedWidgets: areas[key].removedWidgets || [],
         lat: areas[key].center.lat,
         lng: areas[key].center.lng
       };

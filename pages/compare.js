@@ -177,6 +177,8 @@ class ComparePage extends Page {
           lat: +params[key].lat || MAP_OPTIONS.center[0],
           lng: +params[key].lng || MAP_OPTIONS.center[1]
         },
+        layers: params[key].layers || {},
+        removedWidgets: params[key].removedWidgets || [],
         region: params[key].region || KENYA_CARTO_ID
       };
       this.props.setSingleMapParamsFromUrl(mapParams, key);
