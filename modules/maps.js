@@ -16,6 +16,8 @@ const SELECT_REGION = 'SELECT_REGION';
 const REMOVE_AREA = 'REMOVE_AREA';
 // Layers
 const ADD_LAYER = 'ADD_LAYER';
+// Widgets
+const REMOVE_WIDGET = 'REMOVE_WIDGET';
 
 
 const DEFAULT_AREA_PARAMS = {
@@ -25,7 +27,8 @@ const DEFAULT_AREA_PARAMS = {
   },
   zoom: MAP_OPTIONS.zoom,
   region: KENYA_CARTO_ID,
-  layers: {}
+  layers: {},
+  removedWidgets: []
 };
 
 /* Initial state */
@@ -57,6 +60,10 @@ export default function mapsReducer(state = initialState, action) {
     case REMOVE_AREA:
       return Object.assign({}, state, { areas: action.payload });
     case ADD_LAYER: {
+      const newAreas = Object.assign({}, state.areas, action.payload);
+      return Object.assign({}, state, { areas: newAreas });
+    }
+    case REMOVE_WIDGET: {
       const newAreas = Object.assign({}, state.areas, action.payload);
       return Object.assign({}, state, { areas: newAreas });
     }
@@ -173,6 +180,7 @@ export function setAreasParamsUrl(url) {
         zoom: areas[key].zoom,
         region: areas[key].region,
         layers: [],
+        removedWidgets: areas[key].removedWidgets,
         lat: areas[key].center.lat,
         lng: areas[key].center.lng
       };
@@ -224,6 +232,20 @@ export function addLayer(layer, area, region, dates) {
           payload: { [area]: newArea }
         });
       }
+    });
+  };
+}
+
+export function removeWidget(widgetId, areaId) {
+  return (dispatch, getState) => {
+    const areas = Object.assign({}, getState().maps.areas);
+    const newRemovedWidgets = areas[areaId].removedWidgets || [];
+    newRemovedWidgets.push(widgetId);
+    areas[areaId].removedWidgets = newRemovedWidgets;
+
+    dispatch({
+      type: REMOVE_WIDGET,
+      payload: areas
     });
   };
 }

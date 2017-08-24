@@ -54,7 +54,7 @@ export default class DashboardItem extends React.Component {
   // }
 
   render() {
-    const { info, className, dates, region } = this.props;
+    const { info, className, dates, region, remove, groupId } = this.props;
     // const threshold = this.getThresholdQualification();
 
     const classNames = classnames({
@@ -70,10 +70,13 @@ export default class DashboardItem extends React.Component {
           <h1 className="item-title">{info && info.title}</h1>
           <div className="item-tools">
             <ItemTools
+              groupId={groupId}
               info={info}
               dates={dates}
+              remove={remove}
               options={{ dates, region, indicator: info['indicator-id'] }}
               onSetDate={this.onSetDate}
+              onRemoveItem={this.props.onRemoveItem}
             />
           </div>
         </header>
@@ -111,6 +114,7 @@ DashboardItem.propTypes = {
   info: PropTypes.object,
   region: PropTypes.string,
   dates: PropTypes.object,
+  remove: PropTypes.bool,
   // Actions
   onSetDate: PropTypes.func
 };

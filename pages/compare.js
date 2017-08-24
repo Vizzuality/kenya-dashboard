@@ -24,7 +24,8 @@ import {
   selectRegion,
   removeArea,
   setAreasParamsUrl,
-  addLayer
+  addLayer,
+  removeWidget
 } from 'modules/maps';
 
 import {
@@ -211,6 +212,8 @@ class ComparePage extends Page {
             id={key}
             url={this.props.url}
             indicators={indicators}
+            removedWidgets={areas[key].removedWidgets}
+            // TODO:dates to each area
             dates={dates}
             numOfAreas={Object.keys(areas).length}
             selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
@@ -219,6 +222,7 @@ class ComparePage extends Page {
             onRemoveArea={this.onRemoveArea}
             onSelectRegion={this.props.selectRegion}
             onSetDate={this.props.setIndicatorDates}
+            onRemoveWidget={this.props.removeWidget}
           />
         )
       }
@@ -387,6 +391,11 @@ export default withRedux(
       dispatch(setAreasParamsUrl(url));
     },
     // Area layers
-    addLayer(layer, area, region) { dispatch(addLayer(layer, area, region)); } //
+    addLayer(layer, area, region) { dispatch(addLayer(layer, area, region)); }, //
+    // Area Widgets
+    removeWidget(widgetId, areaid, url) {
+      dispatch(removeWidget(widgetId, areaid));
+      dispatch(setAreasParamsUrl(url));
+    }
   })
 )(ComparePage);

@@ -24,6 +24,7 @@ export default class ItemTools extends React.Component {
     // Bindings
     this.onToggleModal = this.onToggleModal.bind(this);
     // this.onDownloadWidget = this.onDownloadWidget.bind(this);
+    this.onRemoveItem = this.onRemoveItem.bind(this);
   }
 
   onToggleModal() {
@@ -34,6 +35,11 @@ export default class ItemTools extends React.Component {
       }
     };
     modal.toggleModal(true, opts);
+  }
+
+  onRemoveItem() {
+    const { info, groupId } = this.props;
+    this.props.onRemoveItem(info.id, groupId);
   }
 
   // onDownloadWidget() {
@@ -72,7 +78,7 @@ export default class ItemTools extends React.Component {
             </a>
           </Link>
           {remove &&
-            <button className="btn">
+            <button className="btn" onClick={this.onRemoveItem}>
               <Icon name="icon-remove" className="-smaller" />
             </button>
           }
@@ -84,10 +90,12 @@ export default class ItemTools extends React.Component {
 
 ItemTools.propTypes = {
   className: PropTypes.string,
+  groupId: PropTypes.string,
   info: PropTypes.object,
   options: PropTypes.object,
   dates: PropTypes.object,
   remove: PropTypes.bool,
   // Actions
-  onSetDate: PropTypes.func
+  onSetDate: PropTypes.func,
+  onRemoveItem: PropTypes.func
 };
