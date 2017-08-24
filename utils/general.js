@@ -17,14 +17,10 @@ function encode(obj) {
 }
 
 function decode(obj) {
-<<<<<<< HEAD
   if (typeof atob === 'undefined') {
     return JSON.parse(Buffer.from(obj, 'base64').toString());
   }
   return JSON.parse(atob(obj));
-=======
-  return JSON.parse(window.atob(obj));
->>>>>>> develop
 }
 
 function parseSelectOptions(options) {
