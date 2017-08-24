@@ -1,0 +1,45 @@
+
+.p-widget {
+  width: 210mm !important;
+  margin: 0 auto;
+  background-color: white;
+  padding-top: 90px;
+
+  .c-dashboard-item {
+    &.-print {
+      * {
+        color: $color-text-2;
+      }
+
+      .type-detail {
+        max-height: 600px;
+      }
+
+      .item-footer {
+        .topic {
+          display: flex;
+          align-items: center;
+
+          .c-icon {
+            margin-right: 8px;
+          }
+        }
+        .info {
+          flex-flow: column;
+          align-items: flex-start;
+          
+          .update {
+            color: $color-text-2;
+            margin-top: 1px;
+          }
+        }
+      }
+
+      border: 1px solid $color-border-1;
+
+      .c-tooltip-chart {
+        background-color: $color-bg-light;
+      }
+    }
+  }
+}
