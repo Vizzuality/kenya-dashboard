@@ -19,6 +19,7 @@ const REMOVE_AREA = 'REMOVE_AREA';
 const ADD_LAYER = 'ADD_LAYER';
 // Widgets
 const REMOVE_WIDGET = 'REMOVE_WIDGET';
+const REMOVE_WIDGETS_IDS = 'REMOVE_WIDGETS_IDS';
 
 
 const DEFAULT_AREA_PARAMS = {
@@ -67,6 +68,10 @@ export default function mapsReducer(state = initialState, action) {
       return Object.assign({}, state, { areas: newAreas });
     }
     case REMOVE_WIDGET: {
+      const newAreas = Object.assign({}, state.areas, action.payload);
+      return Object.assign({}, state, { areas: newAreas });
+    }
+    case REMOVE_WIDGETS_IDS: {
       const newAreas = Object.assign({}, state.areas, action.payload);
       return Object.assign({}, state, { areas: newAreas });
     }
@@ -259,6 +264,25 @@ export function removeWidget(widgetId, areaId) {
 
     dispatch({
       type: REMOVE_WIDGET,
+      payload: areas
+    });
+  };
+}
+
+// Remove all indicators widgets ids from removed widgets attr in all areas
+export function removeWidgetsIds(widgetsIds) {
+  return (dispatch, getState) => {
+    const areas = Object.assign({}, getState().maps.areas);
+
+    Object.keys(areas).forEach((key) => {
+      const removedWidgets = areas[key].removedWidgets ?
+        areas[key].removedWidgets.filter(id => !widgetsIds.includes(id)) :
+        [];
+      areas[key].removedWidgets = removedWidgets;
+    });
+
+    dispatch({
+      type: REMOVE_WIDGETS_IDS,
       payload: areas
     });
   };

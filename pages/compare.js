@@ -26,7 +26,8 @@ import {
   removeArea,
   setAreasParamsUrl,
   addLayer,
-  removeWidget
+  removeWidget,
+  removeWidgetsIds
 } from 'modules/maps';
 
 import {
@@ -78,6 +79,7 @@ class ComparePage extends Page {
     this.onToggleAccordionItem = this.onToggleAccordionItem.bind(this);
     this.onAddArea = this.onAddArea.bind(this);
     this.onRemoveArea = this.onRemoveArea.bind(this);
+    this.onRemoveIndicator = this.onRemoveIndicator.bind(this);
   }
 
   /* Lifecycle */
@@ -252,6 +254,15 @@ class ComparePage extends Page {
       this.props.removeArea(id, url);
   }
 
+  onRemoveIndicator(indId, url) {
+    this.props.removeIndicator(indId, url);
+    const indicator = this.props.indicators.list.find(ind => `${ind.id}` === `${indId}`);
+    const widgetsIds = indicator && indicator.widgets ?
+      indicator.widgets.filter(w => w['widget-type'] === 'chart').map(w => w.id) : [];
+
+    this.props.removeWidgetsIds(widgetsIds, url);
+  }
+
   render() {
     const {
       url,
@@ -285,7 +296,7 @@ class ComparePage extends Page {
               url={url}
               addArea={this.props.addArea}
               addIndicator={this.props.addIndicator}
-              removeIndicator={this.props.removeIndicator}
+              removeIndicator={this.onRemoveIndicator}
             />
             <Accordion
               sections={[
@@ -404,6 +415,10 @@ export default withRedux(
     // Area Widgets
     removeWidget(widgetId, areaid, url) {
       dispatch(removeWidget(widgetId, areaid));
+      dispatch(setAreasParamsUrl(url));
+    },
+    removeWidgetsIds(ids, url) {
+      dispatch(removeWidgetsIds(ids));
       dispatch(setAreasParamsUrl(url));
     }
   })
