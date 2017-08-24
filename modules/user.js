@@ -11,7 +11,8 @@ const userCookie = Cookies.get('user') ? JSON.parse(Cookies.get('user')) : {};
 // REDUCER
 const initialState = {
   user: userCookie,
-  logged: userCookie && userCookie.auth_token && userCookie.auth_token !== '',
+  // Removing true or false make dissapear the attribute
+  logged: userCookie && userCookie.auth_token && userCookie.auth_token !== '' ? true : false,
   reset: null
 };
 

@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// Libraries
 import classnames from 'classnames';
 
 // Components
@@ -7,6 +9,7 @@ import Head from 'components/layout/head';
 import Icons from 'components/layout/icons';
 import Header from 'components/layout/header';
 import Modal from 'components/ui/modal';
+import Media from 'components/responsive/media';
 
 if (process.env.NODE_ENV !== 'production') {
   // TODO
@@ -31,13 +34,25 @@ export default function Layout(props) {
       <Icons />
 
       {/* Customs Header */}
-      {hasHeader &&
-        <Header
-          url={url}
-          session={session}
-          logged={logged}
-        />
-      }
+      <Media device="mobile">
+        {hasHeader &&
+          <Header
+            url={url}
+            session={session}
+            logged={logged}
+            device
+          />
+        }
+      </Media>
+      <Media device="desktop+">
+        {hasHeader &&
+          <Header
+            url={url}
+            session={session}
+            logged={logged}
+          />
+        }
+      </Media>
 
       <div className="l-main">
         {children}
