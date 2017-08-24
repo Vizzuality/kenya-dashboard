@@ -71,6 +71,7 @@ export default class AreaIndicators extends React.Component {
             list={setIndicatorsWidgetsList(indicators.list, false)}
             region={selectedRegion}
             dates={dates}
+            remove
             onSetDate={this.props.onSetDate}
           />
         </section>

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import DashboardItem from 'components/ui/dashboard-item';
 
 
-export default function DashboardList({ list, layout, withGrid, region, dates, onSetDate }) {
+export default function DashboardList({ list, layout, withGrid, region, dates, remove, onSetDate }) {
   return (
     <div className="c-dashboard-list">
       {withGrid &&
@@ -15,6 +15,7 @@ export default function DashboardList({ list, layout, withGrid, region, dates, o
               <DashboardItem
                 info={wid}
                 region={region}
+                remove={remove}
                 dates={dates[wid['indicator-id']] || null}
                 onSetDate={onSetDate}
               />
@@ -23,10 +24,11 @@ export default function DashboardList({ list, layout, withGrid, region, dates, o
         </div>
       }
       {!withGrid &&
-        list.map((wid, i) => (
+        list.map(wid => (
           <DashboardItem
             info={wid}
-            key={i}
+            key={wid.id}
+            remove={remove}
             className={layout === 'grid' ? '-grid' : '-list'}
             region={region}
             onSetDate={onSetDate}
@@ -41,6 +43,7 @@ DashboardList.propTypes = {
   list: PropTypes.array,
   dates: PropTypes.object,
   layout: PropTypes.string,
+  remove: PropTypes.bool,
   withGrid: PropTypes.bool,
   region: PropTypes.string,
   // Actions
@@ -48,5 +51,6 @@ DashboardList.propTypes = {
 };
 
 DashboardList.defaultProps = {
-  children: ''
+  children: '',
+  remove: false
 };

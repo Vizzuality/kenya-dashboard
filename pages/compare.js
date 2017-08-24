@@ -242,7 +242,16 @@ class ComparePage extends Page {
   }
 
   render() {
-    const { url, mapState, indicators, session, indicatorsFilterList, modal, dates, user } = this.props;
+    const {
+      url,
+      mapState,
+      indicators,
+      session,
+      indicatorsFilterList,
+      modal,
+      dates,
+      user
+    } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(layers);
     const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators, dates);
