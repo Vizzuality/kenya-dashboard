@@ -36,7 +36,16 @@ export default class AreaIndicators extends React.Component {
   }
 
   render() {
-    const { id, className, indicators, numOfAreas, regions, selectedRegion, dates, removedWidgets } = this.props;
+    const {
+      id,
+      className,
+      indicators,
+      numOfAreas,
+      regions,
+      selectedRegion,
+      dates,
+      removedWidgets
+    } = this.props;
     const classNames = classnames(
       'c-area-indicators',
       { [className]: !!className }
@@ -96,11 +105,13 @@ AreaIndicators.propTypes = {
   dates: PropTypes.object,
   selectedRegion: PropTypes.any,
   numOfAreas: PropTypes.number,
+  removedWidgets: PropTypes.array,
   // Actions
   onRemoveArea: PropTypes.func,
   onToggleAccordionItem: PropTypes.func,
   onSelectRegion: PropTypes.func,
-  onSetDate: PropTypes.func
+  onSetDate: PropTypes.func,
+  onRemoveWidget: PropTypes.func
 };
 
 AreaIndicators.defaultProps = {

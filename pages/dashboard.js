@@ -36,6 +36,7 @@ class DashboardPage extends Page {
       this.props.setUser({ auth_token: localStorage.token });
     }
 
+    // Get all indicators
     if (this.props.user.logged && !this.props.indicators.list.length) {
       this.props.getIndicators(selectedFilters);
     }

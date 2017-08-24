@@ -114,9 +114,11 @@ DashboardItem.propTypes = {
   info: PropTypes.object,
   region: PropTypes.string,
   dates: PropTypes.object,
+  groupId: PropTypes.string,
   remove: PropTypes.bool,
   // Actions
-  onSetDate: PropTypes.func
+  onSetDate: PropTypes.func,
+  onRemoveItem: PropTypes.func
 };
 
 DashboardItem.defaultProps = {

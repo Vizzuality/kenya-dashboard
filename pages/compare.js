@@ -7,7 +7,7 @@ import {
   getSpecificIndicators,
   setIndicatorsLayersActive,
   setIndicatorsLayers,
-  getIndicatorsFilterList,
+  getIndicators,
   addIndicator,
   removeIndicator,
   setIndicatorsParamsUrl,
@@ -36,7 +36,7 @@ import {
 } from 'modules/filters';
 
 // Selectors
-import { getIndicatorsWithLayers } from 'selectors/indicators';
+import { getIndicatorsWithLayers, getIndicatorsWithWidgets } from 'selectors/indicators';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
@@ -102,9 +102,8 @@ class ComparePage extends Page {
     }
 
     // Get all indicators to set the add indicators list
-    if (!Object.keys(this.props.indicatorsFilterList.list).length &&
-    !this.props.filters.options.topics.length) {
-      this.props.getIndicatorsFilterList();
+    if (!this.props.allIndicators.length) {
+      this.props.getIndicators({});
     }
 
     // Update from url
@@ -126,10 +125,6 @@ class ComparePage extends Page {
   componentWillReceiveProps(nextProps) {
     if (!isEqual(this.props.url.query, nextProps.url.query)) {
       this.url = nextProps.url;
-    }
-
-    if (nextProps.filters.options.topics && isEmpty(nextProps.indicatorsFilterList.list)) {
-      this.props.getIndicatorsFilterList();
     }
 
     if (!isEqual(this.props.indicators.list, nextProps.indicators.list)) {
@@ -347,7 +342,8 @@ export default withRedux(
         { indicatorsWithLayers: getIndicatorsWithLayers(state) }
       ),
       dates: state.indicators.dates,
-      indicatorsFilterList: state.indicators.filterList,
+      allIndicators: state.indicators.list,
+      indicatorsFilterList: getIndicatorsWithWidgets(state),
       mapState: state.maps,
       modal: state.modal,
       filters: state.filters,
@@ -364,8 +360,8 @@ export default withRedux(
     getTopicsOptions() { dispatch(getTopicsOptions()); },
     // Indicators
     getSpecificIndicators(ids) { dispatch(getSpecificIndicators(ids)); },
-    getIndicatorsFilterList() {
-      dispatch(getIndicatorsFilterList());
+    getIndicators(params) {
+      dispatch(getIndicators(params));
     },
     addIndicator(id, url) {
       dispatch(addIndicator(id));

@@ -15,7 +15,18 @@ export default class DashboardList extends React.Component {
   }
 
   render() {
-    const { list, layout, withGrid, region, dates, remove, groupId, onSetDate, onRemoveItem } = this.props;
+    const {
+      list,
+      layout,
+      withGrid,
+      region,
+      dates,
+      remove,
+      groupId,
+      onSetDate,
+      onRemoveItem
+    } = this.props;
+
     return (
       <div className="c-dashboard-list">
         {withGrid &&
@@ -57,12 +68,14 @@ export default class DashboardList extends React.Component {
 DashboardList.propTypes = {
   list: PropTypes.array,
   dates: PropTypes.object,
+  groupId: PropTypes.string,
   layout: PropTypes.string,
   remove: PropTypes.bool,
   withGrid: PropTypes.bool,
   region: PropTypes.string,
   // Actions
-  onSetDate: PropTypes.func
+  onSetDate: PropTypes.func,
+  onRemoveItem: PropTypes.func
 };
 
 DashboardList.defaultProps = {
