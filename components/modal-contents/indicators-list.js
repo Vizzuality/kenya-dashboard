@@ -9,10 +9,10 @@ import CollapsibleList from 'components/ui/collapsible-list';
 
 export default function IndicatorsList(props) {
   const { className, indicators, activeIndicators } = props;
-  const classNames = classnames({
-    'c-indicators-list': true,
-    [className]: !!className
-  });
+  const classNames = classnames(
+    'c-indicators-list',
+    { [className]: !!className }
+  );
 
   return (
     <div className={classNames}>
