@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 // Redux
 import { connect } from 'react-redux';
-import { store } from 'store';
 
 // Services
 import modal from 'services/modal';
@@ -62,8 +61,16 @@ class Header extends React.Component {
       modal.setModalOptions(opts);
     }
 
+    if (!this.props.user.logged && nextProps.user.logged) {
+      modal.toggleModal(false, {});
+    }
+
     if (this.state.modalOpened && !nextProps.modalOpened) {
       this.setState({ modalOpened: false });
+    }
+
+    if (this.state.open && !this.props.user.logged && nextProps.user.logged) {
+      this.onToggleMenu();
     }
   }
 
@@ -75,6 +82,7 @@ class Header extends React.Component {
     this.props.logout();
     this.setState({ open: false });
   }
+
 
   // Open modal
   onOpenModal() {
@@ -93,9 +101,9 @@ class Header extends React.Component {
   }
 
   getCustomContentByPage() {
-    const { url, user } = this.props;
+    const { url, user, device } = this.props;
 
-    if (user.logged) {
+    if (user.logged || device) {
       switch (url.pathname) {
         // Different pathnames for the index
         case '/index': return { title: <h1>Kenya</h1> };
@@ -139,7 +147,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { url, user } = this.props;
+    const { url, device, user } = this.props;
     const toggleMenuClasses = classnames(
       'toggle-menu',
       { '-open': this.state.open }
@@ -154,7 +162,7 @@ class Header extends React.Component {
           <div className="column small-12">
             <div className="header-container">
               <div className="header-title">
-                {user.logged &&
+                {(user.logged || device) &&
                   <button className="btn-menu" onClick={this.onToggleMenu}>
                     <Icon name="icon-menu" className="-big" />
                   </button>
@@ -185,13 +193,16 @@ class Header extends React.Component {
             </section>
             <nav className="menu-main">
               <MainNav list={HEADER_MENU_LINKS} url={url} />
-              {user.logged &&
-                <div className="menu-tools">
+              <div className="menu-tools">
+                {user.logged ?
                   <button className="btn-logout" onClick={this.onLogout}>
                     Sign out
+                  </button> :
+                  <button className="btn-logout" onClick={this.onOpenModal}>
+                    Sign in
                   </button>
-                </div>
-              }
+                }
+              </div>
             </nav>
           </div>
         </div>
@@ -203,11 +214,16 @@ class Header extends React.Component {
 Header.propTypes = {
   url: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
+  device: PropTypes.bool,
   modalOpened: PropTypes.bool,
   // Actions
   login: PropTypes.func,
   logout: PropTypes.func,
   resetPassword: PropTypes.func
+};
+
+Header.defaultProps = {
+  device: false
 };
 
 
