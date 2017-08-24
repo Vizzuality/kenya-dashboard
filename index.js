@@ -61,6 +61,11 @@ const isAuthenticated = (req, res, nextAction) => {
   return res.redirect('/');
 };
 
+const checkExport = (req, res, nextAction) => {
+  if (req.headers['user-agent'].indexOf('HeadlessChrome') < 0) return nextAction();
+  return isAuthenticated(req, res, nextAction);
+};
+
 // Initializing next app before express server
 app.prepare()
   .then(() => {
@@ -97,8 +102,9 @@ app.prepare()
     // Pages with required authentication
     server.all('/about', isAuthenticated, handleUrl);
     server.all('/dashboard', isAuthenticated, handleUrl);
-    server.all('/agency', isAuthenticated, handleUrl);
     server.all('/compare', isAuthenticated, handleUrl);
+    server.all('/agency/:id', isAuthenticated, handleUrl);
+    server.all('/widget/:id', checkExport, handleUrl);
     server.use(handle);
 
     server.listen(port, (err) => {
