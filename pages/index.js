@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
 import { store } from 'store';
 
+// SElectors
+import { getTopicsWithoutAllOption } from 'selectors/filters';
+
 // Modules
 import { getTopicsOptions } from 'modules/filters';
 import { setUser } from 'modules/user';
@@ -149,7 +152,7 @@ export default withRedux(
   store,
   state => ({
     user: state.user,
-    topics: state.filters.options.topics.filter(t => t.id !== 'all')
+    topics: getTopicsWithoutAllOption(state)
   }),
   dispatch => ({
     getTopicsOptions() { dispatch(getTopicsOptions()); },
