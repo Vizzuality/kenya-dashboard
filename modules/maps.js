@@ -9,6 +9,7 @@ import { MAP_OPTIONS } from 'constants/map';
 import { KENYA_CARTO_ID } from 'constants/filters';
 
 /* Constants */
+const RESET_AREAS = 'RESET_AREAS';
 const SET_MAP_PARAMS = 'SET_MAP_PARAMS';
 const SET_MAP_EXPANSION = 'SET_MAP_EXPANSION';
 const ADD_AREA = 'ADD_AREA';
@@ -42,6 +43,8 @@ const initialState = {
 /* Reducer */
 export default function mapsReducer(state = initialState, action) {
   switch (action.type) {
+    case RESET_AREAS:
+      return Object.assign({}, state, { areas: action.payload });
     case SET_MAP_PARAMS: {
       const newAreaParams = Object.assign({}, state.areas, action.payload);
       return Object.assign({}, state, { areas: newAreaParams });
@@ -72,7 +75,18 @@ export default function mapsReducer(state = initialState, action) {
   }
 }
 
+
 /* Action creators */
+/* Reset areas */
+export function resetAreas() {
+  return (dispatch) => {
+    dispatch({
+      type: RESET_AREAS,
+      payload: { defaultAreaMap: DEFAULT_AREA_PARAMS }
+    });
+  };
+}
+
 export function setSingleMapParams(params, key) {
   return (dispatch) => {
     dispatch({

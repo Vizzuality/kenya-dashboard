@@ -15,6 +15,7 @@ import {
 } from 'modules/indicators';
 
 import {
+  resetAreas,
   setSingleMapParams,
   setSingleMapParamsUrl,
   setMapExpansion,
@@ -93,13 +94,20 @@ class ComparePage extends Page {
       this.props.getRegionsOptions();
     }
 
-    // Get indicators from url
-    url.query.indicators && this.props.getSpecificIndicators(url.query.indicators);
-
     // Get topics to select grouped indicators
     if (isEmpty(this.props.filters.options.topics)) {
       this.props.getTopicsOptions();
     }
+
+    // Get all indicators to set the add indicators list
+    if (!Object.keys(this.props.indicatorsFilterList.list).length &&
+    !this.props.filters.options.topics.length) {
+      this.props.getIndicatorsFilterList();
+    }
+
+    // Update from url
+    // Get indicators from url
+    url.query.indicators && this.props.getSpecificIndicators(url.query.indicators);
 
     // Update areas with url params
     if (url.query.maps) {
@@ -110,12 +118,6 @@ class ComparePage extends Page {
     // Expand map if in url
     if (url.query.expanded) {
       this.props.setMapExpansionFromUrl(!!url.query.expanded);
-    }
-
-    // Get all indicators to set the add indicators list
-    if (!Object.keys(this.props.indicatorsFilterList.list).length &&
-      !this.props.filters.options.topics.length) {
-      this.props.getIndicatorsFilterList();
     }
   }
 
@@ -131,6 +133,11 @@ class ComparePage extends Page {
     if (!isEqual(this.props.indicators.list, nextProps.indicators.list)) {
       // this.props.setLayers();
     }
+  }
+
+  componentWillUnmount() {
+    // Reset params
+    this.props.resetAreas();
   }
 
   /* Accordion methods */
@@ -337,6 +344,8 @@ export default withRedux(
   dispatch => ({
     // User
     setUser(user) { dispatch(setUser(user)); },
+    // Reset
+    resetAreas() { dispatch(resetAreas()); },
     // Filters
     getRegionsOptions() { dispatch(getRegionsOptions()); },
     getTopicsOptions() { dispatch(getTopicsOptions()); },
