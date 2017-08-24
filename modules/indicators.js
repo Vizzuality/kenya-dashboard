@@ -263,23 +263,23 @@ export function removeIndicator(id) {
   };
 }
 
-export function setIndicatorsParamsUrl(indicatorId, type, url) {
+export function setIndicatorsParamsUrl(indicatorId, url) {
   return () => {
     let newQuery = {};
     const { indicators } = url.query;
     const indicatorsIds = indicators ? indicators.split(',') : [];
 
     // Update indicators ids
-    if (type === 'add') {
-      indicatorsIds.push(`${indicatorId}`);
-    } else { // Remove
+    if (indicatorsIds.includes(indicatorId)) { // Remove
       const idIndex = indicatorsIds.indexOf(`${indicatorId}`);
       indicatorsIds.splice(idIndex, 1);
+    } else { // Add
+      indicatorsIds.push(`${indicatorId}`);
     }
 
     // Show indicators param if there are ids, or hide if not
     if (indicatorsIds.length) {
-      newQuery = { ...url.query, indicators: indicatorsIds.join(',') };
+      newQuery = Object.assign({}, url.query, { indicators: indicatorsIds.join(',') });
     } else {
       Object.keys(url.query).forEach((key) => {
         if (key !== 'indicators') newQuery = url.query[key];

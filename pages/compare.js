@@ -365,11 +365,11 @@ export default withRedux(
     },
     addIndicator(id, url) {
       dispatch(addIndicator(id));
-      dispatch(setIndicatorsParamsUrl(id, 'add', url));
+      dispatch(setIndicatorsParamsUrl(id, url));
     },
     removeIndicator(id, url) {
       dispatch(removeIndicator(id));
-      dispatch(setIndicatorsParamsUrl(id, 'remove', url));
+      dispatch(setIndicatorsParamsUrl(id, url));
     },
     setIndicatorDates(indicator, dates) { dispatch(setIndicatorDates(indicator, dates)); },
     // Layers
