@@ -35,6 +35,7 @@ export default class DashboardList extends React.Component {
               <div key={wid.id} className={layout === 'grid' ? 'column small-12 medium-4 large-3' : 'column small-12'}>
                 <DashboardItem
                   groupId={groupId}
+                  layout={layout}
                   info={wid}
                   region={region}
                   remove={remove}
