@@ -13,29 +13,46 @@ import { getAgency } from 'modules/agencies';
 import isEmpty from 'lodash/isEmpty';
 
 // Components
-import { Link } from 'routes';
-import Page from 'components/layout/page';
+import { Router, Link } from 'routes';
 import Layout from 'components/layout/layout';
 import Intro from 'components/ui/intro';
 // import Spinner from 'components/ui/spinner';
 
 const fakeDescription = 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur.';
 
-class AgencyPage extends Page {
-  componentDidMount() {
-    // Set user
-    if (localStorage.token && localStorage.token !== '') {
-      this.props.setUser({ auth_token: localStorage.token });
+class AgencyPage extends React.PureComponent {
+  static async getInitialProps({ asPath, pathname, query, req, store, isServer }) {
+    const url = { asPath, pathname, query };
+    const { user } = isServer ? req : store.getState();
+    if (isServer) {
+      await store.dispatch(getAgency(query.id, user.auth_token));
+      if (user) store.dispatch(setUser(user));
     }
+    return { user, url, isServer };
+  }
 
-    // If no agency info
-    if (isEmpty(this.props.info)) {
-      this.props.getAgency(this.props.url.query.id);
+  componentWillMount() {
+    if (!this.props.isServer && isEmpty(this.props.user)) {
+      Router.pushRoute('home');
     }
   }
 
+  // componentDidMount() {
+  //   // Set user
+  //   if (localStorage.token && localStorage.token !== '') {
+  //     this.props.setUser({ auth_token: localStorage.token });
+  //   }
+
+  //   // If no agency info
+  //   if (isEmpty(this.props.info)) {
+  //     this.props.getAgency(this.props.url.query.id);
+  //   }
+  // }
+
   render() {
     const { url, session, info, user } = this.props;
+
+    if (!user) return null;
 
     return (
       <Layout

@@ -16,8 +16,9 @@ const store = (initialState = {}) =>
       applyMiddleware(thunk),
       /* Redux dev tool, install chrome extension in
        * https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en */
-      typeof window === 'object' &&
-        typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+      process.env.NODE_ENV !== 'production' &&
+        typeof window === 'object' &&
+          typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
     )
   );
 

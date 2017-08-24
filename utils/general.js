@@ -10,10 +10,16 @@ function toBase64(file, cb) {
 }
 
 function encode(obj) {
+  if (typeof btoa === 'undefined') {
+    return Buffer.from(JSON.stringify(obj)).toString('base64');
+  }
   return btoa(JSON.stringify(obj));
 }
 
 function decode(obj) {
+  if (typeof atob === 'undefined') {
+    return JSON.parse(Buffer.from(obj, 'base64').toString());
+  }
   return JSON.parse(atob(obj));
 }
 

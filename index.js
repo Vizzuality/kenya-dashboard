@@ -1,5 +1,3 @@
-// eslint-disable-line global-require
-
 const express = require('express');
 const passport = require('passport');
 const next = require('next');
@@ -11,10 +9,13 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const postcssMiddleware = require('postcss-middleware');
 const routes = require('./routes');
+const { parse } = require('url');
 const postcssConfig = require('./postcss.config');
+const auth = require('./auth')();
 
 // Load environment variables from .env file if present
 require('dotenv').load();
+require('es6-promise').polyfill();
 
 const port = process.env.PORT || 3000;
 const dev = process.env.NODE_ENV !== 'production';
@@ -25,16 +26,6 @@ const handle = routes.getRequestHandler(app);
 
 // Express app creation
 const server = express();
-
-// Passport session setup.
-// To support persistent login sessions, Passport needs to be able to
-// serialize users into and deserialize users out of the session.
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
-});
 
 // Configuring session and cookie options
 const sessionOptions = {
@@ -61,10 +52,14 @@ server.use(cookieParser());
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(bodyParser.json());
 server.use(session(sessionOptions));
-
-// Initialize Passport!
 server.use(passport.initialize());
 server.use(passport.session());
+
+const isAuthenticated = (req, res, nextAction) => {
+  if (req.isAuthenticated()) return nextAction();
+  // Fallback to home
+  return res.redirect('/');
+};
 
 // Initializing next app before express server
 app.prepare()
@@ -81,13 +76,34 @@ app.prepare()
       });
     }
 
-    server.all('*', (req, res) => {
-      return handle(req, res);
+    // Configuring next routes with express
+    const handleUrl = (req, res) => {
+      const parsedUrl = parse(req.url, true);
+      return handle(req, res, parsedUrl);
+    };
+
+    // Home doesn`t require authentication
+    server.get('/', handleUrl);
+
+    // Authentication
+    server.post('/login', auth.authenticate(), (req, res) => {
+      res.json(req.user);
     });
+    server.get('/logout', (req, res) => {
+      req.logout();
+      res.redirect('/');
+    });
+
+    // Pages with required authentication
+    server.all('/about', isAuthenticated, handleUrl);
+    server.all('/dashboard', isAuthenticated, handleUrl);
+    server.all('/agency', isAuthenticated, handleUrl);
+    server.all('/compare', isAuthenticated, handleUrl);
+    server.use(handle);
 
     server.listen(port, (err) => {
       if (err) throw err;
-      console.info(`> Ready on http://localhost:${port}`);
+      console.info(`> Ready on http://localhost:${port} [${process.env.NODE_ENV}]`);
     });
   })
   .catch((err) => {
