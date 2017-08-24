@@ -7,7 +7,7 @@ import {
   getSpecificIndicators,
   setIndicatorsLayersActive,
   setIndicatorsLayers,
-  getIndicatorsFilterList,
+  getIndicators,
   addIndicator,
   removeIndicator,
   setIndicatorsParamsUrl,
@@ -15,6 +15,7 @@ import {
 } from 'modules/indicators';
 
 import {
+  resetAreas,
   setSingleMapParams,
   setSingleMapParamsUrl,
   setMapExpansion,
@@ -24,7 +25,9 @@ import {
   selectRegion,
   removeArea,
   setAreasParamsUrl,
-  addLayer
+  addLayer,
+  removeWidget,
+  removeWidgetsIds
 } from 'modules/maps';
 
 import {
@@ -33,7 +36,7 @@ import {
 } from 'modules/filters';
 
 // Selectors
-import { getIndicatorsWithLayers } from 'selectors/indicators';
+import { getIndicatorsWithLayers, getIndicatorsWithWidgets } from 'selectors/indicators';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
@@ -76,6 +79,7 @@ class ComparePage extends Page {
     this.onToggleAccordionItem = this.onToggleAccordionItem.bind(this);
     this.onAddArea = this.onAddArea.bind(this);
     this.onRemoveArea = this.onRemoveArea.bind(this);
+    this.onRemoveIndicator = this.onRemoveIndicator.bind(this);
   }
 
   /* Lifecycle */
@@ -92,13 +96,19 @@ class ComparePage extends Page {
       this.props.getRegionsOptions();
     }
 
-    // Get indicators from url
-    url.query.indicators && this.props.getSpecificIndicators(url.query.indicators);
-
     // Get topics to select grouped indicators
     if (isEmpty(this.props.filters.options.topics)) {
       this.props.getTopicsOptions();
     }
+
+    // Get all indicators to set the add indicators list
+    if (!this.props.allIndicators.length) {
+      this.props.getIndicators({});
+    }
+
+    // Update from url
+    // Get indicators from url
+    url.query.indicators && this.props.getSpecificIndicators(url.query.indicators);
 
     // Update areas with url params
     if (url.query.maps) {
@@ -110,12 +120,6 @@ class ComparePage extends Page {
     if (url.query.expanded) {
       this.props.setMapExpansionFromUrl(!!url.query.expanded);
     }
-
-    // Get all indicators to set the add indicators list
-    if (!Object.keys(this.props.indicatorsFilterList.list).length &&
-      !this.props.filters.options.topics.length) {
-      this.props.getIndicatorsFilterList();
-    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -123,13 +127,14 @@ class ComparePage extends Page {
       this.url = nextProps.url;
     }
 
-    if (nextProps.filters.options.topics && isEmpty(nextProps.indicatorsFilterList.list)) {
-      this.props.getIndicatorsFilterList();
-    }
-
     if (!isEqual(this.props.indicators.list, nextProps.indicators.list)) {
       // this.props.setLayers();
     }
+  }
+
+  componentWillUnmount() {
+    // Reset params
+    this.props.resetAreas();
   }
 
   /* Accordion methods */
@@ -167,6 +172,8 @@ class ComparePage extends Page {
           lat: +params[key].lat || MAP_OPTIONS.center[0],
           lng: +params[key].lng || MAP_OPTIONS.center[1]
         },
+        layers: params[key].layers || {},
+        removedWidgets: params[key].removedWidgets || [],
         region: params[key].region || KENYA_CARTO_ID
       };
       this.props.setSingleMapParamsFromUrl(mapParams, key);
@@ -211,6 +218,8 @@ class ComparePage extends Page {
             id={key}
             url={this.props.url}
             indicators={indicators}
+            removedWidgets={areas[key].removedWidgets}
+            // TODO:dates to each area
             dates={dates}
             numOfAreas={Object.keys(areas).length}
             selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
@@ -219,6 +228,7 @@ class ComparePage extends Page {
             onRemoveArea={this.onRemoveArea}
             onSelectRegion={this.props.selectRegion}
             onSetDate={this.props.setIndicatorDates}
+            onRemoveWidget={this.props.removeWidget}
           />
         )
       }
@@ -241,8 +251,26 @@ class ComparePage extends Page {
       this.props.removeArea(id, url);
   }
 
+  onRemoveIndicator(indId, url) {
+    this.props.removeIndicator(indId, url);
+    const indicator = this.props.indicators.list.find(ind => `${ind.id}` === `${indId}`);
+    const widgetsIds = indicator && indicator.widgets ?
+      indicator.widgets.filter(w => w['widget-type'] === 'chart').map(w => w.id) : [];
+
+    this.props.removeWidgetsIds(widgetsIds, url);
+  }
+
   render() {
-    const { url, mapState, indicators, session, indicatorsFilterList, modal, dates, user } = this.props;
+    const {
+      url,
+      mapState,
+      indicators,
+      session,
+      indicatorsFilterList,
+      modal,
+      dates,
+      user
+    } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(layers);
     const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators, dates);
@@ -265,7 +293,7 @@ class ComparePage extends Page {
               url={url}
               addArea={this.props.addArea}
               addIndicator={this.props.addIndicator}
-              removeIndicator={this.props.removeIndicator}
+              removeIndicator={this.onRemoveIndicator}
             />
             <Accordion
               sections={[
@@ -314,7 +342,8 @@ export default withRedux(
         { indicatorsWithLayers: getIndicatorsWithLayers(state) }
       ),
       dates: state.indicators.dates,
-      indicatorsFilterList: state.indicators.filterList,
+      allIndicators: state.indicators.list,
+      indicatorsFilterList: getIndicatorsWithWidgets(state),
       mapState: state.maps,
       modal: state.modal,
       filters: state.filters,
@@ -324,21 +353,23 @@ export default withRedux(
   dispatch => ({
     // User
     setUser(user) { dispatch(setUser(user)); },
+    // Reset
+    resetAreas() { dispatch(resetAreas()); },
     // Filters
     getRegionsOptions() { dispatch(getRegionsOptions()); },
     getTopicsOptions() { dispatch(getTopicsOptions()); },
     // Indicators
     getSpecificIndicators(ids) { dispatch(getSpecificIndicators(ids)); },
-    getIndicatorsFilterList() {
-      dispatch(getIndicatorsFilterList());
+    getIndicators(params) {
+      dispatch(getIndicators(params));
     },
     addIndicator(id, url) {
       dispatch(addIndicator(id));
-      dispatch(setIndicatorsParamsUrl(id, 'add', url));
+      dispatch(setIndicatorsParamsUrl(id, url));
     },
     removeIndicator(id, url) {
       dispatch(removeIndicator(id));
-      dispatch(setIndicatorsParamsUrl(id, 'remove', url));
+      dispatch(setIndicatorsParamsUrl(id, url));
     },
     setIndicatorDates(indicator, dates) { dispatch(setIndicatorDates(indicator, dates)); },
     // Layers
@@ -378,6 +409,15 @@ export default withRedux(
       dispatch(setAreasParamsUrl(url));
     },
     // Area layers
-    addLayer(layer, area, region) { dispatch(addLayer(layer, area, region)); } //
+    addLayer(layer, area, region) { dispatch(addLayer(layer, area, region)); }, //
+    // Area Widgets
+    removeWidget(widgetId, areaid, url) {
+      dispatch(removeWidget(widgetId, areaid));
+      dispatch(setAreasParamsUrl(url));
+    },
+    removeWidgetsIds(ids, url) {
+      dispatch(removeWidgetsIds(ids));
+      dispatch(setAreasParamsUrl(url));
+    }
   })
 )(ComparePage);

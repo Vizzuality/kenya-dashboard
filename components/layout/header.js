@@ -32,21 +32,21 @@ class Header extends React.Component {
     super(props);
 
     this.state = {
-      open: false
+      open: false,
+      modalOpened: false
     };
 
     // Bindings
     this.onToggleMenu = this.onToggleMenu.bind(this);
-    this.onLogin = this.onLogin.bind(this);
     this.onLogout = this.onLogout.bind(this);
-    this.onToggleModal = this.onToggleModal.bind(this);
+    this.onOpenModal = this.onOpenModal.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     const { modalOpened } = this.props;
 
     // Update modal content props
-    if (modalOpened) {
+    if (modalOpened && nextProps.modalOpened && this.state.modalOpened) {
       const opts = {
         children: Login,
         childrenProps: {
@@ -59,6 +59,14 @@ class Header extends React.Component {
         }
       };
       modal.setModalOptions(opts);
+    }
+
+    if (!this.props.user.logged && nextProps.user.logged) {
+      modal.toggleModal(false, {});
+    }
+
+    if (this.state.modalOpened && !nextProps.modalOpened) {
+      this.setState({ modalOpened: false });
     }
 
     if (this.state.open && !this.props.user.logged && nextProps.user.logged) {
@@ -75,11 +83,9 @@ class Header extends React.Component {
     this.setState({ open: false });
   }
 
-  onLogin() {
-    this.onToggleModal();
-  }
 
-  onToggleModal() {
+  // Open modal
+  onOpenModal() {
     const opts = {
       children: Login,
       childrenProps: {
@@ -133,7 +139,7 @@ class Header extends React.Component {
             url={url}
             user={user}
             logout={this.onLogout}
-            toggleModal={this.onToggleModal}
+            toggleModal={this.onOpenModal}
           />
         )
       };
@@ -192,7 +198,7 @@ class Header extends React.Component {
                   <button className="btn-logout" onClick={this.onLogout}>
                     Sign out
                   </button> :
-                  <button className="btn-logout" onClick={this.onToggleModal}>
+                  <button className="btn-logout" onClick={this.onOpenModal}>
                     Sign in
                   </button>
                 }
