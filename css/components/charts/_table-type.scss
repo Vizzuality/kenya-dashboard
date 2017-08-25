@@ -36,33 +36,19 @@
     }
 
     /* Threshold color */
-    &.-success {
-      color: $color-threshold-success;
-      .c-icon { fill: $color-threshold-success; }
-    }
-
-    &.-good {
-      color: $color-threshold-good;
-      .c-icon { fill: $color-threshold-good; }
-    }
-
-    &.-medium {
-      color: $color-threshold-medium;
-      .c-icon { fill: $color-threshold-medium; }
-    }
-
-    &.-weak {
-      color: $color-threshold-weak;
-      .c-icon { fill: $color-threshold-weak; }
-    }
-
-    &.-fail {
-      color: $color-threshold-fail;
-      .c-icon { fill: $color-threshold-fail; }
-    }
+    &.-success { color: $color-threshold-success; }
+    &.-good { color: $color-threshold-good; }
+    &.-medium { color: $color-threshold-medium; }
+    &.-weak { color: $color-threshold-weak; }
+    &.-fail { color: $color-threshold-fail; }
 
     .c-icon {
-      margin-left: 2px;
+      margin-left: 5px;
+      margin-top: 2px;
+
+      &.-up { fill: $color-threshold-success; }
+      &.-equal { fill: $color-text-1; }
+      &.-down { fill: $color-threshold-fail; }
     }
   }
 }

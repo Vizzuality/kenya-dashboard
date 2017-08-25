@@ -38,7 +38,10 @@ export default function TableType(props) {
                 </td>
                 <td className={`-${thresholdValue}`}>
                   {row.y}
-                  <Icon name={`icon-arrow-${row.trend > 0 ? 'up' : 'down'}`} className="-smaller" />
+                  {row.trend === 0 ?
+                    <Icon name="icon-minus" className="-smaller -equal" /> :
+                    <Icon name={`icon-arrow-${row.trend > 0 ? 'up' : 'down'}`} className={`-smaller ${row.trend > 0 ? '-up' : '-down'}`} />
+                  }
                 </td>
               </tr>
             );
