@@ -10,8 +10,7 @@ import {
   getIndicators,
   addIndicator,
   removeIndicator,
-  setIndicatorsParamsUrl,
-  setIndicatorDates
+  setIndicatorsParamsUrl
 } from 'modules/indicators';
 
 import {
@@ -27,7 +26,8 @@ import {
   setAreasParamsUrl,
   addLayer,
   removeWidget,
-  removeWidgetsIds
+  removeWidgetsIds,
+  setAreaIndicatorDates
 } from 'modules/maps';
 
 import {
@@ -174,6 +174,7 @@ class ComparePage extends Page {
         },
         layers: params[key].layers || {},
         removedWidgets: params[key].removedWidgets || [],
+        dates: params[key].dates || {},
         region: params[key].region || KENYA_CARTO_ID
       };
       this.props.setSingleMapParamsFromUrl(mapParams, key);
@@ -181,12 +182,12 @@ class ComparePage extends Page {
   }
 
   /* Creat all maps with their own properties */
-  getAreaMaps(layers) {
-    const { mapState, indicators, filters, dates } = this.props;
+  getAreaMaps(areas, layers) {
+    const { mapState, indicators, filters } = this.props;
 
-    return Object.keys(mapState.areas).map((key) => {
+    return Object.keys(areas).map((key) => {
       const region = getValueMatchFromCascadeList(filters.options.regions,
-        mapState.areas[key].region);
+        areas[key].region);
 
       return {
         id: key,
@@ -194,8 +195,8 @@ class ComparePage extends Page {
           <AreaMap
             url={this.props.url}
             id={key}
-            area={mapState.areas[key]}
-            dates={dates}
+            area={areas[key]}
+            dates={areas[key].dates}
             layers={layers}
             layersActive={indicators.layersActive}
             mapState={mapState}
@@ -209,7 +210,7 @@ class ComparePage extends Page {
   }
 
   /* Create all indicators */
-  getAreaIndicators(areas, indicators, dates) {
+  getAreaIndicators(areas, indicators) {
     return Object.keys(areas).map(key => (
       {
         id: key,
@@ -219,15 +220,14 @@ class ComparePage extends Page {
             url={this.props.url}
             indicators={indicators}
             removedWidgets={areas[key].removedWidgets}
-            // TODO:dates to each area
-            dates={dates}
+            dates={areas[key].dates}
             numOfAreas={Object.keys(areas).length}
             selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
             regions={this.props.filters.options.regions}
             onToggleAccordionItem={this.onToggleAccordionItem}
             onRemoveArea={this.onRemoveArea}
             onSelectRegion={this.props.selectRegion}
-            onSetDate={this.props.setIndicatorDates}
+            onSetDate={this.props.setAreaIndicatorDates}
             onRemoveWidget={this.props.removeWidget}
           />
         )
@@ -268,12 +268,11 @@ class ComparePage extends Page {
       session,
       indicatorsFilterList,
       modal,
-      dates,
       user
     } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
-    const areaMaps = this.getAreaMaps(layers);
-    const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators, dates);
+    const areaMaps = this.getAreaMaps(mapState.areas, layers);
+    const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators);
 
     return (
       <Layout
@@ -341,7 +340,6 @@ export default withRedux(
         state.indicators.specific,
         { indicatorsWithLayers: getIndicatorsWithLayers(state) }
       ),
-      dates: state.indicators.dates,
       allIndicators: state.indicators.list,
       indicatorsFilterList: getIndicatorsWithWidgets(state),
       mapState: state.maps,
@@ -371,7 +369,9 @@ export default withRedux(
       dispatch(removeIndicator(id));
       dispatch(setIndicatorsParamsUrl(id, url));
     },
-    setIndicatorDates(indicator, dates) { dispatch(setIndicatorDates(indicator, dates)); },
+    setAreaIndicatorDates(indicator, dates, area) {
+      dispatch(setAreaIndicatorDates(indicator, dates, area));
+    },
     // Layers
     setIndicatorsLayersActive(indicatorsLayersActive) {
       dispatch(setIndicatorsLayersActive(indicatorsLayersActive));

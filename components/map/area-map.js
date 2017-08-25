@@ -74,6 +74,8 @@ export default class AreaMap extends React.Component {
       url: area.layers && area.layers[l.id] ? area.layers[l.id].url : ''
     }));
 
+    console.log(area);
+
     return (
       <div className={classNames}>
         <MapControls>

@@ -52,7 +52,8 @@
 
     .agency-container {
       padding: 0 10px;
-      height: 360px;
+      min-height: 360px;
+      height: calc(100% - 20px);
       margin-bottom: 20px;
     }
   }

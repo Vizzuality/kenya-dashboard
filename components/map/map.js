@@ -82,6 +82,7 @@ export default class Map extends React.Component {
       this.addLayer(nextProps.layers);
     }
 
+    // Add or remove layers
     if (!isEqual(this.props.indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
       const added = difference(nextProps.indicatorsLayersActive, this.props.indicatorsLayersActive);
       const removed = difference(
