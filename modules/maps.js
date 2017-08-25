@@ -17,6 +17,8 @@ const SELECT_REGION = 'SELECT_REGION';
 const REMOVE_AREA = 'REMOVE_AREA';
 // Layers
 const ADD_LAYER = 'ADD_LAYER';
+// indicators
+const SET_AREA_INDICATOR_DATES = 'SET_AREA_INDICATOR_DATES';
 // Widgets
 const REMOVE_WIDGET = 'REMOVE_WIDGET';
 const REMOVE_WIDGETS_IDS = 'REMOVE_WIDGETS_IDS';
@@ -30,6 +32,7 @@ const DEFAULT_AREA_PARAMS = {
   zoom: MAP_OPTIONS.zoom,
   region: KENYA_CARTO_ID,
   layers: {},
+  dates: {},
   removedWidgets: []
 };
 
@@ -72,6 +75,10 @@ export default function mapsReducer(state = initialState, action) {
       return Object.assign({}, state, { areas: newAreas });
     }
     case REMOVE_WIDGETS_IDS: {
+      const newAreas = Object.assign({}, state.areas, action.payload);
+      return Object.assign({}, state, { areas: newAreas });
+    }
+    case SET_AREA_INDICATOR_DATES: {
       const newAreas = Object.assign({}, state.areas, action.payload);
       return Object.assign({}, state, { areas: newAreas });
     }
@@ -199,6 +206,7 @@ export function setAreasParamsUrl(url) {
         zoom: areas[key].zoom,
         region: areas[key].region,
         layers: areas[key].layers || {},
+        dates: areas[key].dates || {},
         removedWidgets: areas[key].removedWidgets || [],
         lat: areas[key].center.lat,
         lng: areas[key].center.lng
@@ -284,6 +292,31 @@ export function removeWidgetsIds(widgetsIds) {
     dispatch({
       type: REMOVE_WIDGETS_IDS,
       payload: areas
+    });
+  };
+}
+
+export function setAreaIndicatorDates(indicator, dates, area) {
+  return (dispatch, getState) => {
+    const newArea = Object.assign({}, getState().maps.areas[area]);
+
+    if (dates) { // Add or update dates
+      newArea.dates[indicator] = dates;
+    } else { // remove dates
+      const newAreaDates = {};
+
+      Object.keys(newArea.dates).forEach((key) => {
+        if (`${key}` !== `${indicator}`) newAreaDates[key] = newArea.dates[key];
+      });
+
+      newArea.dates = newAreaDates;
+    }
+
+    const newAreas = Object.assign({}, getState().maps.areas, { [area]: newArea });
+
+    dispatch({
+      type: SET_AREA_INDICATOR_DATES,
+      payload: newAreas
     });
   };
 }

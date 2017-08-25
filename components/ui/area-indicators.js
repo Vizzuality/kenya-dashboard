@@ -21,6 +21,7 @@ export default class AreaIndicators extends React.Component {
     this.onRemoveArea = this.onRemoveArea.bind(this);
     this.onSetRegion = this.onSetRegion.bind(this);
     this.onRemoveWidget = this.onRemoveWidget.bind(this);
+    this.onSetIndicatorDate = this.onSetIndicatorDate.bind(this);
   }
 
   onRemoveArea(id) {
@@ -33,6 +34,10 @@ export default class AreaIndicators extends React.Component {
 
   onRemoveWidget(widgetId, areaId) {
     this.props.onRemoveWidget(widgetId, areaId, this.props.url);
+  }
+
+  onSetIndicatorDate(indicator, dates) {
+    this.props.onSetDate(indicator, dates, this.props.id);
   }
 
   render() {
@@ -87,7 +92,7 @@ export default class AreaIndicators extends React.Component {
             region={selectedRegion}
             dates={dates}
             remove
-            onSetDate={this.props.onSetDate}
+            onSetDate={this.onSetIndicatorDate}
             onRemoveItem={this.onRemoveWidget}
           />
         </section>

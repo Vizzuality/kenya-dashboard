@@ -50,9 +50,11 @@ export default class DashboardList extends React.Component {
         {!withGrid &&
           list.map(wid => (
             <DashboardItem
+              key={wid.id}
               groupId={groupId}
               info={wid}
-              key={wid.id}
+              layout="grid"
+              dates={dates[wid['indicator-id']] || null}
               remove={remove}
               className={layout === 'grid' ? '-grid' : '-list'}
               region={region}
