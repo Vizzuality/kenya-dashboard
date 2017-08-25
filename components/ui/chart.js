@@ -28,6 +28,7 @@ export default class Chart extends React.Component {
 
     // Bindings
     this.setData = this.setData.bind(this);
+    this.onPrint = this.onPrint.bind(this);
   }
 
   componentDidMount() {
@@ -48,6 +49,13 @@ export default class Chart extends React.Component {
     }
   }
 
+  onPrint() {
+    this.props.onPrint &&
+      setTimeout(() => {
+        this.props.onPrint();
+      }, 1500);
+  }
+
   getItemType() {
     const { data } = this.state;
     const { info } = this.props;
@@ -57,10 +65,7 @@ export default class Chart extends React.Component {
       const threshold = info['json-config'].threshold;
       const y2Axis = info['json-config'].type['secondary-axe'];
 
-      this.props.onPrint &&
-        setTimeout(() => {
-          this.props.onPrint();
-        }, 1500);
+      this.onPrint();
 
       switch (info['json-config'].type.visual) {
         case 'table': return (
@@ -111,6 +116,8 @@ export default class Chart extends React.Component {
         default: return 'No type';
       }
     }
+
+    this.onPrint();
     return <p className="no-data">No data available</p>;
   }
 
