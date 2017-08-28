@@ -84,12 +84,15 @@ class Legend extends React.Component {
   }
 
   getVisualByLayerType(layer) {
-    switch (layer['json-config']['legend-config'].type) {
-      case 'choropleth': return this.getChoroplethGradientContent(layer);
-      case 'gradient': return this.getChoroplethGradientContent(layer);
-      case 'basic': return this.getBasicContent(layer);
-      default: return 'Not covered';
+    if (layer['json-config']['legend-config']) {
+      switch (layer['json-config']['legend-config'].type) {
+        case 'choropleth': return this.getChoroplethGradientContent(layer);
+        case 'gradient': return this.getChoroplethGradientContent(layer);
+        case 'basic': return this.getBasicContent(layer);
+        default: return 'Not specified';
+      }
     }
+    return 'Not specified';
   }
 
   /* Legend item structure */

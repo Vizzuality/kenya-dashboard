@@ -190,7 +190,7 @@ export function selectRegion(region, area) {
 
 export function removeArea(id) {
   return (dispatch, getState) => {
-    const areas = getState().maps.areas;
+    const areas = Object.assign({}, getState().maps.areas);
     const activeIds = Object.keys(areas).filter(key => key !== id);
     const newAreas = {};
     activeIds.forEach((aId) => {

@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
 
+// Utils
+import { decode } from 'utils/general';
+
 // Components
 import Map from 'components/map/map';
 import MapControls from 'components/map/map-controls';
@@ -62,16 +65,21 @@ export default class AreaMap extends React.Component {
   }
 
   updateMap(map, url, id) {
-    this.props.setSingleMapParams(
-      {
-        ...this.props.area,
-        ...{
-          zoom: map.getZoom(),
-          center: map.getCenter(),
-          key: id
-        }
-      },
-      url, id);
+    if (url.query.maps) {
+      const maps = decode(url.query.maps);
+      if (maps[id]) {
+        this.props.setSingleMapParams(
+          {
+            ...this.props.area,
+            ...{
+              zoom: map.getZoom(),
+              center: map.getCenter(),
+              key: id
+            }
+          },
+          url, id);
+      }
+    }
   }
 
   render() {
