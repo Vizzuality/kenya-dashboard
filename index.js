@@ -83,7 +83,7 @@ async function exportPDF(req, res) {
     const delay = getDelayParam(req.query.waitFor);
 
     await page.setViewport(viewportOptions);
-    await page.goto(`/widget/${req.params.id}`, gotoOptions);
+    await page.goto(`http://localhost:3000/widget/${req.params.id}?options=${req.query.options}&token=${req.query.token}`, gotoOptions);
     await page.waitFor(delay);
     await page.pdf({ path: filePath, format: 'A4' });
 
@@ -94,12 +94,13 @@ async function exportPDF(req, res) {
     res.download(filePath);
   } catch (err) {
     console.error(err);
+    res.status(500).send('Something broke!');
   }
 }
 
 // Check auth for export
 const checkExport = (req, res, nextAction) => {
-  if (req.headers['user-agent'].indexOf('HeadlessChrome') < 0) return nextAction();
+  if (req.headers['user-agent'].indexOf('HeadlessChrome') !== -1) return nextAction();
   return isAuthenticated(req, res, nextAction);
 };
 

@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 // Redux
 import withRedux from 'next-redux-wrapper';
 import { initStore } from 'store';
-
-// Modules
 import { setUser } from 'modules/user';
 
 // Libraries
@@ -28,38 +26,29 @@ import { TOPICS_ICONS_SRC } from 'constants/filters';
 
 const DESERIALIZER = new Deserializer();
 
-
 class WidgetPage extends Page {
+  static async getInitialProps({ req, store, isServer }) {
+    let { user } = isServer ? req : store.getState();
+    if (!user && isServer && req.query.token) user = { auth_token: req.query.token };
+    if (isServer) store.dispatch(setUser(user));
+    return { user, isServer };
+  }
+
   constructor(props) {
     super(props);
-
     this.state = {
       info: null
     };
-
-    // Bindings
-    this.onPrint = this.onPrint.bind(this);
   }
 
   componentDidMount() {
     this.options = typeof window !== 'undefined' ? decode(this.props.url.query.options) : {};
-
-    // Set user
-    if (localStorage.token && localStorage.token !== '') {
-      this.props.setUser({ auth_token: localStorage.token });
-    }
-
     this.getIndicator(this.options.indicator);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.user.logged) {
-      window.location.pathname = '/';
-    }
-  }
-
   getIndicator(id) {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+    const { user } = this.props;
+    const headers = setBasicQueryHeaderHeaders({ Authorization: user.auth_token });
 
     fetch(`${process.env.KENYA_API}/indicators/${id}?include=topic,widgets&page[size]=999$`, headers)
       .then((response) => {
@@ -73,25 +62,13 @@ class WidgetPage extends Page {
           const parsedInfo = { ...info, ...{ topic: dataParsed.topic } };
           this.setState({ info: parsedInfo });
         });
-      })
-      .catch(() => {
-        window.location.pathname = '/';
       });
-  }
-
-  onPrint() {
-    window.print();
-    window.history.back();
   }
 
   render() {
     const { info } = this.state;
-    const { className, url, session, user } = this.props;
-    const classNames = classnames(
-      'c-dashboard-item -print',
-      { [className]: !!className }
-      // [this.options.threshold]: this.options ? this.options.threshold : false
-    );
+    const { className, url, user } = this.props;
+    const classNames = classnames('c-dashboard-item -print', { [className]: !!className });
     const typeClass = info ? lowerCase(info.topic.name).split(' ').join('_') : '';
 
     return (
@@ -99,7 +76,6 @@ class WidgetPage extends Page {
         title="Widget"
         description="Widget description..."
         url={url}
-        session={session}
         hasHeader={false}
         hasFooter={false}
         logged={user.logged}
@@ -118,7 +94,6 @@ class WidgetPage extends Page {
                 info={this.state.info}
                 dates={this.options.dates}
                 region={this.options.region}
-                onPrint={this.onPrint}
               />
             </section>
 
@@ -141,16 +116,15 @@ class WidgetPage extends Page {
 
 WidgetPage.propTypes = {
   url: PropTypes.object,
-  session: PropTypes.object
+  user: PropTypes.object
 };
 
-export default withRedux(
-  initStore,
-  state => ({
-    user: state.user
-  }),
-  dispatch => ({
-    // User
-    setUser(user) { dispatch(setUser(user)); }
-  })
-)(WidgetPage);
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+// const mapDispatchToProps = dispatch => ({
+//   getAgencies: bindActionCreators(userToken => getAgencies(userToken), dispatch)
+// });
+
+export default withRedux(initStore, mapStateToProps)(WidgetPage);

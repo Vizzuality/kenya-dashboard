@@ -48,9 +48,10 @@ export default function (state = initialState, action) {
 
 
 // ACTIONS
-export function getAgencies(userToken) {
-  return (dispatch) => {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: userToken });
+export function getAgencies() {
+  return (dispatch, getState) => {
+    const currentState = getState();
+    const headers = setBasicQueryHeaderHeaders({ Authorization: currentState.user.auth_token });
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_AGENCIES_LOADING });
 
@@ -77,9 +78,10 @@ export function getAgencies(userToken) {
   };
 }
 
-export function getAgency(id, userToken) {
-  return (dispatch) => {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: userToken });
+export function getAgency(id) {
+  return (dispatch, getState) => {
+    const currentState = getState();
+    const headers = setBasicQueryHeaderHeaders({ Authorization: currentState.user.auth_token });
     dispatch({ type: GET_AGENCY_LOADING });
 
     return fetch(`${process.env.KENYA_API}/agencies/${id}?include=indicators&page[size]=999`, headers)

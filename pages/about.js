@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 // Redux
 import withRedux from 'next-redux-wrapper';
 import { initStore } from 'store';
+import { bindActionCreators } from 'redux';
 
 // modules
 import { setUser } from 'modules/user';
@@ -14,27 +15,29 @@ import isEmpty from 'lodash/isEmpty';
 
 // Components
 import { Router } from 'routes';
+import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import Intro from 'components/ui/intro';
 import Spinner from 'components/ui/spinner';
 import CardInfo from 'components/ui/card-info';
 
-class AboutPage extends React.Component {
+class AboutPage extends Page {
   static async getInitialProps({ asPath, pathname, req, store, isServer }) {
     const url = { asPath, pathname };
     const { user } = isServer ? req : store.getState();
     if (isServer) {
       store.dispatch(setUser(user));
-      await store.dispatch(getAgencies(user.auth_token));
-      console.log(store.getState())
+      await store.dispatch(getAgencies());
     }
     return { user, url, isServer };
   }
 
   componentWillMount() {
-    if (!this.props.isServer && isEmpty(this.props.user)) {
-      Router.pushRoute('home');
-    }
+    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('home');
+  }
+
+  componentDidMount() {
+    if (!this.props.isServer) this.props.getAgencies();
   }
 
   render() {
@@ -92,7 +95,10 @@ class AboutPage extends React.Component {
 
 AboutPage.propTypes = {
   url: PropTypes.object,
-  agencies: PropTypes.object
+  agencies: PropTypes.object,
+  isServer: PropTypes.bool,
+  user: PropTypes.object,
+  getAgencies: PropTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -100,12 +106,8 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   getStaticData: bindActionCreators((slug) => getStaticData(slug), dispatch)
-// User
-// setUser(user) { dispatch(setUser(user)); },
-// // Agencies
-// getAgencies() { dispatch(getAgencies()); }
-// });
+const mapDispatchToProps = dispatch => ({
+  getAgencies: bindActionCreators(userToken => getAgencies(userToken), dispatch)
+});
 
-export default withRedux(initStore, mapStateToProps, null)(AboutPage);
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(AboutPage);
