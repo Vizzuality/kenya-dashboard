@@ -90,7 +90,7 @@ export function getAgency(id) {
         throw new Error(response.statusText);
       })
       .then((data) => {
-        DESERIALIZER.deserialize(data, (err, dataParsed) => {
+        return DESERIALIZER.deserialize(data, (err, dataParsed) => {
           dispatch({
             type: GET_AGENCY,
             payload: dataParsed

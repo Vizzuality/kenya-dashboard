@@ -169,9 +169,7 @@ Chart.propTypes = {
   className: PropTypes.string,
   info: PropTypes.object,
   region: PropTypes.string,
-  dates: PropTypes.object,
-  // Actions
-  onPrint: PropTypes.func
+  dates: PropTypes.object
 };
 
 const mapStateToProps = state => ({

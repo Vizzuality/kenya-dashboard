@@ -92,34 +92,23 @@ DashboardPage.propTypes = {
   session: PropTypes.object
 };
 
-// const mapStateToProps = state => ({
-//   indicators: state.indicators,
-//   user: state.user
-// });
+const mapStateToProps = state => ({
+  indicators: state.indicators,
+  user: state.user,
+  selectedFilterOptions: getSelectedFilterOptions(state),
+  selectedFilters: state.filters.selected,
+  layout: state.filters.layout
+});
 
-// const mapDispatchToProps = dispatch => ({
-//   getAgencies: bindActionCreators(userToken => getAgencies(userToken), dispatch)
-// });
+const mapDispatchToProps = dispatch => ({
+  // Indicators
+  getIndicators(filters) { dispatch(getIndicators(filters)); },
+  setIndicatorDates(indicator, dates) { dispatch(setIndicatorDates(indicator, dates)); },
+  // Filters
+  removeSelectedFilter(type, value) {
+    dispatch(removeSelectedFilter(type, value));
+    dispatch(setFiltersUrl());
+  }
+});
 
-export default withRedux(
-  initStore,
-  state => ({
-    indicators: state.indicators,
-    selectedFilterOptions: getSelectedFilterOptions(state),
-    selectedFilters: state.filters.selected,
-    layout: state.filters.layout,
-    user: state.user
-  }),
-  dispatch => ({
-    // User
-    setUser(user) { dispatch(setUser(user)); },
-    // Indicators
-    getIndicators(filters) { dispatch(getIndicators(filters)); },
-    setIndicatorDates(indicator, dates) { dispatch(setIndicatorDates(indicator, dates)); },
-    // Filters
-    removeSelectedFilter(type, value) {
-      dispatch(removeSelectedFilter(type, value));
-      dispatch(setFiltersUrl());
-    }
-  })
-)(DashboardPage);
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(DashboardPage);

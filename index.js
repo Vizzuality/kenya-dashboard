@@ -69,7 +69,7 @@ const gotoOptions = { waitUntil: 'networkidle' };
 const getDelayParam = (param) => {
   const n = parseInt(param, 10);
   if (typeof n === 'number' && !isNaN(n)) return n;
-  return param || 3000;
+  return param || 1000;
 };
 async function exportPDF(req, res) {
   const tmpDir = tmp.dirSync();

@@ -74,7 +74,7 @@ class ItemTools extends React.Component {
           {/* <button className="btn" onClick={this.onDownloadWidget}>
             <Icon name="icon-download" className="-smaller" />
           </button> */}
-          <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}`}>
+          <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
             <a className="btn">
               <Icon name="icon-download" className="-smaller" />
             </a>

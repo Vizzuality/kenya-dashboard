@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 // Redux
 import withRedux from 'next-redux-wrapper';
 import { initStore } from 'store';
-import { bindActionCreators } from 'redux';
 
 // modules
 import { setUser } from 'modules/user';
@@ -25,19 +24,13 @@ class AboutPage extends Page {
   static async getInitialProps({ asPath, pathname, req, store, isServer }) {
     const url = { asPath, pathname };
     const { user } = isServer ? req : store.getState();
-    if (isServer) {
-      store.dispatch(setUser(user));
-      await store.dispatch(getAgencies());
-    }
+    if (isServer) store.dispatch(setUser(user));
+    await store.dispatch(getAgencies());
     return { user, url, isServer };
   }
 
   componentWillMount() {
     if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('home');
-  }
-
-  componentDidMount() {
-    if (!this.props.isServer) this.props.getAgencies();
   }
 
   render() {
@@ -106,8 +99,4 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
-const mapDispatchToProps = dispatch => ({
-  getAgencies: bindActionCreators(userToken => getAgencies(userToken), dispatch)
-});
-
-export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(AboutPage);
+export default withRedux(initStore, mapStateToProps)(AboutPage);

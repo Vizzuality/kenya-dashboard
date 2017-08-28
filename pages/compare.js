@@ -52,6 +52,7 @@ import { setLayersZIndex } from 'utils/map';
 import { decode, getValueMatchFromCascadeList } from 'utils/general';
 
 // Components
+import { Router } from 'routes';
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import Accordion from 'components/ui/accordion';
@@ -80,6 +81,10 @@ class ComparePage extends Page {
     this.onAddArea = this.onAddArea.bind(this);
     this.onRemoveArea = this.onRemoveArea.bind(this);
     this.onRemoveIndicator = this.onRemoveIndicator.bind(this);
+  }
+
+  componentWillMount() {
+    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('home');
   }
 
   /* Lifecycle */

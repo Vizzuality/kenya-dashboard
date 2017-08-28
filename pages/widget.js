@@ -14,8 +14,10 @@ import lowerCase from 'lodash/lowerCase';
 
 // utils
 import { decode, setBasicQueryHeaderHeaders } from 'utils/general';
+import isEmpty from 'lodash/isEmpty';
 
 // Components
+import { Router } from 'routes';
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import Icon from 'components/ui/icon';
@@ -27,11 +29,12 @@ import { TOPICS_ICONS_SRC } from 'constants/filters';
 const DESERIALIZER = new Deserializer();
 
 class WidgetPage extends Page {
-  static async getInitialProps({ req, store, isServer }) {
+  static async getInitialProps({ req, store, query, isServer }) {
+    const { options, token } = query;
     let { user } = isServer ? req : store.getState();
-    if (!user && isServer && req.query.token) user = { auth_token: req.query.token };
+    if (!user && isServer && token) user = { auth_token: token };
     if (isServer) store.dispatch(setUser(user));
-    return { user, isServer };
+    return { user, isServer, options: decode(options) };
   }
 
   constructor(props) {
@@ -41,9 +44,12 @@ class WidgetPage extends Page {
     };
   }
 
+  componentWillMount() {
+    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('home');
+  }
+
   componentDidMount() {
-    this.options = typeof window !== 'undefined' ? decode(this.props.url.query.options) : {};
-    this.getIndicator(this.options.indicator);
+    this.getIndicator(this.props.options.indicator);
   }
 
   getIndicator(id) {
@@ -67,7 +73,8 @@ class WidgetPage extends Page {
 
   render() {
     const { info } = this.state;
-    const { className, url, user } = this.props;
+    const { className, url, options } = this.props;
+    const { dates, region } = options;
     const classNames = classnames('c-dashboard-item -print', { [className]: !!className });
     const typeClass = info ? lowerCase(info.topic.name).split(' ').join('_') : '';
 
@@ -78,8 +85,8 @@ class WidgetPage extends Page {
         url={url}
         hasHeader={false}
         hasFooter={false}
-        logged={user.logged}
         className="p-widget"
+        logged
       >
         {info ?
           <article className={classNames}>
@@ -91,9 +98,9 @@ class WidgetPage extends Page {
             {/* Indicator type detail - Content */}
             <section className="type-detail">
               <Chart
-                info={this.state.info}
-                dates={this.options.dates}
-                region={this.options.region}
+                info={info}
+                dates={dates}
+                region={region}
               />
             </section>
 
@@ -116,7 +123,9 @@ class WidgetPage extends Page {
 
 WidgetPage.propTypes = {
   url: PropTypes.object,
-  user: PropTypes.object
+  user: PropTypes.object,
+  options: PropTypes.object,
+  isServer: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

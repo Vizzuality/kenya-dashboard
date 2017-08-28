@@ -23,10 +23,8 @@ class HomePage extends React.PureComponent {
   static async getInitialProps({ asPath, pathname, req, store, isServer }) {
     const url = { asPath, pathname };
     const { user } = isServer ? req : store.getState();
-    if (isServer) {
-      await store.dispatch(getTopicsOptions());
-      if (user) store.dispatch(setUser(user));
-    }
+    if (isServer && user) store.dispatch(setUser(user));
+    await store.dispatch(getTopicsOptions());
     return { user, url, isServer };
   }
 
