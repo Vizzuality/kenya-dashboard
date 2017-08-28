@@ -11,9 +11,9 @@ const initialState = {};
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_USER:
-      return Object.assign({}, state, action.payload);
+      return Object.assign({}, state, action.payload, { logged: true });
     case REMOVE_USER:
-      return Object.assign({}, state, {});
+      return Object.assign({}, state, { logged: false, auth_token: null });
     case RESET_PASSWORD:
       return Object.assign({}, state, { reset: action.payload });
     default:
@@ -80,8 +80,6 @@ export function login({ email, password }) {
 export function logout() {
   return (dispatch) => {
     localStorage.setItem('token', '');
-    // Set cookie
-    // Cookies.remove('user');
 
     // Dispatch action
     dispatch({ type: REMOVE_USER });

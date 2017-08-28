@@ -38,7 +38,6 @@ class Header extends React.Component {
 
     // Bindings
     this.onToggleMenu = this.onToggleMenu.bind(this);
-    this.onLogout = this.onLogout.bind(this);
     this.onOpenModal = this.onOpenModal.bind(this);
   }
 
@@ -61,7 +60,7 @@ class Header extends React.Component {
       modal.setModalOptions(opts);
     }
 
-    if (!this.props.user.logged && nextProps.user.logged) {
+    if (!this.props.user.auth_token && nextProps.user.auth_token) {
       modal.toggleModal(false, {});
     }
 
@@ -69,18 +68,13 @@ class Header extends React.Component {
       this.setState({ modalOpened: false });
     }
 
-    if (this.state.open && !this.props.user.logged && nextProps.user.logged) {
+    if (this.state.open && !this.props.user.auth_token && nextProps.user.auth_token) {
       this.onToggleMenu();
     }
   }
 
   onToggleMenu() {
     this.setState({ open: !this.state.open });
-  }
-
-  onLogout() {
-    this.props.logout();
-    this.setState({ open: false });
   }
 
 
@@ -103,7 +97,7 @@ class Header extends React.Component {
   getCustomContentByPage() {
     const { url, user, device } = this.props;
 
-    if (user.logged || device) {
+    if (user.auth || device) {
       switch (url.pathname) {
         // Different pathnames for the index
         case '/index': return { title: <h1>Kenya</h1> };
@@ -122,14 +116,18 @@ class Header extends React.Component {
           )
         };
         case '/about': return { title: <h1>About the Alliance</h1> };
-        case '/agency': return { title: (
-          <Link route="about">
-            <a className="title-link">
-              <Icon name="icon-arrow-left2" className="-normal" /><h1>Go to About the Alliance</h1>
-            </a>
-          </Link>
-        ) };
-        default: return {};
+        case '/agency': return {
+          title: (
+            <Link route="about">
+              <a className="title-link">
+                <Icon name="icon-arrow-left2" className="-normal" /><h1>Go to About the Alliance</h1>
+              </a>
+            </Link>
+          )
+        };
+        default: return {
+          title: <p>Title</p>
+        };
       }
     } else {
       return {
@@ -162,7 +160,7 @@ class Header extends React.Component {
           <div className="column small-12">
             <div className="header-container">
               <div className="header-title">
-                {(user.logged || device) &&
+                {(user.auth_token || device) &&
                   <button className="btn-menu" onClick={this.onToggleMenu}>
                     <Icon name="icon-menu" className="-big" />
                   </button>
@@ -194,10 +192,10 @@ class Header extends React.Component {
             <nav className="menu-main">
               <MainNav list={HEADER_MENU_LINKS} url={url} />
               <div className="menu-tools">
-                {user.logged ?
-                  <button className="btn-logout" onClick={this.onLogout}>
+                {user.auth_token ?
+                  <a className="btn-logout" href="/logout">
                     Sign out
-                  </button> :
+                  </a> :
                   <button className="btn-logout" onClick={this.onOpenModal}>
                     Sign in
                   </button>

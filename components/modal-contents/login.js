@@ -56,12 +56,12 @@ export default class Login extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((nextProps.user.logged || (!this.props.user.logged && !nextProps.user.logged)) &&
+    if ((nextProps.user.auth_token || (!this.props.user.auth_token && !nextProps.user.auth_token)) &&
       this.state.submitting) {
       this.setState({ submitting: false });
     }
 
-    if (nextProps.user.logged && nextProps.modalOpened) {
+    if (nextProps.user.auth_token && nextProps.modalOpened) {
       this.props.toggleModal(false);
     }
 
@@ -185,7 +185,11 @@ export default class Login extends React.Component {
                     {/* <Checkbox checked={remember} onChange={this.onChangeRemember} />
                     Remember me */}
                   </div>
-                  <button onClick={() => this.setState({ resetPassword: true })} className="btn-reset-password">
+                  <button
+                    type="button"
+                    onClick={() => this.setState({ resetPassword: true })}
+                    className="btn-reset-password"
+                  >
                     Forgot password?
                   </button>
                 </div>
