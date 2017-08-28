@@ -14,7 +14,7 @@ passport.deserializeUser((obj, done) => {
   done(null, obj);
 });
 
-module.exports = function () {
+module.exports = () => {
   const strategy = new Strategy({
     usernameField: 'email',
     passwordField: 'password'
