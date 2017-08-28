@@ -147,7 +147,7 @@ class ComparePage extends Page {
   getList(list) {
     const { activeArea } = this.state;
 
-    return list.map((l, i) => {
+    return list.map((l) => {
       const className = classnames(
         `accordion-item -large-${list.length}`,
         { '-collapsed': activeArea !== null && l.id !== activeArea },
@@ -155,7 +155,7 @@ class ComparePage extends Page {
       );
 
       return (
-        <div className={className} id={l.id} key={i}>
+        <div className={className} id={l.id} key={l.id}>
           {l.el}
         </div>
       );
@@ -197,6 +197,7 @@ class ComparePage extends Page {
             url={this.props.url}
             id={key}
             area={areas[key]}
+            numOfAreas={Object.keys(areas).length}
             dates={areas[key].dates}
             layers={layers}
             layersActive={indicators.layersActive}

@@ -30,6 +30,7 @@
 
 // - map
 @import '../node_modules/leaflet/dist/leaflet';
+@import '../node_modules/resize-sensor--react/build/resize-sensor';
 @import 'components/map/area-map';
 @import 'components/map/legend';
 @import 'components/map/map';

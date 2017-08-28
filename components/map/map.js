@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 // Libraries
 import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
+import debounce from 'lodash/debounce';
 import difference from 'lodash/difference';
 
 // Components
+import ResizeSensor from 'resize-sensor--react';
 import Spinner from 'components/ui/spinner';
 
 // Constants
@@ -47,6 +49,9 @@ export default class Map extends React.Component {
     this.state = {
       loading: false
     };
+
+    // Bindings
+    // this.onResize = this.onResize.bind(this);
   }
 
   /* Component Lifecyle */
@@ -69,7 +74,7 @@ export default class Map extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { mapOptions, layers, indicatorsLayersActive } = this.props;
+    const { mapOptions, layers, indicatorsLayersActive, numOfAreas } = this.props;
 
     // Fitbounds
     if (!isEqual(mapOptions.bounds, nextProps.mapOptions.bounds) ||
@@ -101,6 +106,11 @@ export default class Map extends React.Component {
           layersToRemove = this.props.layers.filter(l => removed.includes(l.id));
         }
         this.removeLayer(layersToRemove);
+      }
+
+      // SEt map size when resizing
+      if (numOfAreas !== nextProps.numOfAreas) {
+        //
       }
     }
 
@@ -139,8 +149,12 @@ export default class Map extends React.Component {
   componentWillUnmount() {
     this._mounted = false;
     this.props.listeners && this.removeMapEventListeners();
-    this.map.remove();
+    this.map && this.map.remove();
   }
+
+  onResize = debounce(() => {
+    this.map && this.map.invalidateSize();
+  }, 200)
 
   /* Event listener methods */
   setMapEventListeners() {
@@ -246,6 +260,9 @@ export default class Map extends React.Component {
 
     return (
       <div className={classNames}>
+        <ResizeSensor
+          onResize={this.onResize}
+        />
         <div ref={(node) => { this.mapNode = node; }} className="map-leaflet" />
         <Spinner isLoading={this.state.loading} />
       </div>
@@ -258,6 +275,7 @@ Map.propTypes = {
   mapOptions: PropTypes.object,
   mapMethods: PropTypes.object,
   layers: PropTypes.array,
+  numOfAreas: PropTypes.number,
   indicatorsLayersActive: PropTypes.array,
   markers: PropTypes.array,
   markerIcon: PropTypes.object,
