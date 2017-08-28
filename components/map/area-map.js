@@ -15,6 +15,13 @@ import FitBoundsControl from 'components/ui/fit-bounds-control';
 import { MAP_OPTIONS, MAP_METHODS } from 'constants/map';
 
 export default class AreaMap extends React.Component {
+  constructor(props) {
+    super(props);
+
+    // Bindings
+    this.onFitBounds = this.onFitBounds.bind(this);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!this.props.layers.length && nextProps.layers.length) {
       nextProps.layers.forEach((l) => {
@@ -30,6 +37,10 @@ export default class AreaMap extends React.Component {
     }
   }
 
+  onFitBounds() {
+    this.props.fitAreaBounds(this.props.id);
+  }
+
   setListeners(url, id) {
     return {
       moveend: (map) => {
@@ -41,6 +52,7 @@ export default class AreaMap extends React.Component {
   getMapOptions(area) {
     return {
       zoom: area.zoom,
+      fitBounds: area.fitBounds,
       bounds: this.props.bounds,
       minZoom: MAP_OPTIONS.minZoom,
       maxZoom: MAP_OPTIONS.maxZoom,
@@ -74,8 +86,6 @@ export default class AreaMap extends React.Component {
       url: area.layers && area.layers[l.id] ? area.layers[l.id].url : ''
     }));
 
-    console.log(area);
-
     return (
       <div className={classNames}>
         <MapControls>
@@ -87,7 +97,7 @@ export default class AreaMap extends React.Component {
             }}
           />
           <FitBoundsControl
-            fitAreaBounds={this.props.fitAreaBounds}
+            fitAreaBounds={this.onFitBounds}
           />
         </MapControls>
         <Map

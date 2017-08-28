@@ -174,6 +174,7 @@ class ComparePage extends Page {
         },
         layers: params[key].layers || {},
         removedWidgets: params[key].removedWidgets || [],
+        fitBounds: params[key].fitBounds || Date.now(),
         dates: params[key].dates || {},
         region: params[key].region || KENYA_CARTO_ID
       };
@@ -200,8 +201,9 @@ class ComparePage extends Page {
             layers={layers}
             layersActive={indicators.layersActive}
             mapState={mapState}
-            setSingleMapParams={this.props.setSingleMapParams}
             bounds={region ? region.boundingBox : null}
+            fitAreaBounds={this.props.fitAreaBounds}
+            setSingleMapParams={this.props.setSingleMapParams}
             addLayer={this.props.addLayer}
           />
         )
@@ -387,9 +389,7 @@ export default withRedux(
     setSingleMapParamsFromUrl(params, key) {
       dispatch(setSingleMapParams(params, key));
     },
-    fitAreaBounds() {
-      dispatch(fitAreaBounds());
-    },
+    fitAreaBounds(area) { dispatch(fitAreaBounds(area)); },
     setMapExpansion(expand, url) {
       dispatch(setMapExpansion(expand));
       dispatch(setMapExpansionUrl(expand, url));
