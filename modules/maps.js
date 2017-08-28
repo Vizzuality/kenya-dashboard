@@ -15,6 +15,7 @@ const SET_MAP_EXPANSION = 'SET_MAP_EXPANSION';
 const ADD_AREA = 'ADD_AREA';
 const SELECT_REGION = 'SELECT_REGION';
 const REMOVE_AREA = 'REMOVE_AREA';
+const FIT_BOUNDS = 'FIT_BOUNDS';
 // Layers
 const ADD_LAYER = 'ADD_LAYER';
 // indicators
@@ -33,7 +34,8 @@ const DEFAULT_AREA_PARAMS = {
   region: KENYA_CARTO_ID,
   layers: {},
   dates: {},
-  removedWidgets: []
+  removedWidgets: [],
+  fitBounds: Date.now()
 };
 
 /* Initial state */
@@ -78,7 +80,7 @@ export default function mapsReducer(state = initialState, action) {
       const newAreas = Object.assign({}, state.areas, action.payload);
       return Object.assign({}, state, { areas: newAreas });
     }
-    case SET_AREA_INDICATOR_DATES: {
+    case FIT_BOUNDS: {
       const newAreas = Object.assign({}, state.areas, action.payload);
       return Object.assign({}, state, { areas: newAreas });
     }
@@ -154,8 +156,14 @@ export function setMapExpansionUrl(expanded, url) {
 }
 
 // Fit area bounds
-export function fitAreaBounds() {
-  return () => {
+export function fitAreaBounds(area) {
+  return (dispatch, getState) => {
+    const areas = Object.assign({}, getState().maps.areas);
+    areas[area].fitBounds = Date.now();
+    dispatch({
+      type: FIT_BOUNDS,
+      payload: areas
+    });
   };
 }
 
@@ -182,7 +190,7 @@ export function selectRegion(region, area) {
 
 export function removeArea(id) {
   return (dispatch, getState) => {
-    const areas = getState().maps.areas;
+    const areas = Object.assign({}, getState().maps.areas);
     const activeIds = Object.keys(areas).filter(key => key !== id);
     const newAreas = {};
     activeIds.forEach((aId) => {
@@ -208,6 +216,7 @@ export function setAreasParamsUrl(url) {
         layers: areas[key].layers || {},
         dates: areas[key].dates || {},
         removedWidgets: areas[key].removedWidgets || [],
+        fitBounds: areas[key].fitbounds || Date.now(),
         lat: areas[key].center.lat,
         lng: areas[key].center.lng
       };

@@ -5,6 +5,9 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
 
+// Utils
+import { decode } from 'utils/general';
+
 // Components
 import Map from 'components/map/map';
 import MapControls from 'components/map/map-controls';
@@ -15,6 +18,13 @@ import FitBoundsControl from 'components/ui/fit-bounds-control';
 import { MAP_OPTIONS, MAP_METHODS } from 'constants/map';
 
 export default class AreaMap extends React.Component {
+  constructor(props) {
+    super(props);
+
+    // Bindings
+    this.onFitBounds = this.onFitBounds.bind(this);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!this.props.layers.length && nextProps.layers.length) {
       nextProps.layers.forEach((l) => {
@@ -30,6 +40,10 @@ export default class AreaMap extends React.Component {
     }
   }
 
+  onFitBounds() {
+    this.props.fitAreaBounds(this.props.id);
+  }
+
   setListeners(url, id) {
     return {
       moveend: (map) => {
@@ -41,6 +55,7 @@ export default class AreaMap extends React.Component {
   getMapOptions(area) {
     return {
       zoom: area.zoom,
+      fitBounds: area.fitBounds,
       bounds: this.props.bounds,
       minZoom: MAP_OPTIONS.minZoom,
       maxZoom: MAP_OPTIONS.maxZoom,
@@ -50,16 +65,21 @@ export default class AreaMap extends React.Component {
   }
 
   updateMap(map, url, id) {
-    this.props.setSingleMapParams(
-      {
-        ...this.props.area,
-        ...{
-          zoom: map.getZoom(),
-          center: map.getCenter(),
-          key: id
-        }
-      },
-      url, id);
+    if (url.query.maps) {
+      const maps = decode(url.query.maps);
+      if (maps[id]) {
+        this.props.setSingleMapParams(
+          {
+            ...this.props.area,
+            ...{
+              zoom: map.getZoom(),
+              center: map.getCenter(),
+              key: id
+            }
+          },
+          url, id);
+      }
+    }
   }
 
   render() {
@@ -74,8 +94,6 @@ export default class AreaMap extends React.Component {
       url: area.layers && area.layers[l.id] ? area.layers[l.id].url : ''
     }));
 
-    console.log(area);
-
     return (
       <div className={classNames}>
         <MapControls>
@@ -87,7 +105,7 @@ export default class AreaMap extends React.Component {
             }}
           />
           <FitBoundsControl
-            fitAreaBounds={this.props.fitAreaBounds}
+            fitAreaBounds={this.onFitBounds}
           />
         </MapControls>
         <Map

@@ -147,7 +147,7 @@ class ComparePage extends Page {
   getList(list) {
     const { activeArea } = this.state;
 
-    return list.map((l, i) => {
+    return list.map((l) => {
       const className = classnames(
         `accordion-item -large-${list.length}`,
         { '-collapsed': activeArea !== null && l.id !== activeArea },
@@ -155,7 +155,7 @@ class ComparePage extends Page {
       );
 
       return (
-        <div className={className} id={l.id} key={i}>
+        <div className={className} id={l.id} key={l.id}>
           {l.el}
         </div>
       );
@@ -174,6 +174,7 @@ class ComparePage extends Page {
         },
         layers: params[key].layers || {},
         removedWidgets: params[key].removedWidgets || [],
+        fitBounds: params[key].fitBounds || Date.now(),
         dates: params[key].dates || {},
         region: params[key].region || KENYA_CARTO_ID
       };
@@ -196,12 +197,14 @@ class ComparePage extends Page {
             url={this.props.url}
             id={key}
             area={areas[key]}
+            numOfAreas={Object.keys(areas).length}
             dates={areas[key].dates}
             layers={layers}
             layersActive={indicators.layersActive}
             mapState={mapState}
-            setSingleMapParams={this.props.setSingleMapParams}
             bounds={region ? region.boundingBox : null}
+            fitAreaBounds={this.props.fitAreaBounds}
+            setSingleMapParams={this.props.setSingleMapParams}
             addLayer={this.props.addLayer}
           />
         )
@@ -387,9 +390,7 @@ export default withRedux(
     setSingleMapParamsFromUrl(params, key) {
       dispatch(setSingleMapParams(params, key));
     },
-    fitAreaBounds() {
-      dispatch(fitAreaBounds());
-    },
+    fitAreaBounds(area) { dispatch(fitAreaBounds(area)); },
     setMapExpansion(expand, url) {
       dispatch(setMapExpansion(expand));
       dispatch(setMapExpansionUrl(expand, url));
