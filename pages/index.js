@@ -6,6 +6,9 @@ import withRedux from 'next-redux-wrapper';
 import { initStore } from 'store';
 import { bindActionCreators } from 'redux';
 
+// SElectors
+import { getTopicsWithoutAllOption } from 'selectors/filters';
+
 // Modules
 import { getTopicsOptions } from 'modules/filters';
 import { setUser } from 'modules/user';
@@ -143,7 +146,7 @@ HomePage.defaultProps = {
 
 const mapStateToProps = state => ({
   user: state.user,
-  topics: state.filters.options.topics.filter(t => t.id !== 'all')
+  topics: getTopicsWithoutAllOption(state)
 });
 
 const mapDispatchToProps = dispatch => ({

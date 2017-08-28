@@ -4,11 +4,12 @@ import { createSelector } from 'reselect';
 import uniqBy from 'lodash/uniqBy';
 
 // Get specific indicators
-const specificIndicators = state => state.indicators.specific.list;
+const getSpecificIndicators = state => state.indicators.specific.list;
+const getAllIndicators = state => state.indicators.list;
 
 /* Get all selected indicators first layer if they have anyone */
 const getIndicatorsLayers = createSelector(
-  specificIndicators,
+  getSpecificIndicators,
   (indicators) => {
     const layers = [];
 
@@ -24,11 +25,29 @@ const getIndicatorsLayers = createSelector(
 
 /* Get all selected indicators first layer if they have anyone */
 const getIndicatorsWithLayers = createSelector(
-  specificIndicators,
+  getSpecificIndicators,
   (indicators) => {
     return indicators.filter(ind => ind.layers && ind.layers.length);
   }
 );
 
+/* Get all selected indicators with widgets */
+const getIndicatorsWithWidgets = createSelector(
+  getAllIndicators,
+  (indicators) => {
+    const topicsList = {};
+
+    indicators.forEach((ind) => {
+      if (ind.widgets && ind.widgets.length) {
+        const indicator = { name: ind.name, id: ind.id };
+        if (topicsList[ind.topic.name]) {
+          topicsList[ind.topic.name].push(indicator);
+        } else topicsList[ind.topic.name] = [indicator];
+      }
+    });
+    return { list: topicsList };
+  }
+);
+
 // Export the selector
-export { getIndicatorsLayers, getIndicatorsWithLayers };
+export { getIndicatorsLayers, getIndicatorsWithLayers, getIndicatorsWithWidgets };

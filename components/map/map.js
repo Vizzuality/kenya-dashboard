@@ -65,6 +65,7 @@ export default class Map extends React.Component {
     // Add layers
     this.initLayerManager();
     this.props.layers.length && this.addLayer(this.props.layers);
+    this.props.mapOptions.bounds && this.setBounds(this.props.mapOptions.bounds.coordinates[0]);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -81,6 +82,7 @@ export default class Map extends React.Component {
       this.addLayer(nextProps.layers);
     }
 
+    // Add or remove layers
     if (!isEqual(this.props.indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
       const added = difference(nextProps.indicatorsLayersActive, this.props.indicatorsLayersActive);
       const removed = difference(

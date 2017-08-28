@@ -9,6 +9,7 @@ import { MAP_OPTIONS } from 'constants/map';
 import { KENYA_CARTO_ID } from 'constants/filters';
 
 /* Constants */
+const RESET_AREAS = 'RESET_AREAS';
 const SET_MAP_PARAMS = 'SET_MAP_PARAMS';
 const SET_MAP_EXPANSION = 'SET_MAP_EXPANSION';
 const ADD_AREA = 'ADD_AREA';
@@ -16,6 +17,11 @@ const SELECT_REGION = 'SELECT_REGION';
 const REMOVE_AREA = 'REMOVE_AREA';
 // Layers
 const ADD_LAYER = 'ADD_LAYER';
+// indicators
+const SET_AREA_INDICATOR_DATES = 'SET_AREA_INDICATOR_DATES';
+// Widgets
+const REMOVE_WIDGET = 'REMOVE_WIDGET';
+const REMOVE_WIDGETS_IDS = 'REMOVE_WIDGETS_IDS';
 
 
 const DEFAULT_AREA_PARAMS = {
@@ -25,7 +31,9 @@ const DEFAULT_AREA_PARAMS = {
   },
   zoom: MAP_OPTIONS.zoom,
   region: KENYA_CARTO_ID,
-  layers: {}
+  layers: {},
+  dates: {},
+  removedWidgets: []
 };
 
 /* Initial state */
@@ -39,6 +47,8 @@ const initialState = {
 /* Reducer */
 export default function mapsReducer(state = initialState, action) {
   switch (action.type) {
+    case RESET_AREAS:
+      return Object.assign({}, state, { areas: action.payload });
     case SET_MAP_PARAMS: {
       const newAreaParams = Object.assign({}, state.areas, action.payload);
       return Object.assign({}, state, { areas: newAreaParams });
@@ -60,12 +70,35 @@ export default function mapsReducer(state = initialState, action) {
       const newAreas = Object.assign({}, state.areas, action.payload);
       return Object.assign({}, state, { areas: newAreas });
     }
+    case REMOVE_WIDGET: {
+      const newAreas = Object.assign({}, state.areas, action.payload);
+      return Object.assign({}, state, { areas: newAreas });
+    }
+    case REMOVE_WIDGETS_IDS: {
+      const newAreas = Object.assign({}, state.areas, action.payload);
+      return Object.assign({}, state, { areas: newAreas });
+    }
+    case SET_AREA_INDICATOR_DATES: {
+      const newAreas = Object.assign({}, state.areas, action.payload);
+      return Object.assign({}, state, { areas: newAreas });
+    }
     default:
       return state;
   }
 }
 
+
 /* Action creators */
+/* Reset areas */
+export function resetAreas() {
+  return (dispatch) => {
+    dispatch({
+      type: RESET_AREAS,
+      payload: { defaultAreaMap: DEFAULT_AREA_PARAMS }
+    });
+  };
+}
+
 export function setSingleMapParams(params, key) {
   return (dispatch) => {
     dispatch({
@@ -172,7 +205,9 @@ export function setAreasParamsUrl(url) {
       newAreas[key] = {
         zoom: areas[key].zoom,
         region: areas[key].region,
-        layers: [],
+        layers: areas[key].layers || {},
+        dates: areas[key].dates || {},
+        removedWidgets: areas[key].removedWidgets || [],
         lat: areas[key].center.lat,
         lng: areas[key].center.lng
       };
@@ -224,6 +259,64 @@ export function addLayer(layer, area, region, dates) {
           payload: { [area]: newArea }
         });
       }
+    });
+  };
+}
+
+export function removeWidget(widgetId, areaId) {
+  return (dispatch, getState) => {
+    const areas = Object.assign({}, getState().maps.areas);
+    const newRemovedWidgets = areas[areaId].removedWidgets || [];
+    newRemovedWidgets.push(widgetId);
+    areas[areaId].removedWidgets = newRemovedWidgets;
+
+    dispatch({
+      type: REMOVE_WIDGET,
+      payload: areas
+    });
+  };
+}
+
+// Remove all indicators widgets ids from removed widgets attr in all areas
+export function removeWidgetsIds(widgetsIds) {
+  return (dispatch, getState) => {
+    const areas = Object.assign({}, getState().maps.areas);
+
+    Object.keys(areas).forEach((key) => {
+      const removedWidgets = areas[key].removedWidgets ?
+        areas[key].removedWidgets.filter(id => !widgetsIds.includes(id)) :
+        [];
+      areas[key].removedWidgets = removedWidgets;
+    });
+
+    dispatch({
+      type: REMOVE_WIDGETS_IDS,
+      payload: areas
+    });
+  };
+}
+
+export function setAreaIndicatorDates(indicator, dates, area) {
+  return (dispatch, getState) => {
+    const newArea = Object.assign({}, getState().maps.areas[area]);
+
+    if (dates) { // Add or update dates
+      newArea.dates[indicator] = dates;
+    } else { // remove dates
+      const newAreaDates = {};
+
+      Object.keys(newArea.dates).forEach((key) => {
+        if (`${key}` !== `${indicator}`) newAreaDates[key] = newArea.dates[key];
+      });
+
+      newArea.dates = newAreaDates;
+    }
+
+    const newAreas = Object.assign({}, getState().maps.areas, { [area]: newArea });
+
+    dispatch({
+      type: SET_AREA_INDICATOR_DATES,
+      payload: newAreas
     });
   };
 }

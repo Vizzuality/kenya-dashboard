@@ -9,6 +9,7 @@ import isEqual from 'lodash/isEqual';
 import { get } from 'utils/request';
 
 // Components
+import Spinner from 'components/ui/spinner';
 import TableType from 'components/charts/table-type';
 import TrendType from 'components/charts/trend-type';
 import ExtremesType from 'components/charts/extremes-type';
@@ -22,22 +23,37 @@ export default class Chart extends React.Component {
     super(props);
 
     this.state = {
-      data: null
+      data: undefined
     };
 
     // Bindings
     this.setData = this.setData.bind(this);
+    this.onPrint = this.onPrint.bind(this);
   }
 
   componentDidMount() {
-    const { info } = this.props;
-    info && info.id && this.getData(info, this.setData, this.setData);
+    const { info, region, dates } = this.props;
+    const attr = { info, region, dates };
+
+    info && info.id && this.getData(attr, this.setData, this.setData);
   }
 
   componentWillReceiveProps(nextProps) {
-    const { info } = nextProps;
-    info && info.id && !isEqual(this.props.info, info) &&
-      this.getData(info, this.setData, this.setData);
+    const { info, region, dates } = nextProps;
+    const attr = { info, region, dates };
+
+    if ((info && info.id && !isEqual(this.props.info, info)) ||
+      this.props.region !== nextProps.region ||
+      !isEqual(this.props.dates, nextProps.dates)) {
+      this.getData(attr, this.setData, this.setData);
+    }
+  }
+
+  onPrint() {
+    this.props.onPrint &&
+      setTimeout(() => {
+        this.props.onPrint();
+      }, 1500);
   }
 
   getItemType() {
@@ -49,9 +65,7 @@ export default class Chart extends React.Component {
       const threshold = info['json-config'].threshold;
       const y2Axis = info['json-config'].type['secondary-axe'];
 
-      setTimeout(() => {
-        this.props.onPrint();
-      }, 1500);
+      this.onPrint();
 
       switch (info['json-config'].type.visual) {
         case 'table': return (
@@ -102,6 +116,8 @@ export default class Chart extends React.Component {
         default: return 'No type';
       }
     }
+
+    this.onPrint();
     return <p className="no-data">No data available</p>;
   }
 
@@ -111,8 +127,8 @@ export default class Chart extends React.Component {
     });
   }
 
-  getData(info, onSuccess, onError) {
-    const { dates, region } = this.props;
+  getData(attr, onSuccess, onError) {
+    const { info, dates, region } = attr;
     if (info) {
       const token = localStorage.getItem('token');
       // token, widget_id, region, start_date, end_date
@@ -149,6 +165,7 @@ export default class Chart extends React.Component {
 
     return (
       <div className={classNames}>
+        <Spinner isLoading={this.state.data === undefined} />
         {content}
       </div>
     );

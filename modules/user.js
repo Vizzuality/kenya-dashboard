@@ -81,7 +81,7 @@ export function logout() {
   return (dispatch) => {
     localStorage.setItem('token', '');
     // Set cookie
-    Cookies.remove('user');
+    // Cookies.remove('user');
 
     // Dispatch action
     dispatch({ type: REMOVE_USER });

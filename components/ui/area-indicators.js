@@ -20,6 +20,8 @@ export default class AreaIndicators extends React.Component {
     // Bindings
     this.onRemoveArea = this.onRemoveArea.bind(this);
     this.onSetRegion = this.onSetRegion.bind(this);
+    this.onRemoveWidget = this.onRemoveWidget.bind(this);
+    this.onSetIndicatorDate = this.onSetIndicatorDate.bind(this);
   }
 
   onRemoveArea(id) {
@@ -30,8 +32,25 @@ export default class AreaIndicators extends React.Component {
     this.props.onSelectRegion(region, this.props.id, this.props.url);
   }
 
+  onRemoveWidget(widgetId, areaId) {
+    this.props.onRemoveWidget(widgetId, areaId, this.props.url);
+  }
+
+  onSetIndicatorDate(indicator, dates) {
+    this.props.onSetDate(indicator, dates, this.props.id);
+  }
+
   render() {
-    const { id, className, indicators, numOfAreas, regions, selectedRegion, dates } = this.props;
+    const {
+      id,
+      className,
+      indicators,
+      numOfAreas,
+      regions,
+      selectedRegion,
+      dates,
+      removedWidgets
+    } = this.props;
     const classNames = classnames(
       'c-area-indicators',
       { [className]: !!className }
@@ -66,12 +85,15 @@ export default class AreaIndicators extends React.Component {
         </header>
         <section>
           <DashboardList
+            groupId={id}
             layout="grid"
             withGrid={numOfAreas === 1}
-            list={setIndicatorsWidgetsList(indicators.list, false)}
+            list={setIndicatorsWidgetsList(indicators.list, false, removedWidgets)}
             region={selectedRegion}
             dates={dates}
-            onSetDate={this.props.onSetDate}
+            remove
+            onSetDate={this.onSetIndicatorDate}
+            onRemoveItem={this.onRemoveWidget}
           />
         </section>
       </article>
@@ -88,11 +110,13 @@ AreaIndicators.propTypes = {
   dates: PropTypes.object,
   selectedRegion: PropTypes.any,
   numOfAreas: PropTypes.number,
+  removedWidgets: PropTypes.array,
   // Actions
   onRemoveArea: PropTypes.func,
   onToggleAccordionItem: PropTypes.func,
   onSelectRegion: PropTypes.func,
-  onSetDate: PropTypes.func
+  onSetDate: PropTypes.func,
+  onRemoveWidget: PropTypes.func
 };
 
 AreaIndicators.defaultProps = {

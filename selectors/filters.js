@@ -26,5 +26,15 @@ const getSelectedFilterOptions = createSelector(
   }
 );
 
+/* Get all selected indicators first layer if they have anyone */
+const getTopicsWithoutAllOption = createSelector(
+  getFiltersOptions,
+  (filtersOptions) => {
+    return filtersOptions.topics ?
+      filtersOptions.topics.filter(t => t.id !== 'all') :
+      [];
+  }
+);
+
 // Export the selector
-export { getSelectedFilterOptions };
+export { getSelectedFilterOptions, getTopicsWithoutAllOption };

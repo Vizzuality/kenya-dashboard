@@ -22,10 +22,6 @@ const GET_SPECIFIC_INDICATORS_ERROR = 'GET_SPECIFIC_INDICATORS_ERROR';
 const ADD_INDICATOR = 'ADD_INDICATOR';
 const REMOVE_INDICATOR = 'REMOVE_INDICATOR';
 const SET_INDICATOR_DATES = 'SET_INDICATOR_DATES';
-// All indicators filter list
-const GET_INDICATORS_FILTER_LIST = 'GET_INDICATORS_FILTER_LIST';
-const GET_INDICATORS_FILTER_LIST_LOADING = 'GET_INDICATORS_FILTER_LIST_LOADING';
-const GET_INDICATORS_FILTER_LIST_ERROR = 'GET_INDICATORS_FILTER_LIST_ERROR';
 // Layers
 const SET_SPECIFIC_LAYERS_ACTIVE = 'SET_SPECIFIC_LAYERS_ACTIVE';
 const SET_INDICATORS_LAYERS = 'SET_INDICATORS_LAYERS';
@@ -45,11 +41,6 @@ const initialState = {
     layers: [],
     layersActive: [],
     indicatorsWithLayers: []
-  },
-  filterList: {
-    list: {},
-    loading: false,
-    error: null
   }
 };
 
@@ -84,26 +75,6 @@ export default function indicatorsReducer(state = initialState, action) {
       return Object.assign({}, state, { specific: action.payload });
     case REMOVE_INDICATOR:
       return Object.assign({}, state, { specific: action.payload });
-    // All indicators filter list
-    case GET_INDICATORS_FILTER_LIST: {
-      const newList = {
-        ...state.filterList.list,
-        ...{ [action.payload.topic]: action.payload.list }
-      };
-      const newFilterList = { ...state.filterList, ...{ list: newList } };
-
-      return Object.assign({}, state, { filterList: newFilterList });
-    }
-    case GET_INDICATORS_FILTER_LIST_LOADING: {
-      const newFilterList = Object.assign({}, state.filterList,
-        { loading: true, error: null });
-      return Object.assign({}, state, { filterList: newFilterList });
-    }
-    case GET_INDICATORS_FILTER_LIST_ERROR: {
-      const newFilterList = Object.assign({}, state.filterList,
-        { list: [], loading: false, error: action.payload, indicatorsWithLayers: [] });
-      return Object.assign({}, state, { filterList: newFilterList });
-    }
     // Layers
     case SET_SPECIFIC_LAYERS_ACTIVE: {
       const newSpecific = Object.assign({}, state.specific,
@@ -292,51 +263,23 @@ export function removeIndicator(id) {
   };
 }
 
-// Get indicators to set de filter list
-export function getIndicatorsFilterList() {
-  return (dispatch, getState) => {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
-    const topics = getState().filters.options.topics;
-
-    topics.forEach((topic) => {
-      fetch(`${process.env.KENYA_API}/indicators?filter[topic_id]=${topic.id}&include=topic&page[size]=999`, headers)
-      .then((response) => {
-        if (response.ok) return response.json();
-        throw new Error(response.statusText);
-      })
-      .then((data) => {
-        DESERIALIZER.deserialize(data, (err, dataParsed) => {
-          dataParsed.length &&
-            dispatch({
-              type: GET_INDICATORS_FILTER_LIST,
-              payload: {
-                topic: dataParsed.length ? dataParsed[0].topic.name : '',
-                list: dataParsed.map(i => ({ name: i.name, id: i.id }))
-              }
-            });
-        });
-      });
-    });
-  };
-}
-
-export function setIndicatorsParamsUrl(indicatorId, type, url) {
+export function setIndicatorsParamsUrl(indicatorId, url) {
   return () => {
     let newQuery = {};
     const { indicators } = url.query;
     const indicatorsIds = indicators ? indicators.split(',') : [];
 
     // Update indicators ids
-    if (type === 'add') {
-      indicatorsIds.push(`${indicatorId}`);
-    } else { // Remove
+    if (indicatorsIds.includes(indicatorId)) { // Remove
       const idIndex = indicatorsIds.indexOf(`${indicatorId}`);
       indicatorsIds.splice(idIndex, 1);
+    } else { // Add
+      indicatorsIds.push(`${indicatorId}`);
     }
 
     // Show indicators param if there are ids, or hide if not
     if (indicatorsIds.length) {
-      newQuery = { ...url.query, indicators: indicatorsIds.join(',') };
+      newQuery = Object.assign({}, url.query, { indicators: indicatorsIds.join(',') });
     } else {
       Object.keys(url.query).forEach((key) => {
         if (key !== 'indicators') newQuery = url.query[key];
