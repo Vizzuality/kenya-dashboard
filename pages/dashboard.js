@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
-import { store } from 'store';
+import { initStore } from 'store';
 
 // Modules
 import { getIndicators, setIndicatorDates } from 'modules/indicators';
@@ -103,7 +103,7 @@ DashboardPage.propTypes = {
 };
 
 export default withRedux(
-  store,
+  initStore,
   state => ({
     indicators: state.indicators,
     selectedFilterOptions: getSelectedFilterOptions(state),

@@ -14,11 +14,11 @@ passport.deserializeUser((obj, done) => {
   done(null, obj);
 });
 
-module.exports = function() {
+module.exports = function () {
   const strategy = new Strategy({
     usernameField: 'email',
     passwordField: 'password'
-  }, function(email, password, done) {
+  }, (email, password, done) => {
     request
       .post(`${process.env.KENYA_API}/auth`)
       .send({ email, password })
@@ -34,6 +34,6 @@ module.exports = function() {
   });
   passport.use(strategy);
   return {
-    authenticate: () => passport.authenticate('local', {  failureRedirect: '/' })
+    authenticate: () => passport.authenticate('local', { failureRedirect: '/' })
   };
 };

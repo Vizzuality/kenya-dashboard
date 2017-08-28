@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
-import { store } from 'store';
+import { initStore } from 'store';
 
 // modules
 import { setUser } from 'modules/user';
@@ -38,7 +38,7 @@ class AboutPage extends React.Component {
   }
 
   render() {
-    const { url, session, agencies, user } = this.props;
+    const { url, agencies, user } = this.props;
 
     if (!user) return null;
 
@@ -47,8 +47,7 @@ class AboutPage extends React.Component {
         title="About"
         description="About description..."
         url={url}
-        session={session}
-        className={user.logged ? 'p-about -logged' : 'p-about'}
+        className={user ? 'p-about -logged' : 'p-about'}
         logged={user.logged}
       >
         <div>
@@ -104,9 +103,9 @@ const mapStateToProps = state => ({
 // const mapDispatchToProps = dispatch => ({
 //   getStaticData: bindActionCreators((slug) => getStaticData(slug), dispatch)
 // User
-    // setUser(user) { dispatch(setUser(user)); },
-    // // Agencies
-    // getAgencies() { dispatch(getAgencies()); }
+// setUser(user) { dispatch(setUser(user)); },
+// // Agencies
+// getAgencies() { dispatch(getAgencies()); }
 // });
 
-export default withRedux(store, mapStateToProps, null)(AboutPage);
+export default withRedux(initStore, mapStateToProps, null)(AboutPage);

@@ -1,5 +1,7 @@
 const express = require('express');
 const passport = require('passport');
+const puppeteer = require('puppeteer');
+const tmp = require('tmp');
 const next = require('next');
 const sass = require('node-sass');
 const session = require('express-session');
@@ -61,6 +63,41 @@ const isAuthenticated = (req, res, nextAction) => {
   return res.redirect('/');
 };
 
+// Puppeteer: PDF export
+const viewportOptions = { width: 1024, height: 768 };
+const gotoOptions = { waitUntil: 'networkidle' };
+const getDelayParam = (param) => {
+  const n = parseInt(param, 10);
+  if (typeof n === 'number' && !isNaN(n)) return n;
+  return param || 3000;
+};
+async function exportPDF(req, res) {
+  const tmpDir = tmp.dirSync();
+  const filename = `widget-${req.params.id}-${Date.now()}.pdf`;
+  const filePath = `${tmpDir.name}/${filename}`;
+
+  try {
+    // Using Puppeteer
+    const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+    const page = await browser.newPage();
+    const delay = getDelayParam(req.query.waitFor);
+
+    await page.setViewport(viewportOptions);
+    await page.goto(`/widget/${req.params.id}`, gotoOptions);
+    await page.waitFor(delay);
+    await page.pdf({ path: filePath, format: 'A4' });
+
+    browser.close();
+
+    res.setHeader('Content-type', 'application/pdf');
+    res.setHeader('Content-disposition', `attachment; filename=${filename}`);
+    res.download(filePath);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// Check auth for export
 const checkExport = (req, res, nextAction) => {
   if (req.headers['user-agent'].indexOf('HeadlessChrome') < 0) return nextAction();
   return isAuthenticated(req, res, nextAction);
@@ -100,11 +137,12 @@ app.prepare()
     });
 
     // Pages with required authentication
-    server.all('/about', isAuthenticated, handleUrl);
-    server.all('/dashboard', isAuthenticated, handleUrl);
-    server.all('/compare', isAuthenticated, handleUrl);
-    server.all('/agency/:id', isAuthenticated, handleUrl);
-    server.all('/widget/:id', checkExport, handleUrl);
+    server.get('/about', isAuthenticated, handleUrl);
+    server.get('/dashboard', isAuthenticated, handleUrl);
+    server.get('/compare', isAuthenticated, handleUrl);
+    server.get('/agency/:id', isAuthenticated, handleUrl);
+    server.get('/widget/:id', checkExport, handleUrl);
+    server.get('/widget/:id/export', exportPDF);
     server.use(handle);
 
     server.listen(port, (err) => {

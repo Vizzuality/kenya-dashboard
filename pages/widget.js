@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
-import { store } from 'store';
+import { initStore } from 'store';
 
 // Modules
 import { setUser } from 'modules/user';
@@ -145,7 +145,7 @@ WidgetPage.propTypes = {
 };
 
 export default withRedux(
-  store,
+  initStore,
   state => ({
     user: state.user
   }),

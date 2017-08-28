@@ -37,7 +37,7 @@ import { getIndicatorsWithLayers } from 'selectors/indicators';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
-import { store } from 'store';
+import { initStore } from 'store';
 
 // Libraries
 import isEqual from 'lodash/isEqual';
@@ -305,7 +305,7 @@ ComparePage.propTypes = {
 };
 
 export default withRedux(
-  store,
+  initStore,
   state => (
     {
       indicators: Object.assign(

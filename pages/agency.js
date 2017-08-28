@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
-import { store } from 'store';
+import { initStore } from 'store';
 
 // modules
 import { setUser } from 'modules/user';
@@ -129,7 +129,7 @@ AgencyPage.propTypes = {
 };
 
 export default withRedux(
-  store,
+  initStore,
   state => ({
     info: state.agencies.agency,
     user: state.user

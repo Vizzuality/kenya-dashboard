@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
-import { store } from 'store';
+import { initStore } from 'store';
+import { bindActionCreators } from 'redux';
 
 // Modules
 import { getTopicsOptions } from 'modules/filters';
@@ -26,32 +27,31 @@ class HomePage extends React.PureComponent {
     return { user, url, isServer };
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      numToLoad: 0,
-      numLoaded: 0
-    };
-
-    // Bindings
-    this.onLoadMore = this.onLoadMore.bind(this);
-  }
-
   static getNumberOftopicsToLoad() {
     const width = document.body.clientWidth;
     const result = width > 1025 ? 4 : 3;
     return result;
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.topics.length > 0 && nextState.numLoaded > 0;
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      numToLoad: props.numToLoad,
+      numLoaded: props.numLoaded
+    };
+
+    // Bindings
+    this.onLoadMore = this.onLoadMore.bind(this);
   }
 
   componentDidMount() {
     const numToLoad = HomePage.getNumberOftopicsToLoad();
-    // this.props.getTopicsOptions();
     this.setState({ numLoaded: numToLoad, numToLoad });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.topics.length > 0 && nextState.numLoaded > 0;
   }
 
   onLoadMore() {
@@ -60,7 +60,7 @@ class HomePage extends React.PureComponent {
   }
 
   render() {
-    const { url, session, user, topics } = this.props;
+    const { url, user, topics } = this.props;
     const { numLoaded } = this.state;
 
     return (
@@ -68,7 +68,6 @@ class HomePage extends React.PureComponent {
         title="Home"
         description="Home description..."
         url={url}
-        session={session}
         className="p-home"
         logged={user.logged}
       >
@@ -130,21 +129,26 @@ class HomePage extends React.PureComponent {
 
 HomePage.propTypes = {
   url: PropTypes.object,
-  topics: PropTypes.array
+  topics: PropTypes.array,
+  user: PropTypes.object,
+  numToLoad: PropTypes.number,
+  numLoaded: PropTypes.number
 };
 
 HomePage.defaultProps = {
-  topics: []
+  topics: [],
+  numToLoad: 3,
+  numLoaded: 3
 };
 
-export default withRedux(
-  store,
-  state => ({
-    user: state.user,
-    topics: state.filters.options.topics.filter(t => t.id !== 'all')
-  }),
-  dispatch => ({
-    getTopicsOptions() { dispatch(getTopicsOptions()); },
-    setUser(user) { dispatch(setUser(user)); }
-  })
-)(HomePage);
+const mapStateToProps = state => ({
+  user: state.user,
+  topics: state.filters.options.topics.filter(t => t.id !== 'all')
+});
+
+const mapDispatchToProps = dispatch => ({
+  getTopicsOptions: bindActionCreators(getTopicsOptions(), dispatch),
+  setUser: bindActionCreators(user => setUser(user), dispatch)
+});
+
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(HomePage);

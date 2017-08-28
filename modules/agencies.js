@@ -60,7 +60,7 @@ export function getAgencies(userToken) {
         throw new Error(response.statusText);
       })
       .then((data) => {
-        DESERIALIZER.deserialize(data, (err, dataParsed) => {
+        return DESERIALIZER.deserialize(data, (err, dataParsed) => {
           dispatch({
             type: GET_AGENCIES,
             payload: dataParsed

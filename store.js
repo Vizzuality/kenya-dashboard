@@ -6,7 +6,7 @@ const reducer = combineReducers({
   ...reducers
 });
 
-const store = (initialState = {}) =>
+const initStore = (initialState = {}) =>
   createStore(
     reducer,
     initialState,
@@ -18,8 +18,8 @@ const store = (initialState = {}) =>
        * https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en */
       process.env.NODE_ENV !== 'production' &&
         typeof window === 'object' &&
-          typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+        typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
     )
   );
 
-export { store };
+export { initStore };
