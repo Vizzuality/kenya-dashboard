@@ -49,9 +49,6 @@ export default class Map extends React.Component {
     this.state = {
       loading: false
     };
-
-    // Bindings
-    // this.onResize = this.onResize.bind(this);
   }
 
   /* Component Lifecyle */
@@ -74,7 +71,7 @@ export default class Map extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { mapOptions, layers, indicatorsLayersActive, numOfAreas } = this.props;
+    const { mapOptions, layers, indicatorsLayersActive } = this.props;
 
     // Fitbounds
     if (!isEqual(mapOptions.bounds, nextProps.mapOptions.bounds) ||
@@ -106,11 +103,6 @@ export default class Map extends React.Component {
           layersToRemove = this.props.layers.filter(l => removed.includes(l.id));
         }
         this.removeLayer(layersToRemove);
-      }
-
-      // SEt map size when resizing
-      if (numOfAreas !== nextProps.numOfAreas) {
-        //
       }
     }
 
@@ -275,7 +267,6 @@ Map.propTypes = {
   mapOptions: PropTypes.object,
   mapMethods: PropTypes.object,
   layers: PropTypes.array,
-  numOfAreas: PropTypes.number,
   indicatorsLayersActive: PropTypes.array,
   markers: PropTypes.array,
   markerIcon: PropTypes.object,
