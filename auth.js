@@ -34,6 +34,6 @@ module.exports = () => {
   });
   passport.use(strategy);
   return {
-    authenticate: () => passport.authenticate('local', { failureRedirect: '/' })
+    authenticate: () => passport.authenticate('local', { failureRedirect: '/login' })
   };
 };

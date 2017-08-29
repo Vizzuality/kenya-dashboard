@@ -11,7 +11,7 @@ const initialState = {};
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_USER:
-      return Object.assign({}, state, action.payload, { logged: true });
+      return Object.assign({}, state, action.payload);
     case REMOVE_USER:
       return Object.assign({}, state, { logged: false, auth_token: null });
     case RESET_PASSWORD:
@@ -41,7 +41,7 @@ export function login({ email, password }) {
       ],
       onSuccess: (response) => {
         // Dispatch action
-        dispatch({ type: SET_USER, payload: response });
+        dispatch({ type: SET_USER, payload: Object.assign({}, response, { logged: true }) });
       },
       onError: () => {
         dispatch({ type: SET_USER, payload: {} });

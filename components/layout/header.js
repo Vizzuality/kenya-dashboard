@@ -126,7 +126,7 @@ class Header extends React.Component {
           )
         };
         default: return {
-          title: <p>Title</p>
+          title: <h1><Link route="home"><a>Kenya dashboard</a></Link></h1>
         };
       }
     } else {
@@ -196,9 +196,11 @@ class Header extends React.Component {
                   <a className="btn btn-logout" href="/logout">
                     Sign out
                   </a> :
-                  <button className="btn btn-login" onClick={this.onOpenModal}>
-                    Sign in
-                  </button>
+                  <Link route="login">
+                    <a className="btn btn-login">
+                      Sign in
+                    </a>
+                  </Link>
                 }
               </div>
             </nav>

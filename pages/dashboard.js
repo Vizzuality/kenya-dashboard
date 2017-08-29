@@ -37,7 +37,7 @@ class DashboardPage extends Page {
   }
 
   componentWillMount() {
-    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('home');
+    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('login');
   }
 
   componentDidMount() {
@@ -63,6 +63,8 @@ class DashboardPage extends Page {
       selectedFilters,
       filterOptions
     } = this.props;
+
+    if (isEmpty(user)) return null;
 
     return (
       <Layout
