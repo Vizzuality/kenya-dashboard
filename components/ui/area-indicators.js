@@ -37,7 +37,7 @@ export default class AreaIndicators extends React.Component {
   }
 
   onSetIndicatorDate(indicator, dates) {
-    this.props.onSetDate(indicator, dates, this.props.id);
+    this.props.onSetDate(indicator, dates, this.props.id, this.props.url);
   }
 
   render() {

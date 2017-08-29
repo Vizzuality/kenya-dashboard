@@ -60,7 +60,7 @@ export default class ItemTools extends React.Component {
 
     return (
       <div className={classNames}>
-        {info.granularity !== null &&
+        {info.frenquency !== null &&
           <div className="select-date">
             <PickDate dates={dates} onChange={this.props.onSetDate} />
           </div>

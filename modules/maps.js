@@ -68,6 +68,8 @@ export default function mapsReducer(state = initialState, action) {
     }
     case REMOVE_AREA:
       return Object.assign({}, state, { areas: action.payload });
+    case SET_AREA_INDICATOR_DATES:
+      return Object.assign({}, state, { areas: action.payload });
     case ADD_LAYER: {
       const newAreas = Object.assign({}, state.areas, action.payload);
       return Object.assign({}, state, { areas: newAreas });

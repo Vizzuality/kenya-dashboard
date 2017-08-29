@@ -39,7 +39,7 @@ export default class AreaMap extends React.Component {
       });
     }
 
-    if (this.props.area.region !== nextProps.area.region ||
+    if ((this.props.area.region !== nextProps.area.region) ||
       !isEqual(this.props.dates, nextProps.dates)) {
       nextProps.layers.forEach((l) => {
         this.props.addLayer(l, nextProps.id, nextProps.area.region, nextProps.dates[l['indicator-id']]);
