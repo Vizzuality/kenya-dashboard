@@ -1,4 +1,5 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import * as reducers from 'modules';
 
@@ -10,15 +11,12 @@ const initStore = (initialState = {}) =>
   createStore(
     reducer,
     initialState,
-    compose(
+    /* Redux dev tool, install chrome extension in
+     * https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en */
+    composeWithDevTools(
       /* The router middleware MUST be before thunk otherwise the URL changes
       * inside a thunk function won't work properly */
-      applyMiddleware(thunk),
-      /* Redux dev tool, install chrome extension in
-       * https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en */
-      process.env.NODE_ENV !== 'production' &&
-        typeof window === 'object' &&
-        typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+      applyMiddleware(thunk)
     )
   );
 
