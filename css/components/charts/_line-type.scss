@@ -11,6 +11,10 @@
       fill: $color-text-1;
     }
 
+    &.xAxis {
+      transform: translateY(10px);
+    }
+
     &.yAxis {
       text tspan {
         fill: rgba($color-text-1, .5);

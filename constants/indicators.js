@@ -30,6 +30,7 @@ const THRESHOLD_CATEGORY_COLORS = {
     '#7FC829',
     '#B2F563',
     '#C9FF8A',
+    '#C2D6AB',
     '#C2D6AB'
   ],
   'no-data': [

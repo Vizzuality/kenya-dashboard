@@ -41,6 +41,26 @@ export default class BarsType extends React.Component {
     return data.length ? Object.keys(data[0]).filter(key => key !== 'x') : [];
   }
 
+  setLegendValues() {
+    const { config, data, y2Axis, threshold } = this.props;
+    const values = [];
+
+    if (config.axes && Object.keys(config.axes).length) {
+      Object.keys(config.axes).forEach((key) => {
+        if (key[0] === 'y' && config.axes[key]) {
+          // const value = data[data.length - 1][key];
+          // const lineThreshold = y2Axis && key === 'y2' ?
+          //   threshold.y2['break-points'] :
+          //   threshold.y['break-points'];
+            // const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
+          const color = '#2E3D3D';
+          values.push({ value: config.axes[key].title, type: 'square', id: key, color });
+        }
+      });
+    }
+    return values;
+  }
+
   render() {
     const { className, threshold, data, y2Axis, config } = this.props;
     const classNames = classnames(
@@ -48,6 +68,7 @@ export default class BarsType extends React.Component {
       { [className]: !!className }
     );
     const yRefs = this.getBarsRefs();
+    const legendValues = this.setLegendValues();
 
     return (
       <div className={classNames}>
@@ -83,14 +104,15 @@ export default class BarsType extends React.Component {
               >
                 {/* Set each bar hover color */}
                 {data.map((item, j) => {
-                  let barsThreshold = {};
-                  if (threshold && threshold.y) {
-                    barsThreshold = y2Axis && key === 'y2' && threshold.y2 ?
-                    threshold.y2['break-points'] : threshold.y['break-points'];
-                  }
-                  const color = threshold && threshold.y ?
-                    THRESHOLD_COLORS[getThreshold(item[key], barsThreshold)] :
-                    '#fff';
+                  // let barsThreshold = {};
+                  // if (threshold && threshold.y) {
+                  //   barsThreshold = y2Axis && key === 'y2' && threshold.y2 ?
+                  //   threshold.y2['break-points'] : threshold.y['break-points'];
+                  // }
+                  // const color = threshold && threshold.y ?
+                  //   THRESHOLD_COLORS[getThreshold(item[key], barsThreshold)] :
+                  //   '#fff';
+                  const color = item[key] < 0 ? '#FF6161' : '#6f6fc3';
                   return (
                     <Cell
                       key={j}
@@ -102,7 +124,7 @@ export default class BarsType extends React.Component {
                 })}
               </Bar>
             ))}
-            <Legend iconType="square" />
+            <Legend payload={legendValues} />
           </BarChart>
         </ResponsiveContainer>
       </div>

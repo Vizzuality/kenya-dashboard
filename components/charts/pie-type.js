@@ -11,7 +11,7 @@ import { roundNumberWithDecimals } from 'utils/general';
 import { ResponsiveContainer, PieChart, Pie, Cell, Label } from 'recharts';
 
 // Constants
-import { CATEGORY_COLORS } from 'constants/indicators';
+import { THRESHOLD_CATEGORY_COLORS } from 'constants/indicators';
 
 
 export default class PieType extends React.Component {
@@ -22,6 +22,8 @@ export default class PieType extends React.Component {
       title: props.data[0].x,
       text: roundNumberWithDecimals(props.data[0].y)
     };
+
+    this.category = Object.keys(THRESHOLD_CATEGORY_COLORS)[Number.parseInt(Math.random() * 3, 0)];
 
     // Bindings
     this.onMouseEnter = this.onMouseEnter.bind(this);
@@ -62,7 +64,9 @@ export default class PieType extends React.Component {
               <Label value={this.state.text} dy={13} position="center" />
               {
                 data.map((item, i) => {
-                  const color = i > 5 ? CATEGORY_COLORS[0] : CATEGORY_COLORS[i];
+                  const color = i > 4 ?
+                    THRESHOLD_CATEGORY_COLORS[this.category][2] :
+                    THRESHOLD_CATEGORY_COLORS[this.category][i];
 
                   return (
                     <Cell

@@ -13,9 +13,15 @@ import TooltipChart from 'components/charts/tooltip-chart';
 
 // Constants
 import { THRESHOLD_COLORS } from 'constants/general';
+import { THRESHOLD_CATEGORY_COLORS } from 'constants/indicators';
 
 
 export default class LineType extends React.Component {
+  constructor(props) {
+    super(props);
+    this.colors = THRESHOLD_CATEGORY_COLORS[getThreshold(props.data[props.data.length - 1].y, props.threshold.y['break-points'])];
+  }
+
   getLineRefs() {
     const { data } = this.props;
     return data.length ? Object.keys(data[0]).filter(key => key !== 'x') : [];
@@ -88,11 +94,11 @@ export default class LineType extends React.Component {
             }
             <CartesianGrid vertical={false} />
             {yRefs.map((key, i) => {
-              const value = data[data.length - 1][key];
-              const lineThreshold = y2Axis && key === 'y2' ?
-                threshold.y2['break-points'] :
-                threshold.y['break-points'];
-              const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
+              // const value = data[data.length - 1][key];
+              // const lineThreshold = y2Axis && key === 'y2' ?
+              //   threshold.y2['break-points'] :
+              //   threshold.y['break-points'];
+              const color = this.colors[i];
 
               return (
                 <Line

@@ -59,7 +59,7 @@ export default class BarsType extends React.Component {
             threshold.y2['break-points'] :
             threshold.y['break-points'];
             // const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
-          const color = key === 'y' ? '#FF6161' : '#6f6fc3';
+          const color = key === 'y' ? '#FF6161' : '#2E3D3D';
           const type = key === 'y' ? 'line' : 'square';
           values.push({ value: config.axes[key].title, type, id: key, color });
         }
