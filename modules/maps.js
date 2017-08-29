@@ -239,8 +239,6 @@ export function setAreasParamsUrl(url) {
       query: Object.assign({}, url.query, { maps: encode(newAreas) })
     };
 
-    console.log(JSON.parse(atob(encode(newAreas))));
-
     Router.replace(location);
   };
 }

@@ -120,6 +120,15 @@ function roundNumberWithDecimals(number, decimals = 2) {
     'NaN';
 }
 
+function setFormat(value, format) {
+  const date = new Date(value);
+
+  if (date !== 'Invalid Date') {
+    return `${date.getFullYear()}/${date.getUTCMonth() + 1}/${date.getDate()}`;
+  }
+  return value;
+}
+
 export {
   toBase64,
   encode,
@@ -132,5 +141,6 @@ export {
   parseCustomSelectOptions,
   parseCustomSelectCascadeOptions,
   getValueMatchFromCascadeList,
-  roundNumberWithDecimals
+  roundNumberWithDecimals,
+  setFormat
 };

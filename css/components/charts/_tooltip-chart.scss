@@ -18,9 +18,15 @@
     margin-bottom: 3px;
   }
 
-  .value {
-    font-size: $font-size-big;
-    line-height: 22px;
+  .value-container {
+    font-size: $font-size-small;
+    line-height: 16px;
     text-align: center;
+
+    .value-title {
+      display: inline-block;
+      font-size: 10px;
+      margin-right: 5px;
+    }
   }
 }

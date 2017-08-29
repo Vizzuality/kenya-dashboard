@@ -69,7 +69,7 @@ export default class BarsType extends React.Component {
   }
 
   render() {
-    const { className, threshold, data, y2Axis } = this.props;
+    const { className, threshold, data, y2Axis, config } = this.props;
     const classNames = classnames(
       'c-bars-line-type',
       { [className]: !!className }
@@ -104,7 +104,7 @@ export default class BarsType extends React.Component {
               offset={10}
               isAnimationActive={false}
               cursor={false}
-              content={<TooltipChart />}
+              content={<TooltipChart config={config['interactivity-config']} />}
             />
             <Legend payload={legendValues} />
 

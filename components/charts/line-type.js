@@ -110,7 +110,7 @@ export default class LineType extends React.Component {
             <Tooltip
               isAnimationActive={false}
               cursor={{ stroke: 'white', strokeWidth: 1 }}
-              content={<TooltipChart />}
+              content={<TooltipChart config={this.props.config['interactivity-config']} />}
             />
             <Legend payload={legendValues} />
           </LineChart>
