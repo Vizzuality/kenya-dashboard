@@ -72,11 +72,10 @@ export default function filtersReducer(state = initialState, action) {
 /* Get topics options */
 export function getTopicsOptions() {
   return (dispatch) => {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_FILTERS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/topics?page[size]=999`, headers)
+    return fetch(`${process.env.KENYA_API}/topics?page[size]=999`)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
@@ -101,8 +100,9 @@ export function getTopicsOptions() {
 
 /* Get locations options */
 export function getRegionsOptions() {
-  return (dispatch) => {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+  return (dispatch, getState) => {
+    const token = getState().user.auth_token;
+    const headers = setBasicQueryHeaderHeaders({ Authorization: token });
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_FILTERS_LOADING });
 

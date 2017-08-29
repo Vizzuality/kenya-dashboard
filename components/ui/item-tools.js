@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
+
 // Libraries
 import classnames from 'classnames';
 
@@ -8,7 +10,7 @@ import classnames from 'classnames';
 import modal from 'services/modal';
 
 // utils
-import { encode } from 'utils/general';
+import { encode, decode } from 'utils/general';
 
 // Components
 import { Link } from 'routes';
@@ -17,7 +19,7 @@ import Icon from 'components/ui/icon';
 import PickDate from 'components/ui/pickdate';
 
 
-export default class ItemTools extends React.Component {
+class ItemTools extends React.Component {
   constructor(props) {
     super(props);
 
@@ -51,12 +53,14 @@ export default class ItemTools extends React.Component {
   // }
 
   render() {
-    const { info, className, dates, remove, options } = this.props;
+    const { info, className, dates, remove, options, user, routes } = this.props;
     const classNames = classnames(
       'c-item-tools',
       { [className]: !!className }
     );
-    const encodedFilters = encode(options);
+    const queryFilters = routes.query && routes.query.filters ? decode(routes.query.filters) : {};
+    const filters = Object.assign({}, options, queryFilters);
+    const encodedFilters = encode(filters);
 
     return (
       <div className={classNames}>
@@ -72,7 +76,7 @@ export default class ItemTools extends React.Component {
           {/* <button className="btn" onClick={this.onDownloadWidget}>
             <Icon name="icon-download" className="-smaller" />
           </button> */}
-          <Link route={`/widget/${info.id}?options=${encodedFilters}`}>
+          <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
             <a className="btn">
               <Icon name="icon-download" className="-smaller" />
             </a>
@@ -97,5 +101,14 @@ ItemTools.propTypes = {
   remove: PropTypes.bool,
   // Actions
   onSetDate: PropTypes.func,
-  onRemoveItem: PropTypes.func
+  onRemoveItem: PropTypes.func,
+  user: PropTypes.object,
+  routes: PropTypes.object
 };
+
+const mapStateToProps = state => ({
+  user: state.user,
+  routes: state.routes
+});
+
+export default connect(mapStateToProps)(ItemTools);

@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
-import { store } from 'store';
+import { initStore } from 'store';
 
 class ErrorPage extends React.Component {
 
@@ -39,7 +39,7 @@ class ErrorPage extends React.Component {
           <div>
             {css}
             <h1>Page Not Found</h1>
-            <p>The page <strong>{ this.props.url.pathname }</strong> does not exist.</p>
+            <p>The page <strong>{this.props.url.pathname}</strong> does not exist.</p>
             <p><Link href="/"><a>Home</a></Link></p>
           </div>
         );
@@ -57,10 +57,10 @@ class ErrorPage extends React.Component {
         response = (
           <div>
             {css}
-            <h1>HTTP { this.props.errorCode } Error</h1>
+            <h1>HTTP {this.props.errorCode} Error</h1>
             <p>
-              An <strong>HTTP { this.props.errorCode }</strong> error occurred while
-              trying to access <strong>{ this.props.url.pathname }</strong>
+              An <strong>HTTP {this.props.errorCode}</strong> error occurred while
+              trying to access <strong>{this.props.url.pathname}</strong>
             </p>
           </div>
         );
@@ -76,6 +76,4 @@ ErrorPage.propTypes = {
   url: PropTypes.object.isRequired
 };
 
-export default withRedux(
-  store
-)(ErrorPage);
+export default withRedux(initStore)(ErrorPage);

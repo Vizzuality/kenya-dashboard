@@ -22,7 +22,7 @@ export default function IndicatorInfo(props) {
       {/* Header */}
       <header className="info-header">
         <div>
-          <p className="date">Last update: {info.updatedAt}</p>
+          <p className="date">Last update: {info.lastDate}</p>
           <h1 className="title">{info.title}</h1>
           {info.topic &&
             <div className="topic-container">
