@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import MediaQuery from 'react-responsive';
 
 const BREAKPOINT_MOBILE = 640;
@@ -21,6 +22,6 @@ export default function Media(props) {
 
 Media.propTypes = {
   // STORE
-  children: React.PropTypes.any,
-  device: React.PropTypes.string.isRequired
+  children: PropTypes.any,
+  device: PropTypes.string.isRequired
 };
