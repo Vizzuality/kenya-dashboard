@@ -3,7 +3,7 @@ services:
   redis:
     image: redis
     volumes:
-      - ./data:/data
+      - ./.data:/data
   app:
     command: "yarn start"
     build:

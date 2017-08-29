@@ -3,9 +3,14 @@ MAINTAINER david.inga@vizzuality.com
 
 ENV NODE_ENV production
 
-RUN apt-get update && \
-    apt-get install -y bash git build-essential \
-    automake autoconf make g++ libtool libcairo2-dev libx11-xcb-dev \
+RUN apt-get update \
+    && apt-get install -y \
+      bash git build-essential automake autoconf make g++ libtool apt-transport-https \
+    && curl -sSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+	  && echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update && apt-get install -y --no-install-recommends \
+      google-chrome-stable apt-utils \
+    && rm -rf /var/lib/apt/lists/* \
     && npm install -g node-gyp --loglevel warn \
     && mkdir -p /usr/src/app && mkdir -p /usr/src/app
 
