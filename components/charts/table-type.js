@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Utils
-import { getThreshold } from 'utils/general';
+import { getThreshold, roundNumberWithDecimals } from 'utils/general';
 
 // Components
 import Icon from 'components/ui/icon';
@@ -37,7 +37,7 @@ export default function TableType(props) {
                   {row.x}
                 </td>
                 <td className={`-${thresholdValue}`}>
-                  {row.y}
+                  {roundNumberWithDecimals(row.y)}
                   {row.trend === 0 ?
                     <Icon name="icon-minus" className="-smaller -equal" /> :
                     <Icon name={`icon-arrow-${row.trend > 0 ? 'up' : 'down'}`} className={`-smaller ${row.trend > 0 ? '-up' : '-down'}`} />

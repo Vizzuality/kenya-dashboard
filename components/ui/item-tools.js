@@ -64,7 +64,7 @@ class ItemTools extends React.Component {
 
     return (
       <div className={classNames}>
-        {info.frenquency !== null &&
+        {info.frenquency !== null && remove &&
           <div className="select-date">
             <PickDate dates={dates} onChange={this.props.onSetDate} />
           </div>

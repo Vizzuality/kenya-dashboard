@@ -112,8 +112,21 @@ function getValueMatchFromCascadeList(itemList, id) {
 }
 
 function roundNumberWithDecimals(number, decimals = 2) {
+  if (number % 1 === 0) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
   return !Number.isNaN(number) ?
-    Number.parseInt(Number(number).toFixed(decimals), 10) : 'NaN';
+    Number(number).toFixed(decimals).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') :
+    'NaN';
+}
+
+function setFormat(value, format) {
+  const date = new Date(value);
+
+  if (date !== 'Invalid Date') {
+    return `${date.getFullYear()}/${date.getUTCMonth() + 1}/${date.getDate()}`;
+  }
+  return value;
 }
 
 export {
@@ -128,5 +141,6 @@ export {
   parseCustomSelectOptions,
   parseCustomSelectCascadeOptions,
   getValueMatchFromCascadeList,
-  roundNumberWithDecimals
+  roundNumberWithDecimals,
+  setFormat
 };

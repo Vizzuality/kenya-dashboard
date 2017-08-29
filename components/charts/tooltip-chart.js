@@ -1,21 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// Libraries
 import classnames from 'classnames';
+
+// Utils
+import { roundNumberWithDecimals, setFormat } from 'utils/general';
+
 
 export default class TooltipChart extends React.Component {
 
   render() {
-    const { className, payload, active } = this.props;
+    const { className, payload, active, config } = this.props;
     const classNames = classnames({
       'c-tooltip-chart': true,
+      [className]: !!className,
       [className]: !!className
     });
 
     return active ?
       <div className={classNames}>
-        <p className="title">{payload.length && payload[0].payload.x}</p>
+        <p className="title">
+          {config && config.x && config.x['display-name']}
+          {payload.length && payload[0].payload.x &&
+            setFormat(payload[0].payload.x, config.x ? config.x.format : null)}
+        </p>
         {payload.map((py, i) => (
-          <p key={i} className="value">{py.value}</p>
+          config && config[py.name] && config[py.name]['display-name'] ?
+            <p key={i} className="value-container">
+              <span className="value-title">{config && config[py.name] && config[py.name]['display-name']}</span>
+              {config[py.name].format ? config[py.name].format.replace('#', roundNumberWithDecimals(py.value)) : roundNumberWithDecimals(py.value)}
+            </p> :
+            <p key={i} className="value-container">
+              {roundNumberWithDecimals(py.value)}
+            </p>
         ))
         }
       </div> :
@@ -26,5 +44,6 @@ export default class TooltipChart extends React.Component {
 TooltipChart.propTypes = {
   className: PropTypes.string,
   payload: PropTypes.array,
+  config: PropTypes.object,
   active: PropTypes.bool
 };

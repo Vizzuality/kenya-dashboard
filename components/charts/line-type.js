@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Utils
-import { getThreshold } from 'utils/general';
+import { getThreshold, roundNumberWithDecimals } from 'utils/general';
 
 // Components
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid, Tooltip, Legend } from 'recharts';
@@ -63,9 +63,28 @@ export default class LineType extends React.Component {
                 return new Date(t).getFullYear();
               }}
             />
-            <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
+
+            <YAxis
+              dataKey="y"
+              yAxisId="left"
+              orientation="left"
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(...t) => {
+                return roundNumberWithDecimals(t);
+              }}
+            />
             {y2Axis &&
-              <YAxis dataKey="y2" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
+              <YAxis
+                dataKey="y2"
+                yAxisId="right"
+                orientation="right"
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(...t) => {
+                  return roundNumberWithDecimals(t);
+                }}
+              />
             }
             <CartesianGrid vertical={false} />
             {yRefs.map((key, i) => {
@@ -91,7 +110,7 @@ export default class LineType extends React.Component {
             <Tooltip
               isAnimationActive={false}
               cursor={{ stroke: 'white', strokeWidth: 1 }}
-              content={<TooltipChart />}
+              content={<TooltipChart config={this.props.config['interactivity-config']} />}
             />
             <Legend payload={legendValues} />
           </LineChart>

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Utils
-import { getThreshold } from 'utils/general';
+import { getThreshold, roundNumberWithDecimals } from 'utils/general';
 
 
 export default function ExtremesType(props) {
@@ -26,7 +26,7 @@ export default function ExtremesType(props) {
 
         return (
           <div key={i} className={trendClasses}>
-            <p className="value">{row.y}</p>
+            <p className="value">{roundNumberWithDecimals(row.y)}</p>
             <h1 className="title">{row.x}</h1>
           </div>
         );

@@ -42,7 +42,7 @@ export default class BarsType extends React.Component {
   }
 
   render() {
-    const { className, threshold, data, y2Axis } = this.props;
+    const { className, threshold, data, y2Axis, config } = this.props;
     const classNames = classnames(
       'c-bars-type',
       { [className]: !!className }
@@ -72,7 +72,7 @@ export default class BarsType extends React.Component {
               offset={10}
               isAnimationActive={false}
               cursor={yRefs.length > 1 ? { fill: '#2E3D3D' } : false}
-              content={<TooltipChart />}
+              content={<TooltipChart config={config['interactivity-config']} />}
             />
             {yRefs.map((key, i) => (
               <Bar
@@ -114,5 +114,6 @@ BarsType.propTypes = {
   className: PropTypes.string,
   threshold: PropTypes.object,
   data: PropTypes.array,
+  config: PropTypes.array,
   y2Axis: PropTypes.bool
 };

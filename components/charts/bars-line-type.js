@@ -58,8 +58,10 @@ export default class BarsType extends React.Component {
           const lineThreshold = y2Axis && key === 'y2' ?
             threshold.y2['break-points'] :
             threshold.y['break-points'];
-          const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
-          values.push({ value: config.axes[key].title, type: 'line', id: key, color });
+            // const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
+          const color = key === 'y' ? '#FF6161' : '#6f6fc3';
+          const type = key === 'y' ? 'line' : 'square';
+          values.push({ value: config.axes[key].title, type, id: key, color });
         }
       });
     }
@@ -67,7 +69,7 @@ export default class BarsType extends React.Component {
   }
 
   render() {
-    const { className, threshold, data, y2Axis } = this.props;
+    const { className, threshold, data, y2Axis, config } = this.props;
     const classNames = classnames(
       'c-bars-line-type',
       { [className]: !!className }
@@ -102,7 +104,7 @@ export default class BarsType extends React.Component {
               offset={10}
               isAnimationActive={false}
               cursor={false}
-              content={<TooltipChart />}
+              content={<TooltipChart config={config['interactivity-config']} />}
             />
             <Legend payload={legendValues} />
 
@@ -115,7 +117,7 @@ export default class BarsType extends React.Component {
               {/* Set each bar hover color */}
               {data.map((item, j) => {
                 // const color = THRESHOLD_COLORS[getThreshold(item.y, barsThreshold)];
-                const color = '#734CD4';
+                const color = '#6f6fc3';
 
                 return (
                   <Cell
