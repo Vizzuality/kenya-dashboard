@@ -58,10 +58,7 @@ export default function mapsReducer(state = initialState, action) {
     case SET_MAP_EXPANSION:
       return Object.assign({}, state, { expanded: action.payload });
     case ADD_AREA: {
-      const newAreaParams = Object.assign({}, state.areas, {
-        [Math.random()]: DEFAULT_AREA_PARAMS
-      });
-      return Object.assign({}, state, { areas: newAreaParams });
+      return Object.assign({}, state, { areas: action.payload });
     }
     case SELECT_REGION: {
       return Object.assign({}, state, { areas: action.payload });
@@ -104,17 +101,21 @@ export function resetAreas() {
 }
 
 export function setSingleMapParams(params, key) {
-  return (dispatch) => {
-    dispatch({
-      type: SET_MAP_PARAMS,
-      payload: { [key]: params }
-    });
+  return (dispatch, getState) => {
+    const areas = getState().maps.areas;
+
+    if (areas[key]) {
+      dispatch({
+        type: SET_MAP_PARAMS,
+        payload: { [key]: params }
+      });
+    }
   };
 }
 
 export function setSingleMapParamsUrl(params, url) {
-  return () => {
-    const urlParams = url.query.maps ? decode(url.query.maps) : {};
+  return (dispatch, getState) => {
+    const urlParams = getState().maps.areas;
     const newAreasParams = Object.assign({}, urlParams,
       {
       [params.key]: {
@@ -172,10 +173,15 @@ export function fitAreaBounds(area) {
 }
 
 // Areas
-export function addArea() {
-  return (dispatch) => {
+export function addArea(area) {
+  return (dispatch, getState) => {
+    const areas = Object.assign({}, getState().maps.areas, {
+      [`area${Date.now()}`]: area || DEFAULT_AREA_PARAMS
+    });
+
     dispatch({
-      type: ADD_AREA
+      type: ADD_AREA,
+      payload: areas
     });
   };
 }
@@ -197,6 +203,7 @@ export function removeArea(id) {
     const areas = Object.assign({}, getState().maps.areas);
     const activeIds = Object.keys(areas).filter(key => key !== id);
     const newAreas = {};
+
     activeIds.forEach((aId) => {
       newAreas[aId] = areas[aId];
     });
@@ -231,6 +238,8 @@ export function setAreasParamsUrl(url) {
       pathname: url.pathname,
       query: Object.assign({}, url.query, { maps: encode(newAreas) })
     };
+
+    console.log(JSON.parse(atob(encode(newAreas))));
 
     Router.replace(location);
   };
