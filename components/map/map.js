@@ -71,18 +71,13 @@ export default class Map extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { mapOptions, layers, indicatorsLayersActive, listeners } = this.props;
+    const { mapOptions, layers, indicatorsLayersActive } = this.props;
 
     // Fitbounds
     if (!isEqual(mapOptions.bounds, nextProps.mapOptions.bounds) ||
     mapOptions.fitBounds !== nextProps.mapOptions.fitBounds) {
       this.setBounds(nextProps.mapOptions.bounds.coordinates[0]);
     }
-
-    if (!isEqual(listeners, nextProps.listeners)) {
-      // nextProps.listeners && this.setMapEventListeners();
-    }
-
 
     // Layers
     // Add layers with new order
