@@ -81,7 +81,7 @@ async function exportPDF(req, res) {
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     const delay = getDelayParam(req.query.waitFor);
-    const host = dev ? 'http://localhost:3000' : 'http://kenya-dashboard.vizzuality.com';
+    const host = dev ? 'http://localhost:3000' : 'https://kenya-dashboard.vizzuality.com';
 
     await page.setViewport(viewportOptions);
     await page.goto(`${host}/widget/${req.params.id}?options=${req.query.options}&token=${req.query.token}`, gotoOptions);
