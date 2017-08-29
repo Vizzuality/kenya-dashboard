@@ -196,6 +196,7 @@ class ComparePage extends Page {
           <AreaMap
             url={this.props.url}
             id={key}
+            areas={mapState.areas}
             area={areas[key]}
             numOfAreas={Object.keys(areas).length}
             dates={areas[key].dates}
@@ -388,7 +389,8 @@ export default withRedux(
       dispatch(setSingleMapParamsUrl(params, url));
     },
     setSingleMapParamsFromUrl(params, key) {
-      dispatch(setSingleMapParams(params, key));
+      dispatch(addArea(params, key));
+      // dispatch(setSingleMapParams(params, key));
     },
     fitAreaBounds(area) { dispatch(fitAreaBounds(area)); },
     setMapExpansion(expand, url) {
