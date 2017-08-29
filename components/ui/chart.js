@@ -116,6 +116,10 @@ class Chart extends React.Component {
     this.setState({
       data: data && data.rows && data.rows.length ? data.rows[0] : null
     });
+
+    if (data && data.rows.length && !!data.rows[0].last_date) {
+      this.props.setLastDate(data.rows[0].last_date);
+    }
   }
 
   getData(attr, onSuccess, onError) {
@@ -169,7 +173,9 @@ Chart.propTypes = {
   className: PropTypes.string,
   info: PropTypes.object,
   region: PropTypes.string,
-  dates: PropTypes.object
+  dates: PropTypes.object,
+  // Actions
+  setLastDate: PropTypes.object
 };
 
 const mapStateToProps = state => ({

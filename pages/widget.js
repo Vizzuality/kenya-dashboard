@@ -41,8 +41,12 @@ class WidgetPage extends Page {
   constructor(props) {
     super(props);
     this.state = {
-      info: null
+      info: null,
+      lastDate: ''
     };
+
+    // Bindings
+    this.setLastDate = this.setLastDate.bind(this);
   }
 
   componentWillMount() {
@@ -70,6 +74,13 @@ class WidgetPage extends Page {
           this.setState({ info: parsedInfo });
         });
       });
+  }
+
+  setLastDate(date) {
+    const index = date.indexOf('T');
+    const parsedDate = new Date(date.slice(0, index));
+    const lastDate = `${parsedDate.getFullYear()}/${parsedDate.getMonth() + 1}/${parsedDate.getDate()}`;
+    this.setState({ lastDate });
   }
 
   render() {
@@ -112,7 +123,7 @@ class WidgetPage extends Page {
                   <Icon name={`icon-${TOPICS_ICONS_SRC[typeClass]}`} className="-big" />
                   <span className="">{info.topic.name}</span>
                 </div>
-                <span className="update">Last update: {info.updatedAt}</span>
+                <span className="update">Last update: {this.state.lastDate}</span>
               </div>
             </footer>
           </article> : ''
