@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import modal from 'services/modal';
 
 // utils
-import { encode } from 'utils/general';
+import { encode, decode } from 'utils/general';
 
 // Components
 import { Link } from 'routes';
@@ -53,16 +53,18 @@ class ItemTools extends React.Component {
   // }
 
   render() {
-    const { info, className, dates, remove, options, user } = this.props;
+    const { info, className, dates, remove, options, user, routes } = this.props;
     const classNames = classnames(
       'c-item-tools',
       { [className]: !!className }
     );
-    const encodedFilters = encode(options);
+    const queryFilters = routes.query && routes.query.filters ? decode(routes.query.filters) : {};
+    const filters = Object.assign({}, options, queryFilters);
+    const encodedFilters = encode(filters);
 
     return (
       <div className={classNames}>
-        {info.frenquency !== null &&
+        {info.frenquency !== null && remove &&
           <div className="select-date">
             <PickDate dates={dates} onChange={this.props.onSetDate} />
           </div>
@@ -100,11 +102,13 @@ ItemTools.propTypes = {
   // Actions
   onSetDate: PropTypes.func,
   onRemoveItem: PropTypes.func,
-  user: PropTypes.object
+  user: PropTypes.object,
+  routes: PropTypes.object
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  routes: state.routes
 });
 
 export default connect(mapStateToProps)(ItemTools);

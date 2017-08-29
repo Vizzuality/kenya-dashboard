@@ -9,6 +9,8 @@ import { initStore } from 'store';
 import { getIndicators, setIndicatorDates } from 'modules/indicators';
 import { removeSelectedFilter, setFiltersUrl } from 'modules/filters';
 import { setUser } from 'modules/user';
+import { setRouter } from 'modules/routes';
+import { decode } from 'utils/general';
 
 // Selectors
 import { getSelectedFilterOptions } from 'selectors/filters';
@@ -16,6 +18,7 @@ import { getSelectedFilterOptions } from 'selectors/filters';
 // Utils
 import { setIndicatorsWidgetsList } from 'utils/indicators';
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 
 // Components
 import { Router } from 'routes';
@@ -23,14 +26,13 @@ import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import FiltersSelectedBar from 'components/ui/filters-selected-bar';
 import DashboardList from 'components/ui/dashboard-list';
-// import Spinner from 'components/ui/spinner';
-
 
 class DashboardPage extends Page {
   static async getInitialProps({ asPath, query, pathname, req, store, isServer }) {
     const url = { asPath, pathname, query };
     const { user } = isServer ? req : store.getState();
     if (isServer) store.dispatch(setUser(user));
+    if (!isServer) store.dispatch(setRouter(url));
     return { user, url, isServer };
   }
 
@@ -39,8 +41,16 @@ class DashboardPage extends Page {
   }
 
   componentDidMount() {
-    const { selectedFilters } = this.props;
-    this.props.getIndicators(selectedFilters);
+    const { selectedFilters, url } = this.props;
+    const queryFilters = url.query.filters ? decode(url.query.filters) : {};
+    const filters = Object.assign({}, selectedFilters, queryFilters);
+    this.props.getIndicators(filters);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props.selectedFilters, nextProps.selectedFilters)) {
+      this.props.getIndicators(nextProps.selectedFilters);
+    }
   }
 
   render() {
@@ -53,8 +63,6 @@ class DashboardPage extends Page {
       selectedFilters,
       filterOptions
     } = this.props;
-
-    if (!user) return null;
 
     return (
       <Layout

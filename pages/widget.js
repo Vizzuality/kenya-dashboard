@@ -13,7 +13,7 @@ import classnames from 'classnames';
 import lowerCase from 'lodash/lowerCase';
 
 // utils
-import { decode, setBasicQueryHeaderHeaders } from 'utils/general';
+import { decode, setBasicQueryHeaderHeaders, parseObjectToUrlParams } from 'utils/general';
 import isEmpty from 'lodash/isEmpty';
 
 // Components
@@ -58,10 +58,11 @@ class WidgetPage extends Page {
   }
 
   getIndicator(id) {
-    const { user } = this.props;
+    const { user, options } = this.props;
     const headers = setBasicQueryHeaderHeaders({ Authorization: user.auth_token });
+    const query = parseObjectToUrlParams(options);
 
-    fetch(`${process.env.KENYA_API}/indicators/${id}?include=topic,widgets&page[size]=999$`, headers)
+    fetch(`${process.env.KENYA_API}/indicators/${id}?include=topic,widgets&page[size]=999${query}`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);

@@ -5,9 +5,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
 
-// Utils
-import { decode } from 'utils/general';
-
 // Components
 import Map from 'components/map/map';
 import MapControls from 'components/map/map-controls';
@@ -17,7 +14,7 @@ import FitBoundsControl from 'components/ui/fit-bounds-control';
 // Constants
 import { MAP_OPTIONS, MAP_METHODS } from 'constants/map';
 
-export default class AreaMap extends React.Component {
+class AreaMap extends React.Component {
   constructor(props) {
     super(props);
 
@@ -72,21 +69,18 @@ export default class AreaMap extends React.Component {
   }
 
   updateMap(map, url, id) {
-    if (url.query.maps) {
-      const maps = decode(url.query.maps);
-      if (id && maps[id]) {
-        // const area = {
-        //   ...this.props.area,
-        //   ...{
-        //     zoom: map.getZoom(),
-        //     center: map.getCenter(),
-        //     key: id
-        //   }
-        // };
-        // this.props.setSingleMapParams(
-        //   area,
-        //   url, id);
-      }
+    const { areas } = this.props;
+
+    if (areas && areas[id] && id) {
+      const area = {
+        ...this.props.area,
+        ...{
+          zoom: map.getZoom(),
+          center: map.getCenter(),
+          key: id
+        }
+      };
+      this.props.setSingleMapParams(area, url, id);
     }
   }
 
@@ -108,7 +102,7 @@ export default class AreaMap extends React.Component {
           <ZoomControl
             zoom={mapState.areas[id].zoom}
             onZoomChange={(zoom) => {
-              const newArea = { ...mapState.areas[id], ...{ zoom } };
+              const newArea = { ...mapState.areas[id], zoom };
               this.props.setSingleMapParams(newArea, url, id);
             }}
           />
@@ -134,6 +128,7 @@ AreaMap.propTypes = {
   url: PropTypes.object,
   id: PropTypes.string,
   area: PropTypes.object,
+  areas: PropTypes.object,
   dates: PropTypes.object,
   layers: PropTypes.array,
   layersActive: PropTypes.array,
@@ -144,3 +139,6 @@ AreaMap.propTypes = {
   fitAreaBounds: PropTypes.func,
   addLayer: PropTypes.func
 };
+
+
+export default AreaMap;

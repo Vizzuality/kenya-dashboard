@@ -6,3 +6,4 @@ export { default as modal } from './modal';
 export { default as user } from './user';
 export { default as compare } from './compare';
 export { default as agencies } from './agencies';
+export { default as routes } from './routes';

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import flatten from 'lodash/flatten';
 
 // Libraries
 import classnames from 'classnames';
@@ -40,6 +41,22 @@ export default class AreaIndicators extends React.Component {
     this.props.onSetDate(indicator, dates, this.props.id, this.props.url);
   }
 
+  /**
+   * HELPERS
+   * - getRegionName
+  */
+  getRegionName() {
+    const { regions, selectedRegion } = this.props;
+
+    if (regions && regions.length) {
+      // TODO: don't loop through all the entities, it would be better to do an API call
+      const region = flatten(regions.map(r => r.list)).find(r => +r.id === +selectedRegion);
+      return (region && region.name) || 'Location';
+    }
+
+    return 'Location';
+  }
+
   render() {
     const {
       id,
@@ -62,7 +79,7 @@ export default class AreaIndicators extends React.Component {
           <div className="location-select-container">
             {/* Region select */}
             <SelectCustom
-              label="Location"
+              label={this.getRegionName()}
               name="regions"
               type="slider"
               list={regions}

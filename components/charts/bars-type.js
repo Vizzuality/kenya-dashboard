@@ -42,7 +42,7 @@ export default class BarsType extends React.Component {
   }
 
   render() {
-    const { className, threshold, data, y2Axis } = this.props;
+    const { className, threshold, data, y2Axis, config } = this.props;
     const classNames = classnames(
       'c-bars-type',
       { [className]: !!className }
@@ -53,7 +53,16 @@ export default class BarsType extends React.Component {
       <div className={classNames}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} maxBarSize={20}>
-            <XAxis dataKey="x" axisLine={false} tickLine={false} />
+            <XAxis
+              dataKey="x"
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(...t) => {
+                const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+                const month = new Date(t).getUTCMonth();
+                return months[month];
+              }}
+            />
             <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
             {y2Axis &&
               <YAxis dataKey="y2" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
@@ -63,7 +72,7 @@ export default class BarsType extends React.Component {
               offset={10}
               isAnimationActive={false}
               cursor={yRefs.length > 1 ? { fill: '#2E3D3D' } : false}
-              content={<TooltipChart />}
+              content={<TooltipChart config={config['interactivity-config']} />}
             />
             {yRefs.map((key, i) => (
               <Bar
@@ -105,5 +114,6 @@ BarsType.propTypes = {
   className: PropTypes.string,
   threshold: PropTypes.object,
   data: PropTypes.array,
+  config: PropTypes.array,
   y2Axis: PropTypes.bool
 };

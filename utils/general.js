@@ -20,7 +20,7 @@ function decode(obj) {
   if (typeof atob === 'undefined') {
     return JSON.parse(Buffer.from(obj, 'base64').toString());
   }
-  return JSON.parse(atob(obj));
+  return JSON.parse(atob(decodeURIComponent(obj)));
 }
 
 function parseSelectOptions(options) {
@@ -46,7 +46,7 @@ function parseObjectToUrlParams(obj) {
 
   let query = '';
   Object.keys(obj).forEach((key) => {
-    if (obj[key].length && key !== 'regions') {
+    if (obj[key] && obj[key].length && key !== 'regions') {
       query += query === '' ? `&${FILTERS_KEYS[key]}=${obj[key]}` : `&${FILTERS_KEYS[key]}=${obj[key]}`;
     }
   });
@@ -111,6 +111,24 @@ function getValueMatchFromCascadeList(itemList, id) {
   return item;
 }
 
+function roundNumberWithDecimals(number, decimals = 2) {
+  if (number % 1 === 0) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+  return !Number.isNaN(number) ?
+    Number(number).toFixed(decimals).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') :
+    'NaN';
+}
+
+function setFormat(value, format) {
+  const date = new Date(value);
+
+  if (date !== 'Invalid Date') {
+    return `${date.getFullYear()}/${date.getUTCMonth() + 1}/${date.getDate()}`;
+  }
+  return value;
+}
+
 export {
   toBase64,
   encode,
@@ -122,5 +140,7 @@ export {
   setBasicQueryHeaderHeaders,
   parseCustomSelectOptions,
   parseCustomSelectCascadeOptions,
-  getValueMatchFromCascadeList
+  getValueMatchFromCascadeList,
+  roundNumberWithDecimals,
+  setFormat
 };
