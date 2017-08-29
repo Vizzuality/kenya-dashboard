@@ -2,8 +2,6 @@ version: "2"
 services:
   redis:
     image: redis
-    volumes:
-      - ./.data:/data
   app:
     command: "yarn start"
     build:
