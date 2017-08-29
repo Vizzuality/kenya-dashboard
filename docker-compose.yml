@@ -2,6 +2,7 @@ version: "2"
 services:
   redis:
     image: redis
+    restart: always
   app:
     command: "yarn start"
     build:
