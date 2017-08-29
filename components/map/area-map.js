@@ -26,8 +26,14 @@ export default class AreaMap extends React.Component {
     this.updateMap = this.updateMap.bind(this);
   }
 
+  componentDidMount() {
+    this.props.layers.forEach((l) => {
+      this.props.addLayer(l, this.props.id, this.props.area.region, this.props.dates[l['indicator-id']]);
+    });
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (!this.props.layers.length && nextProps.layers.length) {
+    if (this.props.layers.length !== nextProps.layers.length) {
       nextProps.layers.forEach((l) => {
         this.props.addLayer(l, nextProps.id, nextProps.area.region, nextProps.dates[l['indicator-id']]);
       });
