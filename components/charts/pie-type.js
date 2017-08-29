@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Utils
-import { getThreshold } from 'utils/general';
+import { roundNumberWithDecimals } from 'utils/general';
 
 // Components
 import { ResponsiveContainer, PieChart, Pie, Cell, Label } from 'recharts';
 
 // Constants
-import { THRESHOLD_COLORS } from 'constants/general';
+import { CATEGORY_COLORS } from 'constants/indicators';
 
 
 export default class PieType extends React.Component {
@@ -19,8 +19,8 @@ export default class PieType extends React.Component {
     super(props);
 
     this.state = {
-      title: '',
-      text: ''
+      title: props.data[0].x,
+      text: roundNumberWithDecimals(props.data[0].y)
     };
 
     // Bindings
@@ -32,12 +32,11 @@ export default class PieType extends React.Component {
   }
 
   render() {
-    const { className, threshold, data } = this.props;
+    const { className, data } = this.props;
     const classNames = classnames(
       'c-pie-type',
       { [className]: !!className }
     );
-    const pieThresold = threshold.y['break-points'];
 
     return (
       <div className={classNames}>
@@ -54,13 +53,17 @@ export default class PieType extends React.Component {
               dataKey={item => item.y}
               activeIndex={0}
               onMouseEnter={this.onMouseEnter}
-              onMouseLeave={() => this.setState({ title: '', text: '' })}
+              onMouseLeave={() => this.setState({
+                title: data[0].x,
+                text: roundNumberWithDecimals(data[0].y)
+              })}
             >
               <Label value={this.state.title} dy={-13} position="center" />
               <Label value={this.state.text} dy={13} position="center" />
               {
                 data.map((item, i) => {
-                  const color = THRESHOLD_COLORS[getThreshold(item.y, pieThresold)];
+                  const color = i > 5 ? CATEGORY_COLORS[0] : CATEGORY_COLORS[i];
+
                   return (
                     <Cell
                       key={i}

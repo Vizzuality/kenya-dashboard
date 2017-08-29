@@ -47,6 +47,25 @@ export default class BarsType extends React.Component {
     this.setState({ hover: '' });
   }
 
+  setLegendValues() {
+    const { config, data, y2Axis, threshold } = this.props;
+    const values = [];
+
+    if (config.axes && Object.keys(config.axes).length) {
+      Object.keys(config.axes).forEach((key) => {
+        if (key[0] === 'y' && config.axes[key]) {
+          const value = data[data.length - 1][key];
+          const lineThreshold = y2Axis && key === 'y2' ?
+            threshold.y2['break-points'] :
+            threshold.y['break-points'];
+          const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
+          values.push({ value: config.axes[key].title, type: 'line', id: key, color });
+        }
+      });
+    }
+    return values;
+  }
+
   render() {
     const { className, threshold, data, y2Axis } = this.props;
     const classNames = classnames(
@@ -54,15 +73,26 @@ export default class BarsType extends React.Component {
       { [className]: !!className }
     );
     const barsThreshold = threshold && threshold.y ? threshold.y['break-points'] : {};
-    const lineThreshold = y2Axis ? threshold.y2['break-points'] : threshold.y['break-points'];
-    const value = data[data.length - 1].y2;
-    const lineColor = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
+    // const lineThreshold = y2Axis ? threshold.y2['break-points'] : threshold.y['break-points'];
+    // const value = data[data.length - 1].y2;
+    const lineColor = '#FF6161';
+    // const lineColor = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
+    const legendValues = this.setLegendValues();
 
     return (
       <div className={classNames}>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data}>
-            <XAxis dataKey="x" axisLine={false} tickLine={false} />
+            <XAxis
+              dataKey="x"
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(...t) => {
+                const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+                const month = new Date(t).getUTCMonth();
+                return months[month];
+              }}
+            />
             <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
             {y2Axis &&
               <YAxis dataKey="y2" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
@@ -74,7 +104,7 @@ export default class BarsType extends React.Component {
               cursor={false}
               content={<TooltipChart />}
             />
-            <Legend />
+            <Legend payload={legendValues} />
 
             {/* Shapes */}
             <Bar
@@ -84,7 +114,8 @@ export default class BarsType extends React.Component {
             >
               {/* Set each bar hover color */}
               {data.map((item, j) => {
-                const color = THRESHOLD_COLORS[getThreshold(item.y, barsThreshold)];
+                // const color = THRESHOLD_COLORS[getThreshold(item.y, barsThreshold)];
+                const color = '#734CD4';
 
                 return (
                   <Cell
@@ -114,6 +145,7 @@ export default class BarsType extends React.Component {
 
 BarsType.propTypes = {
   className: PropTypes.string,
+  config: PropTypes.object,
   threshold: PropTypes.object,
   data: PropTypes.array,
   y2Axis: PropTypes.bool

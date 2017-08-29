@@ -53,7 +53,16 @@ export default class BarsType extends React.Component {
       <div className={classNames}>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} maxBarSize={20}>
-            <XAxis dataKey="x" axisLine={false} tickLine={false} />
+            <XAxis
+              dataKey="x"
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(...t) => {
+                const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+                const month = new Date(t).getUTCMonth();
+                return months[month];
+              }}
+            />
             <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
             {y2Axis &&
               <YAxis dataKey="y2" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />

@@ -46,9 +46,15 @@
       margin-left: 5px;
       margin-top: 2px;
 
-      &.-up { fill: $color-threshold-success; }
-      &.-equal { fill: $color-text-1; }
-      &.-down { fill: $color-threshold-fail; }
+      &.-up,
+      &.-equal,
+      &.-down {
+        fill: $color-text-1;
+      }
+
+      // &.-up { fill: $color-threshold-success; }
+      // &.-equal { fill: $color-text-1; }
+      // &.-down { fill: $color-threshold-fail; }
     }
   }
 }
