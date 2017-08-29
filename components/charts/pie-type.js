@@ -4,14 +4,11 @@ import PropTypes from 'prop-types';
 // Libraries
 import classnames from 'classnames';
 
-// Utils
-import { getThreshold } from 'utils/general';
-
 // Components
 import { ResponsiveContainer, PieChart, Pie, Cell, Label } from 'recharts';
 
 // Constants
-import { THRESHOLD_COLORS } from 'constants/general';
+import { CATEGORY_COLORS } from 'constants/indicators';
 
 
 export default class PieType extends React.Component {
@@ -32,12 +29,11 @@ export default class PieType extends React.Component {
   }
 
   render() {
-    const { className, threshold, data } = this.props;
+    const { className, data } = this.props;
     const classNames = classnames(
       'c-pie-type',
       { [className]: !!className }
     );
-    const pieThresold = threshold.y['break-points'];
 
     return (
       <div className={classNames}>
@@ -60,7 +56,9 @@ export default class PieType extends React.Component {
               <Label value={this.state.text} dy={13} position="center" />
               {
                 data.map((item, i) => {
-                  const color = THRESHOLD_COLORS[getThreshold(item.y, pieThresold)];
+                  // const color = THRESHOLD_COLORS[getThreshold(item.y, pieThresold)];
+                  const color = CATEGORY_COLORS[i];
+
                   return (
                     <Cell
                       key={i}
