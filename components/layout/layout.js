@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Redux
+import { connect } from 'react-redux';
+
 // Libraries
 import classnames from 'classnames';
 
@@ -19,8 +22,8 @@ if (process.env.NODE_ENV !== 'production') {
   // whyDidYouUpdate(React);
 }
 
-export default function Layout(props) {
-  const { title, description, url, session, children, className, logged, hasHeader, hasFooter } = props;
+function Layout(props) {
+  const { title, description, url, session, children, className, user, hasHeader, hasFooter } = props;
   const classNames = classnames({
     [className]: !!className
   });
@@ -39,7 +42,7 @@ export default function Layout(props) {
           <Header
             url={url}
             session={session}
-            logged={logged}
+            logged={user.logged}
             device
           />
         }
@@ -49,7 +52,7 @@ export default function Layout(props) {
           <Header
             url={url}
             session={session}
-            logged={logged}
+            logged={user.logged}
           />
         }
       </Media>
@@ -73,7 +76,7 @@ Layout.propTypes = {
   hasHeader: PropTypes.bool,
   hasFooter: PropTypes.bool,
   url: PropTypes.object.isRequired,
-  logged: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
   className: PropTypes.string
 };
 
@@ -82,3 +85,9 @@ Layout.defaultProps = {
   hasHeader: true,
   hasFooter: true
 };
+
+export default connect(
+  state => ({
+    user: state.user
+  })
+)(Layout);

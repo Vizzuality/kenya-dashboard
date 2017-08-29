@@ -97,7 +97,7 @@ class Header extends React.Component {
   getCustomContentByPage() {
     const { url, user, device } = this.props;
 
-    if (user.auth || device) {
+    if (user.auth_token || device) {
       switch (url.pathname) {
         // Different pathnames for the index
         case '/index': return { title: <h1>Kenya</h1> };
@@ -193,10 +193,10 @@ class Header extends React.Component {
               <MainNav list={HEADER_MENU_LINKS} url={url} />
               <div className="menu-tools">
                 {user.auth_token ?
-                  <a className="btn-logout" href="/logout">
+                  <a className="btn btn-logout" href="/logout">
                     Sign out
                   </a> :
-                  <button className="btn-logout" onClick={this.onOpenModal}>
+                  <button className="btn btn-login" onClick={this.onOpenModal}>
                     Sign in
                   </button>
                 }
