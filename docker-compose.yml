@@ -3,6 +3,8 @@ services:
   redis:
     image: redis
     restart: always
+    volumes:
+      - ./.data:/data
   app:
     command: "yarn start"
     build:

@@ -10,10 +10,8 @@ import { setUser, login, resetPassword } from 'modules/user';
 
 // Libraries
 import classnames from 'classnames';
-import isEmpty from 'lodash/isEmpty';
 
 // Components
-import { Router, Link } from 'routes';
 import Layout from 'components/layout/layout';
 import ResetPassword from 'components/modal-contents/reset-password';
 import Field from 'components/form/field';
@@ -72,8 +70,8 @@ class Login extends React.PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((nextProps.user.auth_token || (!this.props.user.auth_token && !nextProps.user.auth_token)) &&
-      this.state.submitting) {
+    if ((nextProps.user.auth_token || (!this.props.user.auth_token && !nextProps.user.auth_token))
+      && this.state.submitting) {
       this.setState({ submitting: false });
     }
 
