@@ -124,6 +124,6 @@ LineType.propTypes = {
   className: PropTypes.string,
   threshold: PropTypes.object,
   config: PropTypes.object,
-  data: PropTypes.object,
+  data: PropTypes.array,
   y2Axis: PropTypes.bool
 };
