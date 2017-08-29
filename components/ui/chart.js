@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Redux
+import { connect } from 'react-redux';
+
 // Libraries
 import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
@@ -18,7 +21,7 @@ import LineType from 'components/charts/line-type';
 import BarsType from 'components/charts/bars-type';
 import BarsLineType from 'components/charts/bars-line-type';
 
-export default class Chart extends React.Component {
+class Chart extends React.Component {
   constructor(props) {
     super(props);
 
@@ -28,14 +31,12 @@ export default class Chart extends React.Component {
 
     // Bindings
     this.setData = this.setData.bind(this);
-    this.onPrint = this.onPrint.bind(this);
   }
 
   componentDidMount() {
-    const { info, region, dates } = this.props;
+    const { info, region, dates, user } = this.props;
     const attr = { info, region, dates };
-
-    info && info.id && this.getData(attr, this.setData, this.setData);
+    if (user && info && info.id) this.getData(attr, this.setData, this.setData);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -49,13 +50,6 @@ export default class Chart extends React.Component {
     }
   }
 
-  onPrint() {
-    this.props.onPrint &&
-      setTimeout(() => {
-        this.props.onPrint();
-      }, 1500);
-  }
-
   getItemType() {
     const { data } = this.state;
     const { info } = this.props;
@@ -64,8 +58,6 @@ export default class Chart extends React.Component {
       info['json-config'].type && info['json-config'].threshold) {
       const threshold = info['json-config'].threshold;
       const y2Axis = info['json-config'].type['secondary-axe'];
-
-      this.onPrint();
 
       switch (info['json-config'].type.visual) {
         case 'table': return (
@@ -117,7 +109,6 @@ export default class Chart extends React.Component {
       }
     }
 
-    this.onPrint();
     return <p className="no-data">No data available</p>;
   }
 
@@ -129,8 +120,9 @@ export default class Chart extends React.Component {
 
   getData(attr, onSuccess, onError) {
     const { info, dates, region } = attr;
+    const { user } = this.props;
     if (info) {
-      const token = localStorage.getItem('token');
+      const token = user.auth_token;
       // token, widget_id, region, start_date, end_date
       const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
       // Params
@@ -173,10 +165,15 @@ export default class Chart extends React.Component {
 }
 
 Chart.propTypes = {
+  user: PropTypes.object,
   className: PropTypes.string,
   info: PropTypes.object,
   region: PropTypes.string,
-  dates: PropTypes.object,
-  // Actions
-  onPrint: PropTypes.func
+  dates: PropTypes.object
 };
+
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, null)(Chart);

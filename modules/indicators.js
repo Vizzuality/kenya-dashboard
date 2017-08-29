@@ -98,19 +98,20 @@ export default function indicatorsReducer(state = initialState, action) {
 export function getIndicators(filters) {
   const query = parseObjectToUrlParams(filters);
 
-  return (dispatch) => {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+  return (dispatch, getState) => {
+    const currentState = getState();
+    const headers = setBasicQueryHeaderHeaders({ Authorization: currentState.user.auth_token });
 
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_INDICATORS_LOADING });
 
-    fetch(`${process.env.KENYA_API}/indicators?include=topic,widgets,agency&page[size]=999${query}`, headers)
+    return fetch(`${process.env.KENYA_API}/indicators?include=topic,widgets,agency&page[size]=999${query}`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((data) => {
-        DESERIALIZER.deserialize(data, (err, dataParsed) => {
+        return DESERIALIZER.deserialize(data, (err, dataParsed) => {
           dispatch({
             type: GET_INDICATORS,
             payload: dataParsed
@@ -140,7 +141,8 @@ export function setIndicatorsLayersActive(layersActive) {
 
 export function getSpecificIndicators(ids) {
   return (dispatch, getState) => {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+    const currentState = getState();
+    const headers = setBasicQueryHeaderHeaders({ Authorization: currentState.user.auth_token });
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
 
@@ -151,7 +153,7 @@ export function getSpecificIndicators(ids) {
       })
       .then((data) => {
         DESERIALIZER.deserialize(data, (err, dataParsed) => {
-          const state = getState().indicators;
+          const state = currentState.indicators;
           const indicatorsWithLayers = dataParsed.filter(ind => (
             ind.widgets && ind.widgets.length && ind.widgets.find(w => w['widget-type'] === 'layer')
           ));
@@ -199,7 +201,8 @@ export function setIndicatorsLayers(layers) {
 
 export function addIndicator(id) {
   return (dispatch, getState) => {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+    const currentState = getState();
+    const headers = setBasicQueryHeaderHeaders({ Authorization: currentState.user.auth_token });
 
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
 
@@ -210,16 +213,16 @@ export function addIndicator(id) {
       })
       .then((data) => {
         DESERIALIZER.deserialize(data, (err, dataParsed) => {
-          const specific = getState().indicators.specific;
+          const specific = currentState.indicators.specific;
           const hasLayers = dataParsed[0].widgets && dataParsed[0].widgets.length &&
-          dataParsed[0].widgets.find(w => w['widget-type'] === 'layer');
+            dataParsed[0].widgets.find(w => w['widget-type'] === 'layer');
 
           // Update state attributes with new data
           const list = dataParsed[0] ? [dataParsed[0]].concat(specific.list) : specific.list;
 
           const indicatorsWithLayers = hasLayers ?
-          [dataParsed[0]].concat(specific.indicatorsWithLayers) :
-          specific.indicatorsWithLayers;
+            [dataParsed[0]].concat(specific.indicatorsWithLayers) :
+            specific.indicatorsWithLayers;
 
           const indicatorLayers = flattenDeep(getIndicatorLayers(dataParsed[0]));
           const layers = indicatorLayers.concat(specific.layers);
