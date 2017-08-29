@@ -16,6 +16,7 @@ import { getSelectedFilterOptions } from 'selectors/filters';
 // Utils
 import { setIndicatorsWidgetsList } from 'utils/indicators';
 import isEmpty from 'lodash/isEmpty';
+import isEqual from 'lodash/isEqual';
 
 // Components
 import { Router } from 'routes';
@@ -23,8 +24,6 @@ import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import FiltersSelectedBar from 'components/ui/filters-selected-bar';
 import DashboardList from 'components/ui/dashboard-list';
-// import Spinner from 'components/ui/spinner';
-
 
 class DashboardPage extends Page {
   static async getInitialProps({ asPath, query, pathname, req, store, isServer }) {
@@ -43,6 +42,12 @@ class DashboardPage extends Page {
     this.props.getIndicators(selectedFilters);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(this.props.selectedFilters, nextProps.selectedFilters)) {
+      this.props.getIndicators(nextProps.selectedFilters);
+    }
+  }
+
   render() {
     const {
       url,
@@ -53,8 +58,6 @@ class DashboardPage extends Page {
       selectedFilters,
       filterOptions
     } = this.props;
-
-    if (!user) return null;
 
     return (
       <Layout
