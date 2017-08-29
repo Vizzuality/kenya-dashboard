@@ -23,6 +23,7 @@ export default class AreaMap extends React.Component {
 
     // Bindings
     this.onFitBounds = this.onFitBounds.bind(this);
+    this.updateMap = this.updateMap.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -67,17 +68,18 @@ export default class AreaMap extends React.Component {
   updateMap(map, url, id) {
     if (url.query.maps) {
       const maps = decode(url.query.maps);
-      if (maps[id]) {
-        this.props.setSingleMapParams(
-          {
-            ...this.props.area,
-            ...{
-              zoom: map.getZoom(),
-              center: map.getCenter(),
-              key: id
-            }
-          },
-          url, id);
+      if (id && maps[id]) {
+        // const area = {
+        //   ...this.props.area,
+        //   ...{
+        //     zoom: map.getZoom(),
+        //     center: map.getCenter(),
+        //     key: id
+        //   }
+        // };
+        // this.props.setSingleMapParams(
+        //   area,
+        //   url, id);
       }
     }
   }

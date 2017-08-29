@@ -222,6 +222,7 @@ export function setAreasParamsUrl(url) {
       };
     });
 
+
     const location = {
       pathname: url.pathname,
       query: Object.assign({}, url.query, { maps: encode(newAreas) })

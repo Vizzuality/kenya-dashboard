@@ -410,7 +410,7 @@ export default withRedux(
       dispatch(setAreasParamsUrl(url));
     },
     // Area layers
-    addLayer(layer, area, region) { dispatch(addLayer(layer, area, region)); }, //
+    addLayer(layer, area, region) { dispatch(addLayer(layer, area, region)); },
     // Area Widgets
     removeWidget(widgetId, areaid, url) {
       dispatch(removeWidget(widgetId, areaid));
