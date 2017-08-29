@@ -34,9 +34,9 @@ export default class LoginNav extends React.Component {
         <MainNav list={HEADER_LOGIN_MENU_LINKS} url={url} logged={user.logged} />
         <div className="login-container" key="login" >
           {user.logged ?
-            <button onClick={this.onLogout}>
+            <a className="btn-logout" href="/logout">
               Sign out
-            </button> :
+            </a> :
             <button onClick={this.onToggleModal}>
               Sign in
             </button>

@@ -40,7 +40,7 @@ import { getIndicatorsWithLayers, getIndicatorsWithWidgets } from 'selectors/ind
 
 // Redux
 import withRedux from 'next-redux-wrapper';
-import { store } from 'store';
+import { initStore } from 'store';
 
 // Libraries
 import isEqual from 'lodash/isEqual';
@@ -52,6 +52,7 @@ import { setLayersZIndex } from 'utils/map';
 import { decode, getValueMatchFromCascadeList } from 'utils/general';
 
 // Components
+import { Router } from 'routes';
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import Accordion from 'components/ui/accordion';
@@ -66,6 +67,14 @@ import { KENYA_CARTO_ID } from 'constants/filters';
 
 
 class ComparePage extends Page {
+  static async getInitialProps({ asPath, query, pathname, req, store, isServer }) {
+    const url = { asPath, pathname, query };
+
+    const { user } = isServer ? req : store.getState();
+    if (isServer) store.dispatch(setUser(user));
+    return { user, url, isServer };
+  }
+
   constructor(props) {
     super(props);
 
@@ -82,14 +91,13 @@ class ComparePage extends Page {
     this.onRemoveIndicator = this.onRemoveIndicator.bind(this);
   }
 
+  componentWillMount() {
+    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('home');
+  }
+
   /* Lifecycle */
   componentDidMount() {
     const { url } = this.props;
-
-    // Set user
-    if (localStorage.token && localStorage.token !== '') {
-      this.props.setUser({ auth_token: localStorage.token });
-    }
 
     // Get regions options
     if (isEmpty(this.props.filters.options.regions)) {
@@ -108,7 +116,7 @@ class ComparePage extends Page {
 
     // Update from url
     // Get indicators from url
-    url.query.indicators && this.props.getSpecificIndicators(url.query.indicators);
+    if (url.query.indicators) this.props.getSpecificIndicators(url.query.indicators);
 
     // Update areas with url params
     if (url.query.maps) {
@@ -335,7 +343,7 @@ ComparePage.propTypes = {
 };
 
 export default withRedux(
-  store,
+  initStore,
   state => (
     {
       indicators: Object.assign(

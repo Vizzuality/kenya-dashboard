@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
-import { store } from 'store';
+import { initStore } from 'store';
+import { bindActionCreators } from 'redux';
 
 // SElectors
 import { getTopicsWithoutAllOption } from 'selectors/filters';
@@ -12,25 +13,33 @@ import { getTopicsWithoutAllOption } from 'selectors/filters';
 import { getTopicsOptions } from 'modules/filters';
 import { setUser } from 'modules/user';
 
-// Libraries
-import isEmpty from 'lodash/isEmpty';
-import isEqual from 'lodash/isEqual';
-
 // Components
 import { Link } from 'routes';
-import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import Intro from 'components/ui/intro';
 import CardImage from 'components/ui/card-image';
 
+class HomePage extends React.PureComponent {
+  static async getInitialProps({ asPath, pathname, query, req, store, isServer }) {
+    const url = { asPath, pathname, query };
+    const { user } = isServer ? req : store.getState();
+    if (isServer && user) store.dispatch(setUser(user));
+    await store.dispatch(getTopicsOptions());
+    return { user, url, isServer };
+  }
 
-class HomePage extends Page {
+  static getNumberOftopicsToLoad() {
+    const width = document.body.clientWidth;
+    const result = width > 1025 ? 4 : 3;
+    return result;
+  }
+
   constructor(props) {
     super(props);
 
     this.state = {
-      topics: [],
-      numLoaded: this.numOfTopicsToLoad || 0
+      numToLoad: props.numToLoad,
+      numLoaded: props.numLoaded
     };
 
     // Bindings
@@ -38,48 +47,28 @@ class HomePage extends Page {
   }
 
   componentDidMount() {
-    this.getNumberOftopicsToLoad();
-
-    if (localStorage.token && localStorage.token !== '') {
-      this.props.setUser({ auth_token: localStorage.token });
-    }
-
-    if (isEmpty(this.props.topics)) {
-      this.props.getTopicsOptions();
-    } else {
-      const topicsToLoad = this.props.topics.slice(0, this.numOfTopicsToLoad);
-      // Necessary to get window size and set topics to show
-      this.setState({ topics: topicsToLoad, numLoaded: this.numOfTopicsToLoad });
-    }
+    const numToLoad = HomePage.getNumberOftopicsToLoad();
+    this.setState({ numLoaded: numToLoad, numToLoad });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps.topics)) {
-      const topicsToLoad = nextProps.topics.slice(0, this.numOfTopicsToLoad);
-      this.setState({ topics: topicsToLoad, numLoaded: this.numOfTopicsToLoad });
-    }
-  }
-
-  getNumberOftopicsToLoad() {
-    const width = document.body.clientWidth;
-    this.numOfTopicsToLoad = width > 1025 ? 4 : 3;
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.topics.length > 0 && nextState.numLoaded > 0;
   }
 
   onLoadMore() {
-    const numToLoad = this.state.numLoaded + this.numOfTopicsToLoad;
-    const topicsToLoad = this.props.topics.slice(0, numToLoad);
-    this.setState({ topics: topicsToLoad, numLoaded: numToLoad });
+    const numToLoad = this.state.numLoaded + this.state.numToLoad;
+    this.setState({ numLoaded: numToLoad });
   }
 
   render() {
-    const { url, session, user, topics } = this.props;
+    const { url, user, topics } = this.props;
+    const { numLoaded } = this.state;
 
     return (
       <Layout
         title="Home"
         description="Home description..."
         url={url}
-        session={session}
         className="p-home"
         logged={user.logged}
       >
@@ -111,13 +100,13 @@ class HomePage extends Page {
           {/* Topics list */}
           <div className="topics-list">
             <div className="row">
-              {this.state.topics.map((t, i) => (
+              {topics.slice(0, numLoaded).map((t, i) => (
                 <div key={i} className="column small-12 medium-4 large-3 topic">
                   <CardImage info={t} />
                 </div>
               ))}
             </div>
-            {this.state.topics.length < topics.length &&
+            {numLoaded < topics.length &&
               <button className="c-button -dark load-more" onClick={this.onLoadMore}>Load more</button>
             }
           </div>
@@ -141,21 +130,26 @@ class HomePage extends Page {
 
 HomePage.propTypes = {
   url: PropTypes.object,
-  session: PropTypes.object
+  topics: PropTypes.array,
+  user: PropTypes.object,
+  numToLoad: PropTypes.number,
+  numLoaded: PropTypes.number
 };
 
 HomePage.defaultProps = {
-  topics: []
+  topics: [],
+  numToLoad: 3,
+  numLoaded: 3
 };
 
-export default withRedux(
-  store,
-  state => ({
-    user: state.user,
-    topics: getTopicsWithoutAllOption(state)
-  }),
-  dispatch => ({
-    getTopicsOptions() { dispatch(getTopicsOptions()); },
-    setUser(user) { dispatch(setUser(user)); }
-  })
-)(HomePage);
+const mapStateToProps = state => ({
+  user: state.user,
+  topics: getTopicsWithoutAllOption(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+  getTopicsOptions: bindActionCreators(getTopicsOptions(), dispatch),
+  setUser: bindActionCreators(user => setUser(user), dispatch)
+});
+
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(HomePage);

@@ -49,18 +49,19 @@ export default function (state = initialState, action) {
 
 // ACTIONS
 export function getAgencies() {
-  return (dispatch) => {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+  return (dispatch, getState) => {
+    const currentState = getState();
+    const headers = setBasicQueryHeaderHeaders({ Authorization: currentState.user.auth_token });
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_AGENCIES_LOADING });
 
-    fetch(`${process.env.KENYA_API}/agencies?page[size]=999`, headers)
+    return fetch(`${process.env.KENYA_API}/agencies?page[size]=999`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((data) => {
-        DESERIALIZER.deserialize(data, (err, dataParsed) => {
+        return DESERIALIZER.deserialize(data, (err, dataParsed) => {
           dispatch({
             type: GET_AGENCIES,
             payload: dataParsed
@@ -78,17 +79,18 @@ export function getAgencies() {
 }
 
 export function getAgency(id) {
-  return (dispatch) => {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+  return (dispatch, getState) => {
+    const currentState = getState();
+    const headers = setBasicQueryHeaderHeaders({ Authorization: currentState.user.auth_token });
     dispatch({ type: GET_AGENCY_LOADING });
 
-    fetch(`${process.env.KENYA_API}/agencies/${id}?include=indicators&page[size]=999`, headers)
+    return fetch(`${process.env.KENYA_API}/agencies/${id}?include=indicators&page[size]=999`, headers)
       .then((response) => {
         if (response.ok) return response.json();
         throw new Error(response.statusText);
       })
       .then((data) => {
-        DESERIALIZER.deserialize(data, (err, dataParsed) => {
+        return DESERIALIZER.deserialize(data, (err, dataParsed) => {
           dispatch({
             type: GET_AGENCY,
             payload: dataParsed
