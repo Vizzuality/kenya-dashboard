@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Components
+import { Link } from 'routes';
 import MainNav from 'components/ui/main-nav';
 
 // Constants
@@ -37,9 +38,11 @@ export default class LoginNav extends React.Component {
             <a className="btn-logout" href="/logout">
               Sign out
             </a> :
-            <button onClick={this.onToggleModal}>
-              Sign in
-            </button>
+            <Link route="login">
+              <a className="btn btn-login">
+                Sign in
+              </a>
+            </Link>
           }
         </div>
       </nav>

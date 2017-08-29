@@ -30,7 +30,7 @@ class AboutPage extends Page {
   }
 
   componentWillMount() {
-    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('home');
+    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('login');
   }
 
   render() {
