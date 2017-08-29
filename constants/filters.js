@@ -32,18 +32,18 @@ const TOPICS_ICONS_SRC = {
 };
 
 const TOPICS_BACKGROUNDS_SRC = {
-  agriculture: 'agriculture.png',
-  climate: 'climate.png',
-  conservancies: 'infrastructure.png',
-  contextual: 'population.png',
-  integration: 'poverty.png',
-  landcover: 'boundaries.png',
-  livestock: 'livestock.png',
-  protected_areas: 'protected_areas.png',
-  protected_forests: 'forest.png',
-  socioeconomic: 'urban.png',
-  water: 'water.png',
-  wildlife: 'wildlife.png'
+  agriculture: 'agriculture.jpg',
+  climate: 'climate.jpg',
+  conservancies: 'infrastructure.jpg',
+  contextual: 'population.jpg',
+  integration: 'poverty.jpg',
+  landcover: 'boundaries.jpg',
+  livestock: 'livestock.jpg',
+  protected_areas: 'protected_areas.jpg',
+  protected_forests: 'forest.jpg',
+  socioeconomic: 'urban.jpg',
+  water: 'water.jpg',
+  wildlife: 'wildlife.jpg'
 };
 
 const KENYA_CARTO_ID = '779';
