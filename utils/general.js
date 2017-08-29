@@ -112,8 +112,12 @@ function getValueMatchFromCascadeList(itemList, id) {
 }
 
 function roundNumberWithDecimals(number, decimals = 2) {
+  if (number % 1 === 0) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
   return !Number.isNaN(number) ?
-    Number.parseInt(Number(number).toFixed(decimals), 10) : 'NaN';
+    Number(number).toFixed(decimals).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') :
+    'NaN';
 }
 
 export {
