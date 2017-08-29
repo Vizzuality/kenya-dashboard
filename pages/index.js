@@ -20,8 +20,8 @@ import Intro from 'components/ui/intro';
 import CardImage from 'components/ui/card-image';
 
 class HomePage extends React.PureComponent {
-  static async getInitialProps({ asPath, pathname, req, store, isServer }) {
-    const url = { asPath, pathname };
+  static async getInitialProps({ asPath, pathname, query, req, store, isServer }) {
+    const url = { asPath, pathname, query };
     const { user } = isServer ? req : store.getState();
     if (isServer && user) store.dispatch(setUser(user));
     await store.dispatch(getTopicsOptions());

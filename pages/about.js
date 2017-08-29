@@ -21,8 +21,8 @@ import Spinner from 'components/ui/spinner';
 import CardInfo from 'components/ui/card-info';
 
 class AboutPage extends Page {
-  static async getInitialProps({ asPath, pathname, req, store, isServer }) {
-    const url = { asPath, pathname };
+  static async getInitialProps({ asPath, pathname, query, req, store, isServer }) {
+    const url = { asPath, pathname, query };
     const { user } = isServer ? req : store.getState();
     if (isServer) store.dispatch(setUser(user));
     await store.dispatch(getAgencies());

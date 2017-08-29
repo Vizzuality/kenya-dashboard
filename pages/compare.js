@@ -67,6 +67,14 @@ import { KENYA_CARTO_ID } from 'constants/filters';
 
 
 class ComparePage extends Page {
+  static async getInitialProps({ asPath, query, pathname, req, store, isServer }) {
+    const url = { asPath, pathname, query };
+
+    const { user } = isServer ? req : store.getState();
+    if (isServer) store.dispatch(setUser(user));
+    return { user, url, isServer };
+  }
+
   constructor(props) {
     super(props);
 
@@ -91,11 +99,6 @@ class ComparePage extends Page {
   componentDidMount() {
     const { url } = this.props;
 
-    // Set user
-    if (localStorage.token && localStorage.token !== '') {
-      this.props.setUser({ auth_token: localStorage.token });
-    }
-
     // Get regions options
     if (isEmpty(this.props.filters.options.regions)) {
       this.props.getRegionsOptions();
@@ -113,7 +116,7 @@ class ComparePage extends Page {
 
     // Update from url
     // Get indicators from url
-    url.query.indicators && this.props.getSpecificIndicators(url.query.indicators);
+    if (url.query.indicators) this.props.getSpecificIndicators(url.query.indicators);
 
     // Update areas with url params
     if (url.query.maps) {

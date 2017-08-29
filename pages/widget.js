@@ -29,12 +29,13 @@ import { TOPICS_ICONS_SRC } from 'constants/filters';
 const DESERIALIZER = new Deserializer();
 
 class WidgetPage extends Page {
-  static async getInitialProps({ req, store, query, isServer }) {
+  static async getInitialProps({ req, store, query, isServer, asPath, pathname }) {
     const { options, token } = query;
+    const url = { asPath, pathname, query };
     let { user } = isServer ? req : store.getState();
     if (!user && isServer && token) user = { auth_token: token };
     if (isServer) store.dispatch(setUser(user));
-    return { user, isServer, options: decode(options) };
+    return { user, isServer, options: decode(options), url };
   }
 
   constructor(props) {

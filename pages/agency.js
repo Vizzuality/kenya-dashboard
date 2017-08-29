@@ -68,7 +68,7 @@ class AgencyPage extends React.PureComponent {
             <div className="row">
               {info.indicators && info.indicators.map((ind, i) => (
                 <div key={i} className="column small-12 medium-4 large-3 indicator-container">
-                  <Link route={`/compare?indicator=${ind.id}`}>
+                  <Link route={`/compare?indicators=${ind.id}`}>
                     <a>{ind.name}</a>
                   </Link>
                 </div>

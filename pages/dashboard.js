@@ -27,8 +27,8 @@ import DashboardList from 'components/ui/dashboard-list';
 
 
 class DashboardPage extends Page {
-  static async getInitialProps({ asPath, pathname, req, store, isServer }) {
-    const url = { asPath, pathname };
+  static async getInitialProps({ asPath, query, pathname, req, store, isServer }) {
+    const url = { asPath, pathname, query };
     const { user } = isServer ? req : store.getState();
     if (isServer) store.dispatch(setUser(user));
     return { user, url, isServer };
