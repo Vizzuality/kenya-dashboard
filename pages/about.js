@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
-import { store } from 'store';
+import { initStore } from 'store';
 
 // modules
 import { setUser } from 'modules/user';
@@ -13,79 +13,74 @@ import { getAgencies } from 'modules/agencies';
 import isEmpty from 'lodash/isEmpty';
 
 // Components
+import { Router } from 'routes';
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import Intro from 'components/ui/intro';
 import Spinner from 'components/ui/spinner';
 import CardInfo from 'components/ui/card-info';
 
-
 class AboutPage extends Page {
-  componentDidMount() {
-    // Set user
-    if (localStorage.token && localStorage.token !== '') {
-      this.props.setUser({ auth_token: localStorage.token });
-    }
+  static async getInitialProps({ asPath, pathname, query, req, store, isServer }) {
+    const url = { asPath, pathname, query };
+    const { user } = isServer ? req : store.getState();
+    if (isServer) store.dispatch(setUser(user));
+    await store.dispatch(getAgencies());
+    return { user, url, isServer };
+  }
 
-    // If no agencies
-    if (isEmpty(this.props.agencies.list)) {
-      this.props.getAgencies();
-    }
+  componentWillMount() {
+    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('home');
   }
 
   render() {
-    const { url, session, agencies, user } = this.props;
+    const { url, agencies, user } = this.props;
+
+    if (!user) return null;
 
     return (
       <Layout
         title="About"
         description="About description..."
         url={url}
-        session={session}
-        className={user.logged ? 'p-about -logged' : 'p-about'}
+        className={user ? 'p-about -logged' : 'p-about'}
         logged={user.logged}
       >
-        {user.logged ?
-          <div>
-            {/* Page intro */}
-            <Intro>
-              <div className="row">
-                <div className="column small-12 medium-10 medium-offset-1">
-                  <h1 className="title">About the Alliance</h1>
-                  <p className="description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
-                </div>
+        <div>
+          {/* Page intro */}
+          <Intro>
+            <div className="row">
+              <div className="column small-12 medium-10 medium-offset-1">
+                <h1 className="title">About the Alliance</h1>
+                <p className="description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
               </div>
-            </Intro>
+            </div>
+          </Intro>
 
-            {/* Agencies list */}
-            <section className="c-section agencies-list">
-              <div className="row">
-                <div className="column small-12 medium-8 medium-offset-2">
-                  <div className="agencies-logo">
-                    <img src="static/images/about_logo.png" alt="about logo" />
-                  </div>
-                  <h1 className="section-subtitle">Ministry of Environment & Natural Resources</h1>
-                  <p className="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+          {/* Agencies list */}
+          <section className="c-section agencies-list">
+            <div className="row">
+              <div className="column small-12 medium-8 medium-offset-2">
+                <div className="agencies-logo">
+                  <img src="static/images/about_logo.png" alt="about logo" />
                 </div>
+                <h1 className="section-subtitle">Ministry of Environment & Natural Resources</h1>
+                <p className="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
               </div>
-              {/* List */}
-              <div className="row collapse">
-                <Spinner isLoading={agencies.loading} />
-                {agencies.list.map((ag, i) => (
-                  <div key={i} className="column small-12 medium-4">
-                    <div className="agency-container">
-                      <CardInfo info={ag} />
-                    </div>
+            </div>
+            {/* List */}
+            <div className="row collapse">
+              <Spinner isLoading={agencies.loading} />
+              {agencies.list.map((ag, i) => (
+                <div key={i} className="column small-12 medium-4">
+                  <div className="agency-container">
+                    <CardInfo info={ag} />
                   </div>
-                ))}
-              </div>
-            </section>
-          </div> :
-          // Provisional
-          <div className="row collapse" style={{ margin: '30px' }}>
-            <div className="column small-12"><p>Sign in</p></div>
-          </div>
-        }
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </Layout>
     );
   }
@@ -93,19 +88,15 @@ class AboutPage extends Page {
 
 AboutPage.propTypes = {
   url: PropTypes.object,
-  session: PropTypes.object
+  agencies: PropTypes.object,
+  isServer: PropTypes.bool,
+  user: PropTypes.object,
+  getAgencies: PropTypes.func
 };
 
-export default withRedux(
-  store,
-  state => ({
-    agencies: state.agencies,
-    user: state.user
-  }),
-  dispatch => ({
-    // User
-    setUser(user) { dispatch(setUser(user)); },
-    // Agencies
-    getAgencies() { dispatch(getAgencies()); }
-  })
-)(AboutPage);
+const mapStateToProps = state => ({
+  agencies: state.agencies,
+  user: state.user
+});
+
+export default withRedux(initStore, mapStateToProps)(AboutPage);
