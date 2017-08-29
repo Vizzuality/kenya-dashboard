@@ -22,8 +22,13 @@ export default class DashboardItem extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      lastDate: ''
+    };
+
     // Bindings
     this.onSetDate = this.onSetDate.bind(this);
+    this.setLastDate = this.setLastDate.bind(this);
   }
 
 
@@ -56,6 +61,13 @@ export default class DashboardItem extends React.Component {
   //   return null;
   // }
 
+  setLastDate(date) {
+    const index = date.indexOf('T');
+    const parsedDate = new Date(date.slice(0, index));
+    const lastDate = `${parsedDate.getFullYear()}/${parsedDate.getMonth() + 1}/${parsedDate.getDate()}`;
+    this.setState({ lastDate });
+  }
+
   render() {
     const { info, className, dates, region, remove, groupId, layout } = this.props;
     // const threshold = this.getThresholdQualification();
@@ -67,6 +79,7 @@ export default class DashboardItem extends React.Component {
       // [threshold]: threshold
       }
     );
+    const parsedInfo = { ...info, ...{ lastDate: this.state.lastDate } };
 
     return (
       layout === 'grid' ?
@@ -77,7 +90,7 @@ export default class DashboardItem extends React.Component {
             <div className="item-tools">
               <ItemTools
                 groupId={groupId}
-                info={info}
+                info={parsedInfo}
                 dates={dates}
                 remove={remove}
                 options={{ dates, region, indicator: info['indicator-id'] }}
@@ -97,6 +110,7 @@ export default class DashboardItem extends React.Component {
               info={this.props.info}
               dates={dates}
               region={region}
+              setLastDate={this.setLastDate}
             />
           </section>
 
@@ -104,7 +118,7 @@ export default class DashboardItem extends React.Component {
           <footer className="item-footer">
             <div className="info">
               <TopicIcon topic={info.topic ? info.topic.name : ''} tooltip={info.topic && !!info.topic.name} />
-              <span className="update">Last update: {info.updatedAt}</span>
+              <span className="update">Last update: {this.state.lastDate}</span>
             </div>
             {!remove &&
               <div className="">
@@ -168,7 +182,7 @@ export default class DashboardItem extends React.Component {
                   <footer className="item-footer">
                     <div className="info">
                       <TopicIcon topic={info.topic ? info.topic.name : ''} tooltip={info.topic && !!info.topic.name} />
-                      <span className="update">Last update: {info.updatedAt}</span>
+                      <span className="update">Last update: {this.state.lastDate}</span>
                     </div>
                   </footer>
                 </div>

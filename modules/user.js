@@ -1,4 +1,3 @@
-import * as Cookies from 'js-cookie';
 import { post } from 'utils/request';
 
 // CONSTANTS
@@ -6,22 +5,15 @@ const SET_USER = 'SET_USER';
 const REMOVE_USER = 'REMOVE_USER';
 const RESET_PASSWORD = 'RESET_PASSWORD';
 
-const userCookie = Cookies.get('user') ? JSON.parse(Cookies.get('user')) : {};
-
 // REDUCER
-const initialState = {
-  user: userCookie,
-  // Removing true or false make dissapear the attribute
-  logged: userCookie && userCookie.auth_token && userCookie.auth_token !== '' ? true : false,
-  reset: null
-};
+const initialState = {};
 
 export default function (state = initialState, action) {
   switch (action.type) {
     case SET_USER:
-      return Object.assign({}, state, { user: action.payload.user, logged: action.payload.logged });
+      return Object.assign({}, state, action.payload, { logged: true });
     case REMOVE_USER:
-      return Object.assign({}, state, { user: {}, logged: false });
+      return Object.assign({}, state, { logged: false, auth_token: null });
     case RESET_PASSWORD:
       return Object.assign({}, state, { reset: action.payload });
     default:
@@ -32,13 +24,13 @@ export default function (state = initialState, action) {
 
 // ACTIONS
 export function setUser(user) {
-  return { type: SET_USER, payload: { user, logged: true } };
+  return { type: SET_USER, payload: user };
 }
 
 export function login({ email, password }) {
   return (dispatch) => {
     post({
-      url: `${process.env.KENYA_API}/auth`,
+      url: '/login',
       type: 'POST',
       body: { email, password },
       headers: [
@@ -48,25 +40,46 @@ export function login({ email, password }) {
         }
       ],
       onSuccess: (response) => {
-        localStorage.setItem('token', response.auth_token);
-        // Set cookie
-        Cookies.set('user', JSON.stringify(response));
         // Dispatch action
-        dispatch({ type: SET_USER, payload: { user: response, logged: true } });
+        dispatch({ type: SET_USER, payload: response });
       },
       onError: () => {
-        localStorage.setItem('token', '');
-        dispatch({ type: SET_USER, payload: { user: {}, logged: false } });
+        dispatch({ type: SET_USER, payload: {} });
       }
     });
   };
 }
 
+// export function login({ email, password }) {
+//   return (dispatch) => {
+//     post({
+//       url: `${process.env.KENYA_API}/auth`,
+//       type: 'POST',
+//       body: { email, password },
+//       headers: [
+//         {
+//           key: 'Content-Type',
+//           value: 'application/json'
+//         }
+//       ],
+//       onSuccess: (response) => {
+//         localStorage.setItem('token', response.auth_token);
+//         // Set cookie
+//         Cookies.set('user', JSON.stringify(response));
+//         // Dispatch action
+//         dispatch({ type: SET_USER, payload: { user: response, logged: true } });
+//       },
+//       onError: () => {
+//         localStorage.setItem('token', '');
+//         dispatch({ type: SET_USER, payload: { user: {}, logged: false } });
+//       }
+//     });
+//   };
+// }
+
 export function logout() {
   return (dispatch) => {
     localStorage.setItem('token', '');
-    // Set cookie
-    Cookies.remove('user');
 
     // Dispatch action
     dispatch({ type: REMOVE_USER });

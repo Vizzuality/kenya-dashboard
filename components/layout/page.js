@@ -1,16 +1,10 @@
 import React from 'react';
-// import Session from 'components/session';
+import { setUser } from 'modules/user';
 
-export default class extends React.Component {
-
-  // Expose session to all pages
-  static async getInitialProps() {
-    // const session = new Session({ req: props.req });
-    //
-    // return {
-    //   session: await session.getSession()
-    // };
-    return {};
+export default class Page extends React.PureComponent {
+  static async getInitialProps({ req, store, isServer }) {
+    const { user } = isServer ? req : store.getState();
+    if (isServer) store.dispatch(setUser(user));
+    return { user, isServer };
   }
-
 }

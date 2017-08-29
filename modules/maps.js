@@ -117,12 +117,14 @@ export function setSingleMapParamsUrl(params, url) {
   return (dispatch, getState) => {
     const urlParams = getState().maps.areas;
     const newAreasParams = Object.assign({}, urlParams,
-      { [params.key]: {
+      {
+      [params.key]: {
         lat: params.center.lat,
         lng: params.center.lng,
         zoom: params.zoom,
         region: params.region || KENYA_CARTO_ID
-      } });
+      }
+      });
     const location = {
       pathname: url.pathname,
       query: Object.assign({}, url.query, { maps: encode(newAreasParams) })
@@ -247,7 +249,7 @@ export function setAreasParamsUrl(url) {
 // Add layer
 export function addLayer(layer, area, region, dates) {
   return (dispatch, getState) => {
-    const token = localStorage.getItem('token');
+    const token = getState().user.auth_token;
     const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
     let params = `'${token}', ${layer.id}`;
 
