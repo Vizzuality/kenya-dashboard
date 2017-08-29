@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 // Libraries
 import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
+import debounce from 'lodash/debounce';
 import difference from 'lodash/difference';
 
 // Components
+import ResizeSensor from 'resize-sensor--react';
 import Spinner from 'components/ui/spinner';
 
 // Constants
@@ -69,21 +71,24 @@ export default class Map extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const { mapOptions, layers, indicatorsLayersActive } = this.props;
+
     // Fitbounds
-    if (!isEqual(this.props.mapOptions.bounds, nextProps.mapOptions.bounds)) {
+    if (!isEqual(mapOptions.bounds, nextProps.mapOptions.bounds) ||
+    mapOptions.fitBounds !== nextProps.mapOptions.fitBounds) {
       this.setBounds(nextProps.mapOptions.bounds.coordinates[0]);
     }
 
     // Layers
     // Add layers with new order
-    if (!isEqual(this.props.layers, nextProps.layers) &&
-      isEqual(this.props.indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
+    if (!isEqual(layers, nextProps.layers) &&
+      isEqual(indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
       this.layerManager.removeAllLayers();
       this.addLayer(nextProps.layers);
     }
 
     // Add or remove layers
-    if (!isEqual(this.props.indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
+    if (!isEqual(indicatorsLayersActive, nextProps.indicatorsLayersActive)) {
       const added = difference(nextProps.indicatorsLayersActive, this.props.indicatorsLayersActive);
       const removed = difference(
         this.props.indicatorsLayersActive,
@@ -117,7 +122,7 @@ export default class Map extends React.Component {
     }
 
     // Center
-    if (!isEqual(this.props.mapOptions.center, nextProps.mapOptions.center)) {
+    if (!isEqual(mapOptions.center, nextProps.mapOptions.center)) {
       this.map.setView(
         new L.LatLng(
           nextProps.mapOptions.center[0],
@@ -136,8 +141,12 @@ export default class Map extends React.Component {
   componentWillUnmount() {
     this._mounted = false;
     this.props.listeners && this.removeMapEventListeners();
-    this.map.remove();
+    this.map && this.map.remove();
   }
+
+  onResize = debounce(() => {
+    this.map && this.map.invalidateSize();
+  }, 200)
 
   /* Event listener methods */
   setMapEventListeners() {
@@ -243,6 +252,9 @@ export default class Map extends React.Component {
 
     return (
       <div className={classNames}>
+        <ResizeSensor
+          onResize={this.onResize}
+        />
         <div ref={(node) => { this.mapNode = node; }} className="map-leaflet" />
         <Spinner isLoading={this.state.loading} />
       </div>
