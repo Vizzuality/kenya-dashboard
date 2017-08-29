@@ -105,6 +105,11 @@ function getValueMatchFromCascadeList(itemList, id) {
   return item;
 }
 
+function roundNumberWithDecimals(number, decimals = 2) {
+  return !Number.isNaN(number) ?
+    Number.parseInt(Number(number).toFixed(decimals), 10) : 'NaN';
+}
+
 export {
   toBase64,
   encode,
@@ -116,5 +121,6 @@ export {
   setBasicQueryHeaderHeaders,
   parseCustomSelectOptions,
   parseCustomSelectCascadeOptions,
-  getValueMatchFromCascadeList
+  getValueMatchFromCascadeList,
+  roundNumberWithDecimals
 };

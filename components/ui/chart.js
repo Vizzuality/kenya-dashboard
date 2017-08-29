@@ -64,13 +64,13 @@ export default class Chart extends React.Component {
       info['json-config'].type && info['json-config'].threshold) {
       const threshold = info['json-config'].threshold;
       const y2Axis = info['json-config'].type['secondary-axe'];
-
       this.onPrint();
 
       switch (info['json-config'].type.visual) {
         case 'table': return (
           <TableType
             data={data.data}
+            config={info['json-config']}
             threshold={threshold}
             axis={info['json-config'].axes}
           />
@@ -78,6 +78,7 @@ export default class Chart extends React.Component {
         case 'trend': return (
           <TrendType
             data={data.data}
+            config={info['json-config']}
             threshold={threshold}
             axis={info['json-config'].axes}
           />
@@ -85,16 +86,18 @@ export default class Chart extends React.Component {
         case 'extremes': return (
           <ExtremesType
             data={data.data}
+            config={info['json-config']}
             threshold={threshold}
             axis={info['json-config'].axes}
           />
         );
         case 'pie': return (
-          <PieType data={data.data} threshold={threshold} />
+          <PieType data={data.data} threshold={threshold} config={info['json-config']} />
         );
         case 'line': return (
           <LineType
             data={data.data}
+            config={info['json-config']}
             threshold={threshold}
             y2Axis={y2Axis}
           />
@@ -102,6 +105,7 @@ export default class Chart extends React.Component {
         case 'bars': return (
           <BarsType
             data={data.data}
+            config={info['json-config']}
             threshold={threshold}
             y2Axis={y2Axis}
           />
@@ -109,6 +113,7 @@ export default class Chart extends React.Component {
         case 'barsLine': return (
           <BarsLineType
             data={data.data}
+            config={info['json-config']}
             threshold={threshold}
             y2Axis={y2Axis}
           />

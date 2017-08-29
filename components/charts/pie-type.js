@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 // Libraries
 import classnames from 'classnames';
 
+// Utils
+import { roundNumberWithDecimals } from 'utils/general';
+
 // Components
 import { ResponsiveContainer, PieChart, Pie, Cell, Label } from 'recharts';
 
@@ -16,8 +19,8 @@ export default class PieType extends React.Component {
     super(props);
 
     this.state = {
-      title: '',
-      text: ''
+      title: props.data[0].x,
+      text: roundNumberWithDecimals(props.data[0].y)
     };
 
     // Bindings
@@ -50,14 +53,16 @@ export default class PieType extends React.Component {
               dataKey={item => item.y}
               activeIndex={0}
               onMouseEnter={this.onMouseEnter}
-              onMouseLeave={() => this.setState({ title: '', text: '' })}
+              onMouseLeave={() => this.setState({
+                title: data[0].x,
+                text: roundNumberWithDecimals(data[0].y)
+              })}
             >
               <Label value={this.state.title} dy={-13} position="center" />
               <Label value={this.state.text} dy={13} position="center" />
               {
                 data.map((item, i) => {
-                  // const color = THRESHOLD_COLORS[getThreshold(item.y, pieThresold)];
-                  const color = CATEGORY_COLORS[i];
+                  const color = i > 5 ? CATEGORY_COLORS[0] : CATEGORY_COLORS[i];
 
                   return (
                     <Cell
