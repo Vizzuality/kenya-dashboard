@@ -85,6 +85,7 @@ export default class DashboardItem extends React.Component {
                 onRemoveItem={this.props.onRemoveItem}
               />
             </div>
+            {/* Global value */}
             <div className="general-value">
               <p></p>
             </div>
@@ -105,13 +106,15 @@ export default class DashboardItem extends React.Component {
               <TopicIcon topic={info.topic ? info.topic.name : ''} tooltip={info.topic && !!info.topic.name} />
               <span className="update">Last update: {info.updatedAt}</span>
             </div>
-            <div className="">
-              <Link route="compare" params={{ indicators: info.indicator_id }}>
-                <a className="item-link">
-                  <Icon name="icon-arrow_next2" className="-smaller" />
-                </a>
-              </Link>
-            </div>
+            {!remove &&
+              <div className="">
+                <Link route="compare" params={{ indicators: info.indicator_id }}>
+                  <a className="item-link">
+                    <Icon name="icon-arrow_next2" className="-smaller" />
+                  </a>
+                </Link>
+              </div>
+            }
           </footer>
         </article> :
         <article className={classNames}>
