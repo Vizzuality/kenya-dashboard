@@ -55,7 +55,14 @@ export default class LineType extends React.Component {
           <LineChart
             data={data}
           >
-            <XAxis dataKey="x" axisLine={false} tickLine={false} />
+            <XAxis
+              dataKey="x"
+              axisLine={false}
+              tickLine={false}
+              tickFormatter={(...t) => {
+                return new Date(t).getFullYear();
+              }}
+            />
             <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
             {y2Axis &&
               <YAxis dataKey="y2" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
