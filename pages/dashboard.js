@@ -9,6 +9,8 @@ import { initStore } from 'store';
 import { getIndicators, setIndicatorDates } from 'modules/indicators';
 import { removeSelectedFilter, setFiltersUrl } from 'modules/filters';
 import { setUser } from 'modules/user';
+import { setRouter } from 'modules/routes';
+import { decode } from 'utils/general';
 
 // Selectors
 import { getSelectedFilterOptions } from 'selectors/filters';
@@ -30,6 +32,7 @@ class DashboardPage extends Page {
     const url = { asPath, pathname, query };
     const { user } = isServer ? req : store.getState();
     if (isServer) store.dispatch(setUser(user));
+    if (!isServer) store.dispatch(setRouter(url));
     return { user, url, isServer };
   }
 
@@ -38,8 +41,10 @@ class DashboardPage extends Page {
   }
 
   componentDidMount() {
-    const { selectedFilters } = this.props;
-    this.props.getIndicators(selectedFilters);
+    const { selectedFilters, url } = this.props;
+    const queryFilters = url.query.filters ? decode(url.query.filters) : {};
+    const filters = Object.assign({}, selectedFilters, queryFilters);
+    this.props.getIndicators(filters);
   }
 
   componentWillReceiveProps(nextProps) {

@@ -20,7 +20,7 @@ function decode(obj) {
   if (typeof atob === 'undefined') {
     return JSON.parse(Buffer.from(obj, 'base64').toString());
   }
-  return JSON.parse(atob(obj));
+  return JSON.parse(atob(decodeURIComponent(obj)));
 }
 
 function parseSelectOptions(options) {
@@ -46,7 +46,7 @@ function parseObjectToUrlParams(obj) {
 
   let query = '';
   Object.keys(obj).forEach((key) => {
-    if (obj[key].length && key !== 'regions') {
+    if (obj[key] && obj[key].length && key !== 'regions') {
       query += query === '' ? `&${FILTERS_KEYS[key]}=${obj[key]}` : `&${FILTERS_KEYS[key]}=${obj[key]}`;
     }
   });
