@@ -36,7 +36,7 @@ class AboutPage extends Page {
   render() {
     const { url, agencies, user } = this.props;
 
-    if (!user) return null;
+    if (isEmpty(user)) return null;
 
     return (
       <Layout

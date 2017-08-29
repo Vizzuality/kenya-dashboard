@@ -60,7 +60,7 @@ server.use(passport.session());
 const isAuthenticated = (req, res, nextAction) => {
   if (req.isAuthenticated()) return nextAction();
   // Fallback to home
-  return res.redirect('/');
+  return res.redirect('/login');
 };
 
 // Puppeteer: PDF export

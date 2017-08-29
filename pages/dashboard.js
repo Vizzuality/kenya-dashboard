@@ -64,6 +64,8 @@ class DashboardPage extends Page {
       filterOptions
     } = this.props;
 
+    if (isEmpty(user)) return null;
+
     return (
       <Layout
         title="Dashboard"

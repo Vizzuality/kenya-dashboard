@@ -286,6 +286,8 @@ class ComparePage extends Page {
     const areaMaps = this.getAreaMaps(mapState.areas, layers);
     const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators);
 
+    if (isEmpty(user)) return null;
+
     return (
       <Layout
         title="Detail"

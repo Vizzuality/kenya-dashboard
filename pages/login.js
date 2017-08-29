@@ -158,7 +158,7 @@ class Login extends React.PureComponent {
         title="Agency"
         description="Agency description..."
         url={url}
-        className={user ? 'p-agency -logged' : 'p-about'}
+        className={user ? 'p-dashboard -logged' : 'p-about'}
       >
         <div className={classNames}>
           {reset ?
