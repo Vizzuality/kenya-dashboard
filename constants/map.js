@@ -5,7 +5,8 @@ const MAP_OPTIONS = {
   maxZoom: 8,
   center: [30, -25],
   zoomControl: false,
-  detectRetina: true
+  detectRetina: true,
+  scrollWheelZoom: false
 };
 
 const MAP_METHODS = {
