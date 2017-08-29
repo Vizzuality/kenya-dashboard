@@ -100,8 +100,9 @@ export function getTopicsOptions() {
 
 /* Get locations options */
 export function getRegionsOptions() {
-  return (dispatch) => {
-    const headers = setBasicQueryHeaderHeaders({ Authorization: localStorage.getItem('token') });
+  return (dispatch, getState) => {
+    const token = getState().user.auth_token;
+    const headers = setBasicQueryHeaderHeaders({ Authorization: token });
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_FILTERS_LOADING });
 
