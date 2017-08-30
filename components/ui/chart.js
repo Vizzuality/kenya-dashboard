@@ -181,7 +181,7 @@ Chart.propTypes = {
   region: PropTypes.string,
   dates: PropTypes.object,
   // Actions
-  setLastDate: PropTypes.object
+  setLastDate: PropTypes.func
 };
 
 const mapStateToProps = state => ({

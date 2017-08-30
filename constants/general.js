@@ -32,10 +32,15 @@ const THRESHOLD_EXAMPLE = {
   2: 80
 };
 
+const MONTHS_INITIALS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+const MONTHS_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 export {
   HEADER_MENU_LINKS,
   SELECT_SEARCH_OPTIONS,
   HEADER_LOGIN_MENU_LINKS,
   THRESHOLD_COLORS,
-  THRESHOLD_EXAMPLE
+  THRESHOLD_EXAMPLE,
+  MONTHS_INITIALS,
+  MONTHS_NAMES
 };
