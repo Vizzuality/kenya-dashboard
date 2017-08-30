@@ -48,3 +48,20 @@
     }
   }
 }
+
+
+.p-widget .c-bars-line-type {
+  .recharts-cartesian-axis {
+    text tspan {
+      fill: $color-text-2;
+    }
+    &.yAxis {
+      text tspan {
+        fill: rgba($color-text-2, .5);
+      }
+    }
+  }
+  .recharts-text.recharts-label {
+    fill: $color-text-2;
+  }
+}
