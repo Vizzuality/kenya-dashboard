@@ -30,13 +30,13 @@ class AgencyPage extends React.PureComponent {
   }
 
   componentWillMount() {
-    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('home');
+    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('login');
   }
 
   render() {
     const { url, info, user } = this.props;
 
-    if (!user) return null;
+    if (isEmpty(user)) return null;
 
     return (
       <Layout

@@ -92,7 +92,7 @@ class ComparePage extends Page {
   }
 
   componentWillMount() {
-    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('home');
+    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('login');
   }
 
   /* Lifecycle */
@@ -285,6 +285,8 @@ class ComparePage extends Page {
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(mapState.areas, layers);
     const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators);
+
+    if (isEmpty(user)) return null;
 
     return (
       <Layout

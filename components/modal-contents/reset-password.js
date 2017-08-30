@@ -112,6 +112,17 @@ export default class ResetPassword extends React.Component {
               {Input}
             </Field>
 
+            <div className="login-options">
+              <div/>
+              <button
+                type="button"
+                onClick={this.props.onBackToLogin}
+                className="btn-reset-password"
+              >
+                Go back
+              </button>
+            </div>
+
             <footer className="login-footer">
               <button
                 type="submit"
@@ -134,5 +145,6 @@ ResetPassword.propTypes = {
   user: PropTypes.object,
   email: PropTypes.string,
   // Actions
-  resetPassword: PropTypes.func
+  resetPassword: PropTypes.func,
+  onBackToLogin: PropTypes.func
 };

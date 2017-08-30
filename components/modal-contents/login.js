@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 // Libraries
 import classnames from 'classnames';
@@ -216,7 +215,6 @@ export default class Login extends React.Component {
 Login.propTypes = {
   className: PropTypes.string,
   user: PropTypes.object,
-  modalOpened: PropTypes.bool,
   // Actions
   login: PropTypes.func,
   resetPassword: PropTypes.func,
