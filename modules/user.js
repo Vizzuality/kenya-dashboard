@@ -24,7 +24,7 @@ export default function (state = initialState, action) {
 
 // ACTIONS
 export function setUser(user) {
-  return { type: SET_USER, payload: user };
+  return { type: SET_USER, payload: Object.assign({}, user, { logged: !!user.auth_token }) };
 }
 
 export function login({ email, password }) {
@@ -41,7 +41,7 @@ export function login({ email, password }) {
       ],
       onSuccess: (response) => {
         // Dispatch action
-        dispatch({ type: SET_USER, payload: Object.assign({}, response, { logged: true }) });
+        dispatch({ type: SET_USER, payload: Object.assign({}, response, { logged: !!response.auth_token }) });
       },
       onError: () => {
         dispatch({ type: SET_USER, payload: {} });
