@@ -105,7 +105,7 @@ export default class BarsType extends React.Component {
               isAnimationActive={false}
               cursor={false}
               content={<TooltipChart config={config['interactivity-config']} />}
-              category="blue"
+              category="grey"
             />
             <Legend payload={legendValues} />
 
