@@ -123,7 +123,7 @@ class Chart extends React.Component {
       data: data && data.rows && data.rows.length ? data.rows[0] : null
     });
 
-    if (data && data.rows.length && !!data.rows[0].last_date) {
+    if (data && data.rows.length && !!data.rows[0].last_date && this.props.setLastDate) {
       this.props.setLastDate(data.rows[0].last_date);
     }
   }

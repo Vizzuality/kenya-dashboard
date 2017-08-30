@@ -11,3 +11,13 @@
     fill: $color-text-1;
   }
 }
+
+.p-widget .c-pie-type .recharts-text.recharts-label {
+  fill: $color-text-2;
+}
+
+@media print {
+  .c-pie-type .recharts-text.recharts-label {
+    fill: $color-text-2;
+  }
+}
