@@ -78,7 +78,7 @@ class ItemTools extends React.Component {
           </button> */}
           <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
             <a className="btn">
-              <Icon name="icon-download" className="-smaller" />
+              <Icon name="icon-print" className="-smaller" />
             </a>
           </Link>
           {remove &&
