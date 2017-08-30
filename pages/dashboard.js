@@ -60,8 +60,7 @@ class DashboardPage extends Page {
       layout,
       user,
       selectedFilterOptions,
-      selectedFilters,
-      filterOptions
+      selectedFilters
     } = this.props;
 
     if (isEmpty(user)) return null;
@@ -76,7 +75,6 @@ class DashboardPage extends Page {
       >
         <div>
           <FiltersSelectedBar
-            filterOptions={filterOptions}
             selected={selectedFilterOptions}
             removeFilter={this.props.removeSelectedFilter}
           />

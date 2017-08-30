@@ -51,4 +51,23 @@
       }
     }
   }
+
+  /* Print */
+  &.-print {
+    padding: 0;
+    border: 0;
+    margin-bottom: 30px;
+
+    .bar-label {
+      line-height: 21px;
+    }
+
+    .filter-label {
+      color: rgba($color-text-2, .6);
+    }
+
+    .filter-value-container {
+      padding: 2px 0;
+    }
+  }
 }

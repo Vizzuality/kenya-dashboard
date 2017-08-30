@@ -6,6 +6,9 @@ import withRedux from 'next-redux-wrapper';
 import { initStore } from 'store';
 import { setUser } from 'modules/user';
 
+// Selectors
+import { getSelectedFilterOptions } from 'selectors/filters';
+
 // Libraries
 import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
@@ -20,13 +23,15 @@ import isEmpty from 'lodash/isEmpty';
 import { Router } from 'routes';
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
-import Icon from 'components/ui/icon';
+import FiltersSelectedBar from 'components/ui/filters-selected-bar';
 import Chart from 'components/ui/chart';
+import Icon from 'components/ui/icon';
 
 // Constants
 import { TOPICS_ICONS_SRC } from 'constants/filters';
 
 const DESERIALIZER = new Deserializer();
+
 
 class WidgetPage extends Page {
   static async getInitialProps({ req, store, query, isServer, asPath, pathname }) {
@@ -86,10 +91,17 @@ class WidgetPage extends Page {
 
   render() {
     const { info } = this.state;
-    const { className, url, options } = this.props;
+    const { className, url, options, selectedFilterOptions } = this.props;
     const { dates, region } = options;
     const classNames = classnames('c-dashboard-item -print', { [className]: !!className });
     const typeClass = info ? lowerCase(info.topic.name).split(' ').join('_') : '';
+    const parsedDates = options.dates ?
+    [
+      { name: `${options.dates.start.year}/${options.dates.start.month}/${options.dates.start.day}` },
+      { name: `${options.dates.end.year}/${options.dates.end.month}/${options.dates.end.day}` }
+    ] :
+      [];
+    const selectedFilters = { ...selectedFilterOptions, ...{ Dates: parsedDates } };
 
     return (
       <Layout
@@ -108,12 +120,19 @@ class WidgetPage extends Page {
               <h1 className="item-title">{info && info.title}</h1>
             </header>
 
+            <FiltersSelectedBar
+              className="-print"
+              title="Filters applied: "
+              selected={selectedFilters}
+            />
+
             {/* Indicator type detail - Content */}
             <section className="type-detail">
               <Chart
                 info={info}
                 dates={dates}
                 region={region}
+                setLastDate={this.setLastDate}
               />
             </section>
 
@@ -142,7 +161,8 @@ WidgetPage.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  selectedFilterOptions: getSelectedFilterOptions(state),
 });
 
 // const mapDispatchToProps = dispatch => ({

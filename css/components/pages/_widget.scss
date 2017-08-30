@@ -13,6 +13,10 @@
 
       .type-detail {
         max-height: 600px;
+
+        .no-data {
+          color: $color-text-2;
+        }
       }
 
       .item-footer {
@@ -27,7 +31,7 @@
         .info {
           flex-flow: column;
           align-items: flex-start;
-          
+
           .update {
             color: $color-text-2;
             margin-top: 1px;
