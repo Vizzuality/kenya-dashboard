@@ -94,6 +94,7 @@ export default class BarsType extends React.Component {
               isAnimationActive={false}
               cursor={yRefs.length > 1 ? { fill: '#2E3D3D' } : false}
               content={<TooltipChart config={config['interactivity-config']} />}
+              category="blue"
             />
             {yRefs.map((key, i) => (
               <Bar

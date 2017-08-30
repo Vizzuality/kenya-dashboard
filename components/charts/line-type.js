@@ -19,7 +19,8 @@ import { THRESHOLD_CATEGORY_COLORS } from 'constants/indicators';
 export default class LineType extends React.Component {
   constructor(props) {
     super(props);
-    this.colors = THRESHOLD_CATEGORY_COLORS[getThreshold(props.data[props.data.length - 1].y, props.threshold.y['break-points'])];
+    this.category = getThreshold(props.data[props.data.length - 1].y, props.threshold.y['break-points']);
+    this.colors = THRESHOLD_CATEGORY_COLORS[this.category];
   }
 
   getLineRefs() {
@@ -117,6 +118,7 @@ export default class LineType extends React.Component {
               isAnimationActive={false}
               cursor={{ stroke: 'white', strokeWidth: 1 }}
               content={<TooltipChart config={this.props.config['interactivity-config']} />}
+              category={this.category}
             />
             <Legend payload={legendValues} />
           </LineChart>

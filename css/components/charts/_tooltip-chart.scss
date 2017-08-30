@@ -10,6 +10,13 @@
   border: 1px solid $color-light-green;
   box-shadow: 0 0 6px 0 rgba($color-black, .19);
 
+  &.-success { border-color: $color-threshold-success; }
+  &.-good { border-color: $color-threshold-good; }
+  &.-medium { border-color: $color-threshold-medium; }
+  &.-weak { border-color: $color-threshold-weak; }
+  &.-fail { border-color: $color-threshold-fail; }
+  &.-blue { border-color: $color-blue; }
+
   .title {
     font-size: $font-size-small;
     line-height: 20px;

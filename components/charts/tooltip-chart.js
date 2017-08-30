@@ -11,11 +11,11 @@ import { roundNumberWithDecimals, setFormat } from 'utils/general';
 export default class TooltipChart extends React.Component {
 
   render() {
-    const { className, payload, active, config } = this.props;
+    const { className, payload, active, config, category } = this.props;
     const classNames = classnames({
       'c-tooltip-chart': true,
       [className]: !!className,
-      [className]: !!className
+      [`-${category}`]: !!category
     });
 
     return active ?
@@ -44,6 +44,7 @@ export default class TooltipChart extends React.Component {
 TooltipChart.propTypes = {
   className: PropTypes.string,
   payload: PropTypes.array,
+  category: PropTypes.string,
   config: PropTypes.object,
   active: PropTypes.bool
 };
