@@ -41,7 +41,7 @@ export function login({ email, password }) {
       ],
       onSuccess: (response) => {
         // Dispatch action
-        dispatch({ type: SET_USER, payload: Object.assign({}, response, { logged: !!response.auth_token }) });
+        dispatch({ type: SET_USER, payload: Object.assign({}, response, { logged: true }) });
       },
       onError: () => {
         dispatch({ type: SET_USER, payload: {} });
