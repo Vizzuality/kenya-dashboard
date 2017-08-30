@@ -29,13 +29,15 @@ export default class FiltersSelectedBar extends React.Component {
     return Object.keys(selected).map((key, i) => (
       selected[key] && selected[key].length ?
         <div className="filters-type-container" key={i}>
-          <span className="filter-label">{FILTERS_BAR_LABELS[key]}:</span>
+          <span className="filter-label">{FILTERS_BAR_LABELS[key] || key}:</span>
           {selected[key].map((item, j) => (
             <div key={j} className="filter-value-container">
               <span className="filter-value">{item.name}</span>
-              <button className="btn-remove" onClick={() => this.onRemoveFilter(key, item.id)}>
-                <Icon name="icon-cross" className="-medium" />
-              </button>
+              {this.props.removeFilter &&
+                <button className="btn-remove" onClick={() => this.onRemoveFilter(key, item.id)}>
+                  <Icon name="icon-cross" className="-medium" />
+                </button>
+              }
             </div>
           ))}
         </div> : ''
@@ -43,7 +45,7 @@ export default class FiltersSelectedBar extends React.Component {
   }
 
   render() {
-    const { className } = this.props;
+    const { className, title } = this.props;
     const classNames = classnames(
       'c-filters-selected-bar',
       { [className]: !!className }
@@ -51,9 +53,9 @@ export default class FiltersSelectedBar extends React.Component {
 
     return (
       <nav className={classNames}>
-        <span className="bar-label">You are currently viewing: </span>
+        <span className="bar-label">{title}</span>
         {/* <div className="bar-filters"> */}
-          {this.getFilters()}
+        {this.getFilters()}
         {/* </div> */}
       </nav>
     );
@@ -63,6 +65,11 @@ export default class FiltersSelectedBar extends React.Component {
 FiltersSelectedBar.propTypes = {
   className: PropTypes.string,
   selected: PropTypes.object,
+  title: PropTypes.string,
   // Actions
   removeFilter: PropTypes.func
+};
+
+FiltersSelectedBar.defaultProps = {
+  title: 'You are currently viewing: '
 };

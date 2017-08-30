@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Utils
-import { roundNumberWithDecimals } from 'utils/general';
+import { roundNumberWithDecimals, getThreshold } from 'utils/general';
 
 // Components
 import { ResponsiveContainer, PieChart, Pie, Cell, Label } from 'recharts';
@@ -23,14 +23,14 @@ export default class PieType extends React.Component {
       text: roundNumberWithDecimals(props.data[0].y)
     };
 
-    this.category = Object.keys(THRESHOLD_CATEGORY_COLORS)[Number.parseInt(Math.random() * 3, 0)];
+    this.category = getThreshold(props.data[0].y, props.threshold.y['break-points']);
 
     // Bindings
     this.onMouseEnter = this.onMouseEnter.bind(this);
   }
 
   onMouseEnter(props) {
-    this.setState({ title: `${Math.round(props.percent * 100)}%`, text: props.x });
+    this.setState({ text: `${Math.round(props.percent * 100)}%`, title: props.x });
   }
 
   render() {
@@ -72,7 +72,7 @@ export default class PieType extends React.Component {
                     <Cell
                       key={i}
                       fill={color}
-                      opacity={this.state.name === item.x ? 0.5 : 1}
+                      opacity={this.state.title === item.x ? 0.8 : 1}
                       strokeWidth={0}
                     />
                   );

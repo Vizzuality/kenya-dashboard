@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Utils
-import { getThreshold } from 'utils/general';
+import { setFormat } from 'utils/general';
 
 // Components
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell } from 'recharts';
 
 // Constants
-import { THRESHOLD_COLORS } from 'constants/general';
+// import { THRESHOLD_COLORS } from 'constants/general';
 import TooltipChart from 'components/charts/tooltip-chart';
 
 
@@ -42,7 +42,7 @@ export default class BarsType extends React.Component {
   }
 
   setLegendValues() {
-    const { config, data, y2Axis, threshold } = this.props;
+    const { config, data, y2Axis } = this.props;
     const values = [];
 
     if (config.axes && Object.keys(config.axes).length) {
@@ -62,7 +62,7 @@ export default class BarsType extends React.Component {
   }
 
   render() {
-    const { className, threshold, data, y2Axis, config } = this.props;
+    const { className, data, y2Axis, config } = this.props;
     const classNames = classnames(
       'c-bars-type',
       { [className]: !!className }
@@ -79,9 +79,7 @@ export default class BarsType extends React.Component {
               axisLine={false}
               tickLine={false}
               tickFormatter={(...t) => {
-                const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
-                const month = new Date(t).getUTCMonth();
-                return months[month];
+                return setFormat(t, config.axes.x || null);
               }}
             />
             <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
@@ -137,6 +135,6 @@ BarsType.propTypes = {
   className: PropTypes.string,
   threshold: PropTypes.object,
   data: PropTypes.array,
-  config: PropTypes.array,
+  config: PropTypes.object,
   y2Axis: PropTypes.bool
 };

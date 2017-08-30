@@ -1,5 +1,6 @@
 import { BASIC_QUERY_HEADER } from 'constants/query';
 import { REGIONS_OPTIONS } from 'constants/filters';
+import { MONTHS_INITIALS , MONTHS_NAMES } from 'constants/general';
 
 function toBase64(file, cb) {
   const reader = new FileReader();
@@ -120,10 +121,20 @@ function roundNumberWithDecimals(number, decimals = 2) {
     'NaN';
 }
 
-function setFormat(value, format) {
+function setFormat(value, props) {
   const date = new Date(value);
 
   if (date !== 'Invalid Date') {
+    if (props) {
+      switch (props.format) {
+        case 'yyyy': case 'YYYY': case 'yy': case 'YY': return date.getFullYear();
+        case 'mm': case 'MM': return date.getUTCMonth() + 1;
+        case 'm': case 'M': return MONTHS_INITIALS[date.getUTCMonth()];
+        case 'month': case 'Month': return `${MONTHS_NAMES[date.getUTCMonth()]} ${date.getFullYear()}`;
+        case 'dd': case 'DD': return date.getDate();
+        default: return `${date.getFullYear()}/${date.getUTCMonth() + 1}/${date.getDate()}`;
+      }
+    }
     return `${date.getFullYear()}/${date.getUTCMonth() + 1}/${date.getDate()}`;
   }
   return value;

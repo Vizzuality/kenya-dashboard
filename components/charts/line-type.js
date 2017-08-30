@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Utils
-import { getThreshold, roundNumberWithDecimals } from 'utils/general';
+import { getThreshold, roundNumberWithDecimals, setFormat } from 'utils/general';
 
 // Components
 import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid, Tooltip, Legend } from 'recharts';
 import TooltipChart from 'components/charts/tooltip-chart';
 
 // Constants
-import { THRESHOLD_COLORS } from 'constants/general';
+// import { THRESHOLD_COLORS } from 'constants/general';
 import { THRESHOLD_CATEGORY_COLORS } from 'constants/indicators';
 
 
@@ -25,22 +25,20 @@ export default class LineType extends React.Component {
 
   getLineRefs() {
     const { data } = this.props;
-    return data.length ? Object.keys(data[0]).filter(key => key !== 'x') : [];
+    return data.length ? Object.keys(data[0]).filter(key => key[0] === 'y') : [];
   }
 
   setLegendValues() {
-    const { config, data, y2Axis, threshold } = this.props;
+    const { config } = this.props;
     const values = [];
 
-    if (config.axes && Object.keys(config.axes).length) {
-      Object.keys(config.axes).forEach((key) => {
-        if (key[0] === 'y' && config.axes[key]) {
-          const value = data[data.length - 1][key];
-          const lineThreshold = y2Axis && key === 'y2' ?
-            threshold.y2['break-points'] :
-            threshold.y['break-points'];
-          const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
-          values.push({ value: config.axes[key].title, type: 'line', id: key, color });
+    if (config['legend-config'] && Object.keys(config['legend-config']).length) {
+      Object.keys(config['legend-config']).forEach((key, i) => {
+        if (key[0] === 'y' && config['legend-config'][key]) {
+          // const value = data[data.length - 1][key];
+          // const lineThreshold = threshold.y['break-points'];
+          const color = this.colors[i];
+          values.push({ value: config['legend-config'] ? config['legend-config'][key] : '', type: 'line', id: key, color });
         }
       });
     }
@@ -48,11 +46,11 @@ export default class LineType extends React.Component {
   }
 
   render() {
-    const { className, threshold, data, y2Axis } = this.props;
-    const classNames = classnames({
-      'c-line-type': true,
-      [className]: !!className
-    });
+    const { className, data, y2Axis, config } = this.props;
+    const classNames = classnames(
+      'c-line-type',
+      { [className]: !!className }
+    );
     const yRefs = this.getLineRefs();
     const legendValues = this.setLegendValues();
 
@@ -67,7 +65,7 @@ export default class LineType extends React.Component {
               axisLine={false}
               tickLine={false}
               tickFormatter={(...t) => {
-                return new Date(t).getFullYear();
+                return setFormat(t, config.axes.x || null);
               }}
             />
 

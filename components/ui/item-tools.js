@@ -25,7 +25,6 @@ class ItemTools extends React.Component {
 
     // Bindings
     this.onToggleModal = this.onToggleModal.bind(this);
-    // this.onDownloadWidget = this.onDownloadWidget.bind(this);
     this.onRemoveItem = this.onRemoveItem.bind(this);
   }
 
@@ -43,14 +42,6 @@ class ItemTools extends React.Component {
     const { info, groupId } = this.props;
     this.props.onRemoveItem(info.id, groupId);
   }
-
-  // onDownloadWidget() {
-  //   const { info, options } = this.props;
-  //   const encodedFilters = encode(options);
-  //   const name = info.title.split(' ').join('_');
-  //   const url = `${window.location.origin}/widget/${info.id}?options=${encodedFilters}`;
-  //   window.location.href = `https://staging-api.globalforestwatch.org/v1/webshot/pdf?url=${url}&name=${name}`;
-  // }
 
   render() {
     const { info, className, dates, remove, options, user, routes } = this.props;
@@ -73,9 +64,6 @@ class ItemTools extends React.Component {
           <button className="btn" onClick={this.onToggleModal}>
             <Icon name="icon-info" className="-smaller" />
           </button>
-          {/* <button className="btn" onClick={this.onDownloadWidget}>
-            <Icon name="icon-download" className="-smaller" />
-          </button> */}
           <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
             <a className="btn">
               <Icon name="icon-print" className="-smaller" />

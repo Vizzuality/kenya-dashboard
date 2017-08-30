@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Utils
-import { getThreshold } from 'utils/general';
+import { setFormat } from 'utils/general';
 
 // Components
 import {
@@ -22,7 +22,6 @@ import {
 } from 'recharts';
 
 // Constants
-import { THRESHOLD_COLORS } from 'constants/general';
 import TooltipChart from 'components/charts/tooltip-chart';
 
 
@@ -48,16 +47,16 @@ export default class BarsType extends React.Component {
   }
 
   setLegendValues() {
-    const { config, data, y2Axis, threshold } = this.props;
+    const { config, data } = this.props;
     const values = [];
 
     if (config.axes && Object.keys(config.axes).length) {
       Object.keys(config.axes).forEach((key) => {
         if (key[0] === 'y' && config.axes[key]) {
-          const value = data[data.length - 1][key];
-          const lineThreshold = y2Axis && key === 'y2' ?
-            threshold.y2['break-points'] :
-            threshold.y['break-points'];
+          // const value = data[data.length - 1][key];
+          // const lineThreshold = y2Axis && key === 'y2' ?
+          //   threshold.y2['break-points'] :
+          //   threshold.y['break-points'];
             // const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
           const color = key === 'y' ? '#FF6161' : '#2E3D3D';
           const type = key === 'y' ? 'line' : 'square';
@@ -69,16 +68,16 @@ export default class BarsType extends React.Component {
   }
 
   render() {
-    const { className, threshold, data, y2Axis, config } = this.props;
+    const { className, data, y2Axis, config } = this.props;
     const classNames = classnames(
       'c-bars-line-type',
       { [className]: !!className }
     );
-    const barsThreshold = threshold && threshold.y ? threshold.y['break-points'] : {};
+    // const barsThreshold = threshold && threshold.y ? threshold.y['break-points'] : {};
     // const lineThreshold = y2Axis ? threshold.y2['break-points'] : threshold.y['break-points'];
     // const value = data[data.length - 1].y2;
-    const lineColor = '#FF6161';
     // const lineColor = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
+    const lineColor = '#FF6161';
     const legendValues = this.setLegendValues();
 
     return (
@@ -90,9 +89,7 @@ export default class BarsType extends React.Component {
               axisLine={false}
               tickLine={false}
               tickFormatter={(...t) => {
-                const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
-                const month = new Date(t).getUTCMonth();
-                return months[month];
+                return setFormat(t, config.axes.x || null);
               }}
             />
             <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
