@@ -13,6 +13,7 @@ import classnames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
 // Components
+import { Router } from 'routes';
 import Layout from 'components/layout/layout';
 import ForgotPassword from 'components/modal-contents/forgot-password';
 import Field from 'components/form/field';
@@ -92,7 +93,10 @@ class Login extends React.PureComponent {
     }
 
     if (nextProps.user.auth_token) {
-      window.history.back();
+      this.setState({ message: null });
+      if (this.props.user.reset && !nextProps.user.reset) {
+        Router.pushRoute('login');
+      } else window.history.back();
     }
 
     if (nextProps.user.reset && !nextProps.user.reset.error) {
