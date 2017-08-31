@@ -84,6 +84,13 @@ class Login extends React.PureComponent {
       });
     }
 
+    if (!this.porps.user.reset && nextProps.user.reset && !nextProps.user.reset.error) {
+      this.setState({
+        message: 'The password was succesfully changed',
+        messageType: '-success'
+      });
+    }
+
     if (nextProps.user.auth_token) {
       window.history.back();
     }

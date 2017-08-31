@@ -76,7 +76,7 @@ class ResetPassword extends React.PureComponent {
     }
 
     if (nextProps.user.auth_token) {
-      window.history.back();
+      Router.pushRoute('login');
     }
 
     if (nextProps.user.reset && !nextProps.user.reset.error) {
@@ -84,7 +84,8 @@ class ResetPassword extends React.PureComponent {
         message: 'The password was succesfully changed',
         messageType: '-success'
       });
-      // Router.pushRoute('login');
+
+      Router.pushRoute('login');
     } else if (nextProps.user.reset && nextProps.user.reset.error) {
       this.setState({
         message: 'Invalid old password or link expired',
