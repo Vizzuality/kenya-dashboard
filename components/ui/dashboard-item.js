@@ -136,7 +136,7 @@ export default class DashboardItem extends React.Component {
             <Link route="compare" params={{ indicators: info.indicator_id }}>
               <a className="">
                 <div className="row collapse">
-                  <div className="column small-6">
+                  <div className="column small-12">
                     <div className="item-metadata content-container">
                       {/* Header */}
                       <header className="item-header">
@@ -146,18 +146,18 @@ export default class DashboardItem extends React.Component {
                   </div>
 
                   {/* Global value */}
-                  <div className="column small-6">
+                  {/* <div className="column small-6">
                     <div className="content-container">
                       <p>{info.globalValue || globalValue}</p>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </a>
             </Link>
           </Media>
           <Media device="desktop+">
             <div className="row collapse">
-              <div className="column small-12 medium-4">
+              <div className="column small-12 medium-6">
                 <div className="item-metadata content-container">
                   {/* Header */}
                   <header className="item-header">
@@ -189,7 +189,7 @@ export default class DashboardItem extends React.Component {
               </div>
 
               {/* Indicator type detail - Content */}
-              <div className="column small-12 medium-4">
+              <div className="column small-12 medium-5">
                 <section className="type-detail content-container">
                   <div className="content-container">
                     <Chart
@@ -201,11 +201,11 @@ export default class DashboardItem extends React.Component {
                 </section>
               </div>
 
-              <div className="column small-12 medium-3">
+              {/* <div className="column small-12 medium-3">
                 <div className="content-container">
                   <p>{info.globalValue || globalValue}</p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="column small-12 medium-1">
                 <div className="content-container">
