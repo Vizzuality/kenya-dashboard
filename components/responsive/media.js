@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// Libraries
 import MediaQuery from 'react-responsive';
 
-const BREAKPOINT_MOBILE = 640;
-const BREAKPOINT_TABLET = 1024;
+// Constants
+import { BREAKPOINT_MOBILE, BREAKPOINT_TABLET } from 'constants/general';
+
 
 export default function Media(props) {
   const breakpoints = {

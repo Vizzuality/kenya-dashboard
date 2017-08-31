@@ -53,6 +53,7 @@ import { decode, getValueMatchFromCascadeList } from 'utils/general';
 
 // Components
 import { Router } from 'routes';
+import Media from 'components/responsive/media';
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import Accordion from 'components/ui/accordion';
@@ -275,6 +276,7 @@ class ComparePage extends Page {
   render() {
     const {
       url,
+      compare,
       mapState,
       indicators,
       session,
@@ -285,6 +287,9 @@ class ComparePage extends Page {
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(mapState.areas, layers);
     const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators);
+    const areaMapsList = this.getList(areaMaps);
+    const indicatorsWidgetsList = this.getList(indicatorsWidgets);
+
 
     if (isEmpty(user)) return null;
 
@@ -296,21 +301,28 @@ class ComparePage extends Page {
         session={session}
         logged={user.logged}
       >
-        {user.logged ?
-          <div>
-            <CompareToolbar
-              indicatorsFilterList={indicatorsFilterList}
-              indicatorsList={indicators.list}
-              areas={mapState.areas}
-              modalOpened={modal.opened}
-              url={url}
-              addArea={this.props.addArea}
-              addIndicator={this.props.addIndicator}
-              removeIndicator={this.onRemoveIndicator}
-            />
+        <div>
+          <CompareToolbar
+            indicatorsFilterList={indicatorsFilterList}
+            indicatorsList={indicators.list}
+            areas={mapState.areas}
+            modalOpened={modal.opened}
+            url={url}
+            addArea={this.props.addArea}
+            addIndicator={this.props.addIndicator}
+            removeIndicator={this.onRemoveIndicator}
+          />
+          <Media device="device">
+            {compare.view === 'map' ?
+              <div>{areaMapsList}</div> :
+              <div>{indicatorsWidgetsList}</div>
+            }
+          </Media>
+
+          <Media device="desktop">
             <Accordion
               sections={[
-                { type: 'dynamic', items: this.getList(areaMaps) },
+                { type: 'dynamic', items: areaMapsList },
                 {
                   type: 'static',
                   items: [
@@ -326,15 +338,11 @@ class ComparePage extends Page {
                     />
                   ]
                 },
-                { type: 'dynamic', items: this.getList(indicatorsWidgets) }
+                { type: 'dynamic', items: indicatorsWidgetsList }
               ]}
             />
-          </div> :
-          // Provisional
-          <div className="row collapse" style={{ margin: '30px' }}>
-            <div className="column small-12"><p>Sign in</p></div>
-          </div>
-        }
+          </Media>
+        </div>
       </Layout>
     );
   }
@@ -349,6 +357,7 @@ export default withRedux(
   initStore,
   state => (
     {
+      compare: state.compare,
       indicators: Object.assign(
         {},
         state.indicators.specific,

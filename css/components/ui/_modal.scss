@@ -35,7 +35,7 @@
     transform: translateY(0);
 
 
-    @media #{$mq-medium} {
+    @media #{$mq-small} {
       width: auto;
       min-width: 60%;
       max-width: calc(100% - 50px);
@@ -53,7 +53,7 @@
     box-shadow: 0 7px 15px 0 rgba($color-black, 0.15);
     border: 1px solid $color-border-1;
 
-    @media #{$mq-medium} {
+    @media #{$mq-small} {
       max-height: 95vh; // Be careful with iOS devices
       width: 100%;
     }
@@ -73,7 +73,7 @@
     padding: 0;
     background-color: $color-bg-dark;
 
-    @media #{$mq-medium} {
+    @media #{$mq-small} {
       top: auto;
       bottom: calc(100% - 20px);
       right: -20px;
