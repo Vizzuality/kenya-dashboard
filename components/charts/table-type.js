@@ -12,19 +12,22 @@ import Icon from 'components/ui/icon';
 
 
 export default function TableType(props) {
-  const { threshold, className, axis, data } = props;
+  const { threshold, className, data, config } = props;
   const classNames = classnames(
     'c-table-type',
     { [className]: !!className }
   );
-  const titlesValues = Object.values(axis);
+  const titlesItems = [];
+  Object.keys(config.axes).forEach((key) => {
+    if (key !== 'trend') titlesItems.push({ ...config.axes[key], ...{ key } });
+  });
 
   return (
     <div className={classNames}>
       <table>
         <thead>
           <tr>
-            {titlesValues.map((spec, i) => <th key={i}>{spec.title}</th>)}
+            {titlesItems.map(item => <th key={item.key}>{item.title}</th>)}
           </tr>
         </thead>
         <tbody>
@@ -34,10 +37,16 @@ export default function TableType(props) {
             return (
               <tr key={i}>
                 <td>
-                  {row.x}
+                  <div className="title-container">
+                    <span className="title">{row.x}</span>
+                    {row.x2 && <span className="subtitle">{row.x2}</span>}
+                  </div>
                 </td>
                 <td className={`-${thresholdValue}`}>
-                  {roundNumberWithDecimals(row.y)}
+                  {config.axes.y.format ?
+                    config.axes.y.format.replace('#', roundNumberWithDecimals(row.y)) :
+                    roundNumberWithDecimals(row.y)
+                  }
                   {row.trend === 0 ?
                     <Icon name="icon-minus" className="-smaller -equal" /> :
                     <Icon name={`icon-arrow-${row.trend > 0 ? 'up' : 'down'}`} className={`-smaller ${row.trend > 0 ? '-up' : '-down'}`} />
@@ -55,6 +64,6 @@ export default function TableType(props) {
 TableType.propTypes = {
   className: PropTypes.string,
   data: PropTypes.array,
-  threshold: PropTypes.object,
-  axis: PropTypes.object
+  config: PropTypes.object.isRequired,
+  threshold: PropTypes.object
 };

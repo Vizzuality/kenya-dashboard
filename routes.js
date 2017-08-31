@@ -11,5 +11,6 @@ routes.add('about', '/about', 'about');
 routes.add('agency', '/agency/:id', 'agency');
 routes.add('widget', '/widget/:id', 'widget');
 routes.add('login', '/login', 'login');
+routes.add('reset-password', '/reset-password', 'reset-password');
 
 module.exports = routes;

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 // Components
 import Field from 'components/form/field';
 import Input from 'components/form/input';
+import Message from 'components/ui/message';
 import Spinner from 'components/ui/spinner';
 
 // Constants
@@ -28,7 +29,7 @@ const FORM_ELEMENTS = {
 };
 
 
-export default class ResetPassword extends React.Component {
+export default class ForgotPassword extends React.Component {
   constructor(props) {
     super(props);
 
@@ -37,7 +38,8 @@ export default class ResetPassword extends React.Component {
         email: props.email || ''
       },
       submitting: false,
-      message: ''
+      message: null,
+      messageType: ''
     };
 
     // Bindings
@@ -45,9 +47,19 @@ export default class ResetPassword extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((nextProps.user.reset || (!this.props.user.reset && !nextProps.user.reset)) &&
+    if ((nextProps.user.forgot || (!this.props.user.forgot && !nextProps.user.forgot)) &&
       this.state.submitting) {
       this.setState({ submitting: false });
+    }
+
+    if (nextProps.user.forgot) {
+      let forgot = {};
+
+      if (nextProps.user.forgot.error) {
+        forgot = { message: 'Invalid email', messageType: '-fail' };
+      }
+
+      this.setState(forgot);
     }
   }
 
@@ -77,7 +89,7 @@ export default class ResetPassword extends React.Component {
       if (valid) {
         // Start the submitting
         this.setState({ submitting: true });
-        this.props.resetPassword(form.email);
+        this.props.forgotPassword(form.email);
       }
     }, 0);
   }
@@ -93,6 +105,11 @@ export default class ResetPassword extends React.Component {
           <p>Enter the email address associated with your account,
             and we’ll email you a link to reset your password.</p>
         </header>
+
+        {this.state.message &&
+          <Message message={this.state.message} className="-fail" />
+        }
+
         <section className="form-container">
           <form className="c-form" onSubmit={this.onReset} noValidate>
             {/* EMAIL */}
@@ -129,6 +146,7 @@ export default class ResetPassword extends React.Component {
                 name="commit"
                 disabled={submitting}
                 className="c-button -expanded btn-reset"
+                onClick={this.onReset}
               >
                 Reset Password
               </button>
@@ -140,11 +158,11 @@ export default class ResetPassword extends React.Component {
   }
 }
 
-ResetPassword.propTypes = {
+ForgotPassword.propTypes = {
   className: PropTypes.string,
   user: PropTypes.object,
   email: PropTypes.string,
   // Actions
-  resetPassword: PropTypes.func,
+  forgotPassword: PropTypes.func,
   onBackToLogin: PropTypes.func
 };

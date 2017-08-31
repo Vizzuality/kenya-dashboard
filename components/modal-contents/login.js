@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Components
-import ResetPassword from 'components/modal-contents/reset-password';
+import ForgotPassword from 'components/modal-contents/forgot-password';
 import Field from 'components/form/field';
 import Input from 'components/form/input';
 // import Checkbox from 'components/form/checkbox';
@@ -133,7 +133,7 @@ export default class Login extends React.Component {
     return (
       <div className={classNames}>
         {resetPassword ?
-          <ResetPassword
+          <ForgotPassword
             user={this.props.user}
             resetPassword={this.props.resetPassword}
             email={this.state.form.email}

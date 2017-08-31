@@ -8,12 +8,9 @@
 
   .login-container {
     width: 360px;
-    overflow-y: auto;
   }
 
   .login-header {
-    margin-bottom: 60px;
-
     .title {
       font-size: $font-size-bigger;
       line-height: 29px;
@@ -21,6 +18,8 @@
   }
 
   .form-container {
+    margin-top: 60px;
+
     .c-field {
       width: 100%;
 

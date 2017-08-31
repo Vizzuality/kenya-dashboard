@@ -35,6 +35,18 @@
       text-align: left;
     }
 
+    .title-container {
+      display: flex;
+      flex-flow: column;
+
+      .subtitle {
+        font-size: 10px;
+        line-height: 12px;
+        font-style: italic;
+      }
+
+    }
+
     /* Threshold color */
     &.-success { color: $color-threshold-success; }
     &.-good { color: $color-threshold-good; }
