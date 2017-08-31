@@ -152,8 +152,8 @@ export function resetPassword({ oldPassword, newPassword, token }) {
       url: `${process.env.KENYA_API}/reset-password`,
       type: 'POST',
       body: {
-        password: oldPassword,
-        password_confirmation: newPassword,
+        password: newPassword,
+        password_confirmation: oldPassword,
         token
       },
       headers: [

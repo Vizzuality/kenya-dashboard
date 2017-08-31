@@ -116,7 +116,7 @@ class ResetPassword extends React.PureComponent {
       // Validate all the inputs on the current step
       const valid = FORM_ELEMENTS.isValid(form);
 
-      if (valid && form.newPassword === form.repeatNewPassword) {
+      if (valid && form.newPassword === form.repeatNewPassword && form.newPassword.length >= 6) {
         const { oldPassword, newPassword } = form;
         const { token } = this.props.url.query;
 
@@ -126,6 +126,8 @@ class ResetPassword extends React.PureComponent {
         this.props.resetPassword({ oldPassword, newPassword, token });
       } else if (valid && form.newPassword !== form.repeatNewPassword) {
         this.setState({ message: 'Repeated new password does not match', messageType: '-fail' });
+      } else if (valid && form.newPassword.length < 6) {
+        this.setState({ message: 'New password is too short (minimum is 6 characters)', messageType: '-fail' });
       }
     }, 0);
   }
