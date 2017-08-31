@@ -37,7 +37,10 @@ export default function TableType(props) {
             return (
               <tr key={i}>
                 <td>
-                  {row.x}
+                  <div className="title-container">
+                    <span className="title">{row.x}</span>
+                    {row.x2 && <span className="subtitle">{row.x2}</span>}
+                  </div>
                 </td>
                 <td className={`-${thresholdValue}`}>
                   {config.axes.y.format ?
