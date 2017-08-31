@@ -10,11 +10,13 @@ import modal from 'services/modal';
 
 // Modules
 import { login, logout, resetPassword } from 'modules/user';
+import { setView } from 'modules/compare';
 // Libraries
 import classnames from 'classnames';
 
 // Components
 import { Link } from 'routes';
+import Media from 'components/responsive/media';
 import LoginNav from 'components/ui/login-nav';
 import MainNav from 'components/ui/main-nav';
 import Login from 'components/modal-contents/login';
@@ -94,6 +96,65 @@ class Header extends React.Component {
     modal.toggleModal(true, opts);
   }
 
+  // Device header contents
+  getCustomContentByPageDevice() {
+    const { url, user, device } = this.props;
+
+    if (user.auth_token || device) {
+      switch (url.pathname) {
+        // Different pathnames for the index
+        case '/index': return { title: <h1>Kenya</h1> };
+        case '/': return { title: <h1>Kenya</h1> };
+        case '/dashboard': return {
+          title: <h1>Dashboard</h1>,
+          content: <DashboardHeaderContent url={url} />
+        };
+        case '/compare': return {
+          title: (
+            <Link route="dashboard">
+              <a className="title-link">
+                <Icon name="icon-arrow-left2" className="-normal" /><h1>Go to dashboard</h1>
+              </a>
+            </Link>
+          ),
+          content: (
+            <button className="btn" onClick={this.props.setView}>
+              {this.props.compareView === 'map' ?
+                <Icon name="icon-grid" /> :
+                <Icon name="icon-plus" />
+              }
+            </button>
+          )
+        };
+        case '/about': return { title: <h1>About the Alliance</h1> };
+        case '/agency': return {
+          title: (
+            <Link route="about">
+              <a className="title-link">
+                <Icon name="icon-arrow-left2" className="-normal" /><h1>Go to About the Alliance</h1>
+              </a>
+            </Link>
+          )
+        };
+        default: return {
+          title: <h1><Link route="home"><a>Kenya dashboard</a></Link></h1>
+        };
+      }
+    } else {
+      return {
+        title: <h1><Link route="home"><a>Kenya dashboard</a></Link></h1>,
+        content: (
+          <LoginNav
+            url={url}
+            user={user}
+            logout={this.onLogout}
+            toggleModal={this.onOpenModal}
+          />
+        )
+      };
+    }
+  }
+
   getCustomContentByPage() {
     const { url, user, device } = this.props;
 
@@ -151,6 +212,7 @@ class Header extends React.Component {
       { '-open': this.state.open }
     );
 
+    const customContentByPageDevice = this.getCustomContentByPageDevice();
     const customContentByPage = this.getCustomContentByPage();
 
     return (
@@ -165,12 +227,28 @@ class Header extends React.Component {
                     <Icon name="icon-menu" className="-big" />
                   </button>
                 }
-                {customContentByPage.title}
+                <Media device="desktop">
+                  {customContentByPage.title}
+                </Media>
               </div>
-              {customContentByPage.content &&
-                <div className="header-content">
-                  {customContentByPage.content}
+              <Media device="device">
+                <div className="header-title-content">
+                  {customContentByPageDevice.title}
                 </div>
+              </Media>
+              {customContentByPageDevice.content &&
+                <Media device="device">
+                  <div className="header-content">
+                    {customContentByPageDevice.content}
+                  </div>
+                </Media>
+              }
+              {customContentByPage.content &&
+                <Media device="desktop">
+                  <div className="header-content">
+                    {customContentByPage.content}
+                  </div>
+                </Media>
               }
             </div>
           </div>
@@ -216,10 +294,12 @@ Header.propTypes = {
   user: PropTypes.object.isRequired,
   device: PropTypes.bool,
   modalOpened: PropTypes.bool,
+  compareView: PropTypes.string,
   // Actions
   login: PropTypes.func,
   logout: PropTypes.func,
-  resetPassword: PropTypes.func
+  resetPassword: PropTypes.func,
+  setView: PropTypes.func
 };
 
 Header.defaultProps = {
@@ -230,11 +310,13 @@ Header.defaultProps = {
 export default connect(
   state => ({
     user: state.user,
+    compareView: state.compare.view,
     modalOpened: state.modal.opened
   }),
   dispatch => ({
     login(params) { dispatch(login(params)); },
     logout() { dispatch(logout()); },
-    resetPassword(email) { dispatch(resetPassword(email)); }
+    resetPassword(email) { dispatch(resetPassword(email)); },
+    setView() { dispatch(setView()); }
   })
 )(Header);

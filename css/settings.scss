@@ -104,9 +104,13 @@ $space-1: 8px;
  * Media queries
  */
  // Breakpoints
+$bp-mobile: 640px;
+$bp-tablet: 1024px;
 $bp-medium: 40em;
 
 // Medias
+$mq-medium: 'screen and (min-width: 300px) and (max-width: #{$bp-mobile})';
+$mq-small-medium: 'screen and (min-width: 300px) and (max-width: #{$bp-tablet})';
 $mq-medium: 'screen and (min-width: #{$bp-medium})';
 
 /**

@@ -1,3 +1,5 @@
+const BREAKPOINT_MOBILE = 640;
+const BREAKPOINT_TABLET = 1024;
 
 const HEADER_MENU_LINKS = [
   { label: 'Home', route: 'home' },
@@ -36,6 +38,8 @@ const MONTHS_INITIALS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 
 const MONTHS_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 export {
+  BREAKPOINT_MOBILE,
+  BREAKPOINT_TABLET,
   HEADER_MENU_LINKS,
   SELECT_SEARCH_OPTIONS,
   HEADER_LOGIN_MENU_LINKS,
