@@ -16,6 +16,7 @@ import Layout from 'components/layout/layout';
 import ResetPassword from 'components/modal-contents/reset-password';
 import Field from 'components/form/field';
 import Input from 'components/form/input';
+import Message from 'components/ui/message';
 import Spinner from 'components/ui/spinner';
 
 // Constants
@@ -59,7 +60,8 @@ class Login extends React.PureComponent {
       submitting: false,
       remember: false,
       reset: false,
-      message: ''
+      message: null,
+      messageType: ''
     };
 
     // Bindings
@@ -80,7 +82,11 @@ class Login extends React.PureComponent {
     }
 
     if ((nextProps.user.reset && !nextProps.user.reset.error) && this.state.reset) {
-      this.setState({ reset: false });
+      this.setState({
+        reset: false,
+        message: 'A password reset link has been sent',
+        messageType: '-success'
+      });
     }
   }
 
@@ -150,7 +156,6 @@ class Login extends React.PureComponent {
       [className]: !!className
     });
 
-
     return (
       <Layout
         title="Agency"
@@ -171,6 +176,11 @@ class Login extends React.PureComponent {
               <header className="login-header">
                 <h1 className="title">Sign in to Kenya Dashboard</h1>
               </header>
+
+              {this.state.message &&
+                <Message message={this.state.message} className={this.state.messageType} />
+              }
+
               <section className="form-container">
                 <form className="c-form" onSubmit={this.onSubmit} noValidate>
                   {/* EMAIL */}

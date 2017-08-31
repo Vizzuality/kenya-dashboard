@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 // Components
 import Field from 'components/form/field';
 import Input from 'components/form/input';
+import Message from 'components/ui/message';
 import Spinner from 'components/ui/spinner';
 
 // Constants
@@ -37,7 +38,8 @@ export default class ResetPassword extends React.Component {
         email: props.email || ''
       },
       submitting: false,
-      message: ''
+      message: null,
+      messageType: ''
     };
 
     // Bindings
@@ -48,6 +50,16 @@ export default class ResetPassword extends React.Component {
     if ((nextProps.user.reset || (!this.props.user.reset && !nextProps.user.reset)) &&
       this.state.submitting) {
       this.setState({ submitting: false });
+    }
+
+    if (nextProps.user.reset) {
+      let reset = {};
+
+      if (nextProps.user.reset.error) {
+        reset = { message: 'The email is not correct or the password could not be reset', messageType: '-fail' };
+      }
+
+      this.setState(reset);
     }
   }
 
@@ -93,6 +105,11 @@ export default class ResetPassword extends React.Component {
           <p>Enter the email address associated with your account,
             and we’ll email you a link to reset your password.</p>
         </header>
+
+        {this.state.message &&
+          <Message message={this.state.message} className="-fail" />
+        }
+
         <section className="form-container">
           <form className="c-form" onSubmit={this.onReset} noValidate>
             {/* EMAIL */}
@@ -129,6 +146,7 @@ export default class ResetPassword extends React.Component {
                 name="commit"
                 disabled={submitting}
                 className="c-button -expanded btn-reset"
+                onClick={this.onReset}
               >
                 Reset Password
               </button>
