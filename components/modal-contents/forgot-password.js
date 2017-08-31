@@ -29,7 +29,7 @@ const FORM_ELEMENTS = {
 };
 
 
-export default class ResetPassword extends React.Component {
+export default class ForgotPassword extends React.Component {
   constructor(props) {
     super(props);
 
@@ -47,19 +47,19 @@ export default class ResetPassword extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if ((nextProps.user.reset || (!this.props.user.reset && !nextProps.user.reset)) &&
+    if ((nextProps.user.forgot || (!this.props.user.forgot && !nextProps.user.forgot)) &&
       this.state.submitting) {
       this.setState({ submitting: false });
     }
 
-    if (nextProps.user.reset) {
-      let reset = {};
+    if (nextProps.user.forgot) {
+      let forgot = {};
 
-      if (nextProps.user.reset.error) {
-        reset = { message: 'The email is not correct or the password could not be reset', messageType: '-fail' };
+      if (nextProps.user.forgot.error) {
+        forgot = { message: 'Invalid email', messageType: '-fail' };
       }
 
-      this.setState(reset);
+      this.setState(forgot);
     }
   }
 
@@ -89,7 +89,7 @@ export default class ResetPassword extends React.Component {
       if (valid) {
         // Start the submitting
         this.setState({ submitting: true });
-        this.props.resetPassword(form.email);
+        this.props.forgotPassword(form.email);
       }
     }, 0);
   }
@@ -158,11 +158,11 @@ export default class ResetPassword extends React.Component {
   }
 }
 
-ResetPassword.propTypes = {
+ForgotPassword.propTypes = {
   className: PropTypes.string,
   user: PropTypes.object,
   email: PropTypes.string,
   // Actions
-  resetPassword: PropTypes.func,
+  forgotPassword: PropTypes.func,
   onBackToLogin: PropTypes.func
 };

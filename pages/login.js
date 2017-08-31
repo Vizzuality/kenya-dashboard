@@ -6,14 +6,15 @@ import withRedux from 'next-redux-wrapper';
 import { initStore } from 'store';
 
 // modules
-import { setUser, login, resetPassword } from 'modules/user';
+import { setUser, login, forgotPassword } from 'modules/user';
 
 // Libraries
 import classnames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
 
 // Components
 import Layout from 'components/layout/layout';
-import ResetPassword from 'components/modal-contents/reset-password';
+import ForgotPassword from 'components/modal-contents/forgot-password';
 import Field from 'components/form/field';
 import Input from 'components/form/input';
 import Message from 'components/ui/message';
@@ -59,14 +60,13 @@ class Login extends React.PureComponent {
       },
       submitting: false,
       remember: false,
-      reset: false,
+      forgot: false,
       message: null,
       messageType: ''
     };
 
     // Bindings
     this.onSubmit = this.onSubmit.bind(this);
-    this.onReset = this.onReset.bind(this);
     this.onChangeRemember = this.onChangeRemember.bind(this);
     this.onBackToLogin = this.onBackToLogin.bind(this);
   }
@@ -77,14 +77,29 @@ class Login extends React.PureComponent {
       this.setState({ submitting: false });
     }
 
+    if (isEmpty(nextProps.user.user)) {
+      this.setState({
+        message: 'Invalid email or password',
+        messageType: '-fail'
+      });
+    }
+
     if (nextProps.user.auth_token) {
       window.history.back();
     }
 
-    if ((nextProps.user.reset && !nextProps.user.reset.error) && this.state.reset) {
+    if (nextProps.user.reset && !nextProps.user.reset.error) {
       this.setState({
-        reset: false,
-        message: 'A password reset link has been sent',
+        forgot: false,
+        message: 'Your password was successfully changed',
+        messageType: '-success'
+      });
+    }
+
+    if ((nextProps.user.forgot && !nextProps.user.forgot.error) && this.state.forgot) {
+      this.setState({
+        forgot: false,
+        message: 'A password reset link has been sent to your email',
         messageType: '-success'
       });
     }
@@ -119,38 +134,18 @@ class Login extends React.PureComponent {
     }, 0);
   }
 
-  onReset(e) {
-    const { form } = this.state;
-    e && e.preventDefault();
-
-    // Validate the form
-    FORM_ELEMENTS.validate(form);
-
-    // Set a timeout due to the setState function of react
-    setTimeout(() => {
-      // Validate all the inputs on the current step
-      const valid = FORM_ELEMENTS.isValid({ email: form.email });
-
-      if (valid) {
-        // Start the submitting
-        this.setState({ submitting: true });
-        this.props.resetPassword(form.email);
-      }
-    }, 0);
-  }
-
   onChangeRemember(properties) {
     this.setState({ remember: properties.checked });
   }
 
   onBackToLogin() {
-    this.setState({ reset: false });
+    this.setState({ forgot: false, message: null });
   }
 
   render() {
     const { url, user, className } = this.props;
     if (!user) return null;
-    const { submitting, form, remember, reset } = this.state;
+    const { submitting, form, remember, forgot } = this.state;
     const classNames = classnames({
       'c-login': true,
       [className]: !!className
@@ -164,10 +159,10 @@ class Login extends React.PureComponent {
         className={user ? 'p-dashboard -logged' : 'p-about'}
       >
         <div className={classNames}>
-          {reset ?
-            <ResetPassword
+          {forgot ?
+            <ForgotPassword
               user={this.props.user}
-              resetPassword={this.props.resetPassword}
+              forgotPassword={this.props.forgotPassword}
               email={this.state.form.email}
               onBackToLogin={this.onBackToLogin}
             /> :
@@ -224,7 +219,7 @@ class Login extends React.PureComponent {
                     </div>
                     <button
                       type="button"
-                      onClick={() => this.setState({ reset: true })}
+                      onClick={() => this.setState({ forgot: true })}
                       className="btn-reset-password"
                     >
                       Forgot password?
@@ -258,7 +253,7 @@ Login.propTypes = {
   isServer: PropTypes.bool,
   // Actions
   login: PropTypes.func,
-  resetPassword: PropTypes.func
+  forgotPassword: PropTypes.func
 };
 
 const mapStateToProps = state => ({
@@ -267,7 +262,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   login(user) { dispatch(login(user)); },
-  resetPassword(email) { dispatch(resetPassword(email)); }
+  forgotPassword(email) { dispatch(forgotPassword(email)); }
 });
 
 export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(Login);

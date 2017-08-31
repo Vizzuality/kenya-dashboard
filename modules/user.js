@@ -3,6 +3,7 @@ import { post } from 'utils/request';
 // CONSTANTS
 const SET_USER = 'SET_USER';
 const REMOVE_USER = 'REMOVE_USER';
+const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
 const RESET_PASSWORD = 'RESET_PASSWORD';
 
 // REDUCER
@@ -13,7 +14,9 @@ export default function (state = initialState, action) {
     case SET_USER:
       return Object.assign({}, state, action.payload);
     case REMOVE_USER:
-      return Object.assign({}, state, { logged: false, auth_token: null, reset: null });
+      return Object.assign({}, state, { logged: false, auth_token: null, forgot: null });
+    case FORGOT_PASSWORD:
+      return Object.assign({}, state, { forgot: action.payload });
     case RESET_PASSWORD:
       return Object.assign({}, state, { reset: action.payload });
     default:
@@ -26,7 +29,8 @@ export default function (state = initialState, action) {
 export function setUser(user) {
   return {
     type: SET_USER,
-    payload: Object.assign({}, user, { logged: !!(user && user.auth_token), reset: null })
+    payload: Object.assign({}, user,
+      { logged: !!(user && user.auth_token), forgot: null, reset: null })
   };
 }
 
@@ -46,7 +50,8 @@ export function login({ email, password }) {
         // Dispatch action
         dispatch({
           type: SET_USER,
-          payload: Object.assign({}, response, { logged: !!(response && response.auth_token), reset: null })
+          payload: Object.assign({}, response,
+            { logged: !!(response && response.auth_token), forgot: null, reset: null })
         });
       },
       onError: () => {
@@ -118,12 +123,39 @@ export function logout() {
   // });
 }
 
-export function resetPassword(email) {
+export function forgotPassword(email) {
   return (dispatch) => {
     post({
       url: `${process.env.KENYA_API}/forgot-password`,
       type: 'POST',
       body: { email },
+      headers: [
+        {
+          key: 'Content-Type',
+          value: 'application/json'
+        }
+      ],
+      onSuccess: (data) => {
+        // Dispatch action
+        dispatch({ type: FORGOT_PASSWORD, payload: data });
+      },
+      onError: (err) => {
+        dispatch({ type: FORGOT_PASSWORD, payload: { error: err || true } });
+      }
+    });
+  };
+}
+
+export function resetPassword({ oldPassword, newPassword, token }) {
+  return (dispatch) => {
+    post({
+      url: `${process.env.KENYA_API}/reset-password`,
+      type: 'POST',
+      body: {
+        password: oldPassword,
+        password_confirmation: newPassword,
+        token
+      },
       headers: [
         {
           key: 'Content-Type',
@@ -138,8 +170,5 @@ export function resetPassword(email) {
         dispatch({ type: RESET_PASSWORD, payload: { error: err || true } });
       }
     });
-
-    // Provisional
-    // dispatch({ type: RESET_PASSWORD, payload: { error: 'err' } });
   };
 }
