@@ -116,9 +116,11 @@ function roundNumberWithDecimals(number, decimals = 2) {
   if (number % 1 === 0) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
-  return !Number.isNaN(number) ?
-    Number(number).toFixed(decimals).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') :
-    'NaN';
+  if (!Number.isNaN(number)) {
+    const rounded = Number(number).toFixed(decimals).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return rounded % 1 === 0 ? (+rounded).toFixed(0) : rounded;
+  }
+  return 'NaN';
 }
 
 function setFormat(value, props) {
