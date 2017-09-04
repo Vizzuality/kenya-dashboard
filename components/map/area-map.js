@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import isEqual from 'lodash/isEqual';
 
 // Components
+import Media from 'components/responsive/media';
 import Map from 'components/map/map';
 import MapControls from 'components/map/map-controls';
 import ZoomControl from 'components/ui/zoom-control';
@@ -99,13 +100,15 @@ class AreaMap extends React.Component {
     return (
       <div className={classNames}>
         <MapControls>
-          <ZoomControl
-            zoom={mapState.areas[id].zoom}
-            onZoomChange={(zoom) => {
-              const newArea = { ...mapState.areas[id], zoom };
-              this.props.setSingleMapParams(newArea, url, id);
-            }}
-          />
+          <Media device="desktop+">
+            <ZoomControl
+              zoom={mapState.areas[id].zoom}
+              onZoomChange={(zoom) => {
+                const newArea = { ...mapState.areas[id], zoom };
+                this.props.setSingleMapParams(newArea, url, id);
+              }}
+            />
+          </Media>
           <FitBoundsControl
             fitAreaBounds={this.onFitBounds}
           />

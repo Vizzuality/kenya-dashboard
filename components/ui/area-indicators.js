@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import flatten from 'lodash/flatten';
 
 // Libraries
 import classnames from 'classnames';
+import flatten from 'lodash/flatten';
 
 // Utils
 import { setIndicatorsWidgetsList } from 'utils/indicators';
 
 // Components
-import Icon from 'components/ui/icon';
+import Media from 'components/responsive/media';
 import DashboardList from 'components/ui/dashboard-list';
-import SelectCustom from 'components/ui/select-custom';
+import AreaToolbar from 'components/ui/area-toolbar';
 
 
 export default class AreaIndicators extends React.Component {
@@ -75,31 +75,18 @@ export default class AreaIndicators extends React.Component {
 
     return (
       <article className={classNames}>
-        <header className="area-indicators-header">
-          <div className="location-select-container">
-            {/* Region select */}
-            <SelectCustom
-              label={this.getRegionName()}
-              name="regions"
-              type="slider"
-              list={regions}
-              setValue={this.onSetRegion}
-              selected={[selectedRegion]}
-            />
-          </div>
-          <div className="tools">
-            {numOfAreas > 1 &&
-              <button className="btn btn-toggle" onClick={e => this.props.onToggleAccordionItem(e, id)}>
-                <Icon name="icon-expand" className="" />
-              </button>
-            }
-            {numOfAreas > 1 &&
-              <button className="btn btn-remove" onClick={() => this.onRemoveArea(id)}>
-                <Icon name="icon-cross" className="" />
-              </button>
-            }
-          </div>
-        </header>
+        <Media device="desktop">
+          <AreaToolbar
+            id={id}
+            numOfAreas={numOfAreas}
+            regions={regions}
+            selectedRegion={selectedRegion}
+            onToggleAccordionItem={this.props.onToggleAccordionItem}
+            onSetRegion={this.onSetRegion}
+            onRemoveArea={this.props.onRemoveArea}
+          />
+        </Media>
+
         <section>
           <DashboardList
             groupId={id}

@@ -6,6 +6,7 @@ import classnames from 'classnames';
 
 // Components
 import { SortableContainer, SortableElement, SortableHandle, arrayMove } from 'react-sortable-hoc';
+import Media from 'components/responsive/media';
 import ExpandMap from 'components/ui/expand-map';
 import Icon from 'components/ui/icon';
 import CollapsibleList from 'components/ui/collapsible-list';
@@ -155,13 +156,15 @@ class Legend extends React.Component {
               <Icon name="icon-arrow-up" className="-smaller" />
             </button>
           </h2>
-          <div className="tools">
-            <ExpandMap
-              url={url}
-              expanded={expanded}
-              setMapExpansion={this.props.setMapExpansion}
-            />
-          </div>
+          <Media device="desktop+">
+            <div className="tools">
+              <ExpandMap
+                url={url}
+                expanded={expanded}
+                setMapExpansion={this.props.setMapExpansion}
+              />
+            </div>
+          </Media>
         </header>
         <div className="legend-content">
           <div className="row collapse">

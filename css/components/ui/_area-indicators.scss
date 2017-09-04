@@ -16,6 +16,10 @@
     .tools {
       display: flex;
 
+      > div {
+        display: flex;
+      }
+
       .btn {
         display: flex;
         align-items: center;

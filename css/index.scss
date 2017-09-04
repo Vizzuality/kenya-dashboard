@@ -59,8 +59,11 @@
 @import '../node_modules/react-select/dist/react-select';
 @import '../node_modules/react-toggle-switch/dist/css/switch.min';
 @import '../node_modules/react-bootstrap-daterangepicker/css/daterangepicker';
+@import '../node_modules/slick-carousel/slick/slick.css';
+@import '../node_modules/slick-carousel/slick/slick-theme.css';
 @import 'components/ui/accordion';
 @import 'components/ui/area-indicators';
+@import 'components/ui/area-toolbar';
 @import 'components/ui/button';
 @import 'components/ui/dropdown';
 @import 'components/ui/card-image';
@@ -85,6 +88,7 @@
 @import 'components/ui/select-list';
 @import 'components/ui/select-slider';
 @import 'components/ui/sidebar';
+@import 'components/ui/slider';
 @import 'components/ui/spinner';
 @import 'components/ui/switch';
 @import 'components/ui/title';

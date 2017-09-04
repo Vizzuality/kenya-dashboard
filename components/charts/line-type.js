@@ -19,13 +19,19 @@ import { THRESHOLD_CATEGORY_COLORS } from 'constants/indicators';
 export default class LineType extends React.Component {
   constructor(props) {
     super(props);
+
     this.category = getThreshold(props.data[props.data.length - 1].y, props.threshold.y['break-points']);
+    this.colors = THRESHOLD_CATEGORY_COLORS[this.category];
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.category = getThreshold(nextProps.data[nextProps.data.length - 1].y, nextProps.threshold.y['break-points']);
     this.colors = THRESHOLD_CATEGORY_COLORS[this.category];
   }
 
   getLineRefs() {
     const { data } = this.props;
-    return data.length ? Object.keys(data[0]).filter(key => key[0] === 'y') : [];
+    return data.length ? Object.keys(data[0]).filter(key => key && key[0] === 'y') : [];
   }
 
   setLegendValues() {
@@ -34,10 +40,10 @@ export default class LineType extends React.Component {
 
     if (config['legend-config'] && Object.keys(config['legend-config']).length) {
       Object.keys(config['legend-config']).forEach((key, i) => {
-        if (key[0] === 'y' && config['legend-config'][key]) {
+        if (key && key[0] === 'y' && config['legend-config'][key]) {
           // const value = data[data.length - 1][key];
           // const lineThreshold = threshold.y['break-points'];
-          const color = this.colors[i];
+          const color = this.colors ? this.colors[i] : 'grey';
           values.push({ value: config['legend-config'] ? config['legend-config'][key] : '', type: 'line', id: key, color });
         }
       });
@@ -51,7 +57,7 @@ export default class LineType extends React.Component {
       'c-line-type',
       { [className]: !!className }
     );
-    const yRefs = this.getLineRefs();
+    const yRefs = this.getLineRefs() || [];
     const legendValues = this.setLegendValues();
 
     return (
@@ -97,11 +103,11 @@ export default class LineType extends React.Component {
               // const lineThreshold = y2Axis && key === 'y2' ?
               //   threshold.y2['break-points'] :
               //   threshold.y['break-points'];
-              const color = this.colors[i];
+              const color = this.colors ? this.colors[i] : 'grey';
 
               return (
                 <Line
-                  key={i}
+                  key={key}
                   type="monotone"
                   dataKey={key}
                   stroke={color}

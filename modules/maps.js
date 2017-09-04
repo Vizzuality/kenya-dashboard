@@ -118,12 +118,12 @@ export function setSingleMapParamsUrl(params, url) {
     const urlParams = getState().maps.areas;
     const newAreasParams = Object.assign({}, urlParams,
       {
-      [params.key]: {
-        lat: params.center.lat,
-        lng: params.center.lng,
-        zoom: params.zoom,
-        region: params.region || KENYA_CARTO_ID
-      }
+        [params.key]: {
+          lat: params.center.lat,
+          lng: params.center.lng,
+          zoom: params.zoom,
+          region: params.region || KENYA_CARTO_ID
+        }
       });
     const location = {
       pathname: url.pathname,

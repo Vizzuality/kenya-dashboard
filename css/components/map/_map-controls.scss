@@ -1,4 +1,5 @@
 $button-size: 36px;
+$button-size-mobile: 46px;
 
 .c-map-controls {
   position: absolute;
@@ -21,6 +22,10 @@ $button-size: 36px;
     padding: 0;
     border: 1px solid $color-border-1;
 
+    @media #{$mq-small-medium} {
+      border-top: 0;
+    }
+
     // buttons
     button {
       position: relative;
@@ -32,8 +37,13 @@ $button-size: 36px;
       background-color: $color-bg-dark;
       box-shadow: 0 2px 4px 0 rgba($color-black, .5);
       transition: background-color linear $animation-time;
-
       border-top: 1px solid $color-border-1;
+
+      @media #{$mq-small-medium} {
+        width: $button-size-mobile - 1;
+        height: $button-size-mobile;
+        border-top: 0;
+      }
 
       &:hover {
         background-color: rgba($color-bg-dark, .8);
