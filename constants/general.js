@@ -37,6 +37,15 @@ const THRESHOLD_EXAMPLE = {
 const MONTHS_INITIALS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 const MONTHS_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+const SLIDER_OPTIONS = {
+  dots: false,
+  infinite: false,
+  speed: 500,
+  slidesToShow: 1,
+  slidesToScroll: 1,
+  draggable: false
+};
+
 export {
   BREAKPOINT_MOBILE,
   BREAKPOINT_TABLET,
@@ -46,5 +55,6 @@ export {
   THRESHOLD_COLORS,
   THRESHOLD_EXAMPLE,
   MONTHS_INITIALS,
-  MONTHS_NAMES
+  MONTHS_NAMES,
+  SLIDER_OPTIONS
 };

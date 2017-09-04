@@ -53,6 +53,7 @@ import { decode, getValueMatchFromCascadeList } from 'utils/general';
 
 // Components
 import { Router } from 'routes';
+import Slider from 'react-slick';
 import Media from 'components/responsive/media';
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
@@ -61,10 +62,12 @@ import AreaMap from 'components/map/area-map';
 import AreaIndicators from 'components/ui/area-indicators';
 import Legend from 'components/map/legend';
 import CompareToolbar from 'components/ui/compare-toolbar';
+import AreaToolbar from 'components/ui/area-toolbar';
 
 // Constants
 import { MAP_OPTIONS } from 'constants/map';
 import { KENYA_CARTO_ID } from 'constants/filters';
+import { SLIDER_OPTIONS } from 'constants/general';
 
 
 class ComparePage extends Page {
@@ -80,7 +83,8 @@ class ComparePage extends Page {
     super(props);
 
     this.state = {
-      activeArea: null
+      activeArea: null,
+      areaShown: 'defaultAreaMap'
     };
 
     this.url = props.url;
@@ -90,6 +94,10 @@ class ComparePage extends Page {
     this.onAddArea = this.onAddArea.bind(this);
     this.onRemoveArea = this.onRemoveArea.bind(this);
     this.onRemoveIndicator = this.onRemoveIndicator.bind(this);
+    this.onNextSlider = this.onNextSlider.bind(this);
+    this.onPreviousSlider = this.onPreviousSlider.bind(this);
+    this.onBeforeSlidrsChange = this.onBeforeSlidrsChange.bind(this);
+    this.onSetRegion = this.onSetRegion.bind(this);
   }
 
   componentWillMount() {
@@ -273,6 +281,39 @@ class ComparePage extends Page {
     this.props.removeWidgetsIds(widgetsIds, url);
   }
 
+  /* Slider */
+  onNextSlider() {
+    this.slider.slickNext();
+  }
+
+  onPreviousSlider() {
+    this.slider.slickPrev();
+  }
+
+  onBeforeSlidrsChange(oldId, newId) {
+    const { areas } = this.props.mapState;
+    const area = Object.keys(areas)[newId];
+    area && this.setState({ areaShown: area });
+  }
+
+  onSetRegion(region) {
+    this.props.selectRegion(region, this.state.areaShown, this.props.url);
+  }
+
+  sliderArrowsControl() {
+    const { areas } = this.props.mapState;
+    const numOfAreas = Object.keys(areas).length;
+    const index = Object.keys(areas).indexOf(this.state.areaShown);
+    let control = null;
+    if (index === numOfAreas - 1) {
+      control = 'noNext';
+    } else if (index === 0) {
+      control = 'noPrevious';
+    }
+
+    return control;
+  }
+
   render() {
     const {
       url,
@@ -287,9 +328,9 @@ class ComparePage extends Page {
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(mapState.areas, layers);
     const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators);
+    // Lists
     const areaMapsList = this.getList(areaMaps);
     const indicatorsWidgetsList = this.getList(indicatorsWidgets);
-
 
     if (isEmpty(user)) return null;
 
@@ -312,13 +353,46 @@ class ComparePage extends Page {
             addIndicator={this.props.addIndicator}
             removeIndicator={this.onRemoveIndicator}
           />
+
+          {/* Device components. - Slider */}
           <Media device="device">
-            {compare.view === 'map' ?
-              <div>{areaMapsList}</div> :
-              <div>{indicatorsWidgetsList}</div>
-            }
+            <AreaToolbar
+              id={this.state.areaShown}
+              numOfAreas={Object.keys(mapState.areas).length}
+              regions={this.props.filters.options.regions}
+              selectedRegion={mapState.areas[this.state.areaShown].region && mapState.areas[this.state.areaShown].region !== '' ?
+                mapState.areas[this.state.areaShown].region : KENYA_CARTO_ID}
+              sliderArrowsControl={this.sliderArrowsControl()}
+              onToggleAccordionItem={this.onToggleAccordionItem}
+              onSetRegion={this.onSetRegion}
+              onPreviousSlider={this.onPreviousSlider}
+              onNextSlider={this.onNextSlider}
+            />
+            <Slider
+              ref={c => this.slider = c}
+              {...SLIDER_OPTIONS}
+              beforeChange={this.onBeforeSlidrsChange}
+            >
+              {compare.view === 'map' ?
+                areaMapsList :
+                indicatorsWidgetsList
+              }
+            </Slider>
+            {compare.view === 'map' &&
+            <Legend
+              key="legend"
+              url={url}
+              list={layers}
+              indicatorsLayersActive={indicators.layersActive}
+              setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
+              setIndicatorsLayers={this.props.setIndicatorsLayers}
+              expanded={mapState.expanded}
+              setMapExpansion={this.props.setMapExpansion}
+            />
+          }
           </Media>
 
+          {/* Desktop components. - Accordion */}
           <Media device="desktop">
             <Accordion
               sections={[

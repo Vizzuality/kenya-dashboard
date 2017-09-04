@@ -34,6 +34,10 @@
     line-height: 16px;
     font-weight: $font-weight-light;
 
+    @media #{$mq-small-medium} {
+      padding: 0 20px;
+    }
+
     .title {
       padding: 10px 0;
 

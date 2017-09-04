@@ -9,9 +9,8 @@ import flatten from 'lodash/flatten';
 import { setIndicatorsWidgetsList } from 'utils/indicators';
 
 // Components
-import Icon from 'components/ui/icon';
+import Media from 'components/responsive/media';
 import DashboardList from 'components/ui/dashboard-list';
-import SelectCustom from 'components/ui/select-custom';
 import AreaToolbar from 'components/ui/area-toolbar';
 
 
@@ -76,15 +75,18 @@ export default class AreaIndicators extends React.Component {
 
     return (
       <article className={classNames}>
-        <AreaToolbar
-          id={id}
-          numOfAreas={numOfAreas}
-          regions={regions}
-          selectedRegion={selectedRegion}
-          onToggleAccordionItem={this.props.onToggleAccordionItem}
-          onSetRegion={this.onSetRegion}
-          onRemoveArea={this.props.onRemoveArea}
-        />
+        <Media device="desktop">
+          <AreaToolbar
+            id={id}
+            numOfAreas={numOfAreas}
+            regions={regions}
+            selectedRegion={selectedRegion}
+            onToggleAccordionItem={this.props.onToggleAccordionItem}
+            onSetRegion={this.onSetRegion}
+            onRemoveArea={this.props.onRemoveArea}
+          />
+        </Media>
+
         <section>
           <DashboardList
             groupId={id}

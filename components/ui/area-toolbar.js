@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import flatten from 'lodash/flatten';
 
 // Components
+import Media from 'components/responsive/media';
 import Icon from 'components/ui/icon';
 import SelectCustom from 'components/ui/select-custom';
 
@@ -54,12 +55,23 @@ export default class AreaToolbar extends React.Component {
       className,
       numOfAreas,
       regions,
-      selectedRegion
+      selectedRegion,
+      sliderArrowsControl
     } = this.props;
 
     const classNames = classnames(
       'c-area-toolbar area-indicators-header',
       { [className]: !!className }
+    );
+
+    const btnPreviousClasses = classnames(
+      'btn btn-prev',
+      { '-no-more': sliderArrowsControl === 'noPrevious' }
+    );
+
+    const btnNextClasses = classnames(
+      'btn btn-next',
+      { '-no-more': sliderArrowsControl === 'noNext' }
     );
 
     return (
@@ -77,15 +89,28 @@ export default class AreaToolbar extends React.Component {
         </div>
         <div className="tools">
           {numOfAreas > 1 &&
-            <button className="btn btn-toggle" onClick={this.onToggleAccordionItem}>
-              <Icon name="icon-expand" className="" />
-            </button>
+            <Media device="device">
+              <button className={btnPreviousClasses} onClick={this.props.onPreviousSlider}>
+                <Icon name="icon-arrow-left2" className="" />
+              </button>
+              <button className={btnNextClasses} onClick={this.props.onNextSlider}>
+                <Icon name="icon-arrow-right2" className="" />
+              </button>
+            </Media>
           }
-          {numOfAreas > 1 &&
-            <button className="btn btn-remove" onClick={this.onRemoveArea}>
-              <Icon name="icon-cross" className="" />
-            </button>
-          }
+
+          <Media device="desktop">
+            {numOfAreas > 1 &&
+              <button className="btn btn-toggle" onClick={this.onToggleAccordionItem}>
+                <Icon name="icon-expand" className="" />
+              </button>
+            }
+            {numOfAreas > 1 &&
+              <button className="btn btn-remove" onClick={this.onRemoveArea}>
+                <Icon name="icon-cross" className="" />
+              </button>
+            }
+          </Media>
         </div>
       </div>
     );
@@ -96,10 +121,13 @@ AreaToolbar.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
   numOfAreas: PropTypes.number,
+  sliderArrowsControl: PropTypes.string,
   regions: PropTypes.array,
   selectedRegion: PropTypes.any,
   // Actions
   onToggleAccordionItem: PropTypes.func,
   onSetRegion: PropTypes.func,
+  onPreviousSlider: PropTypes.func,
+  onNextSlider: PropTypes.func,
   onRemoveArea: PropTypes.func
 };

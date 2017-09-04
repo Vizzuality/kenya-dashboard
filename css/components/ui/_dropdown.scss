@@ -3,6 +3,7 @@
   padding: 10px;
   background-color: $color-white;
   color: $color-text-2;
+  z-index: 1000;
 
   &.-arrow-top {
     &:before {
