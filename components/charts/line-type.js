@@ -34,7 +34,7 @@ export default class LineType extends React.Component {
 
     if (config['legend-config'] && Object.keys(config['legend-config']).length) {
       Object.keys(config['legend-config']).forEach((key, i) => {
-        if (key[0] === 'y' && config['legend-config'][key]) {
+        if (key && key[0] === 'y' && config['legend-config'][key]) {
           // const value = data[data.length - 1][key];
           // const lineThreshold = threshold.y['break-points'];
           const color = this.colors[i];
