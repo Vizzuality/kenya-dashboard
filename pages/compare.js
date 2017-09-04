@@ -321,8 +321,8 @@ class ComparePage extends Page {
       mapState,
       indicators,
       session,
-      indicatorsFilterList,
-      modal,
+      // indicatorsFilterList,
+      // modal,
       user
     } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
@@ -344,14 +344,14 @@ class ComparePage extends Page {
       >
         <div>
           <CompareToolbar
-            indicatorsFilterList={indicatorsFilterList}
-            indicatorsList={indicators.list}
-            areas={mapState.areas}
-            modalOpened={modal.opened}
+            // indicatorsFilterList={indicatorsFilterList}
+            // indicatorsList={indicators.list}
+            // areas={mapState.areas}
+            // modalOpened={modal.opened}
             url={url}
-            addArea={this.props.addArea}
-            addIndicator={this.props.addIndicator}
-            removeIndicator={this.onRemoveIndicator}
+            // addArea={this.props.addArea}
+            // addIndicator={this.props.addIndicator}
+            // removeIndicator={this.onRemoveIndicator}
           />
 
           {/* Device components. - Slider */}
