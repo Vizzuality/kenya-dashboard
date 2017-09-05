@@ -47,6 +47,7 @@
     "prop-types": "15.5.7",
     "puppeteer": "^0.10.1",
     "raw-loader": "0.5.1",
+    "rc-tooltip": "^3.4.8",
     "react": "15.6.1",
     "react-bootstrap-daterangepicker": "3.4.0",
     "react-dom": "15.6.1",

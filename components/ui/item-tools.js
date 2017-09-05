@@ -18,6 +18,7 @@ import { Link } from 'routes';
 import IndicatorInfo from 'components/modal-contents/indicator-info';
 import Icon from 'components/ui/icon';
 import PickDate from 'components/ui/pickdate';
+import Tooltip from 'rc-tooltip';
 
 
 class ItemTools extends React.Component {
@@ -68,18 +69,54 @@ class ItemTools extends React.Component {
           </div>
         }
         <div className="other-tools">
-          <button className="btn" onClick={this.onToggleModal}>
-            <Icon name="icon-info" className="-smaller" />
-          </button>
-          <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
-            <a className="btn">
-              <Icon name="icon-print" className="-smaller" />
-            </a>
-          </Link>
-          {remove &&
-            <button className="btn" onClick={this.onRemoveItem}>
-              <Icon name="icon-remove" className="-smaller" />
+          {/* Info */}
+          <Tooltip
+            placement="top"
+            mouseEnterDelay={0}
+            mouseLeaveDelay={0}
+            trigger="hover"
+            overlayClassName="c-tooltip"
+            overlay={<div>Info</div>}
+            destroyTooltipOnHide
+          >
+            <button className="btn" onClick={this.onToggleModal}>
+              <Icon name="icon-info" className="-smaller" />
             </button>
+          </Tooltip>
+
+          {/* Print */}
+          <Tooltip
+            placement="top"
+            mouseEnterDelay={0}
+            mouseLeaveDelay={0}
+            trigger="hover"
+            overlayClassName="c-tooltip"
+            overlay={<div>Print</div>}
+            destroyTooltipOnHide
+          >
+            <button className="btn">
+              <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
+                <a>
+                  <Icon name="icon-print" className="-smaller" />
+                </a>
+              </Link>
+            </button>
+          </Tooltip>
+
+          {remove &&
+            <Tooltip
+              placement="top"
+              mouseEnterDelay={0}
+              mouseLeaveDelay={0}
+              trigger="hover"
+              overlayClassName="c-tooltip"
+              overlay={<div>Remove</div>}
+              destroyTooltipOnHide
+            >
+              <button className="btn" onClick={this.onRemoveItem}>
+                <Icon name="icon-remove" className="-smaller" />
+              </button>
+            </Tooltip>
           }
         </div>
       </div>

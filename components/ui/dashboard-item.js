@@ -117,7 +117,7 @@ export default class DashboardItem extends React.Component {
           {/* Footer */}
           <footer className="item-footer">
             <div className="info">
-              <TopicIcon topic={info.topic ? info.topic.name : ''} tooltip={info.topic && !!info.topic.name} />
+              <TopicIcon topic={info.topic ? info.topic.name : ''} />
               <span className="update">Last update: {this.state.lastDate}</span>
             </div>
             {!remove &&

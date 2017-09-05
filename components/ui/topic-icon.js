@@ -7,12 +7,13 @@ import lowerCase from 'lodash/lowerCase';
 
 // Components
 import Icon from 'components/ui/icon';
+import Tooltip from 'rc-tooltip';
 
 // Constants
 import { TOPICS_ICONS_SRC } from 'constants/filters';
 
 
-export default function TopicIcon({ topic, className, tooltip }) {
+export default function TopicIcon({ topic, className }) {
   const classNames = classnames(
     'c-topic-icon',
     { [className]: !!className }
@@ -22,16 +23,26 @@ export default function TopicIcon({ topic, className, tooltip }) {
 
   return (
     <div className={classNames}>
-      <span className="topic">
-        <Icon name={`icon-${TOPICS_ICONS_SRC[typeClass]}`} clasName="" />
-      </span>
-      {tooltip && <div className="c-tooltip">{topic}</div>}
+      {/* Info */}
+      <Tooltip
+        placement="topLeft"
+        trigger="hover"
+        overlayClassName="c-tooltip"
+        overlay={<div>{topic}</div>}
+        align={{
+          offset: [0, -6]
+        }}
+        destroyTooltipOnHide
+      >
+        <span className="topic">
+          <Icon name={`icon-${TOPICS_ICONS_SRC[typeClass]}`} className="-normal" />
+        </span>
+      </Tooltip>
     </div>
   );
 }
 
 TopicIcon.propTypes = {
   className: PropTypes.string,
-  topic: PropTypes.string,
-  tooltip: PropTypes.bool
+  topic: PropTypes.string
 };
