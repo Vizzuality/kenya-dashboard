@@ -18,7 +18,7 @@ import { Link } from 'routes';
 import IndicatorInfo from 'components/modal-contents/indicator-info';
 import Icon from 'components/ui/icon';
 import PickDate from 'components/ui/pickdate';
-import Tooltip from 'rc-tooltip';
+import Tooltip from 'react-tooltip';
 
 
 class ItemTools extends React.Component {
@@ -69,53 +69,58 @@ class ItemTools extends React.Component {
           </div>
         }
         <div className="other-tools">
+          <button data-tip data-for="tooltip-btn-info" className="btn" onClick={this.onToggleModal}>
+            <Icon name="icon-info" className="-smaller" />
+          </button>
           {/* Info */}
           <Tooltip
-            placement="top"
-            mouseEnterDelay={0}
-            mouseLeaveDelay={0}
-            trigger="hover"
-            overlayClassName="c-tooltip"
-            overlay={<div>Info</div>}
-            destroyTooltipOnHide
+            className="c-tooltip"
+            id="tooltip-btn-info"
+            place="top"
+            effect="solid"
+            event="mouseenter"
+            eventOff="mouseleave"
           >
-            <button className="btn" onClick={this.onToggleModal}>
-              <Icon name="icon-info" className="-smaller" />
-            </button>
+            <div>Info</div>
           </Tooltip>
 
           {/* Print */}
+          <button data-tip data-for="tooltip-btn-print" className="btn">
+            <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
+              <a>
+                <Icon name="icon-print" className="-smaller" />
+              </a>
+            </Link>
+          </button>
+
+          {/* Info */}
           <Tooltip
-            placement="top"
-            mouseEnterDelay={0}
-            mouseLeaveDelay={0}
-            trigger="hover"
-            overlayClassName="c-tooltip"
-            overlay={<div>Print</div>}
-            destroyTooltipOnHide
+            className="c-tooltip"
+            id="tooltip-btn-print"
+            place="top"
+            effect="solid"
+            event="mouseenter"
+            eventOff="mouseleave"
           >
-            <button className="btn">
-              <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
-                <a>
-                  <Icon name="icon-print" className="-smaller" />
-                </a>
-              </Link>
-            </button>
+            <div>Print</div>
           </Tooltip>
 
           {remove &&
+            <button data-tip data-for="tooltip-btn-remove" className="btn" onClick={this.onRemoveItem}>
+              <Icon name="icon-remove" className="-smaller" />
+            </button>
+          }
+
+          {remove &&
             <Tooltip
-              placement="top"
-              mouseEnterDelay={0}
-              mouseLeaveDelay={0}
-              trigger="hover"
-              overlayClassName="c-tooltip"
-              overlay={<div>Remove</div>}
-              destroyTooltipOnHide
+              className="c-tooltip"
+              id="tooltip-btn-remove"
+              place="top"
+              effect="solid"
+              event="mouseenter"
+              eventOff="mouseleave"
             >
-              <button className="btn" onClick={this.onRemoveItem}>
-                <Icon name="icon-remove" className="-smaller" />
-              </button>
+              <div>Remove</div>
             </Tooltip>
           }
         </div>

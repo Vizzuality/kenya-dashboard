@@ -7,7 +7,7 @@ import lowerCase from 'lodash/lowerCase';
 
 // Components
 import Icon from 'components/ui/icon';
-import Tooltip from 'rc-tooltip';
+import Tooltip from 'react-tooltip';
 
 // Constants
 import { TOPICS_ICONS_SRC } from 'constants/filters';
@@ -23,20 +23,20 @@ export default function TopicIcon({ topic, className }) {
 
   return (
     <div className={classNames}>
+      <span data-tip data-for="tooltip-topic" className="topic">
+        <Icon name={`icon-${TOPICS_ICONS_SRC[typeClass]}`} className="-normal" />
+      </span>
+
       {/* Info */}
       <Tooltip
-        placement="topLeft"
-        trigger="hover"
-        overlayClassName="c-tooltip"
-        overlay={<div>{topic}</div>}
-        align={{
-          offset: [0, -6]
-        }}
-        destroyTooltipOnHide
+        className="c-tooltip"
+        id="tooltip-topic"
+        place="top"
+        effect="solid"
+        event="mouseenter"
+        eventOff="mouseleave"
       >
-        <span className="topic">
-          <Icon name={`icon-${TOPICS_ICONS_SRC[typeClass]}`} className="-normal" />
-        </span>
+        {topic}
       </Tooltip>
     </div>
   );
