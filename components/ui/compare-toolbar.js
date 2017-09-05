@@ -67,6 +67,7 @@ class CompareToolbar extends React.Component {
           areas: nextProps.areas,
           url: nextProps.url,
           addAreaWithRegion: nextProps.addAreaWithRegion,
+          removeArea: nextProps.removeArea,
           selectRegion: nextProps.selectRegion,
           closeModal: modal.toggleModal
         }
@@ -107,6 +108,7 @@ class CompareToolbar extends React.Component {
         areas,
         url,
         addAreaWithRegion: this.props.addAreaWithRegion,
+        removeArea: this.props.removeArea,
         selectRegion: this.props.selectRegion,
         closeModal: modal.toggleModal
       }
@@ -174,6 +176,7 @@ CompareToolbar.propTypes = {
   removeIndicator: PropTypes.func,
   addArea: PropTypes.func,
   addAreaWithRegion: PropTypes.func,
+  removeArea: PropTypes.func,
   selectRegion: PropTypes.func
 };
 

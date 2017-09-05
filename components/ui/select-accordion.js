@@ -50,7 +50,7 @@ export default class SelectAccordion extends React.Component {
   }
 
   render() {
-    const { className, list, selected, active, label, arrow } = this.props;
+    const { className, list, selected, active, label, addNew, id, remove } = this.props;
     const { openList, openItem } = this.state;
     const classNames = classnames(
       'c-select-accordion',
@@ -68,12 +68,14 @@ export default class SelectAccordion extends React.Component {
         <header className="accordion-header">
           <button type="button" className="title-container" onClick={this.onToggleItem}>
             <h1 className="title">{label}</h1>
-            {arrow && arrowIcon}
+            {!addNew && arrowIcon}
           </button>
           <div className="accordion-tools">
-            <button>
-              <Icon name="icon-remove" className="-small" />
-            </button>
+            {remove &&
+              <button onClick={() => this.props.onRemove(id)}>
+                <Icon name="icon-remove" className="-small" />
+              </button>
+            }
           </div>
         </header>
         <div className="accordion-content-container">
@@ -111,12 +113,15 @@ SelectAccordion.propTypes = {
   list: PropTypes.array,
   active: PropTypes.bool,
   selected: PropTypes.array,
-  arrow: PropTypes.bool,
+  addNew: PropTypes.bool,
+  remove: PropTypes.bool,
   // Actions
   toggleItem: PropTypes.func,
-  setValue: PropTypes.func
+  setValue: PropTypes.func,
+  onRemove: PropTypes.func
 };
 
 SelectAccordion.defaultProps = {
-  arrow: true
+  addNew: false,
+  remove: true
 };

@@ -83,7 +83,9 @@ class ComparePage extends Page {
     super(props);
 
     this.state = {
+      // Accordion expanded area - desktop
       activeArea: null,
+      // Slider active area - mobile
       areaShown: 'defaultAreaMap'
     };
 
@@ -140,8 +142,14 @@ class ComparePage extends Page {
   }
 
   componentWillReceiveProps(nextProps) {
+    const newAreasIds = Object.keys(nextProps.mapState.areas);
+
     if (!isEqual(this.props.url.query, nextProps.url.query)) {
       this.url = nextProps.url;
+    }
+
+    if (!isEqual(Object.keys(this.props.mapState.areas), newAreasIds)) {
+      if (!newAreasIds.includes(this.state.areaShown)) this.setState({ areaShown: newAreasIds[0] });
     }
 
     if (!isEqual(this.props.indicators.list, nextProps.indicators.list)) {
@@ -364,7 +372,7 @@ class ComparePage extends Page {
               selectedRegion={mapState.areas[this.state.areaShown].region && mapState.areas[this.state.areaShown].region !== '' ?
                 mapState.areas[this.state.areaShown].region : KENYA_CARTO_ID}
               sliderArrowsControl={this.sliderArrowsControl()}
-              onToggleAccordionItem={this.onToggleAccordionItem}
+              // onToggleAccordionItem={this.onToggleAccordionItem}
               onSetRegion={this.onSetRegion}
               onPreviousSlider={this.onPreviousSlider}
               onNextSlider={this.onNextSlider}

@@ -25,6 +25,7 @@ export default class AddArea extends React.Component {
     // Bindings
     this.onSetAreaValue = this.onSetAreaValue.bind(this);
     this.onSetNewAreaValue = this.onSetNewAreaValue.bind(this);
+    this.onRemoveArea = this.onRemoveArea.bind(this);
     this.onToggleArea = this.onToggleArea.bind(this);
   }
 
@@ -43,6 +44,10 @@ export default class AddArea extends React.Component {
     this.props.addAreaWithRegion(value, id, this.props.url);
   }
 
+  onRemoveArea(id) {
+    Object.keys(this.props.areas).length > 1 && this.props.removeArea(id, this.props.url);
+  }
+
   onToggleArea(id) {
     const { active } = this.state;
     this.setState({ active: active === id ? null : id });
@@ -59,7 +64,7 @@ export default class AddArea extends React.Component {
     return (
       <div className={classNames}>
         <header className="list-header">
-          <h1 className="title">Locations selected</h1>
+          <h1 className="title">Locations selected <span className="">{Object.keys(areas).length}</span></h1>
         </header>
         <section className="list-content">
           {/* Region select */}
@@ -72,8 +77,10 @@ export default class AddArea extends React.Component {
               name="regions"
               type="accordion"
               list={regions}
+              remove={Object.keys(areas).length > 1}
               selected={[areas[key].region] || ['779']}
               setValue={this.onSetAreaValue}
+              onRemove={this.onRemoveArea}
               toggleItem={this.onToggleArea}
             />
           ))}
@@ -83,7 +90,8 @@ export default class AddArea extends React.Component {
               active={active === this.newAreaId}
               id={this.newAreaId}
               label={<span>Add Location <Icon name="icon-plus" className="-small" /></span>}
-              arrow={false}
+              addNew
+              remove={false}
               name="regions"
               type="accordion"
               list={regions}
@@ -94,7 +102,7 @@ export default class AddArea extends React.Component {
           }
           <footer className="actions-container">
             <button className="c-button btn-add-indicator" onClick={() => this.props.closeModal(false)}>
-              Add Location
+              Apply
             </button>
           </footer>
         </section>
@@ -111,5 +119,6 @@ AddArea.propTypes = {
   // Actions
   selectRegion: PropTypes.func,
   addAreaWithRegion: PropTypes.func,
+  removeArea: PropTypes.func,
   closeModal: PropTypes.func
 };
