@@ -74,18 +74,27 @@ export default class AreaToolbar extends React.Component {
       { '-no-more': sliderArrowsControl === 'noNext' }
     );
 
+    const regionName = this.getRegionName();
+
     return (
       <div className={classNames}>
         <div className="location-select-container">
-          {/* Region select */}
-          <SelectCustom
-            label={this.getRegionName()}
-            name="regions"
-            type="slider"
-            list={regions}
-            setValue={this.onSetRegion}
-            selected={[selectedRegion]}
-          />
+          {/* TODO: Open add location modal */}
+          <Media device="device">
+            <h1>{regionName}</h1>
+          </Media>
+
+          <Media device="desktop">
+            {/* Region select */}
+            <SelectCustom
+              label={regionName}
+              name="regions"
+              type="slider"
+              list={regions}
+              setValue={this.onSetRegion}
+              selected={[selectedRegion]}
+            />
+          </Media>
         </div>
         <div className="tools">
           {numOfAreas > 1 &&

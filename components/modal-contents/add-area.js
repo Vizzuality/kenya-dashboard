@@ -5,24 +5,33 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Components
-import CollapsibleList from 'components/ui/collapsible-list';
+import SelectAccordion from 'components/ui/select-accordion';
 
 export default class AddArea extends React.Component {
   constructor(props) {
     super(props);
 
-    this.onRemoveIndicator = this.onRemoveIndicator.bind(this);
+    this.state = {
+      active: null
+    };
+
+    // Bindings
+    this.onSetAreaValue = this.onSetAreaValue.bind(this);
+    this.onToggleArea = this.onToggleArea.bind(this);
   }
 
-  onRemoveIndicator(id) {
-    const url = Object.assign({}, this.props.url);
-    const indicators = url.query.indicators.split(',').filter(indId => indId !== id);
-    url.query.indicators = indicators.join(',');
-    this.props.removeIndicator(id, url);
+  onSetAreaValue(value, id) {
+    this.props.selectRegion(value, id, this.props.url);
+  }
+
+  onToggleArea(id) {
+    const { active } = this.state;
+    this.setState({ active: active === id ? null : id });
   }
 
   render() {
-    const { className, indicators, activeIndicators } = this.props;
+    const { active } = this.state;
+    const { className, regions, areas } = this.props;
     const classNames = classnames(
       'c-indicators-list',
       { [className]: !!className }
@@ -34,21 +43,21 @@ export default class AddArea extends React.Component {
           <h1 className="title">Locations selected</h1>
         </header>
         <section className="list-content">
-          {/* <div className="groups-container">
-            {Object.keys(indicators.list).map((key, i) => (
-              <CollapsibleList
-                key={i}
-                className="topic-group"
-                title={key}
-                list={indicators.list[key]}
-                activeItems={activeIndicators}
-                addItem={this.props.addIndicator}
-                removeItem={this.onRemoveIndicator}
-                url={this.props.url}
-                collapse={false}
-              />
-            ))}
-          </div> */}
+          {/* Region select */}
+          {Object.keys(areas).map(key => (
+            <SelectAccordion
+              key={key}
+              active={active === key}
+              id={key}
+              label="Location"
+              name="regions"
+              type="accordion"
+              list={regions}
+              selected={[areas[key].region] || ['779']}
+              setValue={this.onSetAreaValue}
+              toggleItem={this.onToggleArea}
+            />
+          ))}
           <footer className="actions-container">
             <button className="c-button btn-add-indicator" onClick={() => this.props.closeModal(false)}>
               Add Location
@@ -61,12 +70,11 @@ export default class AddArea extends React.Component {
 }
 
 AddArea.propTypes = {
-  indicators: PropTypes.object,
-  activeIndicators: PropTypes.array,
+  regions: PropTypes.array,
+  areas: PropTypes.object,
   className: PropTypes.string,
   url: PropTypes.object,
   // Actions
-  addIndicator: PropTypes.func,
-  removeIndicator: PropTypes.func,
+  selectRegion: PropTypes.func,
   closeModal: PropTypes.func
 };

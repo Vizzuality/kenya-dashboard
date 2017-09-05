@@ -20,6 +20,14 @@
     }
   }
 
+  &.-static {
+    background-color: transparent;
+    color: $color-text-1;
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
   .search-container {
     display: flex;
     align-items: center;

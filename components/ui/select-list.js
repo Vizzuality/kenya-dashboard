@@ -76,6 +76,7 @@ export default class SelectList extends React.Component {
 
   render() {
     const { className, type, search, searchPlaceholder, selected } = this.props;
+    const { filteredList } = this.state;
     const classNames = classnames(
       'c-select-list',
       { [className]: !!className }
@@ -84,7 +85,7 @@ export default class SelectList extends React.Component {
     return (
       <div className={classNames}>
         {/* Search */}
-        {search &&
+        {search && filteredList && filteredList.length > 5 &&
           <div className="search-container">
             <input className="search-box" type="text" onKeyUp={this.onSearch} placeholder={searchPlaceholder} />
             <Icon name="icon-search" className="" />
@@ -93,7 +94,7 @@ export default class SelectList extends React.Component {
 
         {/* List */}
         <ul className="list">
-          {this.state.filteredList.map((l, i) => {
+          {filteredList.map((l, i) => {
             const isSelected = selected && selected.includes(`${l.id}` || l.id);
             const itemClassNames = classnames(
               'item',

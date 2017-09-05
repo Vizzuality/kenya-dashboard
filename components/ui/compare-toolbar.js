@@ -60,13 +60,12 @@ class CompareToolbar extends React.Component {
     if (modalOpened && nextProps.modalOpened && this.state.modalContent === 'AddArea' &&
       !isEqual(this.props.url.query, nextProps.url.query)) {
       const opts = {
-        children: IndicatorsList,
+        children: AddArea,
         childrenProps: {
-          // indicators: indicatorsFilterList,
-          // activeIndicators: nextProps.indicatorsList.map(ind => ind.id),
-          // url: nextProps.url,
-          // addIndicator: this.props.addIndicator,
-          // removeIndicator: this.props.removeIndicator,
+          regions: nextProps.regions,
+          areas: nextProps.areas,
+          url: nextProps.url,
+          selectRegion: nextProps.selectRegion,
           closeModal: modal.toggleModal
         }
       };
@@ -98,18 +97,19 @@ class CompareToolbar extends React.Component {
   }
 
   onOpenAddAreaModal() {
-    // const { } = this.props;
+    const { regions, areas, url } = this.props;
     const opts = {
       children: AddArea,
       childrenProps: {
-        // indicators: indicatorsFilterList,
-        // activeIndicators: indicatorsList.map(ind => ind.id),
-        // url,
-        // addIndicator: this.props.addIndicator,
-        // removeIndicator: this.props.removeIndicator,
+        regions,
+        areas,
+        url,
+        selectRegion: this.props.selectRegion,
         closeModal: modal.toggleModal
       }
     };
+
+    this.setState({ modalContent: 'AddArea' });
     modal.toggleModal(true, opts);
   }
 
@@ -126,6 +126,8 @@ class CompareToolbar extends React.Component {
         closeModal: modal.toggleModal
       }
     };
+
+    this.setState({ modalContent: 'IndicatorsList' });
     modal.toggleModal(true, opts);
   }
 
@@ -141,13 +143,14 @@ class CompareToolbar extends React.Component {
       'c-button btn-add-area',
       { '-disabled': Object.keys(areas).length === 3 }
     );
+
     return (
       <div className={classNames}>
         <button className="c-button btn-add-indicator" onClick={this.onOpenAddIndicatorModal}>Add Indicator</button>
-        <Media device="mobile">
-          <button className={addAreaClass} onClick={this.onOpenAddAreaModal}>Add Location</button>
+        <Media device="device">
+          <button className="c-button btn-add-area" onClick={this.onOpenAddAreaModal}>Add Location</button>
         </Media>
-        <Media device="desktop+">
+        <Media device="desktop">
           <button className={addAreaClass} onClick={this.onAddArea}>Add Location</button>
         </Media>
       </div>
@@ -160,12 +163,14 @@ CompareToolbar.propTypes = {
   indicatorsFilterList: PropTypes.object,
   indicatorsList: PropTypes.array,
   areas: PropTypes.object,
+  regions: PropTypes.array,
   url: PropTypes.object,
   modalOpened: PropTypes.bool,
   // Actions
   addArea: PropTypes.func,
   addIndicator: PropTypes.func,
-  removeIndicator: PropTypes.func
+  removeIndicator: PropTypes.func,
+  selectRegion: PropTypes.func
 };
 
 export default connect(
@@ -183,8 +188,8 @@ export default connect(
       dispatch(addArea());
       dispatch(setAreasParamsUrl(url));
     },
-    selectRegion(region, areas, url) {
-      dispatch(selectRegion(region, areas));
+    selectRegion(region, area, url) {
+      dispatch(selectRegion(region, area));
       dispatch(setAreasParamsUrl(url));
     },
     removeArea(id, url) {

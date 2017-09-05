@@ -296,8 +296,9 @@ class ComparePage extends Page {
     area && this.setState({ areaShown: area });
   }
 
-  onSetRegion(region) {
-    this.props.selectRegion(region, this.state.areaShown, this.props.url);
+  onSetRegion(region, area) {
+    // this.props.selectRegion(region, this.state.areaShown, this.props.url);
+    this.props.selectRegion(region, area, this.props.url);
   }
 
   sliderArrowsControl() {
