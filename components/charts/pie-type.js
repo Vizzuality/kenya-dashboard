@@ -85,6 +85,10 @@ export default class PieType extends React.Component {
   }
 }
 
+PieType.defaultProps = {
+  data: []
+};
+
 PieType.propTypes = {
   className: PropTypes.string,
   threshold: PropTypes.object,
