@@ -1,3 +1,25 @@
-
 .c-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px;
+  background: $color-dark;
+
+  .nav-list {
+    display: flex;
+
+    > li {
+      margin: 0 0 0 30px;
+
+      &:first-child {
+        margin: 0;
+      }
+
+      > a {
+        padding: 0 10px;
+        text-transform: uppercase;
+      }
+    }
+
+  }
 }
