@@ -43,6 +43,6 @@ export default function ExtremesType(props) {
 ExtremesType.propTypes = {
   className: PropTypes.string,
   data: PropTypes.array,
-  config: PropTypes.config,
+  config: PropTypes.object,
   threshold: PropTypes.object
 };

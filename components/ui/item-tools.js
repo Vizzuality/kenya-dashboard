@@ -11,6 +11,7 @@ import modal from 'services/modal';
 
 // utils
 import { encode, decode } from 'utils/general';
+import { toastr } from 'react-redux-toastr';
 
 // Components
 import { Link } from 'routes';
@@ -40,7 +41,13 @@ class ItemTools extends React.Component {
 
   onRemoveItem() {
     const { info, groupId } = this.props;
-    this.props.onRemoveItem(info.id, groupId);
+
+    toastr.confirm('Are you sure that you want to delete this indicator', {
+      onOk: () => {
+        this.props.onRemoveItem(info.id, groupId);
+      },
+      onCancel: () => console.info('canceled')
+    });
   }
 
   render() {

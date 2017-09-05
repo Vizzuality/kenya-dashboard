@@ -13,6 +13,7 @@ import Icons from 'components/layout/icons';
 import Header from 'components/layout/header';
 import Modal from 'components/ui/modal';
 import Media from 'components/responsive/media';
+import Toastr from 'react-redux-toastr';
 
 if (process.env.NODE_ENV !== 'production') {
   // TODO
@@ -64,6 +65,12 @@ function Layout(props) {
       {/* {hasFooter && <Footer />} */}
 
       <Modal />
+
+      <Toastr
+        transitionIn="fadeIn"
+        transitionOut="fadeOut"
+      />
+
     </div>
   );
 }
