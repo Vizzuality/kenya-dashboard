@@ -61,6 +61,7 @@
 @import '../node_modules/react-bootstrap-daterangepicker/css/daterangepicker';
 @import '../node_modules/slick-carousel/slick/slick.css';
 @import '../node_modules/slick-carousel/slick/slick-theme.css';
+@import '../node_modules/react-redux-toastr/src/styles/index';
 @import 'components/ui/accordion';
 @import 'components/ui/area-indicators';
 @import 'components/ui/area-toolbar';
@@ -92,6 +93,7 @@
 @import 'components/ui/spinner';
 @import 'components/ui/switch';
 @import 'components/ui/title';
+@import 'components/ui/toastr';
 @import 'components/ui/tooltip';
 @import 'components/ui/topic-icon';
 @import 'components/ui/zoom-control';

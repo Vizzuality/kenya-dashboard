@@ -30,6 +30,14 @@
         margin-right: 0;
       }
 
+      &:hover {
+        border: 1px solid rgba($color-text-1, .35);
+
+        .c-icon {
+          fill: rgba($color-text-1, .35);
+        }
+      }
+
       .c-icon {
         fill: rgba($color-text-1, .5);
       }
