@@ -59,8 +59,8 @@
 @import '../node_modules/react-select/dist/react-select';
 @import '../node_modules/react-toggle-switch/dist/css/switch.min';
 @import '../node_modules/react-bootstrap-daterangepicker/css/daterangepicker';
-@import '../node_modules/slick-carousel/slick/slick.css';
-@import '../node_modules/slick-carousel/slick/slick-theme.css';
+@import '../node_modules/slick-carousel/slick/slick';
+@import '../node_modules/slick-carousel/slick/slick-theme';
 
 @import 'components/ui/accordion';
 @import 'components/ui/area-indicators';
@@ -96,9 +96,6 @@
 @import 'components/ui/tooltip';
 @import 'components/ui/topic-icon';
 @import 'components/ui/zoom-control';
-
-// Tooltip
-// @import '../node_modules/rc-tooltip/assets/bootstrap_white.css';
 
 // Toastr
 @import '../node_modules/react-redux-toastr/src/styles/index';
