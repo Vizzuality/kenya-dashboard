@@ -131,7 +131,6 @@ class Legend extends React.Component {
             title={itemHeader}
             arrowPosition="left"
             item={itemContent}
-            hidden
             collapse
           />
         </li>
@@ -153,7 +152,7 @@ class Legend extends React.Component {
           <h2 className="title">
             <button className="btn btn-close" onClick={this.onToggle}>
               Legend
-              <Icon name="icon-arrow-up" className="-smaller" />
+              <Icon name="icon-arrow-down" className="-smaller" />
             </button>
           </h2>
           <Media device="desktop+">
