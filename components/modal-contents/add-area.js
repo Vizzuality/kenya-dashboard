@@ -57,14 +57,17 @@ export default class AddArea extends React.Component {
     const { active } = this.state;
     const { className, regions, areas } = this.props;
     const classNames = classnames(
-      'c-indicators-list',
+      'c-add-area',
       { [className]: !!className }
     );
 
     return (
       <div className={classNames}>
         <header className="list-header">
-          <h1 className="title">Locations selected <span className="">{Object.keys(areas).length}</span></h1>
+          <h1 className="title">
+            Locations selected
+            <span className="c-badge">{Object.keys(areas).length}</span>
+          </h1>
         </header>
         <section className="list-content">
           {/* Region select */}
