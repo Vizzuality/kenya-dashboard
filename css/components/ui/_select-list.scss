@@ -23,9 +23,26 @@
   &.-static {
     background-color: transparent;
     color: $color-text-1;
-    max-height: 250px;
+    max-height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
+
+    .search-container {
+      background-color: $color-secondary;
+      margin-top: 5px;
+    }
+
+    .item {
+      &.-selected {
+        background-color: transparent;
+        color: $color-primary;
+        padding: 10px 8px;
+      }
+
+      &:hover {
+        background: $color-secondary;
+      }
+    }
   }
 
   .search-container {

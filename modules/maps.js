@@ -186,6 +186,20 @@ export function addArea(area) {
   };
 }
 
+export function addAreaWithRegion(region) {
+  return (dispatch, getState) => {
+    const newArea = Object.assign({}, DEFAULT_AREA_PARAMS, { region });
+    const areas = Object.assign({}, getState().maps.areas, {
+      [`area${Date.now()}`]: newArea
+    });
+
+    dispatch({
+      type: ADD_AREA,
+      payload: areas
+    });
+  };
+}
+
 export function selectRegion(region, area) {
   return (dispatch, getState) => {
     const newArea = Object.assign({}, getState().maps.areas[area], { region });

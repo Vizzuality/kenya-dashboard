@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
-import flatten from 'lodash/flatten';
+
+// Utils
+import { getRegionName } from 'utils/areas';
 
 // Components
 import Media from 'components/responsive/media';
@@ -34,22 +36,6 @@ export default class AreaToolbar extends React.Component {
     this.props.onToggleAccordionItem(e, this.props.id);
   }
 
-  /**
-   * HELPERS
-   * - getRegionName
-  */
-  getRegionName() {
-    const { regions, selectedRegion } = this.props;
-
-    if (regions && regions.length) {
-      // TODO: don't loop through all the entities, it would be better to do an API call
-      const region = flatten(regions.map(r => r.list)).find(r => +r.id === +selectedRegion);
-      return (region && region.name) || 'Location';
-    }
-
-    return 'Location';
-  }
-
   render() {
     const {
       className,
@@ -74,7 +60,7 @@ export default class AreaToolbar extends React.Component {
       { '-no-more': sliderArrowsControl === 'noNext' }
     );
 
-    const regionName = this.getRegionName();
+    const regionName = getRegionName(regions, selectedRegion);
 
     return (
       <div className={classNames}>

@@ -50,7 +50,7 @@ export default class SelectAccordion extends React.Component {
   }
 
   render() {
-    const { className, list, selected, active } = this.props;
+    const { className, list, selected, active, label, arrow } = this.props;
     const { openList, openItem } = this.state;
     const classNames = classnames(
       'c-select-accordion',
@@ -59,31 +59,31 @@ export default class SelectAccordion extends React.Component {
         '-active': active
       }
     );
+    const arrowIcon = active ?
+      <Icon name="icon-arrow-up" className="-smaller" /> :
+      <Icon name="icon-arrow-down" className="-smaller" />;
 
     return (
       <div className={classNames}>
         <header className="accordion-header">
           <button type="button" className="title-container" onClick={this.onToggleItem}>
-            <h1 className="title">{this.props.id}</h1>
-            {active ?
-              <Icon name="icon-arrow-up" /> :
-              <Icon name="icon-arrow-down" />
-            }
+            <h1 className="title">{label}</h1>
+            {arrow && arrowIcon}
           </button>
           <div className="accordion-tools">
             <button>
-              <Icon name="icon-remove" />
+              <Icon name="icon-remove" className="-small" />
             </button>
           </div>
         </header>
         <div className="accordion-content-container">
           <div className="accordion-content">
             {list.map(l => (
-              <div className="item" key={l.id}>
+              <div className="content-item" key={l.id}>
                 <header className="item-header">
                   <button type="button" className="" onClick={() => this.onToggleList(l.id)}>
                     <h1 className="title">{l.name}</h1>
-                    <Icon name="icon-arrow-down" />
+                    <Icon name="icon-arrow-down" className="-smaller" />
                   </button>
                 </header>
                 <SelectList
@@ -107,10 +107,16 @@ export default class SelectAccordion extends React.Component {
 SelectAccordion.propTypes = {
   className: PropTypes.string,
   id: PropTypes.string,
+  label: PropTypes.any,
   list: PropTypes.array,
   active: PropTypes.bool,
   selected: PropTypes.array,
+  arrow: PropTypes.bool,
   // Actions
   toggleItem: PropTypes.func,
   setValue: PropTypes.func
+};
+
+SelectAccordion.defaultProps = {
+  arrow: true
 };

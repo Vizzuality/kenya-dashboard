@@ -13,6 +13,7 @@ import {
 
 import {
   addArea,
+  addAreaWithRegion,
   selectRegion,
   removeArea,
   setAreasParamsUrl
@@ -65,6 +66,7 @@ class CompareToolbar extends React.Component {
           regions: nextProps.regions,
           areas: nextProps.areas,
           url: nextProps.url,
+          addAreaWithRegion: nextProps.addAreaWithRegion,
           selectRegion: nextProps.selectRegion,
           closeModal: modal.toggleModal
         }
@@ -104,6 +106,7 @@ class CompareToolbar extends React.Component {
         regions,
         areas,
         url,
+        addAreaWithRegion: this.props.addAreaWithRegion,
         selectRegion: this.props.selectRegion,
         closeModal: modal.toggleModal
       }
@@ -167,9 +170,10 @@ CompareToolbar.propTypes = {
   url: PropTypes.object,
   modalOpened: PropTypes.bool,
   // Actions
-  addArea: PropTypes.func,
   addIndicator: PropTypes.func,
   removeIndicator: PropTypes.func,
+  addArea: PropTypes.func,
+  addAreaWithRegion: PropTypes.func,
   selectRegion: PropTypes.func
 };
 
@@ -186,6 +190,10 @@ export default connect(
     // Area
     addArea(url) {
       dispatch(addArea());
+      dispatch(setAreasParamsUrl(url));
+    },
+    addAreaWithRegion(region, area, url) {
+      dispatch(addAreaWithRegion(region, area));
       dispatch(setAreasParamsUrl(url));
     },
     selectRegion(region, area, url) {
