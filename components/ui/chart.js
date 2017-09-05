@@ -26,7 +26,8 @@ class Chart extends React.Component {
     super(props);
 
     this.state = {
-      data: undefined
+      data: undefined,
+      loading: true
     };
 
     // Bindings
@@ -54,8 +55,12 @@ class Chart extends React.Component {
     const { data } = this.state;
     const { info } = this.props;
 
-    if (data && data.data && info['json-config'] &&
-      info['json-config'].type && info['json-config'].threshold) {
+    if (data &&
+        data.data &&
+        info['json-config'] &&
+        info['json-config'].type &&
+        info['json-config'].threshold
+    ) {
       const threshold = info['json-config'].threshold;
       const y2Axis = info['json-config'].type['secondary-axe'];
 
@@ -115,12 +120,18 @@ class Chart extends React.Component {
       }
     }
 
-    return <p className="no-data">No data available</p>;
+    return (
+      <p className="no-data">
+        {this.state.loading && 'Loading data'}
+        {!this.state.loading && 'No data available'}
+      </p>
+    );
   }
 
   setData(data) {
     this.setState({
-      data: data && data.rows && data.rows.length ? data.rows[0] : null
+      data: data && data.rows && data.rows.length ? data.rows[0] : null,
+      loading: false
     });
 
     if (data && data.rows.length && !!data.rows[0].last_date && this.props.setLastDate) {
@@ -147,13 +158,18 @@ class Chart extends React.Component {
 
       const query = `select * from get_widget(${params})`;
 
+      this.setState({ loading: true });
+
       get({
         url: `${url}?q=${query}`,
         onSuccess,
         onError
       });
     } else {
-      this.setState({ data: null });
+      this.setState({
+        data: null,
+        loading: false
+      });
     }
   }
 
@@ -167,7 +183,7 @@ class Chart extends React.Component {
 
     return (
       <div className={classNames}>
-        <Spinner isLoading={this.state.data === undefined} />
+        <Spinner isLoading={this.state.loading} />
         {content}
       </div>
     );
