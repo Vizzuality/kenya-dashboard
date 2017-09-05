@@ -13,6 +13,16 @@
     height: 46px;
   }
 
+  .location-select-container {
+    @media #{$mq-small-medium} {
+      h1 {
+        font-size: $font-size-default;
+        line-height: 16px;
+        color: rgba($color-text-1, .5);
+      }
+    }
+  }
+
   .tools {
     display: flex;
     height: 100%;
