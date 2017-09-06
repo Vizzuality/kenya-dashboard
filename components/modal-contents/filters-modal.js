@@ -14,6 +14,13 @@ import { getValueMatchFromCascadeList } from 'utils/general';
 import SelectAccordion from 'components/ui/select-accordion';
 import Icon from 'components/ui/icon';
 
+const FILTER_TITLES = {
+  regions: 'Location',
+  topics: 'Topics',
+  sort: 'Sort by'
+};
+
+
 export default class FiltersModal extends React.Component {
   constructor(props) {
     super(props);
@@ -24,10 +31,6 @@ export default class FiltersModal extends React.Component {
 
 
     // Bindings
-    // this.onSetAreaValue = this.onSetAreaValue.bind(this);
-    // this.onSetNewAreaValue = this.onSetNewAreaValue.bind(this);
-    // this.onRemoveArea = this.onRemoveArea.bind(this);
-    // this.onToggleArea = this.onToggleArea.bind(this);
     this.onToggleItem = this.onToggleItem.bind(this);
     this.onSetFilter = this.onSetFilter.bind(this);
     this.onSetDashboardLayout = this.onSetDashboardLayout.bind(this);
@@ -37,24 +40,7 @@ export default class FiltersModal extends React.Component {
     // if (!isEqual(Object.keys(nextProps.areas), Object.keys(nextProps.areas))) {
     // }
   }
-  //
-  // onSetAreaValue(value, id) {
-  //   this.props.selectRegion(value, id, this.props.url);
-  // }
-  //
-  // onSetNewAreaValue(value, id) {
-  //   this.setState({ active: null });
-  //   this.props.addAreaWithRegion(value, id, this.props.url);
-  // }
-  //
-  // onRemoveArea(id) {
-  //   Object.keys(this.props.areas).length > 1 && this.props.removeArea(id, this.props.url);
-  // }
-  //
-  // onToggleArea(id) {
-  //   const { active } = this.state;
-  //   this.setState({ active: active === id ? null : id });
-  // }
+
   onToggleItem(id) {
     this.setState({ activeList: this.state.activeList === id ? null : id });
   }
@@ -77,6 +63,17 @@ export default class FiltersModal extends React.Component {
   onSetDashboardLayout(e) {
     const layout = e.currentTarget.getAttribute('data-layout');
     this.props.onSetDashboardLayout(layout);
+  }
+
+  getSelectedFilters() {
+    const { selected } = this.props;
+
+    return Object.keys(selected).filter(key => selected[key].length).map(key => (
+      <div className="selected-filters">
+        <h1 className="selected-title">{FILTER_TITLES[key]}</h1>
+        <span className="c-badge">{selected[key].length}</span>
+      </div>
+    ));
   }
 
   render() {
@@ -104,7 +101,7 @@ export default class FiltersModal extends React.Component {
 
         <section className="list-content">
           <div className="layout-type">
-            <span className="layout-label">View type</span>
+            <span className="layout-label label">View type</span>
             {/* Set layout buttons */}
             <button className={btnGridClasses} data-layout="grid" onClick={this.onSetDashboardLayout}>
               <Icon name="icon-grid" className="-big" />
@@ -113,6 +110,11 @@ export default class FiltersModal extends React.Component {
             <button className={btnListClasses} data-layout="list" onClick={this.onSetDashboardLayout}>
               <Icon name="icon-list" className="-big" />
             </button>
+          </div>
+
+          <div className="selected-filters-container">
+            <span className="label">Current viewing:</span>
+            {this.getSelectedFilters()}
           </div>
 
           {/* Region select */}
