@@ -18,7 +18,7 @@ import { Link } from 'routes';
 import IndicatorInfo from 'components/modal-contents/indicator-info';
 import Icon from 'components/ui/icon';
 import PickDate from 'components/ui/pickdate';
-import Tooltip from 'react-tooltip';
+import Tooltip from 'components/ui/tooltip';
 
 
 class ItemTools extends React.Component {
@@ -68,10 +68,8 @@ class ItemTools extends React.Component {
             <PickDate dates={dates} onChange={this.props.onSetDate} />
           </div>
         }
+
         <div className="other-tools">
-          <button data-tip data-for="tooltip-btn-info" className="btn" onClick={this.onToggleModal}>
-            <Icon name="icon-info" className="-smaller" />
-          </button>
           {/* Info */}
           <Tooltip
             className="c-tooltip"
@@ -81,17 +79,12 @@ class ItemTools extends React.Component {
             event="mouseenter"
             eventOff="mouseleave"
           >
+            <button className="btn" onClick={this.onToggleModal}>
+              <Icon name="icon-info" className="-smaller" />
+            </button>
+
             <div>Info</div>
           </Tooltip>
-
-          {/* Print */}
-          <button data-tip data-for="tooltip-btn-print" className="btn">
-            <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
-              <a>
-                <Icon name="icon-print" className="-smaller" />
-              </a>
-            </Link>
-          </button>
 
           {/* Info */}
           <Tooltip
@@ -102,14 +95,16 @@ class ItemTools extends React.Component {
             event="mouseenter"
             eventOff="mouseleave"
           >
+            <button className="btn">
+              <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
+                <a>
+                  <Icon name="icon-print" className="-smaller" />
+                </a>
+              </Link>
+            </button>
+
             <div>Print</div>
           </Tooltip>
-
-          {remove &&
-            <button data-tip data-for="tooltip-btn-remove" className="btn" onClick={this.onRemoveItem}>
-              <Icon name="icon-remove" className="-smaller" />
-            </button>
-          }
 
           {remove &&
             <Tooltip
@@ -120,6 +115,10 @@ class ItemTools extends React.Component {
               event="mouseenter"
               eventOff="mouseleave"
             >
+              <button className="btn" onClick={this.onRemoveItem}>
+                <Icon name="icon-remove" className="-smaller" />
+              </button>
+
               <div>Remove</div>
             </Tooltip>
           }
