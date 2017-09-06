@@ -31,8 +31,8 @@ export default class DashboardList extends React.Component {
       <div className="c-dashboard-list">
         {withGrid &&
           <div className="row collapse">
-            {list.map(wid => (
-              <div key={wid.id} className={layout === 'grid' ? 'column small-12 medium-4 large-3' : 'column small-12'}>
+            {list.map((wid, i) => (
+              <div key={`${wid.id}${i}`} className={layout === 'grid' ? 'column small-12 medium-4 large-3' : 'column small-12'}>
                 <DashboardItem
                   groupId={groupId}
                   layout={layout}

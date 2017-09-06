@@ -12,7 +12,7 @@ import {
 } from 'utils/general';
 
 // Constants
-import { SORT_OPTIONS } from 'constants/filters';
+import { KENYA_CARTO_ID, SORT_OPTIONS } from 'constants/filters';
 
 /* Constants */
 const GET_FILTERS_OPTIONS = 'GET_FILTERS_OPTIONS';
@@ -32,7 +32,7 @@ const initialState = {
     sort: SORT_OPTIONS
   },
   selected: {
-    regions: ['779'],
+    regions: [KENYA_CARTO_ID],
     topics: [],
     sort: []
   },

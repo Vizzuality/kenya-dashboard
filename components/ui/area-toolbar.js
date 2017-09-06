@@ -36,6 +36,8 @@ class AreaToolbar extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {};
+
     // Bindings
     this.onRemoveArea = this.onRemoveArea.bind(this);
     this.onSetRegion = this.onSetRegion.bind(this);

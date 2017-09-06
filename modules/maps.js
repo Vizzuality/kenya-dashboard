@@ -1,7 +1,7 @@
 import Router from 'next/router';
 
 // Utils
-import { encode, decode } from 'utils/general';
+import { encode } from 'utils/general';
 import { get } from 'utils/request';
 
 // Constants
@@ -116,11 +116,11 @@ export function setSingleMapParams(params, key) {
 export function setSingleMapParamsUrl(params, url) {
   return (dispatch, getState) => {
     const urlParams = getState().maps.areas;
+
     const newAreasParams = Object.assign({}, urlParams,
       {
         [params.key]: {
-          lat: params.center.lat,
-          lng: params.center.lng,
+          center: params.center,
           zoom: params.zoom,
           region: params.region || KENYA_CARTO_ID
         }
@@ -173,15 +173,21 @@ export function fitAreaBounds(area) {
 }
 
 // Areas
-export function addArea(area) {
+export function addArea(area, key) {
   return (dispatch, getState) => {
-    const areas = Object.assign({}, getState().maps.areas, {
-      [`area${Date.now()}`]: area || DEFAULT_AREA_PARAMS
+    const oldAreas = getState().maps.areas;
+
+    const newAreas = Object.assign({}, oldAreas, {
+      [key || `area${Date.now()}`]: {
+        ...DEFAULT_AREA_PARAMS,
+        ...oldAreas[key],
+        ...area
+      }
     });
 
     dispatch({
       type: ADD_AREA,
-      payload: areas
+      payload: newAreas
     });
   };
 }
@@ -242,8 +248,7 @@ export function setAreasParamsUrl(url) {
         dates: areas[key].dates || {},
         removedWidgets: areas[key].removedWidgets || [],
         fitBounds: areas[key].fitbounds || Date.now(),
-        lat: areas[key].center.lat,
-        lng: areas[key].center.lng
+        center: areas[key].center
       };
     });
 
