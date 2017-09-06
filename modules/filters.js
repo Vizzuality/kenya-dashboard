@@ -31,7 +31,7 @@ const initialState = {
     sort: SORT_OPTIONS
   },
   selected: {
-    regions: [],
+    regions: ['779'],
     topics: [],
     sort: []
   },
