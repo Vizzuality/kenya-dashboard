@@ -119,6 +119,7 @@ export function getIndicators(filters) {
         });
       })
       .catch((err) => {
+        console.error(err);
         // Fetch from server ko -> Dispatch error
         dispatch({
           type: GET_INDICATORS_ERROR,
