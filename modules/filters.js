@@ -144,6 +144,10 @@ export function removeSelectedFilter(type, value) {
     newTypefilters.splice(index, 1);
     selected[type] = newTypefilters;
 
+    if (!selected.regions.length) {
+      selected.regions = ['779'];
+    }
+
     dispatch({
       type: REMOVE_SELECTED_FILTER,
       payload: selected
