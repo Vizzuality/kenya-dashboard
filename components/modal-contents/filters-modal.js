@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
-import isEqual from 'lodash/isEqual';
 import isArray from 'lodash/isArray';
 
 // Utils
@@ -29,16 +28,10 @@ export default class FiltersModal extends React.Component {
       activeList: null
     };
 
-
     // Bindings
     this.onToggleItem = this.onToggleItem.bind(this);
     this.onSetFilter = this.onSetFilter.bind(this);
     this.onSetDashboardLayout = this.onSetDashboardLayout.bind(this);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    // if (!isEqual(Object.keys(nextProps.areas), Object.keys(nextProps.areas))) {
-    // }
   }
 
   onToggleItem(id) {
@@ -95,7 +88,6 @@ export default class FiltersModal extends React.Component {
         <header className="list-header">
           <h1 className="title">
             Filter by
-            {/* <span className="c-badge">{Object.keys(areas).length}</span> */}
           </h1>
         </header>
 

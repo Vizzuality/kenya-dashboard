@@ -5,10 +5,17 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Components
+import Media from 'components/responsive/media';
 import Icon from 'components/ui/icon';
 
 // Constants
 import { FILTERS_BAR_LABELS } from 'constants/filters';
+
+const FILTER_TITLES = {
+  regions: 'Location',
+  topics: 'Topics',
+  sort: 'Sort by'
+};
 
 
 export default class FiltersSelectedBar extends React.Component {
@@ -44,6 +51,17 @@ export default class FiltersSelectedBar extends React.Component {
     ));
   }
 
+  getSelectedFilters() {
+    const { selected } = this.props;
+
+    return Object.keys(selected).filter(key => selected[key].length).map(key => (
+      <div className="selected-filters">
+        <h1 className="selected-title">{FILTER_TITLES[key]}</h1>
+        <span className="c-badge">{selected[key].length}</span>
+      </div>
+    ));
+  }
+
   render() {
     const { className, title } = this.props;
     const classNames = classnames(
@@ -53,10 +71,17 @@ export default class FiltersSelectedBar extends React.Component {
 
     return (
       <nav className={classNames}>
-        <span className="bar-label">{title}</span>
-        {/* <div className="bar-filters"> */}
-        {this.getFilters()}
-        {/* </div> */}
+        <Media device="device">
+          <div className="selected-filters-container">
+            <span className="label">Current viewing:</span>
+            {this.getSelectedFilters()}
+          </div>
+        </Media>
+
+        <Media device="desktop">
+          <span className="bar-label">{title}</span>
+          {this.getFilters()}
+        </Media>
       </nav>
     );
   }
