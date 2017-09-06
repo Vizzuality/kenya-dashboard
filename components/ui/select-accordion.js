@@ -35,7 +35,7 @@ export default class SelectAccordion extends React.Component {
       this.setState({ openItem: '', openList: [] });
     } else {
       const selectedItem = list.find(item => item.id === id);
-      const selectedList = selectedItem && selectedItem.list || [];
+      const selectedList = selectedItem && selectedItem.list ? selectedItem.list : [];
       this.setState({ openItem: id, openList: selectedList });
     }
   }
@@ -50,7 +50,20 @@ export default class SelectAccordion extends React.Component {
   }
 
   render() {
-    const { className, list, selected, active, label, addNew, id, remove } = this.props;
+    const {
+      className,
+      list,
+      selected,
+      active,
+      label,
+      addNew,
+      id,
+      remove,
+      listType,
+      name,
+      multi,
+      cascade
+    } = this.props;
     const { openList, openItem } = this.state;
     const classNames = classnames(
       'c-select-accordion',
@@ -80,25 +93,37 @@ export default class SelectAccordion extends React.Component {
         </header>
         <div className="accordion-content-container">
           <div className="accordion-content">
-            {list.map(l => (
-              <div className={`content-item ${l.id === openItem ? '-active' : ''}`} key={l.id}>
-                <header className="item-header">
-                  <button type="button" className="" onClick={() => this.onToggleList(l.id)}>
-                    <h1 className="title">{l.name}</h1>
-                    <Icon name="icon-arrow-down" className="-smaller" />
-                  </button>
-                </header>
-                <SelectList
-                  name="regions"
-                  className="-static"
-                  type="accordion"
-                  list={l.id === openItem ? openList : []}
-                  selected={selected}
-                  setValue={this.setValue}
-                  search
-                />
-              </div>
-            ))}
+            {cascade ?
+              list.map(l => (
+                <div className={`content-item ${l.id === openItem ? '-active' : ''}`} key={l.id}>
+                  <header className="item-header">
+                    <button type="button" className="" onClick={() => this.onToggleList(l.id)}>
+                      <h1 className="title">{l.name}</h1>
+                      <Icon name="icon-arrow-down" className="-smaller" />
+                    </button>
+                  </header>
+                  <SelectList
+                    name={name}
+                    className="-static"
+                    type={listType}
+                    list={l.id === openItem ? openList : []}
+                    selected={selected}
+                    setValue={this.setValue}
+                    search
+                    multi={multi}
+                  />
+                </div>
+              )) :
+              <SelectList
+                name={name}
+                className="-static"
+                type={listType}
+                list={list}
+                selected={selected}
+                setValue={this.setValue}
+                multi={multi}
+              />
+            }
           </div>
         </div>
       </div>
@@ -108,8 +133,11 @@ export default class SelectAccordion extends React.Component {
 
 SelectAccordion.propTypes = {
   className: PropTypes.string,
+  name: PropTypes.string,
+  listType: PropTypes.string,
   id: PropTypes.string,
   label: PropTypes.any,
+  multi: PropTypes.bool,
   list: PropTypes.array,
   active: PropTypes.bool,
   selected: PropTypes.array,
@@ -123,5 +151,8 @@ SelectAccordion.propTypes = {
 
 SelectAccordion.defaultProps = {
   addNew: false,
-  remove: true
+  remove: true,
+  listType: 'accordion',
+  multi: false,
+  cascade: true
 };
