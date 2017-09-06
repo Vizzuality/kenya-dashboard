@@ -12,7 +12,7 @@ import { getValueMatchFromCascadeList } from 'utils/general';
 
 // Components
 import SelectAccordion from 'components/ui/select-accordion';
-// import Icon from 'components/ui/icon';
+import Icon from 'components/ui/icon';
 
 export default class FiltersModal extends React.Component {
   constructor(props) {
@@ -30,6 +30,7 @@ export default class FiltersModal extends React.Component {
     // this.onToggleArea = this.onToggleArea.bind(this);
     this.onToggleItem = this.onToggleItem.bind(this);
     this.onSetFilter = this.onSetFilter.bind(this);
+    this.onSetDashboardLayout = this.onSetDashboardLayout.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -73,13 +74,17 @@ export default class FiltersModal extends React.Component {
     this.props.onSetFilters(newFilters);
   }
 
+  onSetDashboardLayout(e) {
+    const layout = e.currentTarget.getAttribute('data-layout');
+    this.props.onSetDashboardLayout(layout);
+  }
+
   render() {
     const { activeList } = this.state;
-    const { className, selected, options } = this.props;
-    const classNames = classnames(
-      'c-add-area',
-      { [className]: !!className }
-    );
+    const { className, selected, options, layout } = this.props;
+    const classNames = classnames('c-filters-modal', { [className]: !!className });
+    const btnGridClasses = classnames('btn btn-grid', { '-active': layout === 'grid' });
+    const btnListClasses = classnames('btn btn-list', { '-active': layout === 'list' });
     const region = selected.regions.length ?
       getValueMatchFromCascadeList(options.regions, selected.regions[0]) : null;
     const topics = [];
@@ -96,7 +101,20 @@ export default class FiltersModal extends React.Component {
             {/* <span className="c-badge">{Object.keys(areas).length}</span> */}
           </h1>
         </header>
+
         <section className="list-content">
+          <div className="layout-type">
+            <span className="layout-label">View type</span>
+            {/* Set layout buttons */}
+            <button className={btnGridClasses} data-layout="grid" onClick={this.onSetDashboardLayout}>
+              <Icon name="icon-grid" className="-big" />
+            </button>
+
+            <button className={btnListClasses} data-layout="list" onClick={this.onSetDashboardLayout}>
+              <Icon name="icon-list" className="-big" />
+            </button>
+          </div>
+
           {/* Region select */}
           <SelectAccordion
             active={activeList === 'regions'}
@@ -159,5 +177,6 @@ FiltersModal.propTypes = {
   layout: PropTypes.string,
   // Actions
   onSetFilters: PropTypes.func,
+  onSetDashboardLayout: PropTypes.func,
   closeModal: PropTypes.func
 };

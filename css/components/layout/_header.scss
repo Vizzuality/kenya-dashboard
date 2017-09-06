@@ -81,6 +81,7 @@ $menu-container-width: 220px;
   .header-content {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     flex-grow: 1;
     height: 100%;
 

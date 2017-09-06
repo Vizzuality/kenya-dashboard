@@ -57,11 +57,11 @@ class DashboardHeaderContent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { modalOpened } = this.props;
+    const { modalOpened, url, filters } = this.props;
 
     // Update modal content props for Filters
     if (modalOpened && nextProps.modalOpened &&
-      !isEqual(this.props.url.query, nextProps.url.query)) {
+      (!isEqual(url.query, nextProps.url.query) || filters.layout !== nextProps.filters.layout)) {
       const opts = {
         children: FiltersModal,
         childrenProps: {
