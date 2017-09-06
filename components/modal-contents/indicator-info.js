@@ -32,11 +32,9 @@ export default function IndicatorInfo(props) {
             </div>
           }
         </div>
-        {info.agency &&
-          <div className="logo-container">
-            <img src="" alt={info.agency.name} />
-          </div>
-        }
+        <div className="logo-container">
+          <img src={info.agency.logo || '/static/images/agencies/placeholder.png'} alt={info.agency.name} />
+        </div>
       </header>
 
       {/* Info Content */}

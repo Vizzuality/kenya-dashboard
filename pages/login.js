@@ -164,8 +164,8 @@ class Login extends React.PureComponent {
 
     return (
       <Layout
-        title="Agency"
-        description="Agency description..."
+        title="Login"
+        description="Login description..."
         url={url}
         className={user ? 'p-dashboard -logged' : 'p-about'}
       >
