@@ -21,22 +21,44 @@
   }
 
   &.-static {
+    position: relative;
     background-color: transparent;
     color: $color-text-1;
-    max-height: 200px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    padding-bottom: 25px;
+
+    .select-list-container {
+      max-height: 260px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+
+      /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+100;White+to+Transparent */
+      background: -moz-linear-gradient(to top, rgba($color-bg-dark, .8) 0%, rgba($color-bg-dark, 0) 100%); /* FF3.6-15 */
+      background: -webkit-linear-gradient(to top, rgba($color-bg-dark, .8) 0%,rgba($color-bg-dark, 0) 100%); /* Chrome10-25,Safari5.1-6 */
+      background: linear-gradient(to top, rgba($color-bg-dark, .8) 0%,rgba($color-bg-dark, 0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+    }
 
     .search-container {
       background-color: $color-secondary;
       margin-top: 5px;
+      padding-left: 14px;
+      padding-right: 14px;
     }
 
     .item {
+      padding: 8px 8px 8px 14px;
+
       &.-selected {
         background-color: transparent;
         color: $color-primary;
-        padding: 10px 8px;
+        padding: 10px 8px 10px 14px;
       }
 
       &:hover {

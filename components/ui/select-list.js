@@ -84,43 +84,45 @@ export default class SelectList extends React.Component {
 
     return (
       <div className={classNames}>
-        {/* Search */}
-        {search && filteredList && filteredList.length > 5 &&
-          <div className="search-container">
-            <input className="search-box" type="text" onKeyUp={this.onSearch} placeholder={searchPlaceholder} />
-            <Icon name="icon-search" className="" />
-          </div>
-        }
+        <div className="select-list-container">
+          {/* Search */}
+          {search && filteredList && filteredList.length > 5 &&
+            <div className="search-container">
+              <input className="search-box" type="text" onKeyUp={this.onSearch} placeholder={searchPlaceholder} />
+              <Icon name="icon-search" className="" />
+            </div>
+          }
 
-        {/* List */}
-        <ul className="list">
-          {filteredList.map((l, i) => {
-            const isSelected = selected && selected.includes(`${l.id}` || l.id);
-            const itemClassNames = classnames(
-              'item',
-              { '-selected': type !== 'checkbox' && isSelected }
-            );
+          {/* List */}
+          <ul className="list">
+            {filteredList.map((l, i) => {
+              const isSelected = selected && selected.includes(`${l.id}` || l.id);
+              const itemClassNames = classnames(
+                'item',
+                { '-selected': type !== 'checkbox' && isSelected }
+              );
 
-            return (
-              <li
-                key={i}
-                className={itemClassNames}
-                data-value={l.id}
-                data-is-parent={l.list && l.list.length > 0}
-                onClick={this.onClick}
-              >
-                {/* Checkbox */}
-                {type === 'checkbox' && <Checkbox checked={isSelected} />}
+              return (
+                <li
+                  key={i}
+                  className={itemClassNames}
+                  data-value={l.id}
+                  data-is-parent={l.list && l.list.length > 0}
+                  onClick={this.onClick}
+                >
+                  {/* Checkbox */}
+                  {type === 'checkbox' && <Checkbox checked={isSelected} />}
 
-                {/* Name */}
-                <span>{l.name}</span>
+                  {/* Name */}
+                  <span>{l.name}</span>
 
-                {/* Icon when it has its own list */}
-                {l.list && l.list.length > 0 && <Icon name="icon-arrow-right" className="" />}
-              </li>
-            );
-          })}
-        </ul>
+                  {/* Icon when it has its own list */}
+                  {l.list && l.list.length > 0 && <Icon name="icon-arrow-right" className="" />}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
     );
   }

@@ -81,7 +81,7 @@ export default class SelectAccordion extends React.Component {
         <div className="accordion-content-container">
           <div className="accordion-content">
             {list.map(l => (
-              <div className="content-item" key={l.id}>
+              <div className={`content-item ${l.id === openItem ? '-active' : ''}`} key={l.id}>
                 <header className="item-header">
                   <button type="button" className="" onClick={() => this.onToggleList(l.id)}>
                     <h1 className="title">{l.name}</h1>

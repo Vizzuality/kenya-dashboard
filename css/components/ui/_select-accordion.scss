@@ -54,12 +54,22 @@
 
     .accordion-content {
       position: relative;
+      margin-top: 25px;
       transform: translateY(-200%);
       transition: all .3s ease;
     }
 
     .content-item {
-      margin-top: 20px;
+
+      &.-active {
+        .c-select-list.-static:after {
+          height: 30px;
+        }
+      }
+
+      .c-select-list.-static:after {
+        height: 0;
+      }
 
       .item-header {
         color: $color-text-1;
