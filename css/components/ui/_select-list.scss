@@ -53,16 +53,22 @@
     }
 
     .item {
-      padding: 8px 8px 8px 14px;
+      justify-content: flex-start;
+      padding: 10px 8px 10px 14px;
 
       &.-selected {
         background-color: transparent;
         color: $color-primary;
-        padding: 10px 8px 10px 14px;
       }
 
       &:hover {
-        background: $color-secondary;
+        background: $color-tertiary;
+        color: $color-text-2;
+      }
+
+      .c-checkbox {
+        margin-right: 10px;
+        margin-top: 2px;
       }
     }
   }

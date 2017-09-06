@@ -33,7 +33,7 @@ export default class FiltersSelectedBar extends React.Component {
           {selected[key].map((item, j) => (
             <div key={j} className="filter-value-container">
               <span className="filter-value">{item.name}</span>
-              {this.props.removeFilter &&
+              {this.props.removeFilter && item.name !== 'Kenya' &&
                 <button className="btn-remove" onClick={() => this.onRemoveFilter(key, item.id)}>
                   <Icon name="icon-cross" className="-medium" />
                 </button>

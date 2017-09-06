@@ -1,5 +1,5 @@
 
-.c-indicators-list {
+.c-filters-modal {
   position: relative;
   padding: 30px 0 65px;
   width: 100%;
@@ -37,10 +37,73 @@
     }
   }
 
+  /* CONTENT */
   .list-content {
     display: flex;
     flex-flow: column;
     padding: 0 20px;
+
+    .label {
+      font-size: $font-size-small;
+      line-height: 16px;
+      color: rgba($color-text-1, .5);
+      margin-right: 24px;
+    }
+
+    .layout-type {
+      display: flex;
+      align-items: center;
+      margin-bottom: 23px;
+
+      .layout-label {
+        display: inline-block;
+        margin-bottom: 5px;
+      }
+
+      .btn {
+        padding: 0;
+        margin-right: 24px;
+
+        &.-active {
+          .c-icon {
+            fill: $color-primary;
+          }
+        }
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        .c-icon {
+          fill: $color-secondary;
+        }
+      }
+    }
+
+    .selected-filters-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 29px;
+
+      .selected-filters {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+
+        .c-badge {
+          margin-left: 5px;
+          margin-top: 0;
+        }
+      }
+
+      .selected-title {
+        font-size: $font-size-small;
+        line-height: 16px;
+        color: $color-text-1;
+        padding: 0;
+        font-weight: $font-weight-default;
+      }
+    }
 
     .groups-container {
       display: flex;
