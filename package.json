@@ -58,7 +58,6 @@
     "react-sortable-hoc": "0.6.5",
     "react-tether": "0.5.7",
     "react-toggle-switch": "2.1.4",
-    "react-tooltip": "^3.3.0",
     "react-transition-group": "1.2.0",
     "recharts": "1.0.0-alpha.2",
     "redis": "2.8.0",

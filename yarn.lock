@@ -1311,7 +1311,7 @@ circular-json@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
 
-classnames@2.2.5, classnames@^2.2.0, classnames@^2.2.3, classnames@^2.2.4, classnames@^2.2.5:
+classnames@2.2.5, classnames@^2.2.3, classnames@^2.2.4, classnames@^2.2.5:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
 
@@ -5030,13 +5030,6 @@ react-tether@0.5.7:
 react-toggle-switch@2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/react-toggle-switch/-/react-toggle-switch-2.1.4.tgz#c5e70e922505605842cb34f5f2eb9f12d5b9cfd1"
-
-react-tooltip@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-3.3.0.tgz#51c08ae0221075e2c43d83cd47fc78466612df7d"
-  dependencies:
-    classnames "^2.2.0"
-    prop-types "^15.5.8"
 
 react-transition-group@1.2.0, react-transition-group@^1.1.1:
   version "1.2.0"
