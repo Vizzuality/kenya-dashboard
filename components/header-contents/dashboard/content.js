@@ -102,7 +102,7 @@ class DashboardHeaderContent extends React.Component {
       <div>
         <Media device="device">
           <button className="" onClick={this.onOpenFiltersModal}>
-            <Icon name="icon-plus" className="-medium" />
+            <Icon name="icon-filters" className="-medium" />
           </button>
         </Media>
 

@@ -121,7 +121,7 @@ class Header extends React.Component {
             <button className="btn" onClick={this.props.setView}>
               {this.props.compareView === 'map' ?
                 <Icon name="icon-grid" /> :
-                <Icon name="icon-plus" />
+                <Icon name="icon-globe" className="-medium" />
               }
             </button>
           )
