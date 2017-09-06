@@ -74,8 +74,11 @@ export default class Map extends React.Component {
     const { mapOptions, layers, indicatorsLayersActive } = this.props;
 
     // Fitbounds
-    if (!isEqual(mapOptions.bounds, nextProps.mapOptions.bounds) ||
-    mapOptions.fitBounds !== nextProps.mapOptions.fitBounds) {
+    if (
+      (!isEqual(mapOptions.bounds, nextProps.mapOptions.bounds) ||
+      mapOptions.fitBounds !== nextProps.mapOptions.fitBounds) &&
+      nextProps.mapOptions.bounds
+    ) {
       this.setBounds(nextProps.mapOptions.bounds.coordinates[0]);
     }
 

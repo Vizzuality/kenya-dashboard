@@ -131,8 +131,8 @@ class ComparePage extends Page {
 
     // Update areas with url params
     if (url.query.maps) {
-      const params = decode(url.query.maps);
-      this.setMapParams(params);
+      const areas = decode(url.query.maps);
+      this.setAreasFromUrl(areas);
     }
 
     // Expand map if in url
@@ -192,21 +192,10 @@ class ComparePage extends Page {
 
   /** Maps methods */
   /* Config map params and set them in the map */
-  setMapParams(params) {
-    Object.keys(params).forEach((key) => {
-      const mapParams = {
-        zoom: +params[key].zoom || MAP_OPTIONS.zoom,
-        center: {
-          lat: +params[key].lat || MAP_OPTIONS.center[0],
-          lng: +params[key].lng || MAP_OPTIONS.center[1]
-        },
-        layers: params[key].layers || {},
-        removedWidgets: params[key].removedWidgets || [],
-        fitBounds: params[key].fitBounds || Date.now(),
-        dates: params[key].dates || {},
-        region: params[key].region || KENYA_CARTO_ID
-      };
-      this.props.setSingleMapParamsFromUrl(mapParams, key);
+  setAreasFromUrl(areas) {
+    // Add an area for each area saved in the url
+    Object.keys(areas).forEach((key) => {
+      this.props.addArea(areas[key], key);
     });
   }
 
@@ -488,10 +477,6 @@ export default withRedux(
       dispatch(setSingleMapParams(params, key));
       dispatch(setSingleMapParamsUrl(params, url));
     },
-    setSingleMapParamsFromUrl(params, key) {
-      dispatch(addArea(params, key));
-      // dispatch(setSingleMapParams(params, key));
-    },
     fitAreaBounds(area) { dispatch(fitAreaBounds(area)); },
     setMapExpansion(expand, url) {
       dispatch(setMapExpansion(expand));
@@ -499,9 +484,9 @@ export default withRedux(
     },
     setMapExpansionFromUrl(expand) { dispatch(setMapExpansion(expand)); },
     // Area
-    addArea(url) {
-      dispatch(addArea());
-      dispatch(setAreasParamsUrl(url));
+    addArea(area, key) {
+      dispatch(addArea(area, key));
+      // dispatch(setAreasParamsUrl(url));
     },
     selectRegion(region, areas, url) {
       dispatch(selectRegion(region, areas));
