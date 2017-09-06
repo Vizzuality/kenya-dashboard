@@ -1,6 +1,7 @@
 // import { Deserializer } from 'jsonapi-serializer';
 import fetch from 'isomorphic-fetch';
 import Router from 'next/router';
+import sortBy from 'lodash/sortBy';
 
 // Utils
 import {
@@ -82,10 +83,11 @@ export function getTopicsOptions() {
       })
       .then((data) => {
         const addedData = [{ id: 'all', attributes: { name: 'All' } }].concat(data.data);
+        const payload = sortBy(parseCustomSelectOptions(addedData), 'name');
 
         dispatch({
           type: GET_TOPICS_OPTIONS,
-          payload: parseCustomSelectOptions(addedData)
+          payload
         });
       })
       .catch((err) => {
