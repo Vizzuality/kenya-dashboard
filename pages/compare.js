@@ -83,7 +83,9 @@ class ComparePage extends Page {
     super(props);
 
     this.state = {
+      // Accordion expanded area - desktop
       activeArea: null,
+      // Slider active area - mobile
       areaShown: 'defaultAreaMap'
     };
 
@@ -96,7 +98,7 @@ class ComparePage extends Page {
     this.onRemoveIndicator = this.onRemoveIndicator.bind(this);
     this.onNextSlider = this.onNextSlider.bind(this);
     this.onPreviousSlider = this.onPreviousSlider.bind(this);
-    this.onBeforeSlidrsChange = this.onBeforeSlidrsChange.bind(this);
+    this.onBeforeSlidersChange = this.onBeforeSlidersChange.bind(this);
     this.onSetRegion = this.onSetRegion.bind(this);
   }
 
@@ -140,8 +142,17 @@ class ComparePage extends Page {
   }
 
   componentWillReceiveProps(nextProps) {
+    const newAreasIds = Object.keys(nextProps.mapState.areas);
+    const oldAreasIds = Object.keys(this.props.mapState.areas);
+
     if (!isEqual(this.props.url.query, nextProps.url.query)) {
       this.url = nextProps.url;
+    }
+
+    if (!isEqual(oldAreasIds, newAreasIds)) {
+      if (!newAreasIds.includes(this.state.areaShown)) {
+        this.setState({ areaShown: newAreasIds[0] });
+      }
     }
 
     if (!isEqual(this.props.indicators.list, nextProps.indicators.list)) {
@@ -290,14 +301,15 @@ class ComparePage extends Page {
     this.slider.slickPrev();
   }
 
-  onBeforeSlidrsChange(oldId, newId) {
+  onBeforeSlidersChange(oldId, newId) {
     const { areas } = this.props.mapState;
     const area = Object.keys(areas)[newId];
     area && this.setState({ areaShown: area });
   }
 
-  onSetRegion(region) {
-    this.props.selectRegion(region, this.state.areaShown, this.props.url);
+  onSetRegion(region, area) {
+    // this.props.selectRegion(region, this.state.areaShown, this.props.url);
+    this.props.selectRegion(region, area, this.props.url);
   }
 
   sliderArrowsControl() {
@@ -321,8 +333,8 @@ class ComparePage extends Page {
       mapState,
       indicators,
       session,
-      indicatorsFilterList,
-      modal,
+      // indicatorsFilterList,
+      // modal,
       user
     } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
@@ -344,26 +356,21 @@ class ComparePage extends Page {
       >
         <div>
           <CompareToolbar
-            indicatorsFilterList={indicatorsFilterList}
-            indicatorsList={indicators.list}
-            areas={mapState.areas}
-            modalOpened={modal.opened}
             url={url}
-            addArea={this.props.addArea}
-            addIndicator={this.props.addIndicator}
-            removeIndicator={this.onRemoveIndicator}
           />
 
           {/* Device components. - Slider */}
           <Media device="device">
             <AreaToolbar
               id={this.state.areaShown}
+              url={url}
+              areas={mapState.areas}
               numOfAreas={Object.keys(mapState.areas).length}
               regions={this.props.filters.options.regions}
               selectedRegion={mapState.areas[this.state.areaShown].region && mapState.areas[this.state.areaShown].region !== '' ?
                 mapState.areas[this.state.areaShown].region : KENYA_CARTO_ID}
               sliderArrowsControl={this.sliderArrowsControl()}
-              onToggleAccordionItem={this.onToggleAccordionItem}
+              // onToggleAccordionItem={this.onToggleAccordionItem}
               onSetRegion={this.onSetRegion}
               onPreviousSlider={this.onPreviousSlider}
               onNextSlider={this.onNextSlider}
@@ -371,7 +378,7 @@ class ComparePage extends Page {
             <Slider
               ref={c => this.slider = c}
               {...SLIDER_OPTIONS}
-              beforeChange={this.onBeforeSlidrsChange}
+              beforeChange={this.onBeforeSlidersChange}
             >
               {compare.view === 'map' ?
                 areaMapsList :

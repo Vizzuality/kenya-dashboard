@@ -122,6 +122,8 @@ export default class SelectSlider extends React.Component {
     );
     const principalList = this.getPrincipalListContent();
     const specificList = this.getSpecificListContent();
+    console.log(this.props.list);
+    console.log(this.props.selected);
 
     return (
       <div className={classNames}>

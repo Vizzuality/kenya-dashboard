@@ -1,0 +1,15 @@
+
+.c-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: $color-secondary;
+  margin-left: 10px;
+  margin-top: 2px;
+  width: 20px;
+  height: 20px;
+  font-size: $font-size-small;
+  line-height: 16px;
+  font-weight: $font-weight-default;
+}
