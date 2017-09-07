@@ -35,6 +35,10 @@
     transition: transform $animation-time-2 $ease-out-cubic;
     transform: translateY(0);
 
+    @media #{$mq-small-medium} {
+      max-width: 100%;
+    }
+
 
     @media #{$mq-small} {
       width: auto;

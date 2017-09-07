@@ -110,8 +110,10 @@ export default class SelectCustom extends React.Component {
             <Icon name="icon-arrow-down" className="-smaller" />
           </button>
           {this.state.open &&
-            <div ref={(node) => { this.el = node; }} className="dropdown-container">
-              {this.getContent()}
+            <div className="dropdown-faded">
+              <div ref={(node) => { this.el = node; }} className="dropdown-container">
+                {this.getContent()}
+              </div>
             </div>
           }
         </TetherComponent>

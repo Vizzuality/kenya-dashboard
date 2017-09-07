@@ -9,11 +9,11 @@ import classnames from 'classnames';
 
 // Components
 import Head from 'components/layout/head';
+import Media from 'components/responsive/media';
 import Icons from 'components/layout/icons';
 import Header from 'components/layout/header';
 import Footer from 'components/layout/footer';
 import Modal from 'components/ui/modal';
-import Media from 'components/responsive/media';
 import Toastr from 'react-redux-toastr';
 
 if (process.env.NODE_ENV !== 'production') {
@@ -63,7 +63,9 @@ function Layout(props) {
         {children}
       </div>
 
-      {hasFooter && <Footer />}
+      <Media device="desktop">
+        {hasFooter && <Footer />}
+      </Media>
 
       <Modal />
 
