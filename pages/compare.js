@@ -121,13 +121,11 @@ class ComparePage extends Page {
     }
 
     // Get all indicators to set the add indicators list
-    if (!this.props.allIndicators.length) {
-      this.props.getIndicators({});
-    }
+    this.props.getIndicators();
 
     // Update from url
     // Get indicators from url
-    if (url.query.indicators) this.props.getSpecificIndicators(url.query.indicators);
+    // if (url.query.indicators) this.props.getSpecificIndicators(url.query.indicators);
 
     // Update areas with url params
     if (url.query.maps) {
@@ -153,6 +151,11 @@ class ComparePage extends Page {
       if (!newAreasIds.includes(this.state.areaShown)) {
         this.setState({ areaShown: newAreasIds[0] });
       }
+    }
+
+    if (!this.props.allIndicators.length && nextProps.allIndicators.length) {
+      const contextualIndicators = nextProps.allIndicators.filter(ind => ind.topic.name === 'Contextual');
+      if (nextProps.url.query.indicators) this.props.getSpecificIndicators(nextProps.url.query.indicators, contextualIndicators);
     }
 
     if (!isEqual(this.props.indicators.list, nextProps.indicators.list)) {
@@ -380,9 +383,9 @@ class ComparePage extends Page {
               url={url}
               list={layers}
               indicatorsLayersActive={indicators.layersActive}
+              expanded={mapState.expanded}
               setIndicatorsLayersActive={this.props.setIndicatorsLayersActive}
               setIndicatorsLayers={this.props.setIndicatorsLayers}
-              expanded={mapState.expanded}
               setMapExpansion={this.props.setMapExpansion}
             />
           }
@@ -450,7 +453,9 @@ export default withRedux(
     getRegionsOptions() { dispatch(getRegionsOptions()); },
     getTopicsOptions() { dispatch(getTopicsOptions()); },
     // Indicators
-    getSpecificIndicators(ids) { dispatch(getSpecificIndicators(ids)); },
+    getSpecificIndicators(ids, defaultIndicators) {
+      dispatch(getSpecificIndicators(ids, defaultIndicators));
+    },
     getIndicators(params) {
       dispatch(getIndicators(params));
     },

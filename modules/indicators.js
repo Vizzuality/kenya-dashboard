@@ -96,7 +96,7 @@ export default function indicatorsReducer(state = initialState, action) {
 
 /* Action creators */
 export function getIndicators(filters) {
-  const query = parseObjectToUrlParams(filters);
+  const query = filters ? parseObjectToUrlParams(filters) : '';
 
   return (dispatch, getState) => {
     const currentState = getState();
@@ -112,6 +112,29 @@ export function getIndicators(filters) {
       })
       .then((data) => {
         return DESERIALIZER.deserialize(data, (err, dataParsed) => {
+          /* If no filters or in compare page it sets the contextual layers as
+          default but hidden from the beginning */
+          // if (!filters) {
+          //   const state = currentState.indicators;
+          //   const indicatorsWithLayers = dataParsed.filter(ind => (
+          //     ind.widgets && ind.widgets.length && ind.widgets.find(w => w['widget-type'] === 'layer') &&
+          //     ind.topic.name === 'Contextual'
+          //   ));
+          //   const layers = flattenDeep(indicatorsWithLayers.map(ind => getIndicatorLayers(ind)));
+          //
+          //   const newSpecific = Object.assign({}, state.specific,
+          //     {
+          //       loading: false,
+          //       error: null,
+          //       layers
+          //     });
+          //
+          //   dispatch({
+          //     type: GET_SPECIFIC_INDICATORS,
+          //     payload: newSpecific
+          //   });
+          // }
+
           dispatch({
             type: GET_INDICATORS,
             payload: dataParsed
@@ -140,9 +163,11 @@ export function setIndicatorsLayersActive(layersActive) {
   };
 }
 
-export function getSpecificIndicators(ids) {
+export function getSpecificIndicators(ids, defaultIndicators) {
   return (dispatch, getState) => {
     const currentState = getState();
+    // const contextualIndicators = defaultIndicators;
+    // console.log(contextualInd);
     const headers = setBasicQueryHeaderHeaders({ Authorization: currentState.user.auth_token });
     // Waiting for fetch from server -> Dispatch loading
     dispatch({ type: GET_SPECIFIC_INDICATORS_LOADING });
@@ -155,16 +180,13 @@ export function getSpecificIndicators(ids) {
       .then((data) => {
         DESERIALIZER.deserialize(data, (err, dataParsed) => {
           const state = currentState.indicators;
-          const indicatorsWithLayers = dataParsed.filter(ind => (
+          const defaultIndicatorsIds = defaultIndicators ? defaultIndicators.map(ind => `${ind.id}`) : [];
+          const totalIndicators = defaultIndicators ?
+            dataParsed.concat(defaultIndicators) : dataParsed;
+          const indicatorsWithLayers = totalIndicators.filter(ind => (
             ind.widgets && ind.widgets.length && ind.widgets.find(w => w['widget-type'] === 'layer')
           ));
           const layers = flattenDeep(indicatorsWithLayers.map(ind => getIndicatorLayers(ind)));
-
-          // const layers = [];
-          // indicatorsWithLayers.forEach((ind) => {
-          //   getIndicatorLayers(ind).forEach((l) => { layers.push(l); });
-          // });
-
           const newSpecific = Object.assign({}, state.specific,
             {
               list: dataParsed,
@@ -172,7 +194,7 @@ export function getSpecificIndicators(ids) {
               error: null,
               indicatorsWithLayers,
               layers,
-              layersActive: layers.map(l => l.id)
+              layersActive: layers.filter(l => !defaultIndicatorsIds.includes(`${l['indicator-id']}`)).map(l => l.id)
             });
 
           dispatch({
