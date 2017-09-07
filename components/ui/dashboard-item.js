@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Services
+import modal from 'services/modal';
+
 // Libraries
 import classnames from 'classnames';
 import truncate from 'lodash/truncate';
@@ -15,9 +18,10 @@ import ItemTools from 'components/ui/item-tools';
 import Icon from 'components/ui/icon';
 import TopicIcon from 'components/ui/topic-icon';
 import Chart from 'components/ui/chart';
+import IndicatorInfo from 'components/modal-contents/indicator-info';
 
 const fakeDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
-const globalValue = ''; // TODO: What is this ?????? Remove it please
+
 
 export default class DashboardItem extends React.Component {
   constructor(props) {
@@ -30,12 +34,25 @@ export default class DashboardItem extends React.Component {
     // Bindings
     this.onSetDate = this.onSetDate.bind(this);
     this.setLastDate = this.setLastDate.bind(this);
+    this.onToggleModal = this.onToggleModal.bind(this);
   }
 
 
   onSetDate(start, end) {
     const dates = start && end ? { start, end } : null;
     this.props.onSetDate(this.props.info['indicator-id'], dates);
+  }
+
+  onToggleModal() {
+    const parsedInfo = { ...this.props.info, ...{ lastDate: this.state.lastDate } };
+
+    const opts = {
+      children: IndicatorInfo,
+      childrenProps: {
+        info: parsedInfo
+      }
+    };
+    modal.toggleModal(true, opts);
   }
 
   // getThresholdQualification() {
@@ -90,6 +107,7 @@ export default class DashboardItem extends React.Component {
       }
     );
     const parsedInfo = { ...info, ...{ lastDate: this.state.lastDate } };
+    const description = info.description || fakeDescription;
 
     return (
       layout === 'grid' ?
@@ -158,7 +176,7 @@ export default class DashboardItem extends React.Component {
                   {/* Global value */}
                   {/* <div className="column small-6">
                     <div className="content-container">
-                      <p>{info.globalValue || globalValue}</p>
+                      <p>{info.globalValue || ''}</p>
                     </div>
                   </div> */}
                 </div>
@@ -185,6 +203,11 @@ export default class DashboardItem extends React.Component {
                     </div>
                     <div className="description">
                       <p>{this.getDescription()}</p>
+                      {description.length > 250 &&
+                        <button className="btn btn-more" onClick={this.onToggleModal}>
+                          View more
+                        </button>
+                      }
                     </div>
                   </header>
 

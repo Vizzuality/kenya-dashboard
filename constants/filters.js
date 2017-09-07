@@ -16,7 +16,7 @@ const FILTERS_BAR_LABELS = {
   sort: 'Sorted by'
 };
 
-const TOPICS_ICONS_SRC = {
+const TOPICS_ICONS_CIRCLE_SRC = {
   agriculture: 'agriculture_circle',
   climate: 'climate_circle',
   conservancies: 'infrastructure_circle',
@@ -30,6 +30,22 @@ const TOPICS_ICONS_SRC = {
   tourism: 'tourism_circle',
   water: 'water_circle',
   wildlife: 'wildlife_circle'
+};
+
+const TOPICS_ICONS_SRC = {
+  agriculture: 'agriculture',
+  climate: 'climate',
+  conservancies: 'infrastructure',
+  contextual: 'population',
+  integration: 'poverty',
+  landcover: 'boundarie',
+  livestock: 'livestock',
+  protected_areas: 'protected_areas',
+  protected_forests: 'forest',
+  socioeconomic: 'urban',
+  tourism: 'tourism',
+  water: 'water',
+  wildlife: 'wildlife'
 };
 
 const TOPICS_BACKGROUNDS_SRC = {
@@ -56,5 +72,6 @@ export {
   FILTERS_BAR_LABELS,
   KENYA_CARTO_ID,
   TOPICS_ICONS_SRC,
+  TOPICS_ICONS_CIRCLE_SRC,
   TOPICS_BACKGROUNDS_SRC
 };

@@ -40,6 +40,14 @@
 
         .description {
           margin-top: 42px;
+
+          .btn-more {
+            padding: 0;
+            padding-top: 10px;
+            color: $color-primary;
+
+            &:hover { opacity: .7; }
+          }
         }
       }
 
