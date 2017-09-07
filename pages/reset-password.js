@@ -55,7 +55,6 @@ class ResetPassword extends React.PureComponent {
     this.state = {
       form: {
         email: '',
-        oldPassword: '',
         newPassword: '',
         repeatNewPassword: ''
       },
@@ -88,7 +87,7 @@ class ResetPassword extends React.PureComponent {
       Router.pushRoute('login');
     } else if (nextProps.user.reset && nextProps.user.reset.error) {
       this.setState({
-        message: 'Invalid old password or link expired',
+        message: 'Link expired',
         messageType: '-fail'
       });
     }
@@ -117,13 +116,13 @@ class ResetPassword extends React.PureComponent {
       const valid = FORM_ELEMENTS.isValid(form);
 
       if (valid && form.newPassword === form.repeatNewPassword && form.newPassword.length >= 6) {
-        const { oldPassword, newPassword } = form;
+        const { newPassword } = form;
         const { token } = this.props.url.query;
 
         // Start the submitting
         this.setState({ submitting: true, message: null, messageType: '' });
 
-        this.props.resetPassword({ oldPassword, newPassword, token });
+        this.props.resetPassword({ newPassword, token });
       } else if (valid && form.newPassword !== form.repeatNewPassword) {
         this.setState({ message: 'Repeated new password does not match', messageType: '-fail' });
       } else if (valid && form.newPassword.length < 6) {
@@ -175,23 +174,6 @@ class ResetPassword extends React.PureComponent {
                     name: 'email',
                     placeholder: 'Email',
                     type: 'email',
-                    required: true,
-                    default: ''
-                  }}
-                >
-                  {Input}
-                </Field>
-
-                {/* OLD PASSWORD */}
-                <Field
-                  ref={(c) => { if (c) FORM_ELEMENTS.elements.oldPassword = c; }}
-                  onChange={value => this.onChange({ oldPassword: value })}
-                  validations={['required']}
-                  className="-fluid"
-                  properties={{
-                    name: 'oldPassword',
-                    placeholder: 'Old password',
-                    type: 'password',
                     required: true,
                     default: ''
                   }}

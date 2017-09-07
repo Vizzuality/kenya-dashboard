@@ -146,7 +146,7 @@ export function forgotPassword(email) {
   };
 }
 
-export function resetPassword({ oldPassword, newPassword, token }) {
+export function resetPassword({ newPassword, token }) {
   return (dispatch) => {
     post({
       url: `${process.env.KENYA_API}/reset-password`,
