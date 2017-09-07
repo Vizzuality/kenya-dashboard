@@ -10,6 +10,8 @@
   }
 
   .list-header {
+    display: flex;
+    align-items: center;
     width: 100%;
     padding: 0 20px 25px;
     margin-bottom: 25px;
@@ -34,6 +36,12 @@
       @media #{$mq-small} {
         text-align: center;
       }
+
+    }
+
+    .c-badge {
+      margin-top: 0;
+      margin-bottom: 3px;
     }
   }
 

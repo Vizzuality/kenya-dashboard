@@ -77,7 +77,8 @@ class CompareToolbar extends React.Component {
 
     // Update modal content props for Indicators list
     if (modalOpened && nextProps.modalOpened && this.state.modalContent === 'IndicatorsList' &&
-      !isEqual(this.props.url.query, nextProps.url.query)) {
+      (!isEqual(this.props.url.query, nextProps.url.query) ||
+      this.props.indicatorsList !== nextProps.indicatorsList.length)) {
       const opts = {
         children: IndicatorsList,
         childrenProps: {

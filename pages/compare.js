@@ -153,9 +153,9 @@ class ComparePage extends Page {
       }
     }
 
-    if (!this.props.allIndicators.length && nextProps.allIndicators.length) {
-      const contextualIndicators = nextProps.allIndicators.filter(ind => ind.topic.name === 'Contextual');
-      if (nextProps.url.query.indicators) this.props.getSpecificIndicators(nextProps.url.query.indicators, contextualIndicators);
+    if (!this.props.indicators.contextualLayers && nextProps.indicators.contextualLayers &&
+      nextProps.url.query.indicators) {
+      this.props.getSpecificIndicators(nextProps.url.query.indicators);
     }
 
     if (!isEqual(this.props.indicators.list, nextProps.indicators.list)) {
@@ -345,8 +345,9 @@ class ComparePage extends Page {
         url={url}
         session={session}
         logged={user.logged}
+        className="p-compare"
       >
-        <div>
+        <div className="compare-container">
           <CompareToolbar
             url={url}
           />

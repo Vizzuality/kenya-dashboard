@@ -38,7 +38,7 @@ const getIndicatorsWithWidgets = createSelector(
     const topicsList = {};
 
     indicators.forEach((ind) => {
-      if (ind.widgets && ind.widgets.length) {
+      if (ind.widgets && ind.widgets.length && ind.topic.name !== 'Contextual') {
         const indicator = { name: ind.name, id: ind.id };
         if (topicsList[ind.topic.name]) {
           topicsList[ind.topic.name].push(indicator);

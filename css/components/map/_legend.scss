@@ -113,10 +113,18 @@
 
       &:nth-child(odd) {
         padding-right: 25px;
+
+        @media #{$mq-mobile} {
+          padding-right: 0;
+        }
       }
 
       &:nth-child(even) {
         padding-left: 25px;
+
+        @media #{$mq-mobile} {
+          padding-left: 0;
+        }
       }
 
       &.-choropleth,
