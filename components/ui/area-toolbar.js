@@ -16,7 +16,7 @@ import {
 } from 'modules/maps';
 
 // Selectors
-import { getIndicatorsWithWidgets } from 'selectors/indicators';
+// import { getIndicatorsWithWidgets } from 'selectors/indicators';
 
 // Libraries
 import classnames from 'classnames';
@@ -202,7 +202,7 @@ AreaToolbar.propTypes = {
 export default connect(
   state => ({
     allIndicators: state.indicators.list,
-    indicatorsFilterList: getIndicatorsWithWidgets(state),
+    // indicatorsFilterList: getIndicatorsWithWidgets(state),
     indicatorsList: state.indicators.specific.list,
     areas: state.maps.areas,
     modalOpened: state.modal.opened,

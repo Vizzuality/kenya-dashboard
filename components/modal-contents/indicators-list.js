@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Components
+import Media from 'components/responsive/media';
 import CollapsibleList from 'components/ui/collapsible-list';
 
 export default class IndicatorsList extends React.Component {
@@ -32,6 +33,9 @@ export default class IndicatorsList extends React.Component {
       <div className={classNames}>
         <header className="list-header">
           <h1 className="title">Customise Indicators</h1>
+          <Media device="device">
+            <span className="c-badge">{activeIndicators.length}</span>
+          </Media>
         </header>
         <section className="list-content">
           <div className="groups-container">

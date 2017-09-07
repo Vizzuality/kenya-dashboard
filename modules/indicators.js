@@ -40,6 +40,7 @@ const initialState = {
     error: null,
     layers: [],
     layersActive: [],
+    contextualLayers: null,
     indicatorsWithLayers: []
   }
 };
@@ -96,7 +97,7 @@ export default function indicatorsReducer(state = initialState, action) {
 
 /* Action creators */
 export function getIndicators(filters) {
-  const query = parseObjectToUrlParams(filters);
+  const query = filters ? parseObjectToUrlParams(filters) : '';
 
   return (dispatch, getState) => {
     const currentState = getState();
@@ -112,6 +113,23 @@ export function getIndicators(filters) {
       })
       .then((data) => {
         return DESERIALIZER.deserialize(data, (err, dataParsed) => {
+          /* If no filters or in compare page it sets the contextual layers as
+          default but hidden from the beginning */
+          if (!filters) {
+            const state = currentState.indicators;
+            const contextualWithLayers = dataParsed.filter(ind => (
+              ind.topic.name === 'Contextual' && ind.widgets && ind.widgets.length &&
+              ind.widgets.find(w => w['widget-type'] === 'layer')
+            ));
+            const contextualLayers = flattenDeep(contextualWithLayers.map(ind => getIndicatorLayers(ind)));
+            const newSpecific = Object.assign({}, state.specific, { contextualLayers });
+
+            dispatch({
+              type: GET_SPECIFIC_INDICATORS,
+              payload: newSpecific
+            });
+          }
+
           dispatch({
             type: GET_INDICATORS,
             payload: dataParsed
@@ -159,19 +177,13 @@ export function getSpecificIndicators(ids) {
             ind.widgets && ind.widgets.length && ind.widgets.find(w => w['widget-type'] === 'layer')
           ));
           const layers = flattenDeep(indicatorsWithLayers.map(ind => getIndicatorLayers(ind)));
-
-          // const layers = [];
-          // indicatorsWithLayers.forEach((ind) => {
-          //   getIndicatorLayers(ind).forEach((l) => { layers.push(l); });
-          // });
-
           const newSpecific = Object.assign({}, state.specific,
             {
               list: dataParsed,
               loading: false,
               error: null,
               indicatorsWithLayers,
-              layers,
+              layers: layers.concat(state.specific.contextualLayers),
               layersActive: layers.map(l => l.id)
             });
 
@@ -255,7 +267,7 @@ export function removeIndicator(id) {
     const list = state.list.filter(ind => ind.id !== id);
     const indicatorsWithLayers = state.indicatorsWithLayers.filter(ind => ind.id !== id);
     const layers = state.layers.filter(lay => `${lay['indicator-id']}` !== `${id}`);
-    const layersActive = layers.map(l => l.id);
+    const layersActive = state.layersActive.filter(l => `${l.id}` !== `${id}`);
 
     const newSpecific = Object.assign({}, state,
       { list, indicatorsWithLayers, layers, layersActive });
