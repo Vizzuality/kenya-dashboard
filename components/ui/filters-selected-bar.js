@@ -22,27 +22,36 @@ export default class FiltersSelectedBar extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      open: false
+    };
+
     // Bindings
     this.onRemoveFilter = this.onRemoveFilter.bind(this);
+    this.onToggleFilters = this.onToggleFilters.bind(this);
   }
 
   onRemoveFilter(type, value) {
     this.props.removeFilter(type, value);
   }
 
-  getFilters() {
+  onToggleFilters() {
+    this.setState({ open: !this.state.open });
+  }
+
+  getSelectedFilters(labels) {
     const { selected } = this.props;
 
     return Object.keys(selected).map((key, i) => (
       selected[key] && selected[key].length ?
         <div className="filters-type-container" key={i}>
-          <span className="filter-label">{FILTERS_BAR_LABELS[key] || key}:</span>
+          {labels && <span className="filter-label">{FILTERS_BAR_LABELS[key] || key}:</span>}
           {selected[key].map((item, j) => (
             <div key={j} className="filter-value-container">
               <span className="filter-value">{item.name}</span>
               {this.props.removeFilter && item.name !== 'Kenya' &&
                 <button className="btn-remove" onClick={() => this.onRemoveFilter(key, item.id)}>
-                  <Icon name="icon-cross" className="-medium" />
+                  <Icon name="icon-cross" className={labels ? '-medium' : '-small'} />
                 </button>
               }
             </div>
@@ -51,7 +60,8 @@ export default class FiltersSelectedBar extends React.Component {
     ));
   }
 
-  getSelectedFilters() {
+  /* Device selected filters bar */
+  getSelectedFiltersDevice() {
     const { selected } = this.props;
 
     return Object.keys(selected).filter(key => selected[key].length).map(key => (
@@ -74,13 +84,21 @@ export default class FiltersSelectedBar extends React.Component {
         <Media device="device">
           <div className="selected-filters-container">
             <span className="label">Current viewing:</span>
-            {this.getSelectedFilters()}
+            {this.getSelectedFiltersDevice()}
+            <button className="btn btn-toggle" onClick={this.onToggleFilters}>
+              <Icon name={`icon-arrow-${this.state.open ? 'up' : 'down'}`} className="-smaller" />
+            </button>
+          </div>
+        </Media>
+        <Media device="device">
+          <div className="full-selected-list">
+            {this.state.open && this.getSelectedFilters()}
           </div>
         </Media>
 
         <Media device="desktop">
           <span className="bar-label">{title}</span>
-          {this.getFilters()}
+          {this.getSelectedFilters(true)}
         </Media>
       </nav>
     );
