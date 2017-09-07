@@ -75,7 +75,7 @@ export default class Filters extends React.Component {
           label="Topics"
           name="topics"
           type="checkbox"
-          list={options.topics}
+          list={options.topics.filter(t => t.name !== 'Contextual')}
           setValue={this.setFilters}
           selected={selected.topics}
           multi

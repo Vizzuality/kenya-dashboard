@@ -144,7 +144,7 @@ HomePage.defaultProps = {
 
 const mapStateToProps = state => ({
   user: state.user,
-  topics: getTopicsWithoutAllOption(state)
+  topics: getTopicsWithoutAllOption(state).filter(t => t.name !== 'Contextual')
 });
 
 const mapDispatchToProps = dispatch => ({

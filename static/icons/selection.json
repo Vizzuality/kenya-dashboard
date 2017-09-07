@@ -1581,7 +1581,7 @@
         "isMulticolor": false,
         "isMulticolor2": false,
         "tags": [
-          "Agriculture_circle"
+          "agriculture_circle"
         ],
         "grid": 0
       },
@@ -1589,7 +1589,7 @@
       "properties": {
         "order": 278,
         "id": 53,
-        "name": "Agriculture_circle",
+        "name": "agriculture_circle",
         "prevSize": 32
       },
       "setIdx": 0,

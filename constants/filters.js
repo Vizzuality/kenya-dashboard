@@ -17,18 +17,19 @@ const FILTERS_BAR_LABELS = {
 };
 
 const TOPICS_ICONS_SRC = {
-  agriculture: 'agriculture',
-  climate: 'climate',
-  conservancies: 'infrastructure',
-  contextual: 'population',
-  integration: 'poverty',
-  landcover: 'boundarie',
-  livestock: 'livestock',
-  protected_areas: 'protectedareas',
-  protected_forests: 'landcover',
-  socioeconomic: 'urban',
-  water: 'water',
-  wildlife: 'wildlife'
+  agriculture: 'agriculture_circle',
+  climate: 'climate_circle',
+  conservancies: 'infrastructure_circle',
+  contextual: 'population_circle',
+  integration: 'poverty_circle',
+  landcover: 'boundaries_circle',
+  livestock: 'livestock_circle',
+  protected_areas: 'protected_areas',
+  protected_forests: 'forest_circle',
+  socioeconomic: 'urban_circle',
+  tourism: 'tourism_circle',
+  water: 'water_circle',
+  wildlife: 'wildlife_circle'
 };
 
 const TOPICS_BACKGROUNDS_SRC = {
@@ -42,6 +43,7 @@ const TOPICS_BACKGROUNDS_SRC = {
   protected_areas: 'protected_areas.jpg',
   protected_forests: 'forest.jpg',
   socioeconomic: 'urban.jpg',
+  tourism: 'tourism.jpg',
   water: 'water.jpg',
   wildlife: 'wildlife.jpg'
 };
