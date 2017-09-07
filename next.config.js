@@ -37,6 +37,7 @@ module.exports = {
     config.plugins.push(
       new webpack.DefinePlugin({
         'process.env.PORT': JSON.stringify(process.env.PORT),
+        'process.env.KENYA_PATH': JSON.stringify(process.env.KENYA_PATH),
         'process.env.KENYA_API': JSON.stringify(process.env.KENYA_API),
         'process.env.KENYA_API_KEY': JSON.stringify(process.env.KENYA_API_KEY),
         'process.env.BASEMAP_LABEL_URL': JSON.stringify(process.env.BASEMAP_LABEL_URL),

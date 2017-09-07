@@ -22,15 +22,16 @@ export default function CardInfo({ info, className }) {
     'c-card-info',
     { [className]: !!className }
   );
+  const logoPath = `${process.env.KENYA_PATH}${info.logo}`;
 
   return (
     <div className={classNames}>
       {info.logo ?
-        <div calssName="card-logo">
-          <img src={info.logo} alt={info.name} />
+        <div className="card-logo">
+          <img src={logoPath} alt={info.name} />
         </div> :
         <div className="card-logo">
-          <img src={info.logo} alt={info.name} />
+          <img src={logoPath} alt={info.name} />
         </div>
       }
       <h1 className="card-title">{info.name}</h1>

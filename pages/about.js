@@ -71,7 +71,7 @@ class AboutPage extends Page {
                 <Link route={`agency/${principalAgency.id}`}>
                   <a>
                     <div className="agencies-logo">
-                      <img src={principalAgency.logo} alt={principalAgency.name} />
+                      <img src={`${process.env.KENYA_PATH}${principalAgency.logo}`} alt={principalAgency.name} />
                     </div>
                     <h1 className="section-subtitle principal-agency-title">{principalAgency.name}</h1>
                   </a>
