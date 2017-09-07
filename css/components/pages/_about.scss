@@ -46,6 +46,10 @@
       }
     }
 
+    .principal-agency-title {
+      color: $color-text-2;
+    }
+
     .section-description {
       margin-bottom: 100px;
     }
@@ -55,6 +59,10 @@
       min-height: 360px;
       height: calc(100% - 20px);
       margin-bottom: 20px;
+
+      a {
+        color: $color-text-2;
+      }
     }
   }
 }

@@ -13,12 +13,16 @@ import { getAgencies } from 'modules/agencies';
 import isEmpty from 'lodash/isEmpty';
 
 // Components
-import { Router } from 'routes';
+import { Router, Link } from 'routes';
 import Page from 'components/layout/page';
 import Layout from 'components/layout/layout';
 import Intro from 'components/ui/intro';
 import Spinner from 'components/ui/spinner';
 import CardInfo from 'components/ui/card-info';
+
+// Constants
+import { FAKE_DESCRIPTION } from 'constants/general';
+
 
 class AboutPage extends Page {
   static async getInitialProps({ asPath, pathname, query, req, store, isServer }) {
@@ -35,6 +39,9 @@ class AboutPage extends Page {
 
   render() {
     const { url, agencies, user } = this.props;
+    const principalAgency = agencies.list.find(a => a.name === 'Ministry of Environment & Natural Resources' ||
+      `${a.id}` === '5') || agencies.list[0] || {};
+    const filteredAgencies = agencies.list.filter(a => a.name !== 'Ministry of Environment & Natural Resources');
 
     if (isEmpty(user)) return null;
 
@@ -52,7 +59,7 @@ class AboutPage extends Page {
             <div className="row">
               <div className="column small-12 medium-10 medium-offset-1">
                 <h1 className="title">About the Alliance</h1>
-                <p className="description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                <p className="description">{FAKE_DESCRIPTION}</p>
               </div>
             </div>
           </Intro>
@@ -61,20 +68,28 @@ class AboutPage extends Page {
           <section className="c-section agencies-list">
             <div className="row">
               <div className="column small-12 medium-8 medium-offset-2">
-                <div className="agencies-logo">
-                  <img src="static/images/about_logo.png" alt="about logo" />
-                </div>
-                <h1 className="section-subtitle">Ministry of Environment & Natural Resources</h1>
-                <p className="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+                <Link route={`agency/${principalAgency.id}`}>
+                  <a>
+                    <div className="agencies-logo">
+                      <img src={principalAgency.logo} alt={principalAgency.name} />
+                    </div>
+                    <h1 className="section-subtitle principal-agency-title">{principalAgency.name}</h1>
+                  </a>
+                </Link>
+                <p className="section-description">{principalAgency.description || FAKE_DESCRIPTION}</p>
               </div>
             </div>
             {/* List */}
             <div className="row collapse">
               <Spinner isLoading={agencies.loading} />
-              {agencies.list.map((ag, i) => (
+              {filteredAgencies.map((ag, i) => (
                 <div key={i} className="column small-12 medium-4">
                   <div className="agency-container">
-                    <CardInfo info={ag} />
+                    <Link route={`agency/${ag.id}`}>
+                      <a>
+                        <CardInfo info={ag} />
+                      </a>
+                    </Link>
                   </div>
                 </div>
               ))}

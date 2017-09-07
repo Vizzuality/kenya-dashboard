@@ -62,7 +62,7 @@ export default class FiltersModal extends React.Component {
     const { selected } = this.props;
 
     return Object.keys(selected).filter(key => selected[key].length).map(key => (
-      <div className="selected-filters">
+      <div key={key} className="selected-filters">
         <h1 className="selected-title">{FILTER_TITLES[key]}</h1>
         <span className="c-badge">{selected[key].length}</span>
       </div>
