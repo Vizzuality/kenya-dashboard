@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
+import truncate from 'lodash/truncate';
 
 // Utils
 // import { getThreshold } from 'utils/general';
@@ -16,7 +17,7 @@ import TopicIcon from 'components/ui/topic-icon';
 import Chart from 'components/ui/chart';
 
 const fakeDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
-const globalValue = '';
+const globalValue = ''; // TODO: What is this ?????? Remove it please
 
 export default class DashboardItem extends React.Component {
   constructor(props) {
@@ -68,6 +69,15 @@ export default class DashboardItem extends React.Component {
     this.setState({ lastDate });
   }
 
+  getDescription() {
+    const { info } = this.props;
+    const description = truncate(info.description || fakeDescription, {
+      length: 250,
+      separator: ' '
+    });
+    return description;
+  }
+
   render() {
     const { info, className, dates, region, remove, groupId, layout } = this.props;
     // const threshold = this.getThresholdQualification();
@@ -100,7 +110,7 @@ export default class DashboardItem extends React.Component {
             </div>
             {/* Global value */}
             <div className="general-value">
-              <p></p>
+              <p />
             </div>
           </header>
 
@@ -174,7 +184,7 @@ export default class DashboardItem extends React.Component {
                       />
                     </div>
                     <div className="description">
-                      <p>{info.description && info.description !== '' ? info.description : fakeDescription}</p>
+                      <p>{this.getDescription()}</p>
                     </div>
                   </header>
 

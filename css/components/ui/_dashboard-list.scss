@@ -4,24 +4,24 @@
   flex-flow: row wrap;
   box-shadow: 0 0px 0 1px $color-border-1 inset;
 
-  .column {
-    border-bottom: 1px solid $color-border-1;
-    border-right: 1px solid $color-border-1;
-
-    @include breakpoint(large up) {
-      &:nth-child(4n+1) {
-        border-left: 1px solid $color-border-1;
-      }
-    }
-
-    @include breakpoint(medium only) {
-      &:nth-child(3n+1) {
-        border-left: 1px solid $color-border-1;
-      }
-    }
-
-    @include breakpoint(small only) {
-      border-left: 1px solid $color-border-1;
-    }
-  }
+  // .column {
+  //   border-bottom: 1px solid $color-border-1;
+  //   border-right: 1px solid $color-border-1;
+  //
+  //   @include breakpoint(large up) {
+  //     &:nth-child(4n+1) {
+  //       border-left: 1px solid $color-border-1;
+  //     }
+  //   }
+  //
+  //   @include breakpoint(medium only) {
+  //     &:nth-child(3n+1) {
+  //       border-left: 1px solid $color-border-1;
+  //     }
+  //   }
+  //
+  //   @include breakpoint(small only) {
+  //     border-left: 1px solid $color-border-1;
+  //   }
+  // }
 }
