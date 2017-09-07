@@ -9,6 +9,89 @@
   border-bottom: none;
   border-top: 0;
 
+  > div {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+  }
+
+  @media #{$mq-small-medium} {
+    padding: 10px 20px;
+
+    .label {
+      font-size: $font-size-small;
+      line-height: 16px;
+      color: rgba($color-text-1, .5);
+      margin-right: 10px;
+    }
+
+    .selected-filters-container {
+      position: relative;
+      display: flex;
+      flex-flow: row wrap;
+      align-items: center;
+      padding-right: 15px;
+
+      .selected-filters {
+        display: flex;
+        align-items: center;
+        margin-right: 10px;
+
+        .c-badge {
+          margin-left: 5px;
+          margin-top: 0;
+        }
+      }
+
+      .selected-title {
+        font-size: $font-size-small;
+        line-height: 16px;
+        color: $color-text-1;
+        padding: 0;
+        font-weight: $font-weight-default;
+      }
+
+      .btn-toggle {
+        position: absolute;
+        right: -2px;
+        top: 2px;
+
+        .c-icon {
+          fill: $color-primary;
+          stroke: $color-primary;
+          stroke-width: 3px;
+        }
+      }
+    }
+
+    .full-selected-list {
+      position: relative;
+      display: flex;
+      flex-flow: row nowrap;
+      overflow-x: auto;
+
+      &:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        width: 10px;
+        height: 100%;
+
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+100;White+to+Transparent */
+        background: -moz-linear-gradient(to left, rgba($color-bg-dark, .8) 0%, rgba($color-bg-dark, 0) 100%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(to left, rgba($color-bg-dark, .8) 0%,rgba($color-bg-dark, 0) 100%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to left, rgba($color-bg-dark, .8) 0%,rgba($color-bg-dark, 0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); /* IE6-9 */
+      }
+
+      .filters-type-container {
+        flex-flow: row nowrap;
+        padding: 20px 0 10px;
+      }
+    }
+  }
+
+
   .bar-label {
     display: inline-block;
     margin-right: 20px;
