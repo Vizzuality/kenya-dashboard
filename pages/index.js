@@ -12,6 +12,7 @@ import { getTopicsWithoutAllOption } from 'selectors/filters';
 // Modules
 import { getTopicsOptions } from 'modules/filters';
 import { setUser } from 'modules/user';
+import { getAgencies } from 'modules/agencies';
 
 // Components
 import { Link } from 'routes';
@@ -49,6 +50,10 @@ class HomePage extends React.PureComponent {
   componentDidMount() {
     const numToLoad = HomePage.getNumberOftopicsToLoad();
     this.setState({ numLoaded: numToLoad, numToLoad });
+
+    if (!this.props.agencies.list.length) {
+      this.props.getAgencies();
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -61,8 +66,11 @@ class HomePage extends React.PureComponent {
   }
 
   render() {
-    const { url, user, topics } = this.props;
+    const { url, user, topics, agencies } = this.props;
     const { numLoaded } = this.state;
+    const principalAgency = agencies.list.find(a => a.name === 'Ministry of Environment & Natural Resources' ||
+      `${a.id}` === '5') || agencies.list[0] || {};
+    const filteredAgencies = agencies.list.filter(a => a.name !== 'Ministry of Environment & Natural Resources');
 
     return (
       <Layout
@@ -112,6 +120,7 @@ class HomePage extends React.PureComponent {
           </div>
         </section>
 
+        {/* About section */}
         <section className="c-section about">
           <div className="row">
             <div className="column small-12 medium-8 medium-offset-2">
@@ -123,6 +132,36 @@ class HomePage extends React.PureComponent {
             </div>
           </div>
         </section>
+
+        {/* Agencies */}
+        <section className="c-section agencies">
+          <div className="row">
+            <div className="column small-12 medium-8 medium-offset-2">
+              <h1 className="section-title">Members</h1>
+              <div className="principal-agency">
+                <a href={principalAgency.url} className="agency" target="_blank" rel="noopener noreferrer">
+                  <div className="image-container">
+                    <img src={`${process.env.KENYA_PATH}${principalAgency.logo}`} alt={principalAgency.name} />
+                  </div>
+                  <span className="agency-name">
+                    <span>Ministry of Environment & Natural</span><span>Resources</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            {filteredAgencies.map(ag => (
+              <div key={ag.id} className="column small-12 medium-3">
+                <a href={ag.url} className="agency" target="_blank" rel="noopener noreferrer" title={ag.name}>
+                  <div className="image-container">
+                    <img src={`${process.env.KENYA_PATH}${ag.logo}`} alt={ag.name} />
+                  </div>
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
       </Layout>
     );
   }
@@ -131,9 +170,12 @@ class HomePage extends React.PureComponent {
 HomePage.propTypes = {
   url: PropTypes.object,
   topics: PropTypes.array,
+  agencies: PropTypes.object,
   user: PropTypes.object,
   numToLoad: PropTypes.number,
-  numLoaded: PropTypes.number
+  numLoaded: PropTypes.number,
+  // Actions
+  getAgencies: PropTypes.func
 };
 
 HomePage.defaultProps = {
@@ -144,11 +186,13 @@ HomePage.defaultProps = {
 
 const mapStateToProps = state => ({
   user: state.user,
+  agencies: state.agencies,
   topics: getTopicsWithoutAllOption(state).filter(t => t.name !== 'Contextual')
 });
 
 const mapDispatchToProps = dispatch => ({
   getTopicsOptions: bindActionCreators(getTopicsOptions(), dispatch),
+  getAgencies() { dispatch(getAgencies()); },
   setUser: bindActionCreators(user => setUser(user), dispatch)
 });
 

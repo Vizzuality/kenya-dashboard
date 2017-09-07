@@ -16,9 +16,10 @@ import isEmpty from 'lodash/isEmpty';
 import { Router, Link } from 'routes';
 import Layout from 'components/layout/layout';
 import Intro from 'components/ui/intro';
-// import Spinner from 'components/ui/spinner';
 
-const fakeDescription = 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur.';
+// Constants
+import { FAKE_DESCRIPTION } from 'constants/general';
+
 
 class AgencyPage extends React.PureComponent {
   static async getInitialProps({ asPath, pathname, query, req, store, isServer }) {
@@ -52,7 +53,7 @@ class AgencyPage extends React.PureComponent {
               <div className="column small-12 medium-10 medium-offset-1">
                 <h1 className="title -medium">{info.name}</h1>
                 <p className="description">{info.description && info.description !== '' ?
-                  info.description : fakeDescription}</p>
+                  info.description : FAKE_DESCRIPTION}</p>
               </div>
             </div>
           </Intro>
@@ -62,7 +63,7 @@ class AgencyPage extends React.PureComponent {
             <div className="row">
               <div className="column small-12 medium-10 medium-offset-1">
                 <h1 className="section-title">Contributions to Data</h1>
-                <p className="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                <p className="section-description">{FAKE_DESCRIPTION}</p>
               </div>
             </div>
             <div className="row">
@@ -85,11 +86,9 @@ class AgencyPage extends React.PureComponent {
                 </div>
               </div>
               <div className="row">
-                {info.contributors.map((ind, i) => (
-                  <div key={i} className="column small-12 medium-4 large-3">
-                    <span>{ind.name}</span>
-                  </div>
-                ))}
+                <div className="column small-12 medium-4 large-3">
+                  <p className="contributors-names">{info.contributors}</p>
+                </div>
               </div>
             </section>
           }

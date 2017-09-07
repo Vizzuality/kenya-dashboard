@@ -46,6 +46,8 @@ const SLIDER_OPTIONS = {
   draggable: false
 };
 
+const FAKE_DESCRIPTION = 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa qua.';
+
 export {
   BREAKPOINT_MOBILE,
   BREAKPOINT_TABLET,
@@ -56,5 +58,6 @@ export {
   THRESHOLD_EXAMPLE,
   MONTHS_INITIALS,
   MONTHS_NAMES,
-  SLIDER_OPTIONS
+  SLIDER_OPTIONS,
+  FAKE_DESCRIPTION
 };

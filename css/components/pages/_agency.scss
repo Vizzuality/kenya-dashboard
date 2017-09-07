@@ -48,10 +48,15 @@
   }
 
   .contributors-list {
-    background-image: url('/static/images/home_1.png');
+    background-image: url('/static/images/agency_contributors.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
     background-color: $color-bg-light;
     color: $color-text-2;
+
+    .contributors-names {
+      line-height: 30px;
+    }
   }
 }

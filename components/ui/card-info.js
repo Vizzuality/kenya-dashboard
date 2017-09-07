@@ -3,35 +3,39 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
+import truncate from 'lodash/truncate';
 
-// Components
-import { Link } from 'routes';
+// Constants
+import { FAKE_DESCRIPTION } from 'constants/general';
 
-const fakeDescription = 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa qua.';
 
 export default function CardInfo({ info, className }) {
+  const getDescription = () => {
+    const description = truncate(info.description || FAKE_DESCRIPTION, {
+      length: 150,
+      separator: ' '
+    });
+    return description;
+  };
+
   const classNames = classnames(
     'c-card-info',
     { [className]: !!className }
   );
+  const logoPath = `${process.env.KENYA_PATH}${info.logo}`;
 
   return (
     <div className={classNames}>
       {info.logo ?
-        <div calssName="card-logo">
-          <img src={info.logo} alt={info.name} />
+        <div className="card-logo">
+          <img src={logoPath} alt={info.name} />
         </div> :
         <div className="card-logo">
-          <img src="static/images/about_logo.png" alt="about logo" />
+          <img src={logoPath} alt={info.name} />
         </div>
       }
-      <Link route={`agency/${info.id}`}>
-        <a>
-          <h1 className="card-title">{info.name}</h1>
-        </a>
-      </Link>
-      <p className="card-description">{info.description && info.description !== '' ?
-        info.description : fakeDescription }</p>
+      <h1 className="card-title">{info.name}</h1>
+      <p className="card-description">{getDescription()}</p>
     </div>
   );
 }
