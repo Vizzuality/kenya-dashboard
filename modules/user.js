@@ -153,7 +153,7 @@ export function resetPassword({ oldPassword, newPassword, token }) {
       type: 'POST',
       body: {
         password: newPassword,
-        password_confirmation: oldPassword,
+        password_confirmation: newPassword,
         token
       },
       headers: [
