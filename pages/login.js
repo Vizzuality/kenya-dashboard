@@ -96,7 +96,7 @@ class Login extends React.PureComponent {
       this.setState({ message: null });
       if (this.props.user.reset && !nextProps.user.reset) {
         Router.pushRoute('login');
-      } else window.history.back();
+      } else Router.pushRoute('home');
     }
 
     if (nextProps.user.reset && !nextProps.user.reset.error) {

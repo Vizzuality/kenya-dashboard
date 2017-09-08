@@ -152,7 +152,7 @@ class HomePage extends React.PureComponent {
           </div>
           <div className="row">
             {filteredAgencies.map(ag => (
-              <div key={ag.id} className="column small-6 medium-3">
+              <div key={ag.id} className="column small-6 medium-4 large-3">
                 <a href={ag.url} className="agency" target="_blank" rel="noopener noreferrer" title={ag.name}>
                   <div className="image-container">
                     <img src={`${process.env.KENYA_PATH}${ag.logo}`} alt={ag.name} />

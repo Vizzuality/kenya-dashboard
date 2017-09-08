@@ -1,9 +1,10 @@
 
 .c-card-info {
   padding: 35px 25px 18px;
-  border: 1px solid rgba(30, 39, 39, .2);
   height: 100%;
   text-align: left;
+  background-color: $color-bg-light;
+  // border: 1px solid rgba(30, 39, 39, .2);
 
   .card-logo {
     display: flex;

@@ -29,7 +29,7 @@
     background-position: center;
 
     .link {
-      @media #{$mq-small-medium} {
+      @media #{$mq-mobile} {
         width: 100%;
       }
     }
@@ -59,7 +59,7 @@
       width: 100%;
       margin-top: 60px;
 
-      @media #{$mq-small-medium} {
+      @media #{$mq-mobile} {
         margin-top: 36px;
 
         .row .column {
@@ -77,7 +77,7 @@
         margin-top: 55px;
         padding: 11px 62px;
 
-        @media #{$mq-small-medium} {
+        @media #{$mq-mobile} {
           width: 100%;
           margin-top: 20px;
         }
@@ -109,7 +109,7 @@
       margin-top: 50px;
       padding: 11px 58px;
 
-      @media #{$mq-small-medium} {
+      @media #{$mq-mobile} {
         margin-top: 30px;
         width: 100%;
       }
