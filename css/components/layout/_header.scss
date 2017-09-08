@@ -63,6 +63,12 @@ $menu-container-width: 220px;
       font-size: $font-size-default;
       line-height: 19px;
       fill: $color-text-1;
+
+      @media #{$mq-small-medium} {
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: $font-size-default;
+      }
     }
 
     .title-link {
