@@ -72,13 +72,19 @@ $menu-container-width: 220px;
       @media #{$mq-small-medium} {
         font-size: 20px;
         line-height: 24px;
-        font-weight: $font-size-default;
+        font-weight: $font-weight-default;
       }
     }
 
     .title-link {
       display: flex;
       align-items: center;
+
+      @media #{$mq-small-medium} {
+        font-size: 20px;
+        line-height: 24px;
+        font-weight: $font-weight-default;
+      }
 
       .c-icon {
         width: 11px;

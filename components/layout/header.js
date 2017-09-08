@@ -167,8 +167,8 @@ class Header extends React.Component {
     if (user.auth_token || device) {
       switch (url.pathname) {
         // Different pathnames for the index
-        case '/index': return { title: <h1>Kenya</h1> };
-        case '/': return { title: <h1>Kenya</h1> };
+        case '/index': return { title: <h1>Kenya dashboard</h1> };
+        case '/': return { title: <h1>Kenya dashboard</h1> };
         case '/dashboard': return {
           title: <h1>Dashboard</h1>,
           content: <DashboardHeaderContent url={url} />
