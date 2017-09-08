@@ -92,7 +92,7 @@
     z-index: 2; /* Otherwise, it won't be reachable */
 
     &:hover {
-      fill: $color-error;
+      fill: rgba($color-primary, .5);
     }
   }
 

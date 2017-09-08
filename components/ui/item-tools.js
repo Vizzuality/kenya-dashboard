@@ -80,7 +80,7 @@ class ItemTools extends React.Component {
             eventOff="mouseleave"
           >
             <button className="btn" onClick={this.onToggleModal}>
-              <Icon name="icon-info" className="-smaller" />
+              <Icon name="icon-info" className="-small" />
             </button>
 
             <div>Info</div>
@@ -96,9 +96,9 @@ class ItemTools extends React.Component {
             eventOff="mouseleave"
           >
             <button className="btn">
-              <Link route={`/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
+              <Link route={`${process.env.KENYA_PATH}/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
                 <a>
-                  <Icon name="icon-print" className="-smaller" />
+                  <Icon name="icon-print" className="-small" />
                 </a>
               </Link>
             </button>
@@ -116,7 +116,7 @@ class ItemTools extends React.Component {
               eventOff="mouseleave"
             >
               <button className="btn" onClick={this.onRemoveItem}>
-                <Icon name="icon-remove" className="-smaller" />
+                <Icon name="icon-remove" className="-small" />
               </button>
 
               <div>Remove</div>
