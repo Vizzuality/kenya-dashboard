@@ -67,16 +67,18 @@ class AboutPage extends Page {
           {/* Agencies list */}
           <section className="c-section agencies-list">
             <div className="row">
-              <div className="column small-12 medium-8 medium-offset-2">
+              <div className="column small-12">
                 <Link route={`agency/${principalAgency.id}`}>
                   <a>
-                    <div className="agencies-logo">
-                      <img src={`${process.env.KENYA_PATH}${principalAgency.logo}`} alt={principalAgency.name} />
+                    <div className="principal-agency-container">
+                      <div className="agencies-logo">
+                        <img src={`${process.env.KENYA_PATH}${principalAgency.logo}`} alt={principalAgency.name} />
+                      </div>
+                      <h1 className="section-subtitle principal-agency-title">{principalAgency.name}</h1>
+                      <p className="section-description">{principalAgency.description || FAKE_DESCRIPTION}</p>
                     </div>
-                    <h1 className="section-subtitle principal-agency-title">{principalAgency.name}</h1>
                   </a>
                 </Link>
-                <p className="section-description">{principalAgency.description || FAKE_DESCRIPTION}</p>
               </div>
             </div>
             {/* List */}
