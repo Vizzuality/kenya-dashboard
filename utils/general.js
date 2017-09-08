@@ -124,7 +124,9 @@ function roundNumberWithDecimals(number, decimals = 2) {
 }
 
 function setFormat(value, props) {
-  const date = new Date(value);
+  const date = Array.isArray(value) ?
+    new Date(value[0].replace(' ', 'T').replace('+', '.')) :
+    new Date(value.replace(' ', 'T').replace('+', '.'));
 
   if (date !== 'Invalid Date') {
     if (props) {

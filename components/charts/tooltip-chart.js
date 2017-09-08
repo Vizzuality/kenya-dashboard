@@ -31,7 +31,7 @@ export default class TooltipChart extends React.Component {
     return active ?
       <div className={classNames}>
         <p className="title">
-          {config && config.x && config.x['display-name']}
+          {config && config.x ? config.x['display-name'] : ''}
           {payload.length && payload[0].payload.x &&
             setFormat(payload[0].payload.x, config.x || null)}
         </p>
