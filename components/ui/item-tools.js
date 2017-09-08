@@ -95,14 +95,11 @@ class ItemTools extends React.Component {
             event="mouseenter"
             eventOff="mouseleave"
           >
-            <button className="btn">
-              <Link route={`${process.env.KENYA_PATH}/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
-                <a>
-                  <Icon name="icon-print" className="-small" />
-                </a>
-              </Link>
-            </button>
-
+            <Link route={`${process.env.KENYA_PATH}/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
+              <a className="btn" download>
+                <Icon name="icon-print" className="-smaller" />
+              </a>
+            </Link>
             <div>Print</div>
           </Tooltip>
 
