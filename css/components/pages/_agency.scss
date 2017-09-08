@@ -25,9 +25,10 @@
 
   /* Intro */
   .c-intro {
-    background-image: url('/static/images/aboutalliance.png');
+    background-image: url('/static/images/institutions_detail.png');
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
     background-color: $color-bg-dark;
     color: $color-text-1;
   }

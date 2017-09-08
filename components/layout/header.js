@@ -126,7 +126,13 @@ class Header extends React.Component {
             </button>
           )
         };
-        case '/about': return { title: <h1>About the Alliance</h1> };
+        case '/about': return { title: (
+          <Link route="dashboard">
+            <a className="title-link">
+              <h1>Kenya dashboard</h1>
+            </a>
+          </Link>
+        ) };
         case '/agency': return {
           title: (
             <Link route="about">
@@ -176,7 +182,13 @@ class Header extends React.Component {
             </Link>
           )
         };
-        case '/about': return { title: <h1>About the Alliance</h1> };
+        case '/about': return { title: (
+          <Link route="dashboard">
+            <a className="title-link">
+              <h1>Kenya dashboard</h1>
+            </a>
+          </Link>
+        ) };
         case '/agency': return {
           title: (
             <Link route="about">
