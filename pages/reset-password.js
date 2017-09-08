@@ -54,7 +54,6 @@ class ResetPassword extends React.PureComponent {
 
     this.state = {
       form: {
-        email: '',
         newPassword: '',
         repeatNewPassword: ''
       },
@@ -164,23 +163,6 @@ class ResetPassword extends React.PureComponent {
 
             <section className="form-container">
               <form className="c-form" onSubmit={this.onSubmit} noValidate>
-                {/* EMAIL */}
-                <Field
-                  ref={(c) => { if (c) FORM_ELEMENTS.elements.email = c; }}
-                  onChange={value => this.onChange({ email: value })}
-                  validations={['required', 'email']}
-                  className="-fluid"
-                  properties={{
-                    name: 'email',
-                    placeholder: 'Email',
-                    type: 'email',
-                    required: true,
-                    default: ''
-                  }}
-                >
-                  {Input}
-                </Field>
-
                 {/* NEW PASSWORD */}
                 <Field
                   ref={(c) => { if (c) FORM_ELEMENTS.elements.newPassword = c; }}
