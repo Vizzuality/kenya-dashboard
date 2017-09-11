@@ -23,7 +23,7 @@ export default class PieType extends React.Component {
 
     this.state = {
       title: props.data[0].x,
-      text: `${roundNumberWithDecimals(value)}%`
+      value: `${roundNumberWithDecimals(value)}%`
     };
 
     this.category = getThreshold(props.data[0].y, props.threshold.y['break-points']);
@@ -33,7 +33,7 @@ export default class PieType extends React.Component {
   }
 
   onMouseEnter(props) {
-    this.setState({ text: `${roundNumberWithDecimals(props.percent * 100)}%`, title: props.x });
+    this.setState({ value: `${roundNumberWithDecimals(props.percent * 100)}%`, title: props.x });
   }
 
   render() {
@@ -59,8 +59,8 @@ export default class PieType extends React.Component {
               activeIndex={0}
               onMouseEnter={this.onMouseEnter}
             >
-              <Label value={this.state.title} dy={-13} position="center" />
-              <Label value={this.state.text} dy={13} position="center" />
+              <Label value={this.state.value} dy={-13} position="center" className="slice-value" />
+              <Label value={this.state.title} dy={13} position="center" className="slice-title" />
               {
                 data.map((item, i) => {
                   const color = i > 4 ?

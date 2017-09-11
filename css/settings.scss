@@ -110,6 +110,7 @@ $bp-medium: 40em;
 
 // Medias
 $mq-mobile: 'screen and (min-width: 300px) and (max-width: #{$bp-mobile})';
+$mq-tablet: 'screen and (min-width: #{$bp-mobile}) and (max-width: #{$bp-tablet})';
 $mq-small-medium: 'screen and (min-width: 300px) and (max-width: #{$bp-tablet})';
 $mq-smaller: 'screen and (min-width: #{$bp-mobile})';
 $mq-small: 'screen and (min-width: #{$bp-tablet})';

@@ -9,11 +9,28 @@
 
   .recharts-text.recharts-label {
     fill: $color-text-1;
+
+    tspan {
+      font-size: 40px;
+      line-height: 42px;
+
+      @media #{$mq-small-medium} {
+        font-size: 34px;
+        line-height: 38px;
+      }
+    }
+
+    &:last-child tspan {
+      font-size: $font-size-small;
+      line-height: 16px;
+      text-transform: uppercase;
+    }
   }
 }
 
 .p-widget .c-pie-type .recharts-text.recharts-label {
   fill: $color-text-2;
+
 }
 
 @media print {
