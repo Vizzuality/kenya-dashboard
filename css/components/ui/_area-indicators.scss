@@ -1,7 +1,6 @@
 
 .c-area-indicators {
   width: 100%;
-  border-right: 1px solid $color-border-1;
 
   .area-indicators-header {
     display: flex;
@@ -11,6 +10,7 @@
     height: 36px;
     padding: 0 0 0 30px;
     background-color: rgba($color-secondary, .4);
+    border-right: 1px solid $color-border-1;
     border-bottom: 1px solid $color-border-1;
 
     .tools {

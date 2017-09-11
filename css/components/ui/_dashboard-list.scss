@@ -2,7 +2,8 @@
   width: 100%;
   display: flex;
   flex-flow: row wrap;
-  box-shadow: 0 0px 0 1px $color-border-1 inset;
+  // box-shadow: 0 0px 0 1px $color-border-1 inset;
+  border-bottom: 1px solid $color-border-1;
 
   // .column {
   //   border-bottom: 1px solid $color-border-1;

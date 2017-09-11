@@ -34,6 +34,7 @@
   .accordion-item {
     // flex-grow: 1;
     transition: all .3s ease;
+    border-right: 1px solid $color-border-1;
 
     &.-large-1 { width: 100%; }
     &.-large-2 { width: 50%; }

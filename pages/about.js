@@ -66,7 +66,7 @@ class AboutPage extends Page {
 
           {/* Agencies list */}
           <section className="c-section agencies-list">
-            <div className="row">
+            <div className="row collapse">
               <div className="column small-12">
                 <Link route={`agency/${principalAgency.id}`}>
                   <a>
