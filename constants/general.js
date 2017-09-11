@@ -38,6 +38,7 @@ const MONTHS_INITIALS = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 
 const MONTHS_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const SLIDER_OPTIONS = {
+  arrows: false,
   dots: false,
   infinite: false,
   speed: 500,

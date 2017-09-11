@@ -32,8 +32,10 @@ class Legend extends React.Component {
   constructor(props) {
     super(props);
 
+    const windowWidth = window.innerWidth;
+
     this.state = {
-      open: false
+      open: windowWidth < 1024
     };
 
     // BINDINGS

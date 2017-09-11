@@ -9,6 +9,8 @@
   height: 100%;
   padding: 24px;
   border: 1px solid $color-border-1;
+  border-left: 0;
+  border-top: 0;
 
   &.-link {
     width: 100%;
@@ -44,6 +46,7 @@
           .btn-more {
             padding: 0;
             padding-top: 10px;
+            font-size: $font-size-small;
             color: $color-primary;
 
             &:hover { opacity: .7; }
@@ -68,6 +71,11 @@
       height: 24px;
       background-color: $color-bg-light;
       border-radius: 50%;
+
+      &:hover {
+        opacity: 1;
+        background-color: $color-primary;
+      }
 
       .c-icon {
         fill: $color-text-2;
@@ -139,6 +147,11 @@
       height: 24px;
       background-color: $color-bg-light;
       border-radius: 50%;
+
+      &:hover {
+        opacity: 1;
+        background-color: $color-primary;
+      }
 
       .c-icon {
         fill: $color-text-2;

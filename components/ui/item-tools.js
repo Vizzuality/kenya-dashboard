@@ -97,7 +97,7 @@ class ItemTools extends React.Component {
           >
             <Link route={`${process.env.KENYA_PATH}/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
               <a className="btn" download>
-                <Icon name="icon-print" className="-smaller" />
+                <Icon name="icon-print" className="-small" />
               </a>
             </Link>
             <div>Print</div>

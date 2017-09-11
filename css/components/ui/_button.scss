@@ -7,6 +7,12 @@
   line-height: 16px;
 
   // STATES
+  &:hover {
+    color: $color-primary;
+    background-color: rgba($color-secondary, .5);
+    opacity: 1;
+  }
+
   &.-disabled {
     pointer-events: none;
     opacity: .4;
@@ -34,6 +40,11 @@
     font-size: 17px;
     line-height: 20px;
     padding: 12px 22px;
+
+    &:hover {
+      background-color: $color-secondary;
+      opacity: 1;
+    }
   }
 
   &.-light {

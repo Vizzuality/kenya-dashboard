@@ -142,8 +142,12 @@
     }
 
     .image-container {
-      max-width: 100px;
+      // max-width: 100px;
       // max-height: 50px;
+
+      img {
+        max-height: 80px;
+      }
     }
   }
 }
