@@ -17,10 +17,16 @@ export default class ItemTools extends React.Component {
       open: false
     };
 
+    this.mounted = false;
+
     // Bindings
     this.onToggle = this.onToggle.bind(this);
     this.onApply = this.onApply.bind(this);
     this.onCancel = this.onCancel.bind(this);
+  }
+
+  componentDidMount() {
+    this.mounted = true;
   }
 
   onApply(e, picker) {
@@ -39,6 +45,12 @@ export default class ItemTools extends React.Component {
     this.setState({ open: !this.state.open });
   }
 
+  getPosition() {
+    if (this.select.offsetLeft < 260) return 'right';
+    else if (this.select.offsetLeft + 260 > window.innerWidth) return 'left';
+    return 'center';
+  }
+
   render() {
     const { className, dates } = this.props;
     const classNames = classnames(
@@ -49,32 +61,35 @@ export default class ItemTools extends React.Component {
     const currentEndDate = `${currentDate.getMonth()}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
     const start = dates ? `${dates.start.month}/${dates.start.day}/${dates.start.year}` : '01/01/1900';
     const end = dates ? `${dates.end.month}/${dates.end.day}/${dates.end.year}` : currentEndDate;
+    const position = this.select ? this.getPosition() : 'center';
 
     return (
-      <div className={classNames}>
-        <DateRangePicker
-          startDate={start}
-          endDate={end}
-          opens="center"
-          showDropdowns
-          minDate="1/1/1900"
-          maxDate={currentEndDate}
-          locale={{
-            applyLabel: 'Apply',
-            cancelLabel: 'Remove',
-            fromLabel: 'From',
-            toLabel: 'To'
-          }}
-          onApply={this.onApply}
-          onCancel={this.onCancel}
-          onShow={this.onToggle}
-          onHide={this.onToggle}
-        >
-          <div className="label">
-            <span className="literal">Date</span>
-            <Icon name={`icon-arrow-${this.state.open ? 'up' : 'down'}`} className="-tiny" />
-          </div>
-        </DateRangePicker>
+      <div className={classNames} ref={(node) => { this.select = node; }}>
+        {this.mounted &&
+          <DateRangePicker
+            startDate={start}
+            endDate={end}
+            opens={position}
+            showDropdowns
+            minDate="1/1/1900"
+            maxDate={currentEndDate}
+            locale={{
+              applyLabel: 'Apply',
+              cancelLabel: 'Remove',
+              fromLabel: 'From',
+              toLabel: 'To'
+            }}
+            onApply={this.onApply}
+            onCancel={this.onCancel}
+            onShow={this.onToggle}
+            onHide={this.onToggle}
+          >
+            <div className="label">
+              <span className="literal">Date</span>
+              <Icon name={`icon-arrow-${this.state.open ? 'up' : 'down'}`} className="-tiny" />
+            </div>
+          </DateRangePicker>
+        }
       </div>
     );
   }
