@@ -22,7 +22,7 @@ export default function CardInfo({ info, className }) {
     'c-card-info',
     { [className]: !!className }
   );
-  const logoPath = `${process.env.KENYA_PATH}${info.logo}`;
+  const logoPath = `${process.env.KENYA_PATH}/${info.logo}`;
 
   return (
     <div className={classNames}>
