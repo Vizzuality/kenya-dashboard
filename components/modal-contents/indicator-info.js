@@ -43,13 +43,19 @@ export default function IndicatorInfo(props) {
         {/* Description */}
         <article>
           <h2 className="article-title">Description</h2>
-          <p className="article-text">{info.description && info.description !== '' ? info.description : FAKE_DESCRIPTION}</p>
+          <p
+            className="article-text"
+            dangerouslySetInnerHTML={{ __html: info.description && info.description !== '' ? info.description : FAKE_DESCRIPTION }}
+          />
         </article>
 
         {/* Methodology */}
         <article>
           <h2 className="article-title">Methodology</h2>
-          <p className="article-text">{info.methodology && info.methodology !== '' ? info.methodology : FAKE_DESCRIPTION }</p>
+          <p
+            className="article-text"
+            dangerouslySetInnerHTML={{ __html: info.methodology && info.methodology !== '' ? info.methodology : FAKE_DESCRIPTION }}
+          />
         </article>
       </section>
     </div>

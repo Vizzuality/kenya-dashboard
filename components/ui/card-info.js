@@ -35,7 +35,10 @@ export default function CardInfo({ info, className }) {
         </div>
       }
       <h1 className="card-title">{info.name}</h1>
-      <p className="card-description">{getDescription()}</p>
+      <p
+        className="card-description"
+        dangerouslySetInnerHTML={{ __html: getDescription() }}
+      />
     </div>
   );
 }

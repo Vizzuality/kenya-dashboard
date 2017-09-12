@@ -20,8 +20,8 @@ import TopicIcon from 'components/ui/topic-icon';
 import Chart from 'components/ui/chart';
 import IndicatorInfo from 'components/modal-contents/indicator-info';
 
-const fakeDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
-
+// constants
+import { FAKE_DESCRIPTION } from 'constants/general';
 
 export default class DashboardItem extends React.Component {
   constructor(props) {
@@ -88,7 +88,7 @@ export default class DashboardItem extends React.Component {
 
   getDescription() {
     const { info } = this.props;
-    const description = truncate(info.description || fakeDescription, {
+    const description = truncate(info.description || FAKE_DESCRIPTION, {
       length: 250,
       separator: ' '
     });
@@ -107,7 +107,7 @@ export default class DashboardItem extends React.Component {
       }
     );
     const parsedInfo = { ...info, ...{ lastDate: this.state.lastDate } };
-    const description = info.description || fakeDescription;
+    const description = info.description || FAKE_DESCRIPTION;
 
     return (
       layout === 'grid' ?
@@ -202,7 +202,9 @@ export default class DashboardItem extends React.Component {
                       />
                     </div>
                     <div className="description">
-                      <p>{this.getDescription()}</p>
+                      <p
+                        dangerouslySetInnerHTML={{ __html: this.getDescription() }}
+                      />
                       {description.length > 250 &&
                         <button className="btn btn-more" onClick={this.onToggleModal}>
                           View more

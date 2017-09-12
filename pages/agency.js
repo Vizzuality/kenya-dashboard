@@ -54,8 +54,11 @@ class AgencyPage extends React.PureComponent {
                 <a href={info.url} target="_blank" rel="noopener noreferrer">
                   <h1 className="title -medium">{info.name}</h1>
                 </a>
-                <p className="description">{info.description && info.description !== '' ?
-                  info.description : FAKE_DESCRIPTION}</p>
+                <p
+                  className="description"
+                  dangerouslySetInnerHTML={{ __html: info.description && info.description !== '' ?
+                  info.description : FAKE_DESCRIPTION }}
+                />
               </div>
             </div>
           </Intro>
@@ -89,7 +92,10 @@ class AgencyPage extends React.PureComponent {
               </div>
               <div className="row">
                 <div className="column small-12 medium-4 large-3">
-                  <p className="contributors-names">{info.contributors}</p>
+                  <p
+                    className="contributors-names"
+                    dangerouslySetInnerHTML={{ __html: info.contributors }}
+                  />
                 </div>
               </div>
             </section>
