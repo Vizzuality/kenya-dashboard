@@ -152,13 +152,15 @@ class CompareToolbar extends React.Component {
 
     return (
       <div className={classNames}>
-        <button className="c-button btn-add-indicator" onClick={this.onOpenAddIndicatorModal}>Add Indicator</button>
-        <Media device="device">
-          <button className="c-button btn-add-area" onClick={this.onOpenAddAreaModal}>Add Location</button>
-        </Media>
-        <Media device="desktop">
-          <button className={addAreaClass} onClick={this.onAddArea}>Add Location</button>
-        </Media>
+        <div className="actions-container">
+          <button className="c-button btn-add-indicator" onClick={this.onOpenAddIndicatorModal}>Add Indicator</button>
+          <Media device="device">
+            <button className="c-button btn-add-area" onClick={this.onOpenAddAreaModal}>Add Location</button>
+          </Media>
+          <Media device="desktop">
+            <button className={addAreaClass} onClick={this.onAddArea}>Add Location</button>
+          </Media>
+        </div>
       </div>
     );
   }

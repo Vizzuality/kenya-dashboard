@@ -346,6 +346,7 @@ class ComparePage extends Page {
         session={session}
         logged={user.logged}
         className="p-compare"
+        hasFooter={false}
       >
         <div className="compare-container">
           <CompareToolbar

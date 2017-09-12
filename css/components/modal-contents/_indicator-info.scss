@@ -3,10 +3,24 @@
   color: $color-text-1;
   padding: 60px 80px;
 
+  @media #{$mq-small-medium} {
+    padding: 60px 20px;
+  }
+
   .info-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+
+    @media #{$mq-small-medium} {
+      flex-flow: column;
+    }
+
+    > .info {
+      @media #{$mq-small-medium} {
+        order: 2;
+      }
+    }
   }
 
   .date {
@@ -22,8 +36,19 @@
   }
 
   .logo-container {
-    max-height: 50px;
     max-width: 150px;
+    margin-left: 10px;
+
+    @media #{$mq-small-medium} {
+      order: 1;
+      max-width: 100%;
+      margin-left: 0;
+      margin-bottom: 20px;
+    }
+
+    img {
+      max-height: 80px;
+    }
   }
 
   .topic-container {

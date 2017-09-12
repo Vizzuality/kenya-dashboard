@@ -111,8 +111,8 @@ class Legend extends React.Component {
           <div className="item-tools">
             <button className="btn-show" onClick={() => this.onToggleLayer(layer.id)}>
               {layer.zIndex === -1 ?
-                <Icon name="icon-hide-eye" className="" /> :
-                <Icon name="icon-eye" className="-" />
+                <Icon name="icon-hide-eye" className="-hidden" /> :
+                <Icon name="icon-eye" className="" />
               }
             </button>
             <DragHandle />

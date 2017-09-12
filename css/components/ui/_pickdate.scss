@@ -24,7 +24,8 @@
 /* Override Dropdown */
 .daterangepicker.dropdown-menu {
   display: none;
-  max-width: 525px;
+  width: 525px;
+  transform: translateY(10px);
 
   .daterangepicker_input {
     input {
@@ -47,7 +48,46 @@
         tr {
           th {
             font-weight: $font-weight-light;
+
+            &.prev.available,
+            &.next.available {
+              position: relative;
+              border-radius: 0;
+
+              &:hover {
+                background: transparent;
+
+                &:after {
+                  border-color: $color-primary;
+                }
+              }
+
+              &:after {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 6px;
+                height: 6px;
+                transform: translate(-50%, -50%) rotate(45deg);
+              }
+            }
+
+            &.prev.available {
+              &:after {
+                border-left: 2px solid $color-text-2;
+                border-bottom: 2px solid $color-text-2;
+              }
+            }
+
+            &.next.available {
+              &:after {
+                border-top: 2px solid $color-text-2;
+                border-right: 2px solid $color-text-2;
+              }
+            }
           }
+
 
           &:nth-child(1) {
             th {

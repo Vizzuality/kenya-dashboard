@@ -176,6 +176,10 @@
 
           .c-icon {
             fill: $color-text-1;
+
+            &.-hidden {
+              opacity: .5;
+            }
           }
         }
       }
@@ -207,23 +211,41 @@
 
 /* Dragged item */
 .legend-item {
-  padding: 10px 0;
+  padding: 10px 15px !important;
 
-  &:nth-child(odd) {
-    padding-right: 25px;
-  }
-
-  &:nth-child(even) {
-    padding-left: 25px;
-  }
-
+  /* Dragged specific */
   &.-sort {
-    background-color: $color-bg-dark;
     max-height: 90px;
+    background-color: $color-secondary;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.2);
     overflow: hidden;
     padding: 10px 0;
     z-index: 99999999;
   }
+
+  .c-collapsible-list {
+    &.-hidden {
+      .collapsible-title { margin-bottom: 0; }
+    }
+  }
+
+  /* item normal styles */
+
+  // &:nth-child(odd) {
+  //   padding-right: 25px;
+  //
+  //   @media #{$mq-mobile} {
+  //     padding-right: 0;
+  //   }
+  // }
+  //
+  // &:nth-child(even) {
+  //   padding-left: 25px;
+  //
+  //   @media #{$mq-mobile} {
+  //     padding-left: 0;
+  //   }
+  // }
 
   &.-choropleth,
   &.-gradient {
@@ -273,6 +295,10 @@
 
       .c-icon {
         fill: $color-text-1;
+
+        &.-hidden {
+          opacity: .5;
+        }
       }
     }
   }
@@ -296,11 +322,5 @@
     font-size: $font-size-small;
     line-height: 16px;
     color: rgba($color-text-1, .5);
-  }
-
-  .c-collapsible-list {
-    &.-hidden {
-      .collapsible-title { margin-bottom: 0; }
-    }
   }
 }

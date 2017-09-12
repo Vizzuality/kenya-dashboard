@@ -7,8 +7,8 @@ import classnames from 'classnames';
 // Components
 import TopicIcon from 'components/ui/topic-icon';
 
-const fakeDescription = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
-const fakeMethodology = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+// Constants
+import { FAKE_DESCRIPTION } from 'constants/general';
 
 export default function IndicatorInfo(props) {
   const { className, info } = props;
@@ -21,19 +21,20 @@ export default function IndicatorInfo(props) {
     <div className={classNames}>
       {/* Header */}
       <header className="info-header">
-        <div>
+        <div className="info">
           <p className="date">Last update: {info.lastDate}</p>
           <h1 className="title">{info.title}</h1>
           {info.topic &&
             <div className="topic-container">
               <TopicIcon topic={info.topic.name} />
-              {/* <Icon name={`icon-${TOPICS_ICONS_SRC[typeClass]}`} clasName="" /> */}
               {info.topic.name}
             </div>
           }
         </div>
         <div className="logo-container">
-          <img src={info.agency.logo || '/static/images/agencies/placeholder.png'} alt={info.agency.name} />
+          <a href={info.agency.url} alt={info.agency.name}>
+            <img src={`${process.env.KENYA_PATH}${info.agency.logo}` || '/static/images/agencies/placeholder.png'} alt={info.agency.name} />
+          </a>
         </div>
       </header>
 
@@ -42,13 +43,19 @@ export default function IndicatorInfo(props) {
         {/* Description */}
         <article>
           <h2 className="article-title">Description</h2>
-          <p className="article-text">{info.description && info.description !== '' ? info.description : fakeDescription}</p>
+          <p
+            className="article-text"
+            dangerouslySetInnerHTML={{ __html: info.description && info.description !== '' ? info.description : FAKE_DESCRIPTION }}
+          />
         </article>
 
         {/* Methodology */}
         <article>
           <h2 className="article-title">Methodology</h2>
-          <p className="article-text">{info.methodology && info.methodology !== '' ? info.methodology : fakeMethodology }</p>
+          <p
+            className="article-text"
+            dangerouslySetInnerHTML={{ __html: info.methodology && info.methodology !== '' ? info.methodology : FAKE_DESCRIPTION }}
+          />
         </article>
       </section>
     </div>
