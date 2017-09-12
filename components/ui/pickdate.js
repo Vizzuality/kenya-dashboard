@@ -14,7 +14,8 @@ export default class ItemTools extends React.Component {
     super(props);
 
     this.state = {
-      open: false
+      open: false,
+      mounted: false
     };
 
     this.mounted = false;
@@ -26,7 +27,8 @@ export default class ItemTools extends React.Component {
   }
 
   componentDidMount() {
-    this.mounted = true;
+    // TODO: find annother way to render pickdate after the container is mounted
+    if (!this.state.mounted) this.setState({ mounted: true });
   }
 
   onApply(e, picker) {
@@ -63,9 +65,10 @@ export default class ItemTools extends React.Component {
     const end = dates ? `${dates.end.month}/${dates.end.day}/${dates.end.year}` : currentEndDate;
     const position = this.select ? this.getPosition() : 'center';
 
+
     return (
       <div className={classNames} ref={(node) => { this.select = node; }}>
-        {this.mounted &&
+        {this.state.mounted &&
           <DateRangePicker
             startDate={start}
             endDate={end}

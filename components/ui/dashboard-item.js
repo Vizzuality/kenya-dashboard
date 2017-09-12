@@ -110,6 +110,7 @@ export default class DashboardItem extends React.Component {
     const description = info.description || FAKE_DESCRIPTION;
 
     return (
+      // Grid layout
       layout === 'grid' ?
         <article className={classNames}>
           {/* Header */}
@@ -159,6 +160,7 @@ export default class DashboardItem extends React.Component {
             }
           </footer>
         </article> :
+        // List layout
         <article className={classNames}>
           <Media device="mobile">
             <Link route="compare" params={{ indicators: info.indicator_id }}>
