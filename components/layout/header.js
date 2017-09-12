@@ -126,13 +126,16 @@ class Header extends React.Component {
             </button>
           )
         };
-        case '/about': return { title: (
-          <Link route="dashboard">
-            <a className="title-link">
-              <h1>Kenya dashboard</h1>
-            </a>
-          </Link>
-        ) };
+        case '/about': return {
+          title: (
+            <Link route="dashboard">
+              <a className="title-link">
+                <h1>Kenya dashboard</h1>
+              </a>
+            </Link>
+          ),
+          content: <span />
+        };
         case '/agency': return {
           title: (
             <Link route="about">
@@ -140,10 +143,12 @@ class Header extends React.Component {
                 <Icon name="icon-arrow-left2" className="-normal" /><h1>Go to About the Alliance</h1>
               </a>
             </Link>
-          )
+          ),
+          content: <span />
         };
         default: return {
-          title: <h1><Link route="home"><a>Kenya dashboard</a></Link></h1>
+          title: <h1><Link route="home"><a>Kenya dashboard</a></Link></h1>,
+          content: <span />
         };
       }
     } else {

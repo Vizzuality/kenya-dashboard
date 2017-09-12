@@ -31,6 +31,15 @@
     background-position: center;
     background-color: $color-bg-dark;
     color: $color-text-1;
+
+    .title {
+      padding-bottom: 26px;
+      margin-bottom: 13px;
+
+      &:hover {
+        opacity: .7;
+      }
+    }
   }
 
   /* Section */
