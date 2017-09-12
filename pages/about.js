@@ -34,7 +34,8 @@ class AboutPage extends Page {
   }
 
   componentWillMount() {
-    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('login');
+    const { user, url, isServer } = this.props;
+    if (!isServer && isEmpty(user)) Router.pushRoute('login', { referer: url.pathname });
   }
 
   render() {
