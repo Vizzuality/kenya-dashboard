@@ -8,8 +8,8 @@ import * as reducers from 'modules';
 
 if (process.env.NODE_ENV === 'production') {
   initOpbeat({
-    orgId: '17ab8eb501d2418a81f3167c10407e90',
-    appId: '57c8b7a2c8'
+    orgId: process.env.OPBEAT_ORG_ID,
+    appId: process.env.OPBEAT_APP_ID
   });
 }
 
