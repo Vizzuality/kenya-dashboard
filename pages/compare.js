@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { setUser } from 'modules/user';
 import {
   getSpecificIndicators,
+  resetSpecificIndicators,
   setIndicatorsLayersActive,
   setIndicatorsLayers,
   getIndicators,
@@ -65,7 +66,6 @@ import CompareToolbar from 'components/ui/compare-toolbar';
 import AreaToolbar from 'components/ui/area-toolbar';
 
 // Constants
-import { MAP_OPTIONS } from 'constants/map';
 import { KENYA_CARTO_ID } from 'constants/filters';
 import { SLIDER_OPTIONS } from 'constants/general';
 
@@ -166,6 +166,7 @@ class ComparePage extends Page {
   componentWillUnmount() {
     // Reset params
     this.props.resetAreas();
+    this.props.resetSpecificIndicators();
   }
 
   /* Accordion methods */
@@ -451,6 +452,7 @@ export default withRedux(
     setUser(user) { dispatch(setUser(user)); },
     // Reset
     resetAreas() { dispatch(resetAreas()); },
+    resetSpecificIndicators() { dispatch(resetSpecificIndicators()); },
     // Filters
     getRegionsOptions() { dispatch(getRegionsOptions()); },
     getTopicsOptions() { dispatch(getTopicsOptions()); },

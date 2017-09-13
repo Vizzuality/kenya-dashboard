@@ -19,6 +19,7 @@ const GET_INDICATORS_ERROR = 'GET_INDICATORS_ERROR';
 const GET_SPECIFIC_INDICATORS = 'GET_SPECIFIC_INDICATORS';
 const GET_SPECIFIC_INDICATORS_LOADING = 'GET_SPECIFIC_INDICATORS_LOADING';
 const GET_SPECIFIC_INDICATORS_ERROR = 'GET_SPECIFIC_INDICATORS_ERROR';
+const RESET_SPECIFIC_INDICATORS = 'RESET_SPECIFIC_INDICATORS';
 const ADD_INDICATOR = 'ADD_INDICATOR';
 const REMOVE_INDICATOR = 'REMOVE_INDICATOR';
 const SET_INDICATOR_DATES = 'SET_INDICATOR_DATES';
@@ -70,6 +71,9 @@ export default function indicatorsReducer(state = initialState, action) {
       const newSpecific = Object.assign({}, state.specific,
         { list: [], loading: false, error: action.payload, indicatorsWithLayers: [] });
       return Object.assign({}, state, { specific: newSpecific });
+    }
+    case RESET_SPECIFIC_INDICATORS: {
+      return Object.assign({}, state, { specific: initialState.specific });
     }
     // Add & remove indicators
     case ADD_INDICATOR:
@@ -200,6 +204,14 @@ export function getSpecificIndicators(ids) {
           payload: err.message
         });
       });
+  };
+}
+
+export function resetSpecificIndicators() {
+  return (dispatch) => {
+    dispatch({
+      type: RESET_SPECIFIC_INDICATORS
+    });
   };
 }
 

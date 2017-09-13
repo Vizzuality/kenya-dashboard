@@ -3,12 +3,12 @@ import { GENERIC_ZINDEX } from 'constants/map';
 
 /* Set layers z index */
 export function setLayersZIndex(layers, layersActive) {
-  return layers.map((l, i) => Object.assign({}, l,
-    {
-      zIndex: layersActive.includes(l.id) ?
-        GENERIC_ZINDEX + i : -1
-    }
-  ));
+  return layers.filter(l => l).map((l, i) => {
+    return {
+      ...l,
+      zIndex: layersActive.includes(l.id) ? GENERIC_ZINDEX + i : -1
+    };
+  });
 }
 
   /* Order indicators by legend position */
