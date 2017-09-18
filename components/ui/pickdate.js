@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
+import moment from 'moment';
 
 // Components
 import DateRangePicker from 'react-bootstrap-daterangepicker';
@@ -27,7 +28,7 @@ export default class ItemTools extends React.Component {
   }
 
   componentDidMount() {
-    // TODO: find annother way to render pickdate after the container is mounted
+    // TODO: find another way to render pickdate after the container is mounted
     if (!this.state.mounted) this.setState({ mounted: true });
   }
 
@@ -53,31 +54,48 @@ export default class ItemTools extends React.Component {
     return 'center';
   }
 
+  getDatesValues() {
+    const { dates, minMaxDates } = this.props;
+    const currentDate = new Date();
+
+    const rawMinDate = new Date(minMaxDates ? minMaxDates.min : '1900/1/1');
+    const rawMaxDate = minMaxDates ? new Date(minMaxDates.max) : currentDate;
+
+    const minDate = `${rawMinDate.getDate()}/${rawMinDate.getMonth() + 1}/${rawMinDate.getFullYear()}`;
+    const maxDate = `${rawMaxDate.getDate()}/${rawMaxDate.getMonth() + 1}/${rawMaxDate.getFullYear()}`;
+
+    const start = dates ? `${dates.start.day}/${dates.start.month}/${dates.start.year}` : minDate;
+    const end = dates ? `${dates.end.day}/${dates.end.month}/${dates.end.year}` : maxDate;
+
+    const startLabel = dates ? `${dates.start.day}/${dates.start.month}/${dates.start.year}` : minDate;
+    const endLabel = dates ? `${dates.end.day}/${dates.end.month}/${dates.end.year}` : maxDate;
+    const dateLabel = dates ? `${startLabel} - ${endLabel}` : 'Date';
+
+    return { start, end, dateLabel, minDate: moment(minDate, 'DD/MM/YYYY'), maxDate: moment(maxDate, 'DD/MM/YYYY') };
+  }
+
   render() {
-    const { className, dates } = this.props;
+    const { className } = this.props;
     const classNames = classnames(
       'c-pickdate',
       { [className]: !!className }
     );
-    const currentDate = new Date();
-    const currentEndDate = `${currentDate.getMonth()}/${currentDate.getDate()}/${currentDate.getFullYear()}`;
-    const start = dates ? `${dates.start.month}/${dates.start.day}/${dates.start.year}` : '01/01/1900';
-    const end = dates ? `${dates.end.month}/${dates.end.day}/${dates.end.year}` : currentEndDate;
     const position = this.select ? this.getPosition() : 'center';
-
+    const datesValues = this.getDatesValues();
 
     return (
       <div className={classNames} ref={(node) => { this.select = node; }}>
         {this.state.mounted &&
           <DateRangePicker
-            startDate={start}
-            endDate={end}
+            startDate={datesValues.start}
+            endDate={datesValues.end}
             opens={position}
+            minDate={datesValues.minDate}
+            maxDate={datesValues.maxDate}
             showDropdowns
-            minDate="1/1/1900"
-            maxDate={currentEndDate}
             locale={{
               applyLabel: 'Apply',
+              format: 'DD/MM/YYYY',
               cancelLabel: 'Remove',
               fromLabel: 'From',
               toLabel: 'To'
@@ -88,7 +106,7 @@ export default class ItemTools extends React.Component {
             onHide={this.onToggle}
           >
             <div className="label">
-              <span className="literal">Date</span>
+              <span className="literal">{datesValues.dateLabel}</span>
               <Icon name={`icon-arrow-${this.state.open ? 'up' : 'down'}`} className="-tiny" />
             </div>
           </DateRangePicker>
@@ -101,6 +119,7 @@ export default class ItemTools extends React.Component {
 ItemTools.propTypes = {
   className: PropTypes.string,
   dates: PropTypes.object,
+  minMaxDates: PropTypes.object,
   // Actions
   onChange: PropTypes.func
 };

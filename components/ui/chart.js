@@ -135,6 +135,10 @@ class Chart extends React.Component {
     });
 
     if (data && data.rows.length && !!data.rows[0].last_date && this.props.setLastDate) {
+      this.props.setMinMaxDates({
+        min: data.rows[0].min_date,
+        max: data.rows[0].last_date
+      });
       this.props.setLastDate(data.rows[0].last_date);
     }
   }
@@ -197,7 +201,8 @@ Chart.propTypes = {
   region: PropTypes.string,
   dates: PropTypes.object,
   // Actions
-  setLastDate: PropTypes.func
+  setLastDate: PropTypes.func,
+  setMinMaxDates: PropTypes.func
 };
 
 const mapStateToProps = state => ({

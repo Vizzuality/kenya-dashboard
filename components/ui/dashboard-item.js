@@ -28,12 +28,14 @@ export default class DashboardItem extends React.Component {
     super(props);
 
     this.state = {
-      lastDate: ''
+      lastDate: '',
+      minMaxDates: null
     };
 
     // Bindings
     this.onSetDate = this.onSetDate.bind(this);
     this.setLastDate = this.setLastDate.bind(this);
+    this.setMinMaxDates = this.setMinMaxDates.bind(this);
     this.onToggleModal = this.onToggleModal.bind(this);
   }
 
@@ -86,6 +88,10 @@ export default class DashboardItem extends React.Component {
     this.setState({ lastDate });
   }
 
+  setMinMaxDates(dates) {
+    this.setState({ minMaxDates: { min: dates.min, max: dates.max } });
+  }
+
   getDescription() {
     const { info } = this.props;
     const description = truncate(info.description || FAKE_DESCRIPTION, {
@@ -121,6 +127,7 @@ export default class DashboardItem extends React.Component {
                 groupId={groupId}
                 info={parsedInfo}
                 dates={dates}
+                minMaxDates={this.state.minMaxDates}
                 remove={remove}
                 options={{ dates, region, indicator: info['indicator-id'] }}
                 onSetDate={this.onSetDate}
@@ -140,6 +147,7 @@ export default class DashboardItem extends React.Component {
               dates={dates}
               region={region}
               setLastDate={this.setLastDate}
+              setMinMaxDates={this.setMinMaxDates}
             />
           </section>
 

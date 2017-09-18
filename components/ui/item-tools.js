@@ -52,7 +52,7 @@ class ItemTools extends React.Component {
   }
 
   render() {
-    const { info, className, dates, remove, options, user, routes } = this.props;
+    const { info, className, dates, remove, options, user, routes, minMaxDates } = this.props;
     const classNames = classnames(
       'c-item-tools',
       { [className]: !!className }
@@ -65,7 +65,7 @@ class ItemTools extends React.Component {
       <div className={classNames}>
         {info.frenquency !== null && remove &&
           <div className="select-date">
-            <PickDate dates={dates} onChange={this.props.onSetDate} />
+            <PickDate dates={dates} onChange={this.props.onSetDate} minMaxDates={minMaxDates} />
           </div>
         }
 
@@ -131,6 +131,7 @@ ItemTools.propTypes = {
   info: PropTypes.object,
   options: PropTypes.object,
   dates: PropTypes.object,
+  minMaxDates: PropTypes.object,
   remove: PropTypes.bool,
   // Actions
   onSetDate: PropTypes.func,
