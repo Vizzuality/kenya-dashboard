@@ -6,6 +6,10 @@ import withRedux from 'next-redux-wrapper';
 import { initStore } from 'store';
 import { setUser } from 'modules/user';
 
+
+// Modules
+import { getRegionsOptions } from 'modules/filters';
+
 // Selectors
 import { getSelectedFilterOptions } from 'selectors/filters';
 
@@ -16,7 +20,7 @@ import classnames from 'classnames';
 import lowerCase from 'lodash/lowerCase';
 
 // utils
-import { decode, setBasicQueryHeaderHeaders, parseObjectToUrlParams } from 'utils/general';
+import { decode, setBasicQueryHeaderHeaders, parseObjectToUrlParams, getParsedValueMatchFromCascadeList } from 'utils/general';
 import isEmpty from 'lodash/isEmpty';
 
 // Components
@@ -59,6 +63,7 @@ class WidgetPage extends Page {
   }
 
   componentDidMount() {
+    this.props.getRegionsOptions();
     this.getIndicator(this.props.options.indicator);
   }
 
@@ -91,7 +96,7 @@ class WidgetPage extends Page {
 
   render() {
     const { info } = this.state;
-    const { className, url, options, selectedFilterOptions } = this.props;
+    const { className, url, options, regionsOptions } = this.props;
     const { dates, region } = options;
     const classNames = classnames('c-dashboard-item -print', { [className]: !!className });
     const typeClass = info ? lowerCase(info.topic.name).split(' ').join('_') : '';
@@ -101,7 +106,8 @@ class WidgetPage extends Page {
       { name: `${options.dates.end.year}/${options.dates.end.month}/${options.dates.end.day}` }
     ] :
       [];
-    const selectedFilters = { ...selectedFilterOptions, ...{ Dates: parsedDates } };
+    const fullRegion = getParsedValueMatchFromCascadeList(regionsOptions || [], options.region);
+    const selectedFilters = { Dates: parsedDates, Location: fullRegion ? [fullRegion] : [] };
 
     return (
       <Layout
@@ -164,10 +170,11 @@ WidgetPage.propTypes = {
 const mapStateToProps = state => ({
   user: state.user,
   selectedFilterOptions: getSelectedFilterOptions(state),
+  regionsOptions: state.filters.options.regions
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   getAgencies: bindActionCreators(userToken => getAgencies(userToken), dispatch)
-// });
+const mapDispatchToProps = dispatch => ({
+  getRegionsOptions() { dispatch(getRegionsOptions()); }
+});
 
-export default withRedux(initStore, mapStateToProps)(WidgetPage);
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(WidgetPage);
