@@ -84,7 +84,7 @@ class HomePage extends React.PureComponent {
         <Intro>
           <div className="row">
             <div className="column small-12 medium-10 medium-offset-1">
-              <h1 className="title -no-underline">A nice title condensing what this website is about</h1>
+              <h1 className="title -no-underline">Data Integration for Sustainable Development in Kenya</h1>
               <Link route="/dashboard">
                 <a className="c-button -dark link">Kenya Dashboard</a>
               </Link>
@@ -101,7 +101,7 @@ class HomePage extends React.PureComponent {
             </div>
             <div className="column small-12 medium-8 medium-offset-2">
               <h1 className="section-title">Thematic Dashboards</h1>
-              <p className="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+              <p className="section-description">This Platform is designed to bring together data from different sectors to facilitate data driven decision making, policy formation, and reporting.  The Platform contains data on key indicators from numerous institutions across a variety of sectors. For those that want to get a quick overview of specific sectors individual indicators can also be viewed by Themes.</p>
             </div>
           </div>
 
@@ -125,7 +125,8 @@ class HomePage extends React.PureComponent {
           <div className="row">
             <div className="column small-12 medium-8 medium-offset-2">
               <h1 className="section-title">About the Alliance</h1>
-              <p className="section-description">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
+              <p className="section-description">Data integration for sustainable development is by definition a collaborative process.  At the core of this Platform is an Alliance of key partners that are collectively dedicated to transforming the data for development landscape in Kenya.  This network of partners brings together Ministries, agencies, and institutions from across the Government of Kenya and civil society, with the common goal of ensuring Kenya’s sustainable development through the effective production and use of data.</p>
+              <p className="section-description -no-margin">For more information on the individual partners and their specific data contributions to the Platform, please click on the institutional logos below.</p>
               <Link route="/about">
                 <a className="c-button -light link">Learn more</a>
               </Link>

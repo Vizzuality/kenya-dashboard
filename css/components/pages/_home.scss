@@ -102,6 +102,11 @@
 
     .section-description {
       line-height: 27px;
+      margin-bottom: 30px;
+
+      &.-no-margin {
+        margin-bottom: 0;
+      }
     }
 
     .link {
