@@ -54,24 +54,8 @@ export default class ItemTools extends React.Component {
     return 'center';
   }
 
-  getFormatedDate() {
-    // const date = rawDate ? new Date(rawDate) : null;
-
-    // if (date && date !== 'Invalid date') {
-    //   const a =  `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-    //   console.log(a);
-    //   return a;
-    // }
-    return '1/1/1900';
-  }
-
-  render() {
-    const { className, dates, minMaxDates } = this.props;
-    const classNames = classnames(
-      'c-pickdate',
-      { [className]: !!className }
-    );
-    const position = this.select ? this.getPosition() : 'center';
+  getDatesValues() {
+    const { dates, minMaxDates } = this.props;
     const currentDate = new Date();
 
     const rawMinDate = new Date(minMaxDates ? minMaxDates.min : '1900/1/1');
@@ -87,15 +71,27 @@ export default class ItemTools extends React.Component {
     const endLabel = dates ? `${dates.end.day}/${dates.end.month}/${dates.end.year}` : maxDate;
     const dateLabel = dates ? `${startLabel} - ${endLabel}` : 'Date';
 
+    return { start, end, dateLabel, minDate: moment(minDate, 'DD/MM/YYYY'), maxDate: moment(maxDate, 'DD/MM/YYYY') };
+  }
+
+  render() {
+    const { className } = this.props;
+    const classNames = classnames(
+      'c-pickdate',
+      { [className]: !!className }
+    );
+    const position = this.select ? this.getPosition() : 'center';
+    const datesValues = this.getDatesValues();
+
     return (
       <div className={classNames} ref={(node) => { this.select = node; }}>
         {this.state.mounted &&
           <DateRangePicker
-            startDate={start}
-            endDate={end}
+            startDate={datesValues.start}
+            endDate={datesValues.end}
             opens={position}
-            minDate={moment(minDate, 'DD/MM/YYYY')}
-            maxDate={moment(maxDate, 'DD/MM/YYYY')}
+            minDate={datesValues.minDate}
+            maxDate={datesValues.maxDate}
             showDropdowns
             locale={{
               applyLabel: 'Apply',
@@ -110,7 +106,7 @@ export default class ItemTools extends React.Component {
             onHide={this.onToggle}
           >
             <div className="label">
-              <span className="literal">{dateLabel}</span>
+              <span className="literal">{datesValues.dateLabel}</span>
               <Icon name={`icon-arrow-${this.state.open ? 'up' : 'down'}`} className="-tiny" />
             </div>
           </DateRangePicker>
