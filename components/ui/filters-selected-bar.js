@@ -73,7 +73,7 @@ export default class FiltersSelectedBar extends React.Component {
   }
 
   render() {
-    const { className, title } = this.props;
+    const { className, title, print } = this.props;
     const classNames = classnames(
       'c-filters-selected-bar',
       { [className]: !!className }
@@ -81,25 +81,38 @@ export default class FiltersSelectedBar extends React.Component {
 
     return (
       <nav className={classNames}>
-        <Media device="device">
-          <div className="selected-filters-container">
-            <span className="label">Current viewing:</span>
-            {this.getSelectedFiltersDevice()}
-            <button className="btn btn-toggle" onClick={this.onToggleFilters}>
-              <Icon name={`icon-arrow-${this.state.open ? 'up' : 'down'}`} className="-smaller" />
-            </button>
-          </div>
-        </Media>
-        <Media device="device">
-          <div className="full-selected-list">
-            {this.state.open && this.getSelectedFilters()}
-          </div>
-        </Media>
+        {!print &&
+          <Media device="device">
+            <div className="selected-filters-container">
+              <span className="label">Current viewing:</span>
+              {this.getSelectedFiltersDevice()}
+              <button className="btn btn-toggle" onClick={this.onToggleFilters}>
+                <Icon name={`icon-arrow-${this.state.open ? 'up' : 'down'}`} className="-smaller" />
+              </button>
+            </div>
+          </Media>
+        }
+        {!print &&
+          <Media device="device">
+            <div className="full-selected-list">
+              {this.state.open && this.getSelectedFilters()}
+            </div>
+          </Media>
+        }
+        {!print &&
+          <Media device="desktop">
+            <span className="bar-label">{title}</span>
+            {this.getSelectedFilters(true)}
+          </Media>
+        }
 
-        <Media device="desktop">
-          <span className="bar-label">{title}</span>
-          {this.getSelectedFilters(true)}
-        </Media>
+        {/* Print */}
+        {print &&
+          <div>
+            <span className="bar-label">{title}</span>
+            {this.getSelectedFilters(true)}
+          </div>
+        }
       </nav>
     );
   }
@@ -108,11 +121,13 @@ export default class FiltersSelectedBar extends React.Component {
 FiltersSelectedBar.propTypes = {
   className: PropTypes.string,
   selected: PropTypes.object,
+  print: PropTypes.bool,
   title: PropTypes.string,
   // Actions
   removeFilter: PropTypes.func
 };
 
 FiltersSelectedBar.defaultProps = {
-  title: 'You are currently viewing: '
+  title: 'You are currently viewing: ',
+  print: false
 };
