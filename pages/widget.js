@@ -124,6 +124,7 @@ class WidgetPage extends Page {
               className="-print"
               title="Filters applied: "
               selected={selectedFilters}
+              print
             />
 
             {/* Indicator type detail - Content */}
