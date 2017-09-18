@@ -47,7 +47,7 @@ export default class FiltersSelectedBar extends React.Component {
         <div className="filters-type-container" key={key}>
           {labels && <span className="filter-label">{FILTERS_BAR_LABELS[key] || key}:</span>}
           {selected[key].map(item => (
-            <div key={item.id} className="filter-value-container">
+            <div key={`${item.name}_${item.id}`} className="filter-value-container">
               <span className="filter-value">{item.name}</span>
               {this.props.removeFilter && item.name !== 'Kenya' &&
                 <button className="btn-remove" onClick={() => this.onRemoveFilter(key, item.id)}>

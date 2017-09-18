@@ -1,6 +1,6 @@
 import { BASIC_QUERY_HEADER } from 'constants/query';
 import { REGIONS_OPTIONS } from 'constants/filters';
-import { MONTHS_INITIALS , MONTHS_NAMES } from 'constants/general';
+import { MONTHS_INITIALS, MONTHS_NAMES } from 'constants/general';
 
 function toBase64(file, cb) {
   const reader = new FileReader();
@@ -112,6 +112,26 @@ function getValueMatchFromCascadeList(itemList, id) {
   return item;
 }
 
+function getParsedValueMatchFromCascadeList(itemList, id, rawName) {
+  let item = null;
+  let name = rawName ? `${rawName}` : '';
+
+  if (itemList && Array.isArray(itemList)) {
+    for (let i = 0; i < itemList.length && !item; i++) {
+      if (itemList[i].list && itemList[i].list.length && `${itemList[i].id}` !== `${id}`) {
+        name = `(${itemList[i].name})`;
+        item = getParsedValueMatchFromCascadeList(itemList[i].list, id, name);
+      } else if (`${itemList[i].id}` === `${id}`) {
+        name = `${itemList[i].name} ${name}`;
+        item = Object.assign({}, itemList[i]);
+        item.name = name;
+      }
+    }
+  }
+
+  return item;
+}
+
 function roundNumberWithDecimals(number, decimals = 2) {
   if (number % 1 === 0) {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -156,6 +176,7 @@ export {
   parseCustomSelectOptions,
   parseCustomSelectCascadeOptions,
   getValueMatchFromCascadeList,
+  getParsedValueMatchFromCascadeList,
   roundNumberWithDecimals,
   setFormat
 };
