@@ -140,3 +140,70 @@
     }
   }
 }
+
+/* Override toastr */
+.redux-toastr {
+  .rrt-confirm-holder {
+    .rrt-confirm {
+      top: 50%;
+      width: 50%;
+      margin-left: 0;
+      border-radius: 0;
+      padding: 40px 20px;
+      background-color: $color-bg-light;
+      transform: translate(-50%, -50%);
+
+      @media #{$mq-small-medium} {
+        width: 100%;
+        top: 0;
+        bottom: 0;
+        transform: translate(-50%,0%);
+      }
+
+      .rrt-message {
+        font-family: $font-family-1;
+        margin-bottom: 20px;
+        padding: 0;
+
+        @media #{$mq-small-medium} {
+          margin-bottom: 25px;
+        }
+      }
+
+      .rrt-buttons-holder {
+        justify-content: center;
+
+        button {
+          flex-grow: 0;
+          height: auto;
+          border: 0;
+          padding: 11px 18px;
+          border-radius: 100px;
+          line-height: 19px;
+          font-family: $font-family-1;
+          margin-right: 10px;
+          background-color: $color-bg-light;
+          color: $color-text-2;
+
+          &:hover {
+            color: $color-primary;
+            background-color: $color-bg-light;
+          }
+
+          &.rrt-ok-btn {
+            background-color: $color-secondary;
+            color: $color-text-1;
+
+            &:hover {
+              color: $color-primary;
+              background-color: $color-secondary;
+            }
+          }
+
+          &:hover {
+          }
+        }
+      }
+    }
+  }
+}

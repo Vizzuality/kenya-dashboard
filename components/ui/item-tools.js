@@ -43,7 +43,9 @@ class ItemTools extends React.Component {
   onRemoveItem() {
     const { info } = this.props;
 
-    toastr.confirm('Are you sure that you want to delete this indicator', {
+    toastr.confirm('Are you sure you want to delete this indicator?', {
+      okText: 'Yes, delete',
+      cancelText: 'Cancel',
       onOk: () => {
         this.props.onRemoveItem(info['indicator-id']);
       },
