@@ -41,6 +41,7 @@ import { getIndicatorsWithLayers, getIndicatorsWithWidgets } from 'selectors/ind
 
 // Redux
 import withRedux from 'next-redux-wrapper';
+import withTracker from 'components/layout/with-tracker';
 import { initStore } from 'store';
 
 // Libraries
@@ -514,4 +515,4 @@ export default withRedux(
       dispatch(setAreasParamsUrl(url));
     }
   })
-)(ComparePage);
+)(withTracker(ComparePage));

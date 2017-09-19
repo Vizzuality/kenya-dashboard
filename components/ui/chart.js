@@ -135,7 +135,7 @@ class Chart extends React.Component {
     });
 
     if (data && data.rows.length && !!data.rows[0].last_date && this.props.setLastDate) {
-      this.props.setMinMaxDates({
+      this.props.setMinMaxDates && this.props.setMinMaxDates({
         min: data.rows[0].min_date,
         max: data.rows[0].last_date
       });

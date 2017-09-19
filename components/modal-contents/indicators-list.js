@@ -17,7 +17,9 @@ export default class IndicatorsList extends React.Component {
 
   onRemoveIndicator(id) {
     const url = Object.assign({}, this.props.url);
-    const indicators = url.query.indicators.split(',').filter(indId => indId !== id);
+    const indicators = url.query ? url.query.indicators &&
+      url.query.indicators.split(',').filter(indId => `${indId}` !== `${id}`) :
+      [];
     url.query.indicators = indicators.join(',');
     this.props.removeIndicator(id, url);
   }

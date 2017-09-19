@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
+import withTracker from 'components/layout/with-tracker';
 import { initStore } from 'store';
 
 // modules
@@ -276,4 +277,4 @@ const mapDispatchToProps = dispatch => ({
   forgotPassword(email) { dispatch(forgotPassword(email)); }
 });
 
-export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(Login);
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(withTracker(Login));

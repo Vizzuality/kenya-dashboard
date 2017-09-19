@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
+import withTracker from 'components/layout/with-tracker';
 import { initStore } from 'store';
 import { bindActionCreators } from 'redux';
 
@@ -197,4 +198,4 @@ const mapDispatchToProps = dispatch => ({
   setUser: bindActionCreators(user => setUser(user), dispatch)
 });
 
-export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(HomePage);
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(withTracker(HomePage));

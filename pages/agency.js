@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // Redux
 import withRedux from 'next-redux-wrapper';
+import withTracker from 'components/layout/with-tracker';
 import { initStore } from 'store';
 
 // modules
@@ -118,4 +119,4 @@ const mapStateToProps = state => ({
   info: state.agencies.agency
 });
 
-export default withRedux(initStore, mapStateToProps)(AgencyPage);
+export default withRedux(initStore, mapStateToProps)(withTracker(AgencyPage));
