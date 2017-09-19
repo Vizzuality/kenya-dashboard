@@ -276,7 +276,7 @@ export function removeIndicator(id) {
   return (dispatch, getState) => {
     const state = getState().indicators.specific;
     // Update state with new data
-    const list = state.list.filter(ind => ind.id !== id);
+    const list = state.list.filter(ind => `${ind.id}` !== `${id}`);
     const indicatorsWithLayers = state.indicatorsWithLayers.filter(ind => ind.id !== id);
     const layers = state.layers.filter(lay => `${lay['indicator-id']}` !== `${id}`);
     const layersActive = state.layersActive.filter(l => `${l.id}` !== `${id}`);

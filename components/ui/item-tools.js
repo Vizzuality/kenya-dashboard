@@ -41,11 +41,11 @@ class ItemTools extends React.Component {
   }
 
   onRemoveItem() {
-    const { info, groupId } = this.props;
+    const { info } = this.props;
 
     toastr.confirm('Are you sure that you want to delete this indicator', {
       onOk: () => {
-        this.props.onRemoveItem(info.id, groupId);
+        this.props.onRemoveItem(info['indicator-id']);
       },
       onCancel: () => console.info('canceled')
     });
