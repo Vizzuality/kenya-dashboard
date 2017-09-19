@@ -9,6 +9,16 @@ import isArray from 'lodash/isArray';
 import Icon from 'components/ui/icon';
 import SelectCustom from 'components/ui/select-custom';
 
+// Utils
+import { getParsedValueMatchFromCascadeList } from 'utils/general';
+
+let GA;
+if (typeof window !== 'undefined') {
+  /* eslint-disable global-require */
+  GA = require('react-ga');
+  /* eslint-enable global-require */
+}
+
 
 export default class Filters extends React.Component {
   constructor(props) {
@@ -27,6 +37,22 @@ export default class Filters extends React.Component {
     this.props.onSetDashboardLayout(layout);
   }
 
+  setTrackEvents(opts, key) {
+    switch (key) {
+      case 'regions': {
+        const value = getParsedValueMatchFromCascadeList(this.props.options.regions, `${opts[0]}`);
+
+        GA.event({
+          category: 'Dashboard',
+          action: 'Location filter',
+          label: value ? value.name : opts[0]
+        });
+        break;
+      }
+      default: return null;
+    }
+  }
+
   setFilters(opts, key) {
     let newOpts = isArray(opts) ? opts.slice() : [opts];
 
@@ -40,6 +66,7 @@ export default class Filters extends React.Component {
       [key]: newOpts
     };
     this.props.onSetFilters(newFilters);
+    this.setTrackEvents(opts, key);
   }
 
   render() {

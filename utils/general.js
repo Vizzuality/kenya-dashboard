@@ -120,7 +120,7 @@ function getParsedValueMatchFromCascadeList(itemList, id, rawName) {
     for (let i = 0; i < itemList.length && !item; i++) {
       if (itemList[i].list && itemList[i].list.length && `${itemList[i].id}` !== `${id}`) {
         name = `(${itemList[i].name})`;
-        item = getParsedValueMatchFromCascadeList(itemList[i].list, id, name);
+        item = getParsedValueMatchFromCascadeList(itemList[i].list, `${id}`, name);
       } else if (`${itemList[i].id}` === `${id}`) {
         name = `${itemList[i].name} ${name}`;
         item = Object.assign({}, itemList[i]);
