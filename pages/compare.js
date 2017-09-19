@@ -326,8 +326,6 @@ class ComparePage extends Page {
       mapState,
       indicators,
       session,
-      // indicatorsFilterList,
-      // modal,
       user
     } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);

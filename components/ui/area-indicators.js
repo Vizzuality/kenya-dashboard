@@ -33,8 +33,7 @@ export default class AreaIndicators extends React.Component {
     this.props.onSelectRegion(region, this.props.id, this.props.url);
   }
 
-  onRemoveIndicator(indicatorId, areaId) {
-    // this.props.onRemoveWidget(widgetId, areaId, this.props.url);
+  onRemoveIndicator(indicatorId) {
     this.props.onRemoveIndicator(indicatorId, this.props.url);
   }
 
