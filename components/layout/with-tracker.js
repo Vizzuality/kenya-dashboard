@@ -13,8 +13,11 @@ if (typeof window !== 'undefined') {
 
 const withTracker = (Page, options = {}) => {
   const trackPage = (page) => {
-    GA.set({
+    GA.event({
       page,
+      category: page,
+      action: 'Navigation',
+      label: page,
       ...options
     });
     GA.pageview(page);

@@ -7,14 +7,39 @@ import lowerCase from 'lodash/lowerCase';
 import { encode } from 'utils/general';
 
 // Components
-import { Link } from 'routes';
+import { Router } from 'routes';
 import Icon from 'components/ui/icon';
 
 // Constants
 import { TOPICS_ICONS_CIRCLE_SRC, TOPICS_BACKGROUNDS_SRC } from 'constants/filters';
 
+let GA;
+if (typeof window !== 'undefined') {
+  /* eslint-disable global-require */
+  GA = require('react-ga');
+  /* eslint-enable global-require */
+}
 
 export default class CardImage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    // Bindings
+    this.onClick = this.onClick.bind(this);
+  }
+
+  onClick() {
+    const url = this.getDashboardTopicFilterUrl();
+    GA.event({
+      page: '/',
+      category: '/',
+      action: 'Thematic Dashboard',
+      label: this.props.info.name
+    });
+
+    Router.pushRoute(url);
+  }
+
   getDashboardTopicFilterUrl() {
     const filters = { topics: [this.props.info.id] };
     return `/dashboard?filters=${encode(filters)}`;
@@ -27,20 +52,17 @@ export default class CardImage extends React.Component {
       `c-card-image -${typeClass}`,
       { [className]: !!className }
     );
-    const url = this.getDashboardTopicFilterUrl();
     const backgroundUrl = `url('/static/images/topics/${TOPICS_BACKGROUNDS_SRC[typeClass]}')`;
     const iconName = TOPICS_ICONS_CIRCLE_SRC[typeClass] || 'plus';
 
     return (
       <div className={classNames} style={{ backgroundImage: backgroundUrl }}>
-        <Link route={url}>
-          <a className="link">
-            <div className="type-container">
-              <Icon name={`icon-${iconName}`} className="-bigger" />
-            </div>
-            <h1 className="type-title">{info.name}</h1>
-          </a>
-        </Link>
+        <button className="link" onClick={this.onClick}>
+          <div className="type-container">
+            <Icon name={`icon-${iconName}`} className="-bigger" />
+          </div>
+          <h1 className="type-title">{info.name}</h1>
+        </button>
       </div>
     );
   }
