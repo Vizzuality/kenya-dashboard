@@ -253,7 +253,7 @@ class ComparePage extends Page {
             onRemoveArea={this.onRemoveArea}
             onSelectRegion={this.props.selectRegion}
             onSetDate={this.props.setAreaIndicatorDates}
-            onRemoveWidget={this.props.removeWidget}
+            onRemoveIndicator={this.onRemoveIndicator}
           />
         )
       }
@@ -326,8 +326,6 @@ class ComparePage extends Page {
       mapState,
       indicators,
       session,
-      // indicatorsFilterList,
-      // modal,
       user
     } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
@@ -365,7 +363,6 @@ class ComparePage extends Page {
               selectedRegion={mapState.areas[this.state.areaShown].region && mapState.areas[this.state.areaShown].region !== '' ?
                 mapState.areas[this.state.areaShown].region : KENYA_CARTO_ID}
               sliderArrowsControl={this.sliderArrowsControl()}
-              // onToggleAccordionItem={this.onToggleAccordionItem}
               onSetRegion={this.onSetRegion}
               onPreviousSlider={this.onPreviousSlider}
               onNextSlider={this.onNextSlider}

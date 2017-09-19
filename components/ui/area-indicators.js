@@ -21,7 +21,7 @@ export default class AreaIndicators extends React.Component {
     // Bindings
     this.onRemoveArea = this.onRemoveArea.bind(this);
     this.onSetRegion = this.onSetRegion.bind(this);
-    this.onRemoveWidget = this.onRemoveWidget.bind(this);
+    this.onRemoveIndicator = this.onRemoveIndicator.bind(this);
     this.onSetIndicatorDate = this.onSetIndicatorDate.bind(this);
   }
 
@@ -33,8 +33,8 @@ export default class AreaIndicators extends React.Component {
     this.props.onSelectRegion(region, this.props.id, this.props.url);
   }
 
-  onRemoveWidget(widgetId, areaId) {
-    this.props.onRemoveWidget(widgetId, areaId, this.props.url);
+  onRemoveIndicator(indicatorId) {
+    this.props.onRemoveIndicator(indicatorId, this.props.url);
   }
 
   onSetIndicatorDate(indicator, dates) {
@@ -97,7 +97,7 @@ export default class AreaIndicators extends React.Component {
             dates={dates}
             remove
             onSetDate={this.onSetIndicatorDate}
-            onRemoveItem={this.onRemoveWidget}
+            onRemoveItem={this.onRemoveIndicator}
           />
         </section>
       </article>
@@ -120,7 +120,7 @@ AreaIndicators.propTypes = {
   onToggleAccordionItem: PropTypes.func,
   onSelectRegion: PropTypes.func,
   onSetDate: PropTypes.func,
-  onRemoveWidget: PropTypes.func
+  onRemoveIndicator: PropTypes.func
 };
 
 AreaIndicators.defaultProps = {
