@@ -99,7 +99,10 @@ export default class SelectAccordion extends React.Component {
                   <header className="item-header">
                     <button type="button" className="" onClick={() => this.onToggleList(l.id)}>
                       <h1 className="title">{l.name}</h1>
-                      <Icon name="icon-arrow-down" className="-smaller" />
+                      {l.id === openItem ?
+                        <Icon name="icon-arrow-up" className="-smaller" /> :
+                        <Icon name="icon-arrow-down" className="-smaller" />
+                      }
                     </button>
                   </header>
                   <SelectList

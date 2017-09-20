@@ -83,7 +83,7 @@ class HomePage extends React.PureComponent {
       >
         {/* Page intro */}
         <Intro>
-          <div className="row">
+          <div className="row home-intro">
             <div className="column small-12 medium-10 medium-offset-1">
               <h1 className="title -no-underline">Data Integration for Sustainable Development in Kenya</h1>
               <Link route="/dashboard">

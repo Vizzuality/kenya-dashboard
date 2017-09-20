@@ -40,7 +40,7 @@ const TOPICS_ICONS_SRC = {
   integration: 'poverty',
   landcover: 'boundarie',
   livestock: 'livestock',
-  protected_areas: 'protected_areas',
+  protected_areas: 'protectedareas',
   protected_forests: 'forest',
   socioeconomic: 'urban',
   tourism: 'tourism',

@@ -156,7 +156,7 @@ export default class DashboardItem extends React.Component {
             {!remove &&
               <div className="">
                 <button className="item-link" onClick={() => this.onLink(info.indicator_id)}>
-                  <Icon name="icon-arrow_next2" className="-smaller" />
+                  <Icon name="icon-arrow-right" className="-smaller" />
                 </button>
               </div>
             }
@@ -247,7 +247,7 @@ export default class DashboardItem extends React.Component {
               <div className="column small-12 medium-1">
                 <div className="content-container">
                   <button className="item-link" onClick={() => this.onLink(info.indicator_id)}>
-                    <Icon name="icon-arrow_next2" className="-smaller" />
+                    <Icon name="icon-arrow-right" className="-smaller" />
                   </button>
                 </div>
               </div>

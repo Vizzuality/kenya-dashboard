@@ -47,6 +47,10 @@
 
       .c-icon {
         fill: rgba($color-text-1, .5);
+
+        &.icon-remove {
+          margin-left: 1px;
+        }
       }
     }
   }

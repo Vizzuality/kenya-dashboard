@@ -102,7 +102,7 @@ export default class SelectList extends React.Component {
       <div className={classNames}>
         <div className="select-list-container">
           {/* Search */}
-          {search && filteredList &&
+          {search && filteredList && filteredList.length > 0 &&
             <div className="search-container">
               <input className="search-box" type="text" onKeyUp={this.onSearch} placeholder={searchPlaceholder} />
               <Icon name="icon-search" className="" />

@@ -145,7 +145,7 @@ class ItemTools extends React.Component {
               eventOff="mouseleave"
             >
               <button className="btn" onClick={this.onRemoveItem}>
-                <Icon name="icon-remove" className="-small" />
+                <Icon name="icon-remove" className="icon-remove -medium" />
               </button>
 
               <div>Remove</div>
