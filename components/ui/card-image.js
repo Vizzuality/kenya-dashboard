@@ -31,8 +31,8 @@ export default class CardImage extends React.Component {
   onClick() {
     const url = this.getDashboardTopicFilterUrl();
     GA.event({
-      page: '/',
-      category: '/',
+      page: 'Home',
+      category: 'Home',
       action: 'Thematic Dashboard',
       label: this.props.info.name
     });

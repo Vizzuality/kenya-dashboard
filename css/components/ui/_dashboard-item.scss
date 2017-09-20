@@ -26,6 +26,17 @@
     min-height: auto;
     padding: 25px 20px;
 
+    .full-link {
+      padding: 0;
+      color: $color-text-1;
+
+      .item-title {
+        text-align: left;
+        margin-bottom: 0;
+      }
+    }
+
+
     @media #{$mq-medium} {
       min-height: 340px;
       padding: 40px 32px 42px;

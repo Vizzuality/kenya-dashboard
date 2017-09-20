@@ -8,11 +8,8 @@ import modal from 'services/modal';
 import classnames from 'classnames';
 import truncate from 'lodash/truncate';
 
-// Utils
-// import { getThreshold } from 'utils/general';
-
 // Components
-import { Link } from 'routes';
+import { Router } from 'routes';
 import Media from 'components/responsive/media';
 import ItemTools from 'components/ui/item-tools';
 import Icon from 'components/ui/icon';
@@ -22,6 +19,14 @@ import IndicatorInfo from 'components/modal-contents/indicator-info';
 
 // constants
 import { FAKE_DESCRIPTION } from 'constants/general';
+
+let GA;
+if (typeof window !== 'undefined') {
+  /* eslint-disable global-require */
+  GA = require('react-ga');
+  /* eslint-enable global-require */
+}
+
 
 export default class DashboardItem extends React.Component {
   constructor(props) {
@@ -37,6 +42,7 @@ export default class DashboardItem extends React.Component {
     this.setLastDate = this.setLastDate.bind(this);
     this.setMinMaxDates = this.setMinMaxDates.bind(this);
     this.onToggleModal = this.onToggleModal.bind(this);
+    this.onLink = this.onLink.bind(this);
   }
 
 
@@ -55,31 +61,23 @@ export default class DashboardItem extends React.Component {
       }
     };
     modal.toggleModal(true, opts);
+
+    GA.event({
+      category: window.location.pathname,
+      action: 'Open infowindow',
+      label: this.props.info.title
+    });
   }
 
-  // getThresholdQualification() {
-  //   const { info } = this.props;
-  //   const { data } = this.state;
-  //
-  //   if (data && data.data && info['json-config'] &&
-  //     info['json-config'].type && info['json-config'].threshold) {
-  //     const threshold = info['json-config'].threshold.y;
-  //
-  //     switch (info['json-config'].type.visual) {
-  //       case 'table': case 'pie': case 'bars': case 'barsLine': {
-  //         const values = data.data.map(v => v.y);
-  //         const value = threshold.direction === 'asc' ? Math.min(...values) : Math.max(...values);
-  //         return getThreshold(value, threshold['break-points']);
-  //       }
-  //       case 'line': {
-  //         const value = data.data[data.data.length - 1].y;
-  //         return getThreshold(value, threshold['break-points']);
-  //       }
-  //       default: return 'default';
-  //     }
-  //   }
-  //   return null;
-  // }
+  onLink(id) {
+    GA.event({
+      category: 'Dashboard',
+      action: 'Click to view Indicator detail',
+      label: this.props.info.title
+    });
+
+    Router.pushRoute(`compare?indicators=${id}`);
+  }
 
   setLastDate(date) {
     const index = date.indexOf('T');
@@ -103,13 +101,11 @@ export default class DashboardItem extends React.Component {
 
   render() {
     const { info, className, dates, region, remove, groupId, layout } = this.props;
-    // const threshold = this.getThresholdQualification();
 
     const classNames = classnames(
       `c-dashboard-item -${layout}`,
       {
         [className]: !!className
-      // [threshold]: threshold
       }
     );
     const parsedInfo = { ...info, ...{ lastDate: this.state.lastDate } };
@@ -159,11 +155,9 @@ export default class DashboardItem extends React.Component {
             </div>
             {!remove &&
               <div className="">
-                <Link route="compare" params={{ indicators: info.indicator_id }}>
-                  <a className="item-link">
-                    <Icon name="icon-arrow_next2" className="-smaller" />
-                  </a>
-                </Link>
+                <button className="item-link" onClick={() => this.onLink(info.indicator_id)}>
+                  <Icon name="icon-arrow_next2" className="-smaller" />
+                </button>
               </div>
             }
           </footer>
@@ -171,27 +165,25 @@ export default class DashboardItem extends React.Component {
         // List layout
         <article className={classNames}>
           <Media device="mobile">
-            <Link route="compare" params={{ indicators: info.indicator_id }}>
-              <a className="">
-                <div className="row collapse">
-                  <div className="column small-12">
-                    <div className="item-metadata content-container">
-                      {/* Header */}
-                      <header className="item-header">
-                        <h1 className="item-title">{info && info.title}</h1>
-                      </header>
-                    </div>
+            <button className="full-link" onClick={() => this.onLink(info.indicator_id)}>
+              <div className="row collapse">
+                <div className="column small-12">
+                  <div className="item-metadata content-container">
+                    {/* Header */}
+                    <header className="item-header">
+                      <h1 className="item-title">{info && info.title}</h1>
+                    </header>
                   </div>
-
-                  {/* Global value */}
-                  {/* <div className="column small-6">
-                    <div className="content-container">
-                      <p>{info.globalValue || ''}</p>
-                    </div>
-                  </div> */}
                 </div>
-              </a>
-            </Link>
+
+                {/* Global value */}
+                {/* <div className="column small-6">
+                  <div className="content-container">
+                    <p>{info.globalValue || ''}</p>
+                  </div>
+                </div> */}
+              </div>
+            </button>
           </Media>
           <Media device="desktop+">
             <div className="row collapse">
@@ -254,11 +246,9 @@ export default class DashboardItem extends React.Component {
 
               <div className="column small-12 medium-1">
                 <div className="content-container">
-                  <Link route="compare" params={{ indicators: info.indicator_id }}>
-                    <a className="item-link">
-                      <Icon name="icon-arrow_next2" className="-smaller" />
-                    </a>
-                  </Link>
+                  <button className="item-link" onClick={() => this.onLink(info.indicator_id)}>
+                    <Icon name="icon-arrow_next2" className="-smaller" />
+                  </button>
                 </div>
               </div>
             </div>

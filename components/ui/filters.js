@@ -35,21 +35,36 @@ export default class Filters extends React.Component {
   onSetDashboardLayout(e) {
     const layout = e.currentTarget.getAttribute('data-layout');
     this.props.onSetDashboardLayout(layout);
+
+    GA.event({
+      category: 'Dashboard',
+      action: 'Change View',
+      label: layout
+    });
   }
 
   setTrackEvents(opts, key) {
-    switch (key) {
-      case 'regions': {
-        const value = getParsedValueMatchFromCascadeList(this.props.options.regions, `${opts[0]}`);
+    if (key === 'regions') {
+      const rawValue = Array.isArray(opts) ? opts[0] : opts;
+      const value = getParsedValueMatchFromCascadeList(this.props.options.regions, `${rawValue}`);
 
-        GA.event({
-          category: 'Dashboard',
-          action: 'Location filter',
-          label: value ? value.name : opts[0]
-        });
-        break;
-      }
-      default: return null;
+      GA.event({
+        category: 'Dashboard',
+        action: 'Location filter',
+        label: value ? value.name : rawValue
+      });
+    } else if (key === 'topics') {
+      const rawValues = Array.isArray(opts) ? opts : [opts];
+      const values = rawValues.map((val) => {
+        const topic = this.props.options.topics.find(t => `${t.id}` === `${val}`);
+        return topic ? topic.name : val;
+      });
+
+      GA.event({
+        category: 'Dashboard',
+        action: 'Topics filter',
+        label: values.join(', ')
+      });
     }
   }
 

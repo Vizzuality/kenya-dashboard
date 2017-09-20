@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 // Libraries
 import classnames from 'classnames';
+import throttle from 'lodash/throttle';
 import Fuse from 'fuse.js';
 
 // Constants
@@ -12,6 +13,13 @@ import { SELECT_SEARCH_OPTIONS } from 'constants/general';
 // Components
 import Icon from 'components/ui/icon';
 import Checkbox from 'components/form/checkbox';
+
+let GA;
+if (typeof window !== 'undefined') {
+  /* eslint-disable global-require */
+  GA = require('react-ga');
+  /* eslint-enable global-require */
+}
 
 
 export default class SelectList extends React.Component {
@@ -42,6 +50,14 @@ export default class SelectList extends React.Component {
     const fuse = new Fuse(this.props.list, SELECT_SEARCH_OPTIONS);
     const filteredList = value !== '' ? fuse.search(value) : this.props.list;
     this.setState({ filteredList });
+
+    if (value.length > 2) {
+      GA.event({
+        category: 'Dashboard',
+        action: 'Location search',
+        label: value
+      });
+    }
   }
 
   onClick(e) {
@@ -86,7 +102,7 @@ export default class SelectList extends React.Component {
       <div className={classNames}>
         <div className="select-list-container">
           {/* Search */}
-          {search && filteredList && filteredList.length > 5 &&
+          {search && filteredList &&
             <div className="search-container">
               <input className="search-box" type="text" onKeyUp={this.onSearch} placeholder={searchPlaceholder} />
               <Icon name="icon-search" className="" />

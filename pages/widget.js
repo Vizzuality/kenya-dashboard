@@ -36,6 +36,13 @@ import { TOPICS_ICONS_SRC } from 'constants/filters';
 
 const DESERIALIZER = new Deserializer();
 
+let GA;
+if (typeof window !== 'undefined') {
+  /* eslint-disable global-require */
+  GA = require('react-ga');
+  /* eslint-enable global-require */
+}
+
 
 class WidgetPage extends Page {
   static async getInitialProps({ req, store, query, isServer, asPath, pathname }) {
@@ -75,6 +82,12 @@ class WidgetPage extends Page {
     fetch(`${process.env.KENYA_API}/indicators/${id}?include=topic,widgets&page[size]=999${query}`, headers)
       .then((response) => {
         if (response.ok) return response.json();
+
+        GA.event({
+          category: window.location.pathname,
+          action: 'Download data',
+          label: `Indicator id: ${id}`
+        });
         throw new Error(response.statusText);
       })
       .then((data) => {
@@ -83,7 +96,14 @@ class WidgetPage extends Page {
             dataParsed.widgets.find(w => w.id === this.props.url.query.id);
           const parsedInfo = { ...info, ...{ topic: dataParsed.topic } };
           this.setState({ info: parsedInfo });
+
+          GA.event({
+            category: window.location.pathname,
+            action: 'Download data',
+            label: parsedInfo.title
+          });
         });
+
       });
   }
 

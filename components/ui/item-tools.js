@@ -20,6 +20,13 @@ import Icon from 'components/ui/icon';
 import PickDate from 'components/ui/pickdate';
 import Tooltip from 'components/ui/tooltip';
 
+let GA;
+if (typeof window !== 'undefined') {
+  /* eslint-disable global-require */
+  GA = require('react-ga');
+  /* eslint-enable global-require */
+}
+
 
 class ItemTools extends React.Component {
   constructor(props) {
@@ -38,6 +45,12 @@ class ItemTools extends React.Component {
       }
     };
     modal.toggleModal(true, opts);
+
+    GA.event({
+      category: window.location.pathname,
+      action: 'Open infowindow',
+      label: this.props.info.title
+    });
   }
 
   onRemoveItem() {
