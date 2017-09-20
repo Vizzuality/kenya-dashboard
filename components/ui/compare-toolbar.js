@@ -34,6 +34,14 @@ import Media from 'components/responsive/media';
 import IndicatorsList from 'components/modal-contents/indicators-list';
 import AddArea from 'components/modal-contents/add-area';
 
+let GA;
+if (typeof window !== 'undefined') {
+  /* eslint-disable global-require */
+  GA = require('react-ga');
+  /* eslint-enable global-require */
+}
+
+
 class CompareToolbar extends React.Component {
   constructor(props) {
     super(props);
@@ -46,6 +54,8 @@ class CompareToolbar extends React.Component {
 
     // Bindings
     this.onAddArea = this.onAddArea.bind(this);
+    this.onAddIndicator = this.onAddIndicator.bind(this);
+    this.onRemoveIndicator = this.onRemoveIndicator.bind(this);
     this.onOpenAddAreaModal = this.onOpenAddAreaModal.bind(this);
     this.onOpenAddIndicatorModal = this.onOpenAddIndicatorModal.bind(this);
   }
@@ -85,8 +95,8 @@ class CompareToolbar extends React.Component {
           indicators: indicatorsFilterList,
           activeIndicators: nextProps.indicatorsList.map(ind => ind.id),
           url: nextProps.url,
-          addIndicator: this.props.addIndicator,
-          removeIndicator: this.props.removeIndicator,
+          addIndicator: this.onAddIndicator,
+          removeIndicator: this.onRemoveIndicator,
           closeModal: modal.toggleModal
         }
       };
@@ -96,8 +106,15 @@ class CompareToolbar extends React.Component {
 
   /* Add area */
   onAddArea() {
-    Object.keys(this.props.areas).length < 3 &&
+    if (Object.keys(this.props.areas).length < 3) {
       this.props.addArea(this.props.url);
+
+      GA.event({
+        category: 'Indicator detail',
+        action: 'Add new location',
+        label: ''
+      });
+    }
   }
 
   onOpenAddAreaModal() {
@@ -127,14 +144,38 @@ class CompareToolbar extends React.Component {
         indicators: indicatorsFilterList,
         activeIndicators: indicatorsList.map(ind => ind.id),
         url,
-        addIndicator: this.props.addIndicator,
-        removeIndicator: this.props.removeIndicator,
+        addIndicator: this.onAddIndicator,
+        removeIndicator: this.onRemoveIndicator,
         closeModal: modal.toggleModal
       }
     };
 
     this.setState({ modalContent: 'IndicatorsList' });
     modal.toggleModal(true, opts);
+  }
+
+  onAddIndicator(id, url) {
+    const indicator = this.props.allIndicators.find(ind => `${ind.id}` === `${id}`);
+
+    GA.event({
+      category: 'Indicator detail',
+      action: 'Add indicator',
+      label: indicator ? indicator.name : id
+    });
+
+    this.props.addIndicator(id, url);
+  }
+
+  onRemoveIndicator(id, url) {
+    const indicator = this.props.allIndicators.find(ind => `${ind.id}` === `${id}`);
+
+    GA.event({
+      category: 'Indicator detail',
+      action: 'Remove indicator',
+      label: indicator ? indicator.name : id
+    });
+
+    this.props.removeIndicator(id, url);
   }
 
   render() {
@@ -170,6 +211,7 @@ CompareToolbar.propTypes = {
   className: PropTypes.string,
   indicatorsFilterList: PropTypes.object,
   indicatorsList: PropTypes.array,
+  allIndicators: PropTypes.array,
   areas: PropTypes.object,
   regions: PropTypes.array,
   url: PropTypes.object,

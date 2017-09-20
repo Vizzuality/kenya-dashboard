@@ -35,6 +35,7 @@ class ItemTools extends React.Component {
     // Bindings
     this.onToggleModal = this.onToggleModal.bind(this);
     this.onRemoveItem = this.onRemoveItem.bind(this);
+    this.onChangeDate = this.onChangeDate.bind(this);
   }
 
   onToggleModal() {
@@ -60,10 +61,26 @@ class ItemTools extends React.Component {
       okText: 'Yes, delete',
       cancelText: 'Cancel',
       onOk: () => {
+        GA.event({
+          category: 'Indicator detail',
+          action: 'Remove widget',
+          label: this.props.info.title
+        });
+
         this.props.onRemoveItem(info['indicator-id']);
       },
       onCancel: () => console.info('canceled')
     });
+  }
+
+  onChangeDate(start, end) {
+    GA.event({
+      category: 'Indicator detail',
+      action: 'Changes Date range',
+      label: `${this.props.info.title}. Start: ${start.year}/${start.month}/${start.day}, end: ${end.year}/${end.month}/${end.day}`
+    });
+
+    this.props.onSetDate(start, end);
   }
 
   render() {
@@ -80,7 +97,7 @@ class ItemTools extends React.Component {
       <div className={classNames}>
         {info.frenquency !== null && remove &&
           <div className="select-date">
-            <PickDate dates={dates} onChange={this.props.onSetDate} minMaxDates={minMaxDates} />
+            <PickDate dates={dates} onChange={this.onChangeDate} minMaxDates={minMaxDates} />
           </div>
         }
 
