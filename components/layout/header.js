@@ -28,6 +28,13 @@ import DashboardHeaderContent from 'components/header-contents/dashboard/content
 // Constants
 import { HEADER_MENU_LINKS } from 'constants/general';
 
+let GA;
+if (typeof window !== 'undefined') {
+  /* eslint-disable global-require */
+  GA = require('react-ga');
+  /* eslint-enable global-require */
+}
+
 
 class Header extends React.Component {
   constructor(props) {
@@ -41,6 +48,7 @@ class Header extends React.Component {
     // Bindings
     this.onToggleMenu = this.onToggleMenu.bind(this);
     this.onOpenModal = this.onOpenModal.bind(this);
+    this.onSetView = this.onSetView.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -96,6 +104,16 @@ class Header extends React.Component {
     modal.toggleModal(true, opts);
   }
 
+  onSetView() {
+    GA.event({
+      category: 'Indicator Detail',
+      action: 'Switch visualisation view',
+      label: this.props.compareView === 'map' ? 'Grid' : 'Map'
+    });
+
+    this.props.setView();
+  }
+
   // Device header contents
   getCustomContentByPageDevice() {
     const { url, user, device } = this.props;
@@ -118,7 +136,7 @@ class Header extends React.Component {
             </Link>
           ),
           content: (
-            <button className="btn" onClick={this.props.setView}>
+            <button className="btn" onClick={this.onSetView}>
               {this.props.compareView === 'map' ?
                 <Icon name="icon-grid" /> :
                 <Icon name="icon-globe" className="-medium" />

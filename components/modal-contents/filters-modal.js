@@ -61,10 +61,10 @@ export default class FiltersModal extends React.Component {
   getSelectedFilters() {
     const { selected } = this.props;
 
-    return Object.keys(selected).filter(key => selected[key].length).map(key => (
+    return Object.keys(selected).filter(key => selected[key] && selected[key].length).map(key => (
       <div key={key} className="selected-filters">
         <h1 className="selected-title">{FILTER_TITLES[key]}</h1>
-        <span className="c-badge">{selected[key].length}</span>
+        <span className="c-badge">{selected[key] && selected[key].length}</span>
       </div>
     ));
   }
@@ -75,13 +75,13 @@ export default class FiltersModal extends React.Component {
     const classNames = classnames('c-filters-modal', { [className]: !!className });
     const btnGridClasses = classnames('btn btn-grid', { '-active': layout === 'grid' });
     const btnListClasses = classnames('btn btn-list', { '-active': layout === 'list' });
-    const region = selected.regions.length ?
+    const region = selected.regions && selected.regions.length ?
       getValueMatchFromCascadeList(options.regions, selected.regions[0]) : null;
     const topics = [];
     options.topics.forEach((t) => {
       if (selected.topics.includes(t.id)) topics.push(t);
     });
-    const sort = selected.sort.length ? options.sort.find(s => s.id === selected.sort[0]) : null;
+    const sort = selected && selected.sort.length ? options.sort.find(s => s.id === selected.sort[0]) : null;
 
     return (
       <div className={classNames}>
@@ -128,7 +128,7 @@ export default class FiltersModal extends React.Component {
             multi
             cascade={false}
             listType="checkbox"
-            label={topics.length ? `Topics: ${topics[0].name}${topics.length > 1 ? '...' : ''}` : 'Topics'}
+            label={topics && topics.length ? `Topics: ${topics[0].name}${topics && topics.length > 1 ? '...' : ''}` : 'Topics'}
             name="topics"
             type="accordion"
             list={options.topics}

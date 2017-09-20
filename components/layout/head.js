@@ -26,6 +26,7 @@ export default class Head extends React.Component {
     return (
       <HeadNext>
         <title>{title} | Kenya Dashboard</title>
+
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="author" content="Vizzuality" />

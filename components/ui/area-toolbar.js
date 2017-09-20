@@ -24,12 +24,20 @@ import isEqual from 'lodash/isEqual';
 
 // Utils
 import { getRegionName } from 'utils/areas';
+import { getParsedValueMatchFromCascadeList } from 'utils/general';
 
 // Components
 import Media from 'components/responsive/media';
 import AddArea from 'components/modal-contents/add-area';
 import Icon from 'components/ui/icon';
 import SelectCustom from 'components/ui/select-custom';
+
+let GA;
+if (typeof window !== 'undefined') {
+  /* eslint-disable global-require */
+  GA = require('react-ga');
+  /* eslint-enable global-require */
+}
 
 
 class AreaToolbar extends React.Component {
@@ -73,6 +81,14 @@ class AreaToolbar extends React.Component {
 
   onSetRegion(region) {
     // this.props.onSetRegion(region, this.props.id, this.props.url);
+    const regionItem = getParsedValueMatchFromCascadeList(this.props.regions, region);
+
+    GA.event({
+      category: 'Indicator detail',
+      action: 'Change Location',
+      label: regionItem ? regionItem.name : region
+    });
+
     this.props.onSetRegion(region);
   }
 

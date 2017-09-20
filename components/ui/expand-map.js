@@ -4,6 +4,14 @@ import PropTypes from 'prop-types';
 // Components
 import Icon from 'components/ui/icon';
 
+let GA;
+if (typeof window !== 'undefined') {
+  /* eslint-disable global-require */
+  GA = require('react-ga');
+  /* eslint-enable global-require */
+}
+
+
 export default class ExpandMap extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +23,12 @@ export default class ExpandMap extends React.Component {
   onSetMapExpansion() {
     const expanded = !this.props.expanded;
     this.props.setMapExpansion(!!expanded, this.props.url);
+
+    GA.event({
+      category: 'Indicator detail',
+      action: 'Expand map',
+      label: 'Map is expanded'
+    });
   }
 
   render() {

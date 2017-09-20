@@ -9,6 +9,16 @@ import isArray from 'lodash/isArray';
 import Icon from 'components/ui/icon';
 import SelectCustom from 'components/ui/select-custom';
 
+// Utils
+import { getParsedValueMatchFromCascadeList } from 'utils/general';
+
+let GA;
+if (typeof window !== 'undefined') {
+  /* eslint-disable global-require */
+  GA = require('react-ga');
+  /* eslint-enable global-require */
+}
+
 
 export default class Filters extends React.Component {
   constructor(props) {
@@ -25,6 +35,37 @@ export default class Filters extends React.Component {
   onSetDashboardLayout(e) {
     const layout = e.currentTarget.getAttribute('data-layout');
     this.props.onSetDashboardLayout(layout);
+
+    GA.event({
+      category: 'Dashboard',
+      action: 'Change View',
+      label: layout
+    });
+  }
+
+  setTrackEvents(opts, key) {
+    if (key === 'regions') {
+      const rawValue = Array.isArray(opts) ? opts[0] : opts;
+      const value = getParsedValueMatchFromCascadeList(this.props.options.regions, `${rawValue}`);
+
+      GA.event({
+        category: 'Dashboard',
+        action: 'Location filter',
+        label: value ? value.name : rawValue
+      });
+    } else if (key === 'topics') {
+      const rawValues = Array.isArray(opts) ? opts : [opts];
+      const values = rawValues.map((val) => {
+        const topic = this.props.options.topics.find(t => `${t.id}` === `${val}`);
+        return topic ? topic.name : val;
+      });
+
+      GA.event({
+        category: 'Dashboard',
+        action: 'Topics filter',
+        label: values.join(', ')
+      });
+    }
   }
 
   setFilters(opts, key) {
@@ -40,6 +81,7 @@ export default class Filters extends React.Component {
       [key]: newOpts
     };
     this.props.onSetFilters(newFilters);
+    this.setTrackEvents(opts, key);
   }
 
   render() {
