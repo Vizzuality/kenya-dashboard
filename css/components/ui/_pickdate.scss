@@ -180,15 +180,22 @@
       line-height: 18px;
 
       button {
-        text-transform: uppercase;
-        margin-right: 10px;
+        color: white;
+        display: flex;
+        align-items: center;
+        padding: 10px 16px;
+        line-height: 18px;
+        border-radius: 100px;
+        margin-right: 18px;
+        background-color: $color-secondary;
+        color: $color-text-1;
 
         &:last-child {
           margin: 0;
         }
 
         &:hover {
-          opacity: .5;
+          color: $color-primary;
         }
       }
     }
