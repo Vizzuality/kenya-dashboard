@@ -143,7 +143,7 @@ class HomePage extends React.PureComponent {
               <div className="principal-agency">
                 <a href={principalAgency.url} className="agency" target="_blank" rel="noopener noreferrer">
                   <div className="image-container">
-                    <img src={`${process.env.KENYA_PATH}${principalAgency.logo}`} alt={principalAgency.name} />
+                    <img src={`${process.env.KENYA_PATH}/${principalAgency.logo}`} alt={principalAgency.name} />
                   </div>
                   <span className="agency-name">
                     <span>Ministry of Environment & Natural</span><span>Resources</span>
@@ -157,7 +157,7 @@ class HomePage extends React.PureComponent {
               <div key={ag.id} className="column small-6 medium-4 large-3">
                 <a href={ag.url} className="agency" target="_blank" rel="noopener noreferrer" title={ag.name}>
                   <div className="image-container">
-                    <img src={`${process.env.KENYA_PATH}${ag.logo}`} alt={ag.name} />
+                    <img src={`${process.env.KENYA_PATH}/${ag.logo}`} alt={ag.name} />
                   </div>
                 </a>
               </div>

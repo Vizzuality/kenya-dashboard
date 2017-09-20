@@ -55,6 +55,7 @@ server.use(passport.session());
 const isAuthenticated = (req, res, nextAction) => {
   if (req.isAuthenticated()) return nextAction();
   // Fallback to home
+  if (req.originalUrl) return res.redirect(`/login?referer=${req.originalUrl}`);
   return res.redirect('/login');
 };
 
@@ -126,7 +127,9 @@ app.prepare()
 
     // Authentication
     server.post('/login', auth.authenticate(), (req, res) => {
-      res.json(req.user);
+      if (req.query.referer) return res.redirect(req.query.referer);
+      return res.redirect('/');
+      // res.json(req.user);
     });
     server.get('/logout', (req, res) => {
       req.logout();

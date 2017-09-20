@@ -139,9 +139,12 @@ class Login extends React.PureComponent {
       const valid = FORM_ELEMENTS.isValid(this.state.form);
 
       if (valid) {
+        this.form.submit();
         // Start the submitting
-        this.setState({ submitting: true });
-        this.props.login(this.state.form);
+        // this.setState({ submitting: true });
+        // this.props.login(this.state.form).then(() => {
+        //   e.currentTarget.submit();
+        // });
       }
     }, 0);
   }
@@ -189,7 +192,7 @@ class Login extends React.PureComponent {
               }
 
               <section className="form-container">
-                <form className="c-form" onSubmit={this.onSubmit} noValidate>
+                <form method="post" className="c-form" onSubmit={this.onSubmit} noValidate ref={e => this.form = e }>
                   {/* EMAIL */}
                   <Field
                     ref={(c) => { if (c) FORM_ELEMENTS.elements.email = c; }}

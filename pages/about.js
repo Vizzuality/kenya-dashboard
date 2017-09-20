@@ -35,7 +35,8 @@ class AboutPage extends Page {
   }
 
   componentWillMount() {
-    if (!this.props.isServer && isEmpty(this.props.user)) Router.pushRoute('login');
+    const { user, url, isServer } = this.props;
+    if (!isServer && isEmpty(user)) Router.pushRoute('login', { referer: url.pathname });
   }
 
   render() {
@@ -73,7 +74,7 @@ class AboutPage extends Page {
                   <a>
                     <div className="principal-agency-container">
                       <div className="agencies-logo">
-                        <img src={`${process.env.KENYA_PATH}${principalAgency.logo}`} alt={principalAgency.name} />
+                        <img src={`${process.env.KENYA_PATH}/${principalAgency.logo}`} alt={principalAgency.name} />
                       </div>
                       <h1 className="section-subtitle principal-agency-title">{principalAgency.name}</h1>
                       <p className="section-description">{principalAgency.description || FAKE_DESCRIPTION}</p>
