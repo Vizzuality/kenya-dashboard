@@ -155,11 +155,18 @@ class HomePage extends React.PureComponent {
           <div className="row">
             {filteredAgencies.map(ag => (
               <div key={ag.id} className="column small-6 medium-4 large-3">
-                <a href={ag.url} className="agency" target="_blank" rel="noopener noreferrer" title={ag.name}>
-                  <div className="image-container">
-                    <img src={`${process.env.KENYA_PATH}/${ag.logo}`} alt={ag.name} />
+                {ag.url && ag.url !== '' ?
+                  <a href={ag.url} className="agency" target="_blank" rel="noopener noreferrer" title={ag.name}>
+                    <div className="image-container">
+                      <img src={`${process.env.KENYA_PATH}/${ag.logo}`} alt={ag.name} />
+                    </div>
+                  </a> :
+                  <div className="agency -no-link">
+                    <div className="image-container">
+                      <img src={`${process.env.KENYA_PATH}/${ag.logo}`} alt={ag.name} />
+                    </div>
                   </div>
-                </a>
+                }
               </div>
             ))}
           </div>

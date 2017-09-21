@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 // Components
+import { Link } from 'routes';
 import TopicIcon from 'components/ui/topic-icon';
 
 // Constants
@@ -32,9 +33,11 @@ export default function IndicatorInfo(props) {
           }
         </div>
         <div className="logo-container">
-          <a href={info.agency.url} alt={info.agency.name}>
-            <img src={`${process.env.KENYA_PATH}${info.agency.logo}` || '/static/images/agencies/placeholder.png'} alt={info.agency.name} />
-          </a>
+          <Link route={`agency/${info.agency.id}`}>
+            <a title={info.agency.name}>
+              <img src={`${process.env.KENYA_PATH}${info.agency.logo}` || '/static/images/agencies/placeholder.png'} alt={info.agency.name} />
+            </a>
+          </Link>
         </div>
       </header>
 

@@ -153,12 +153,13 @@
       margin: 10px 0;
       color: $color-text-2;
       cursor: pointer;
+
+      &.-no-link {
+        cursor: default;
+      }
     }
 
     .image-container {
-      // max-width: 100px;
-      // max-height: 50px;
-
       img {
         max-height: 80px;
       }
