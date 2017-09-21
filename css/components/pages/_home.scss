@@ -2,6 +2,15 @@
 .p-home {
   background-color: $color-bg-light;
 
+  .c-button {
+    &.-secondary {
+      text-transform: capitalize;
+      font-size: 17px;
+      line-height: 20px;
+      padding: 12px 22px;
+    }
+  }
+
   /* Header fits */
   .c-header {
     position: absolute;

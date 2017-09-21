@@ -53,14 +53,15 @@ class AgencyPage extends React.PureComponent {
           <Intro>
             <div className="row">
               <div className="column small-12 medium-10 medium-offset-1">
-                <a href={info.url} target="_blank" rel="noopener noreferrer">
-                  <h1 className="title -medium">{info.name}</h1>
-                </a>
+                <h1 className="title -medium">{info.name}</h1>
                 <p
                   className="description"
                   dangerouslySetInnerHTML={{ __html: info.description && info.description !== '' ?
                   info.description : FAKE_DESCRIPTION }}
                 />
+                {info.url && info.url !== '' &&
+                  <a href={info.url} className="c-button -light" target="_blank" rel="noopener noreferrer">Visit website</a>
+                }
               </div>
             </div>
           </Intro>

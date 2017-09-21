@@ -112,7 +112,10 @@
 
                 &:focus { outline: none; }
 
-                &.monthselect { margin-right: 10px;}
+                &.monthselect {
+                  margin-right: 10px;
+                  text-transform: uppercase;
+                }
               }
             }
           }
@@ -143,8 +146,9 @@
           &.active {
             &.start-date,
             &.end-date {
-              background-color: $color-primary;
+              background-color: $color-tertiary;
               font-weight: $font-weight-default;
+              border-radius: 0;
             }
           }
 
@@ -154,7 +158,7 @@
 
           &.in-range {
             font-weight: $font-weight-bold;
-            background-color: $color-tertiary;
+            background-color: rgba($color-tertiary, .6);
           }
         }
 

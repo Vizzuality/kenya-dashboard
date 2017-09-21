@@ -87,7 +87,7 @@ class HomePage extends React.PureComponent {
             <div className="column small-12 medium-10 medium-offset-1">
               <h1 className="title -no-underline">Data Integration for Sustainable Development in Kenya</h1>
               <Link route="/dashboard">
-                <a className="c-button -dark link">Kenya Dashboard</a>
+                <a className="c-button -secondary link">Kenya Dashboard</a>
               </Link>
             </div>
           </div>
@@ -116,7 +116,7 @@ class HomePage extends React.PureComponent {
               ))}
             </div>
             {numLoaded < topics.length &&
-              <button className="c-button -dark load-more" onClick={this.onLoadMore}>Load more</button>
+              <button className="c-button -secondary load-more" onClick={this.onLoadMore}>Load more</button>
             }
           </div>
         </section>

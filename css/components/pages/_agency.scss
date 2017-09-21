@@ -3,7 +3,7 @@
   background-color: $color-bg-dark;
 
   &.-logged {
-    background-color: $color-bg-cream;
+    background-color: $color-bg-light;
 
     /* Header fits */
     .c-header {
@@ -39,6 +39,12 @@
       &:hover {
         opacity: .7;
       }
+    }
+
+    .c-button {
+      display: inline-block;
+      margin-top: 40px;
+      cursor: pointer;
     }
   }
 

@@ -54,6 +54,10 @@
     font-size: 17px;
     line-height: 20px;
     padding: 12px 22px;
+
+    &:hover {
+      background-color: $color-primary;
+    }
   }
 
   &.-primary {
@@ -68,11 +72,11 @@
 
   &.-secondary {
     border-color: $color-border-1;
-    color: $color-text-2;
+    color: $color-text-1;
     background: $color-dark-grey;
 
     &:hover {
-      color: darken($color-text-2, 10%);
+      color: $color-primary;
     }
   }
 
