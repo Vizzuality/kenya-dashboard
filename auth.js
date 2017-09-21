@@ -25,8 +25,7 @@ module.exports = () => {
       .set('Accept', 'application/json')
       .end((err, res) => {
         if (err) {
-          // done(err, null, 'User unathorized');
-          res.redirect('/login');
+          done(err, null, 'User unathorized');
         } else {
           const user = Object.assign({}, res.body);
           done(null, user, 'User authenticated correctly');
