@@ -99,6 +99,20 @@ export default class DashboardItem extends React.Component {
     return description;
   }
 
+  getDatesLabel() {
+    const { minMaxDates } = this.state;
+
+    const rawMinDate = minMaxDates && minMaxDates.min ? new Date(minMaxDates.min) : null;
+    const rawMaxDate = minMaxDates && minMaxDates.max ? new Date(minMaxDates.max) : null;
+
+    const minDate = rawMinDate ? `${rawMinDate.getDate()}/${rawMinDate.getMonth() + 1}/${rawMinDate.getFullYear()}` : '';
+    const maxDate = rawMaxDate ? `${rawMaxDate.getDate()}/${rawMaxDate.getMonth() + 1}/${rawMaxDate.getFullYear()}` : '';
+
+    const dateLabel = minDate !== '' && maxDate !== '' ? `${minDate} - ${maxDate}` : '';
+
+    return dateLabel;
+  }
+
   render() {
     const { info, className, dates, region, remove, groupId, layout } = this.props;
 
@@ -110,6 +124,7 @@ export default class DashboardItem extends React.Component {
     );
     const parsedInfo = { ...info, ...{ lastDate: this.state.lastDate } };
     const description = info.description || FAKE_DESCRIPTION;
+    const dateLabel = this.getDatesLabel();
 
     return (
       // Grid layout
@@ -118,6 +133,7 @@ export default class DashboardItem extends React.Component {
           {/* Header */}
           <header className="item-header">
             <h1 className="item-title">{info && info.title}</h1>
+            {!remove && <p className="item-dates">{dateLabel}</p>}
             <div className="item-tools">
               <ItemTools
                 groupId={groupId}
@@ -172,6 +188,7 @@ export default class DashboardItem extends React.Component {
                     {/* Header */}
                     <header className="item-header">
                       <h1 className="item-title">{info && info.title}</h1>
+                      {!remove && <p className="item-dates">{dateLabel}</p>}
                     </header>
                   </div>
                 </div>
@@ -192,6 +209,7 @@ export default class DashboardItem extends React.Component {
                   {/* Header */}
                   <header className="item-header">
                     <h1 className="item-title">{info && info.title}</h1>
+                    {!remove && <p className="item-dates">{dateLabel}</p>}
                     <div className="item-tools">
                       <ItemTools
                         groupId={groupId}

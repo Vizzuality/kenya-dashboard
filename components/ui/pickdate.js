@@ -69,7 +69,9 @@ export default class ItemTools extends React.Component {
 
     const startLabel = dates ? `${dates.start.day}/${dates.start.month}/${dates.start.year}` : minDate;
     const endLabel = dates ? `${dates.end.day}/${dates.end.month}/${dates.end.year}` : maxDate;
-    const dateLabel = dates ? `${startLabel} - ${endLabel}` : 'Date';
+
+    const datesLiteral = dates ? `${startLabel} - ${endLabel}` : `${minDate} - ${maxDate}`;
+    const dateLabel = datesLiteral || 'Date';
 
     return { start, end, dateLabel, minDate: moment(minDate, 'DD/MM/YYYY'), maxDate: moment(maxDate, 'DD/MM/YYYY') };
   }
