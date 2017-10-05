@@ -361,6 +361,7 @@ class ComparePage extends Page {
           {/* Device components. - Slider */}
           <Media device="device">
             <Sticky
+              innerZ={599}
               enabled
               top={headerHeight}
               onStateChange={(pr) => { this.setState({ status: pr.status }); }}
