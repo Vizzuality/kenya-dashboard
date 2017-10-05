@@ -12,6 +12,10 @@
     height: 46px;
   }
 
+  &.-fixed {
+    background-color: #253131;
+  }
+
   .location-select-container {
     @media #{$mq-small-medium} {
       .btn-area {

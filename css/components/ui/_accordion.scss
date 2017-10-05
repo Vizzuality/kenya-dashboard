@@ -14,6 +14,26 @@
       }
     }
 
+    .sticky-outer-wrapper {
+      width: 100%;
+
+      .sticky-inner-wrapper {
+        .bar {
+          display: flex;
+
+          &.-fixed {
+            .accordion-item {
+              background-color: $color-bg-dark;
+            }
+
+            .c-area-toolbar {
+              background-color: rgba($color-secondary, .4);
+            }
+          }
+        }
+      }
+    }
+
     .item-enter {
       transform: translate(100%);
     }

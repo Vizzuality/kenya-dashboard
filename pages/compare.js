@@ -55,6 +55,7 @@ import { decode, getValueMatchFromCascadeList } from 'utils/general';
 
 // Components
 import { Router } from 'routes';
+import Sticky from 'react-stickynode';
 import Slider from 'react-slick';
 import Media from 'components/responsive/media';
 import Page from 'components/layout/page';
@@ -87,7 +88,9 @@ class ComparePage extends Page {
       // Accordion expanded area - desktop
       activeArea: null,
       // Slider active area - mobile
-      areaShown: 'defaultAreaMap'
+      areaShown: 'defaultAreaMap',
+      status: 0,
+      headerHeight: 0
     };
 
     this.url = props.url;
@@ -139,6 +142,10 @@ class ComparePage extends Page {
     if (url.query.expanded) {
       this.props.setMapExpansionFromUrl(!!url.query.expanded);
     }
+
+    const header = document !== undefined && document.getElementsByClassName('c-header');
+    const headerHeight = header && header.length ? header[0].offsetHeight - 18 : 0;
+    this.setState({ headerHeight });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -158,10 +165,6 @@ class ComparePage extends Page {
     if (!this.props.indicators.contextualLayers && nextProps.indicators.contextualLayers &&
       nextProps.url.query.indicators) {
       this.props.getSpecificIndicators(nextProps.url.query.indicators);
-    }
-
-    if (!isEqual(this.props.indicators.list, nextProps.indicators.list)) {
-      // this.props.setLayers();
     }
   }
 
@@ -251,11 +254,29 @@ class ComparePage extends Page {
             numOfAreas={Object.keys(areas).length}
             selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
             regions={this.props.filters.options.regions}
-            onToggleAccordionItem={this.onToggleAccordionItem}
             onRemoveArea={this.onRemoveArea}
             onSelectRegion={this.props.selectRegion}
             onSetDate={this.props.setAreaIndicatorDates}
             onRemoveIndicator={this.onRemoveIndicator}
+          />
+        )
+      }
+    ));
+  }
+
+  getAreasToolbars(areas) {
+    return Object.keys(areas).map(key => (
+      {
+        id: key,
+        el: (
+          <AreaToolbar
+            id={key}
+            numOfAreas={Object.keys(areas).length}
+            regions={this.props.filters.options.regions}
+            selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
+            onToggleAccordionItem={this.onToggleAccordionItem}
+            onSetRegion={region => this.props.selectRegion(region, key, this.props.url)}
+            onRemoveArea={this.onRemoveArea}
           />
         )
       }
@@ -322,6 +343,7 @@ class ComparePage extends Page {
   }
 
   render() {
+    const { status, headerHeight } = this.state;
     const {
       url,
       compare,
@@ -333,9 +355,11 @@ class ComparePage extends Page {
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(mapState.areas, layers);
     const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators);
+    const areasToolbars = this.getAreasToolbars(mapState.areas);
     // Lists
     const areaMapsList = this.getList(areaMaps);
     const indicatorsWidgetsList = this.getList(indicatorsWidgets);
+    const areasToolbarsList = this.getList(areasToolbars);
 
     if (isEmpty(user)) return null;
 
@@ -356,19 +380,28 @@ class ComparePage extends Page {
 
           {/* Device components. - Slider */}
           <Media device="device">
-            <AreaToolbar
-              id={this.state.areaShown}
-              url={url}
-              areas={mapState.areas}
-              numOfAreas={Object.keys(mapState.areas).length}
-              regions={this.props.filters.options.regions}
-              selectedRegion={mapState.areas[this.state.areaShown].region && mapState.areas[this.state.areaShown].region !== '' ?
-                mapState.areas[this.state.areaShown].region : KENYA_CARTO_ID}
-              sliderArrowsControl={this.sliderArrowsControl()}
-              onSetRegion={this.onSetRegion}
-              onPreviousSlider={this.onPreviousSlider}
-              onNextSlider={this.onNextSlider}
-            />
+            <Sticky
+              innerZ={599}
+              enabled
+              top={headerHeight}
+              onStateChange={(pr) => { this.setState({ status: pr.status }); }}
+            >
+              <AreaToolbar
+                className={status === 2 ? '-fixed' : ''}
+                id={this.state.areaShown}
+                url={url}
+                areas={mapState.areas}
+                numOfAreas={Object.keys(mapState.areas).length}
+                regions={this.props.filters.options.regions}
+                selectedRegion={mapState.areas[this.state.areaShown].region && mapState.areas[this.state.areaShown].region !== '' ?
+                  mapState.areas[this.state.areaShown].region : KENYA_CARTO_ID}
+                sliderArrowsControl={this.sliderArrowsControl()}
+                onSetRegion={this.onSetRegion}
+                onPreviousSlider={this.onPreviousSlider}
+                onNextSlider={this.onNextSlider}
+              />
+            </Sticky>
+
             <Slider
               ref={c => this.slider = c}
               {...SLIDER_OPTIONS}
@@ -397,9 +430,10 @@ class ComparePage extends Page {
           <Media device="desktop">
             <Accordion
               sections={[
-                { type: 'dynamic', items: areaMapsList },
+                { type: 'dynamic', items: areaMapsList, key: 'maps' },
                 {
                   type: 'static',
+                  key: 'legend',
                   items: [
                     <Legend
                       key="legend"
@@ -413,7 +447,8 @@ class ComparePage extends Page {
                     />
                   ]
                 },
-                { type: 'dynamic', items: indicatorsWidgetsList }
+                { type: 'dynamic', items: areasToolbarsList, key: 'toolbars', sticky: true },
+                { type: 'dynamic', items: indicatorsWidgetsList, key: 'widgets' }
               ]}
             />
           </Media>

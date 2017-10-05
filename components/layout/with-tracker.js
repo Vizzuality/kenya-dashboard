@@ -7,7 +7,7 @@ if (typeof window !== 'undefined') {
   /* eslint-disable global-require */
   GA = require('react-ga');
   /* eslint-enable global-require */
-  GA.initialize('UA-106216310-1');
+  GA.initialize('UA-106216310-1', { debug: true });
 }
 
 
