@@ -241,17 +241,21 @@ class Header extends React.Component {
   }
 
   render() {
-    const { url, device, user } = this.props;
+    const { className, url, device, user } = this.props;
     const toggleMenuClasses = classnames(
       'toggle-menu',
       { '-open': this.state.open }
+    );
+    const classNames = classnames(
+      'c-header',
+      { [className]: !!className }
     );
 
     const customContentByPageDevice = this.getCustomContentByPageDevice();
     const customContentByPage = this.getCustomContentByPage();
 
     return (
-      <header className="c-header">
+      <header className={classNames}>
         {/* Header content */}
         <div className="row collapse">
           <div className="column small-12">
@@ -327,6 +331,7 @@ class Header extends React.Component {
 Header.propTypes = {
   url: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
+  className: PropTypes.string,
   device: PropTypes.bool,
   modalOpened: PropTypes.bool,
   compareView: PropTypes.string,

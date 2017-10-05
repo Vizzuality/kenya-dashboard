@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 // Components
+import Sticky from 'react-stickynode';
 import Head from 'components/layout/head';
 import Media from 'components/responsive/media';
 import Icons from 'components/layout/icons';
@@ -24,58 +25,100 @@ if (process.env.NODE_ENV !== 'production') {
   // whyDidYouUpdate(React);
 }
 
-function Layout(props) {
-  const { title, description, url, session, children, className, user, hasHeader, hasFooter } = props;
-  const classNames = classnames({
-    [className]: !!className
-  });
+class Layout extends React.Component {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div className={`l-page c-page ${classNames}`}>
-      <Head
-        title={title}
-        description={description}
-      />
-      <Icons />
+    this.state = {
+      status: 0
+    };
+  }
 
-      {/* Customs Header */}
-      <Media device="mobile">
-        {hasHeader &&
-          <Header
-            url={url}
-            session={session}
-            logged={user.logged}
-            device
-          />
-        }
-      </Media>
-      <Media device="desktop+">
-        {hasHeader &&
-          <Header
-            url={url}
-            session={session}
-            logged={user.logged}
-          />
-        }
-      </Media>
+  render() {
+    const {
+      title,
+      description,
+      url,
+      session,
+      children,
+      className,
+      user,
+      hasHeader,
+      hasFooter
+    } = this.props;
+    const classNames = classnames({
+      [className]: !!className
+    });
+    const fixedHeader = url.pathname === '/dashboard' || url.pathname === '/compare';
 
-      <div className="l-main">
-        {children}
+    return (
+      <div className={`l-page c-page ${classNames}`}>
+        <Head
+          title={title}
+          description={description}
+        />
+        <Icons />
+
+        {/* Customs Header */}
+        <Media device="mobile">
+          {hasHeader && fixedHeader &&
+            <Sticky enabled onStateChange={(pr) => { this.setState({ status: pr.status }); }}>
+              <Header
+                url={url}
+                session={session}
+                logged={user.logged}
+                device
+              />
+            </Sticky>
+          }
+          {hasHeader && !fixedHeader &&
+            <Header
+              url={url}
+              session={session}
+              logged={user.logged}
+              device
+            />
+          }
+        </Media>
+        <Media device="desktop+">
+          {hasHeader && fixedHeader &&
+            <Sticky enabled onStateChange={(pr) => { this.setState({ status: pr.status }); }}>
+              <Header
+                className={this.state.status === 2 ? '-fixed' : ''}
+                url={url}
+                session={session}
+                logged={user.logged}
+              />
+            </Sticky>
+          }
+          {hasHeader && !fixedHeader &&
+            <Header
+              className={this.state.status === 2 ? '-fixed' : ''}
+              url={url}
+              session={session}
+              logged={user.logged}
+            />
+          }
+        </Media>
+
+        <div className="l-main">
+          {children}
+        </div>
+
+        <Media device="desktop">
+          {hasFooter && <Footer />}
+        </Media>
+
+        <Modal />
+
+        <Toastr
+          transitionIn="fadeIn"
+          transitionOut="fadeOut"
+        />
+
       </div>
-
-      <Media device="desktop">
-        {hasFooter && <Footer />}
-      </Media>
-
-      <Modal />
-
-      <Toastr
-        transitionIn="fadeIn"
-        transitionOut="fadeOut"
-      />
-
-    </div>
-  );
+    );
+  }
 }
 
 Layout.propTypes = {

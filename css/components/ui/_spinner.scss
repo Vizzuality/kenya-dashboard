@@ -10,7 +10,7 @@ $spinner-tiny-size: 20px;
   background: rgba($color-bg-dark, .75);
   visibility: hidden;
   opacity: 0;
-  z-index: 1000;
+  z-index: 500;
 
   > .spinner-box {
     position: absolute;
