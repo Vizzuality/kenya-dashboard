@@ -13,6 +13,10 @@ $menu-container-width: 220px;
 
   &.-fixed {
     background-color: $color-bg-dark;
+
+    .header-container {
+      padding: 14px 0;
+    }
   }
 
   .header-container {

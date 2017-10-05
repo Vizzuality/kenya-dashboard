@@ -64,6 +64,7 @@ class Layout extends React.Component {
           {hasHeader && fixedHeader &&
             <Sticky enabled onStateChange={(pr) => { this.setState({ status: pr.status }); }}>
               <Header
+                className={this.state.status === 2 ? '-fixed' : ''}
                 url={url}
                 session={session}
                 logged={user.logged}

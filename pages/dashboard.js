@@ -59,7 +59,7 @@ class DashboardPage extends Page {
     this.props.getIndicators(filters);
 
     const header = document !== undefined && document.getElementsByClassName('c-header');
-    const headerHeight = header && header.length ? header[0].offsetHeight : 0;
+    const headerHeight = header && header.length ? header[0].offsetHeight - 18 : 0;
     this.setState({ headerHeight });
   }
 
