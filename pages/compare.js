@@ -254,11 +254,29 @@ class ComparePage extends Page {
             numOfAreas={Object.keys(areas).length}
             selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
             regions={this.props.filters.options.regions}
-            onToggleAccordionItem={this.onToggleAccordionItem}
             onRemoveArea={this.onRemoveArea}
             onSelectRegion={this.props.selectRegion}
             onSetDate={this.props.setAreaIndicatorDates}
             onRemoveIndicator={this.onRemoveIndicator}
+          />
+        )
+      }
+    ));
+  }
+
+  getAreasToolbars(areas) {
+    return Object.keys(areas).map(key => (
+      {
+        id: key,
+        el: (
+          <AreaToolbar
+            id={key}
+            numOfAreas={Object.keys(areas).length}
+            regions={this.props.filters.options.regions}
+            selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
+            onToggleAccordionItem={this.onToggleAccordionItem}
+            onSetRegion={region => this.props.selectRegion(region, key, this.props.url)}
+            onRemoveArea={this.onRemoveArea}
           />
         )
       }
@@ -337,9 +355,11 @@ class ComparePage extends Page {
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(mapState.areas, layers);
     const indicatorsWidgets = this.getAreaIndicators(mapState.areas, indicators);
+    const areasToolbars = this.getAreasToolbars(mapState.areas);
     // Lists
     const areaMapsList = this.getList(areaMaps);
     const indicatorsWidgetsList = this.getList(indicatorsWidgets);
+    const areasToolbarsList = this.getList(areasToolbars);
 
     if (isEmpty(user)) return null;
 
@@ -410,9 +430,10 @@ class ComparePage extends Page {
           <Media device="desktop">
             <Accordion
               sections={[
-                { type: 'dynamic', items: areaMapsList },
+                { type: 'dynamic', items: areaMapsList, key: 'maps' },
                 {
                   type: 'static',
+                  key: 'legend',
                   items: [
                     <Legend
                       key="legend"
@@ -426,7 +447,8 @@ class ComparePage extends Page {
                     />
                   ]
                 },
-                { type: 'dynamic', items: indicatorsWidgetsList }
+                { type: 'dynamic', items: areasToolbarsList, key: 'toolbars', sticky: true },
+                { type: 'dynamic', items: indicatorsWidgetsList, key: 'widgets' }
               ]}
             />
           </Media>

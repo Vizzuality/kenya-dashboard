@@ -75,18 +75,6 @@ export default class AreaIndicators extends React.Component {
 
     return (
       <article className={classNames}>
-        <Media device="desktop">
-          <AreaToolbar
-            id={id}
-            numOfAreas={numOfAreas}
-            regions={regions}
-            selectedRegion={selectedRegion}
-            onToggleAccordionItem={this.props.onToggleAccordionItem}
-            onSetRegion={this.onSetRegion}
-            onRemoveArea={this.props.onRemoveArea}
-          />
-        </Media>
-
         <section>
           <DashboardList
             groupId={id}
@@ -117,7 +105,6 @@ AreaIndicators.propTypes = {
   removedWidgets: PropTypes.array,
   // Actions
   onRemoveArea: PropTypes.func,
-  onToggleAccordionItem: PropTypes.func,
   onSelectRegion: PropTypes.func,
   onSetDate: PropTypes.func,
   onRemoveIndicator: PropTypes.func
