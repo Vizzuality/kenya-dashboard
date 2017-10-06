@@ -21,6 +21,7 @@ import LoginNav from 'components/ui/login-nav';
 import MainNav from 'components/ui/main-nav';
 import Login from 'components/modal-contents/login';
 import Icon from 'components/ui/icon';
+import SwitchLabels from 'components/ui/switch-labels';
 
 // Header components
 import DashboardHeaderContent from 'components/header-contents/dashboard/content';
@@ -136,12 +137,12 @@ class Header extends React.Component {
             </Link>
           ),
           content: (
-            <button className="btn" onClick={this.onSetView}>
-              {this.props.compareView === 'map' ?
-                <Icon name="icon-grid" /> :
-                <Icon name="icon-globe" className="-medium" />
-              }
-            </button>
+            <SwitchLabels
+              leftLabel="Grid"
+              rightLabel="Map"
+              defaultPos={this.props.compareView === 'grid'}
+              onChange={this.onSetView}
+            />
           )
         };
         case '/about': return {
