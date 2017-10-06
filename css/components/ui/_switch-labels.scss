@@ -12,7 +12,7 @@
   &.-right {
     .dot {
       transform: translateX(calc(100% + 3px));
-      transition: $animation-time-2 all $ease-out-sine;
+      transition: $animation-time-2 all $ease-in-sine;
     }
   }
 

@@ -47,8 +47,8 @@ export default class SwitchLabels extends React.Component {
 SwitchLabels.propTypes = {
   className: PropTypes.string,
   defaultPos: PropTypes.bool,
-  leftLabel: PropTypes.string.Required,
-  rightLabel: PropTypes.string.Required,
+  leftLabel: PropTypes.string,
+  rightLabel: PropTypes.string,
   // Actions
   onChange: PropTypes.func
 };

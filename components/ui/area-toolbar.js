@@ -119,6 +119,8 @@ class AreaToolbar extends React.Component {
     const {
       className,
       numOfAreas,
+      areas,
+      id,
       regions,
       selectedRegion,
       sliderArrowsControl
@@ -146,7 +148,7 @@ class AreaToolbar extends React.Component {
         <div className="location-select-container">
           <Media device="device">
             <button className="btn-area" onClick={this.onOpenAddAreaModal}>
-              <h1>{regionName}</h1>
+              <h1><span className="area-number">{Object.keys(areas).indexOf(id) + 1}.</span>{regionName}</h1>
               <Icon name="icon-arrow-down" className="-smaller" />
             </button>
           </Media>
