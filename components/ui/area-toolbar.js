@@ -44,13 +44,21 @@ class AreaToolbar extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      highlighted: true
+    };
 
     // Bindings
     this.onRemoveArea = this.onRemoveArea.bind(this);
     this.onSetRegion = this.onSetRegion.bind(this);
     this.onToggleAccordionItem = this.onToggleAccordionItem.bind(this);
     this.onOpenAddAreaModal = this.onOpenAddAreaModal.bind(this);
+    this.onPreviousSlider = this.onPreviousSlider.bind(this);
+    this.onNextSlider = this.onNextSlider.bind(this);
+  }
+
+  componentDidMount() {
+    this.setHighlighted();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,6 +80,12 @@ class AreaToolbar extends React.Component {
         }
       };
       modal.setModalOptions(opts);
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.highlighted) {
+      this.setHighlighted();
     }
   }
 
@@ -115,7 +129,24 @@ class AreaToolbar extends React.Component {
     modal.toggleModal(true, opts);
   }
 
+  onPreviousSlider() {
+    this.setState({ highlighted: true });
+    this.props.onPreviousSlider();
+  }
+
+  onNextSlider() {
+    this.setState({ highlighted: true });
+    this.props.onNextSlider();
+  }
+
+  setHighlighted() {
+    setTimeout(() => {
+      this.setState({ highlighted: false });
+    }, 4000);
+  }
+
   render() {
+    const { highlighted } = this.state;
     const {
       className,
       numOfAreas,
@@ -148,7 +179,10 @@ class AreaToolbar extends React.Component {
         <div className="location-select-container">
           <Media device="device">
             <button className="btn-area" onClick={this.onOpenAddAreaModal}>
-              <h1><span className="area-number">{Object.keys(areas).indexOf(id) + 1}.</span>{regionName}</h1>
+              <h1 className={`area-name ${highlighted ? '-highlighted' : ''}`}>
+                <span className="area-number">{Object.keys(areas).indexOf(id) + 1}.</span>
+                {regionName}
+              </h1>
               <Icon name="icon-arrow-down" className="-smaller" />
             </button>
           </Media>
@@ -168,10 +202,10 @@ class AreaToolbar extends React.Component {
         <div className="tools">
           {numOfAreas > 1 &&
             <Media device="device">
-              <button className={btnPreviousClasses} onClick={this.props.onPreviousSlider}>
+              <button className={btnPreviousClasses} onClick={this.onPreviousSlider}>
                 <Icon name="icon-arrow-left2" className="" />
               </button>
-              <button className={btnNextClasses} onClick={this.props.onNextSlider}>
+              <button className={btnNextClasses} onClick={this.onNextSlider}>
                 <Icon name="icon-arrow-right2" className="" />
               </button>
             </Media>

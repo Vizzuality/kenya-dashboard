@@ -23,11 +23,15 @@
         align-items: center;
       }
 
-      h1 {
+      .area-name {
         font-size: $font-size-default;
         line-height: 16px;
         color: rgba($color-text-1, .5);
         padding: 0;
+
+        &.-highlighted {
+          color: $color-primary;
+        }
 
         .area-number {
           color: $color-text-1;
