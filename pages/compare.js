@@ -87,7 +87,7 @@ class ComparePage extends Page {
     this.state = {
       // Accordion expanded area - desktop
       activeArea: null,
-      // Slider active area - mobile
+      // Slider active area - device
       areaShown: 'defaultAreaMap',
       status: 0,
       headerHeight: 0
@@ -156,15 +156,28 @@ class ComparePage extends Page {
       this.url = nextProps.url;
     }
 
+    if (!this.props.indicators.contextualLayers && nextProps.indicators.contextualLayers &&
+      nextProps.url.query.indicators) {
+      this.props.getSpecificIndicators(nextProps.url.query.indicators);
+    }
+
     if (!isEqual(oldAreasIds, newAreasIds)) {
       if (!newAreasIds.includes(this.state.areaShown)) {
         this.setState({ areaShown: newAreasIds[0] });
       }
     }
+  }
 
-    if (!this.props.indicators.contextualLayers && nextProps.indicators.contextualLayers &&
-      nextProps.url.query.indicators) {
-      this.props.getSpecificIndicators(nextProps.url.query.indicators);
+  componentDidUpdate(prevProps) {
+    const newAreasIds = Object.keys(this.props.mapState.areas);
+    const oldAreasIds = Object.keys(prevProps.mapState.areas);
+
+    if (!isEqual(oldAreasIds, newAreasIds)) {
+      newAreasIds.forEach((aId) => {
+        if (!oldAreasIds.includes(aId)) {
+          this.onNextSlider();
+        }
+      });
     }
   }
 

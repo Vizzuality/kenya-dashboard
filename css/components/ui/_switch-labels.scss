@@ -1,0 +1,48 @@
+
+.c-switch-labels {
+  position: relative;
+
+  &.-left {
+    .dot {
+      left: 1px;
+      transition: $animation-time all $ease-out-sine;
+    }
+  }
+
+  &.-right {
+    .dot {
+      transform: translateX(calc(100% + 3px));
+      transition: $animation-time-2 all $ease-in-sine;
+    }
+  }
+
+  .labels-container {
+    display: flex;
+    background-color: $color-secondary;
+    padding: 6px 10px;
+    border-radius: 100px;
+
+    .label {
+      font-size: 11px;
+      line-height: 12px;
+      color: rgba($color-text-1, .5);
+    }
+  }
+
+  .dot {
+    position: absolute;
+    top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100% - 2px);
+    width: calc(50% - 2px);
+    border-radius: 100px;
+    background: $color-bg-dark;
+
+    .dot-label {
+      font-size: 11px;
+      line-height: 12px;
+    }
+  }
+}
