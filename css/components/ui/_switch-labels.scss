@@ -18,14 +18,14 @@
 
   .labels-container {
     display: flex;
-    background-color: $color-secondary;
+    background-color: rgba(115, 165, 117, .2);
     padding: 6px 10px;
     border-radius: 100px;
 
     .label {
       font-size: 11px;
       line-height: 12px;
-      color: rgba($color-text-1, .5);
+      color: rgba($color-text-1, .6);
     }
   }
 
