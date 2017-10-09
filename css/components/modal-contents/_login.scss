@@ -6,6 +6,10 @@
   padding: 135px 50px;
   background-color: $color-bg-dark;
 
+  @media #{$mq-small-medium} {
+    padding: 45px 50px;
+  }
+
   .login-container {
     width: 360px;
   }
@@ -59,6 +63,10 @@
     .btn-login {
       width: 100%;
       margin-top: 72px;
+
+      @media #{$mq-small-medium} {
+        margin-top: 55px;
+      }
     }
 
     .btn-reset {
