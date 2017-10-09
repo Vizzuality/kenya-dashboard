@@ -40,12 +40,18 @@ class Legend extends React.Component {
 
     // BINDINGS
     this.onToggle = this.onToggle.bind(this);
+    this.onToggleDevice = this.onToggleDevice.bind(this);
     this.onToggleLayer = this.onToggleLayer.bind(this);
     this.onSortEnd = this.onSortEnd.bind(this);
   }
 
   onToggle() {
     this.setState({ open: !this.state.open });
+  }
+
+  onToggleDevice() {
+    this.setState({ open: !this.state.open });
+    this.props.setMapExpansion(this.state.open, this.props.url);
   }
 
   onToggleLayer(id) {
@@ -152,10 +158,18 @@ class Legend extends React.Component {
       <div className={classNames}>
         <header className="legend-header">
           <h2 className="title">
-            <button className="btn btn-close" onClick={this.onToggle}>
-              Legend
-              <Icon name="icon-arrow-down" className="-smaller" />
-            </button>
+            <Media device="device">
+              <button className="btn btn-close" onClick={this.onToggleDevice}>
+                Legend
+                <Icon name="icon-arrow-down" className="-smaller" />
+              </button>
+            </Media>
+            <Media device="desktop">
+              <button className="btn btn-close" onClick={this.onToggle}>
+                Legend
+                <Icon name="icon-arrow-down" className="-smaller" />
+              </button>
+            </Media>
           </h2>
           <Media device="desktop+">
             <div className="tools">

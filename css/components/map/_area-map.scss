@@ -1,10 +1,10 @@
 
 .c-area-map {
   position: relative;
-  
+
   &.-expanded {
     .c-map {
-      height: 65vh;
+      height: 61vh;
       transition: all $animation-time-2 $ease-out-sine;
     }
   }
