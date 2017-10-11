@@ -38,6 +38,7 @@ export default class Accordion extends React.Component {
           >
             <Sticky
               enabled
+              innerZ={section.zIndex || 600}
               top={headerHeight}
               onStateChange={(pr) => { this.setState({ status: pr.status }); }}
             >

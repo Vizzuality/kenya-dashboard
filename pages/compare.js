@@ -460,7 +460,7 @@ class ComparePage extends Page {
                     />
                   ]
                 },
-                { type: 'dynamic', items: areasToolbarsList, key: 'toolbars', sticky: true },
+                { type: 'dynamic', items: areasToolbarsList, key: 'toolbars', sticky: true, zIndex: 598 },
                 { type: 'dynamic', items: indicatorsWidgetsList, key: 'widgets' }
               ]}
             />
