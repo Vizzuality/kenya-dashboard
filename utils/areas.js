@@ -8,7 +8,6 @@ function getRegionName(regions, selectedRegion) {
     const region = flatten(regions.map(r => r.list)).find(r => +r.id === +selectedRegion);
     return (region && region.name) || 'Location';
   }
-
   return 'Location';
 }
 
