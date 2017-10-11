@@ -77,7 +77,7 @@ class ItemTools extends React.Component {
     GA.event({
       category: 'Indicator detail',
       action: 'Changes Date range',
-      label: `${this.props.info.title}. Start: ${start.year}/${start.month}/${start.day}, end: ${end.year}/${end.month}/${end.day}`
+      label: `${this.props.info.title}. Start: ${start ? `${start.year}/${start.month}/${start.day}` : 'Default'}, end: ${end ? `${end.year}/${end.month}/${end.day}` : 'Default'}`
     });
 
     this.props.onSetDate(start, end);
