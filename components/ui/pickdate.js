@@ -98,7 +98,7 @@ export default class ItemTools extends React.Component {
             locale={{
               applyLabel: 'Apply',
               format: 'DD/MM/YYYY',
-              cancelLabel: 'Remove',
+              cancelLabel: 'Reset',
               fromLabel: 'From',
               toLabel: 'To'
             }}
