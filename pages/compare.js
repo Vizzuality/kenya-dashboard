@@ -172,7 +172,7 @@ class ComparePage extends Page {
     const newAreasIds = Object.keys(this.props.mapState.areas);
     const oldAreasIds = Object.keys(prevProps.mapState.areas);
 
-    if (!isEqual(oldAreasIds, newAreasIds)) {
+    if (!isEqual(oldAreasIds, newAreasIds) && window.offsetWidth < 1024) {
       newAreasIds.forEach((aId) => {
         if (!oldAreasIds.includes(aId)) {
           this.onNextSlider();
@@ -286,7 +286,7 @@ class ComparePage extends Page {
             id={key}
             numOfAreas={Object.keys(areas).length}
             regions={this.props.filters.options.regions}
-            selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
+            selectedRegion={areas[key].region}
             onToggleAccordionItem={this.onToggleAccordionItem}
             onSetRegion={region => this.props.selectRegion(region, key, this.props.url)}
             onRemoveArea={this.onRemoveArea}
@@ -460,7 +460,7 @@ class ComparePage extends Page {
                     />
                   ]
                 },
-                { type: 'dynamic', items: areasToolbarsList, key: 'toolbars', sticky: true },
+                { type: 'dynamic', items: areasToolbarsList, key: 'toolbars', sticky: true, zIndex: 598 },
                 { type: 'dynamic', items: indicatorsWidgetsList, key: 'widgets' }
               ]}
             />

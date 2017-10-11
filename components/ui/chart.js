@@ -152,7 +152,7 @@ class Chart extends React.Component {
       const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
       // Params
       let params = `'${token}', ${info.id}`;
-      params += region && region !== '' ? `, '${region}'` : ", '779'";
+      params += region && region !== '' ? `, '${region}'` : ", ''";
 
       if (dates) {
         const start = `${dates.start.year}-${dates.start.month}-${dates.start.day}`;

@@ -76,12 +76,12 @@ export default class AddArea extends React.Component {
               key={key}
               active={active === key}
               id={key}
-              label={getRegionName(regions, [areas[key].region] || ['779'])}
+              label={getRegionName(regions, [areas[key].region])}
               name="regions"
               type="accordion"
               list={regions}
               remove={Object.keys(areas).length > 1}
-              selected={[areas[key].region] || ['779']}
+              selected={[areas[key].region]}
               setValue={this.onSetAreaValue}
               onRemove={this.onRemoveArea}
               toggleItem={this.onToggleArea}

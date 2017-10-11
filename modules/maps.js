@@ -176,10 +176,11 @@ export function fitAreaBounds(area) {
 export function addArea(area, key) {
   return (dispatch, getState) => {
     const oldAreas = getState().maps.areas;
+    const defaultArea = { ...DEFAULT_AREA_PARAMS, ...{ region: '' } };
 
     const newAreas = Object.assign({}, oldAreas, {
       [key || `area${Date.now()}`]: {
-        ...DEFAULT_AREA_PARAMS,
+        ...defaultArea,
         ...oldAreas[key],
         ...area
       }
