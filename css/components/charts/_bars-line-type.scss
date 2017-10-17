@@ -19,6 +19,20 @@
       text tspan {
         fill: rgba($color-text-1, .5);
       }
+
+      .recharts-cartesian-axis-ticks {
+        .recharts-layer.recharts-cartesian-axis-tick {
+          transform: translate(12px, -8px);
+        }
+      }
+
+      & + .yAxis {
+        .recharts-cartesian-axis-ticks {
+          .recharts-layer.recharts-cartesian-axis-tick {
+            transform: translate(-12px, -8px);
+          }
+        }
+      }
     }
   }
 

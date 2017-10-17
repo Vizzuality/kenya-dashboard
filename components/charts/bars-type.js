@@ -72,6 +72,7 @@ export default class BarsType extends React.Component {
               dataKey="x"
               axisLine={false}
               tickLine={false}
+              padding={{ left: 10 }}
               tickFormatter={(...t) => {
                 return setFormat(t, config.axes.x || null);
               }}
