@@ -12,7 +12,6 @@ import { ResponsiveContainer, LineChart, XAxis, YAxis, Line, CartesianGrid, Tool
 import TooltipChart from 'components/charts/tooltip-chart';
 
 // Constants
-// import { THRESHOLD_COLORS } from 'constants/general';
 import { THRESHOLD_CATEGORY_COLORS } from 'constants/indicators';
 
 
@@ -41,8 +40,6 @@ export default class LineType extends React.Component {
     if (config['legend-config'] && Object.keys(config['legend-config']).length) {
       Object.keys(config['legend-config']).forEach((key, i) => {
         if (key && key[0] === 'y' && config['legend-config'][key]) {
-          // const value = data[data.length - 1][key];
-          // const lineThreshold = threshold.y['break-points'];
           const color = this.colors ? this.colors[i] : 'grey';
           values.push({ value: config['legend-config'] ? config['legend-config'][key] : '', type: 'line', id: key, color });
         }
@@ -65,10 +62,12 @@ export default class LineType extends React.Component {
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
             data={data}
+            margin={{ left: -5 }}
           >
             <XAxis
               dataKey="x"
               axisLine={false}
+              padding={{ left: 10 }}
               tickLine={false}
               tickFormatter={(...t) => {
                 return setFormat(t, config.axes.x || null);
@@ -79,6 +78,7 @@ export default class LineType extends React.Component {
               dataKey="y"
               yAxisId="left"
               orientation="left"
+              padding={{ top: 20 }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(...t) => {
@@ -99,10 +99,6 @@ export default class LineType extends React.Component {
             }
             <CartesianGrid vertical={false} />
             {yRefs.map((key, i) => {
-              // const value = data[data.length - 1][key];
-              // const lineThreshold = y2Axis && key === 'y2' ?
-              //   threshold.y2['break-points'] :
-              //   threshold.y['break-points'];
               const color = this.colors ? this.colors[i] : 'grey';
 
               return (
