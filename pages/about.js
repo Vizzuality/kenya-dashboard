@@ -6,7 +6,7 @@ import withRedux from 'next-redux-wrapper';
 import withTracker from 'components/layout/with-tracker';
 import { initStore } from 'store';
 
-// modules
+// Modules
 import { setUser } from 'modules/user';
 import { getAgencies } from 'modules/agencies';
 
@@ -43,7 +43,10 @@ class AboutPage extends Page {
     const { url, agencies, user } = this.props;
     const principalAgency = agencies.list.find(a => a.name === 'Ministry of Environment & Natural Resources' ||
       `${a.id}` === '5') || agencies.list[0] || {};
-    const filteredAgencies = agencies.list.filter(a => a.name !== 'Ministry of Environment & Natural Resources');
+    const secondaryAgency = agencies.list.find(a => a.name === 'Kenya Forest Service (KFS)' ||
+      `${a.id}` === '16') || {};
+    const filteredAgencies = agencies.list.filter(a => a.name !== 'Ministry of Environment & Natural Resources' && a.name !==
+      'Kenya Forest Service (KFS)');
 
     if (isEmpty(user)) return null;
 
@@ -69,7 +72,7 @@ class AboutPage extends Page {
           {/* Agencies list */}
           <section className="c-section agencies-list">
             <div className="row collapse">
-              <div className="column small-12">
+              <div className="column small-12 medium-6">
                 <Link route={`agency/${principalAgency.id}`}>
                   <a>
                     <div className="principal-agency-container">
@@ -78,6 +81,20 @@ class AboutPage extends Page {
                       </div>
                       <h1 className="section-subtitle principal-agency-title">{principalAgency.name}</h1>
                       <p className="section-description">{principalAgency.description || FAKE_DESCRIPTION}</p>
+                    </div>
+                  </a>
+                </Link>
+              </div>
+
+              <div className="column small-12 medium-6">
+                <Link route={`agency/${secondaryAgency.id}`}>
+                  <a>
+                    <div className="principal-agency-container">
+                      <div className="agencies-logo">
+                        <img src={`${process.env.KENYA_PATH}/${secondaryAgency.logo}`} alt={secondaryAgency.name} />
+                      </div>
+                      <h1 className="section-subtitle principal-agency-title">{secondaryAgency.name}</h1>
+                      <p className="section-description">{secondaryAgency.description || FAKE_DESCRIPTION}</p>
                     </div>
                   </a>
                 </Link>
