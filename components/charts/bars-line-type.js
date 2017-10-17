@@ -53,11 +53,6 @@ export default class BarsType extends React.Component {
     if (config.axes && Object.keys(config.axes).length) {
       Object.keys(config.axes).forEach((key) => {
         if (key[0] === 'y' && config.axes[key]) {
-          // const value = data[data.length - 1][key];
-          // const lineThreshold = y2Axis && key === 'y2' ?
-          //   threshold.y2['break-points'] :
-          //   threshold.y['break-points'];
-            // const color = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
           const color = key === 'y' ? '#FF6161' : '#2E3D3D';
           const type = key === 'y' ? 'line' : 'square';
           values.push({ value: config.axes[key].title, type, id: key, color });
@@ -73,28 +68,25 @@ export default class BarsType extends React.Component {
       'c-bars-line-type',
       { [className]: !!className }
     );
-    // const barsThreshold = threshold && threshold.y ? threshold.y['break-points'] : {};
-    // const lineThreshold = y2Axis ? threshold.y2['break-points'] : threshold.y['break-points'];
-    // const value = data[data.length - 1].y2;
-    // const lineColor = THRESHOLD_COLORS[getThreshold(value, lineThreshold)];
     const lineColor = '#FF6161';
     const legendValues = this.setLegendValues();
 
     return (
       <div className={classNames}>
         <ResponsiveContainer width="100%" height="100%">
-          <ComposedChart data={data}>
+          <ComposedChart data={data} margin={{ left: -35, right: -30 }}>
             <XAxis
               dataKey="x"
               axisLine={false}
               tickLine={false}
+              padding={{ left: 10, right: 10 }}
               tickFormatter={(...t) => {
                 return setFormat(t, config.axes.x || null);
               }}
             />
-            <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
+            <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} padding={{ left: 10, top: 20 }} />
             {y2Axis &&
-              <YAxis dataKey="y2" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
+              <YAxis dataKey="y2" yAxisId="right" orientation="right" axisLine={false} tickLine={false} padding={{ right: 10, top: 20 }} />
             }
             <CartesianGrid vertical={false} />
             <Tooltip
@@ -114,7 +106,6 @@ export default class BarsType extends React.Component {
             >
               {/* Set each bar hover color */}
               {data.map((item, j) => {
-                // const color = THRESHOLD_COLORS[getThreshold(item.y, barsThreshold)];
                 const color = '#6f6fc3';
 
                 return (
@@ -146,7 +137,6 @@ export default class BarsType extends React.Component {
 BarsType.propTypes = {
   className: PropTypes.string,
   config: PropTypes.object,
-  threshold: PropTypes.object,
   data: PropTypes.array,
   y2Axis: PropTypes.bool
 };
