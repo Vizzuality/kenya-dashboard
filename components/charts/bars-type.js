@@ -11,7 +11,6 @@ import { setFormat } from 'utils/general';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Cell } from 'recharts';
 
 // Constants
-// import { THRESHOLD_COLORS } from 'constants/general';
 import TooltipChart from 'components/charts/tooltip-chart';
 
 
@@ -68,7 +67,7 @@ export default class BarsType extends React.Component {
     return (
       <div className={classNames}>
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} maxBarSize={20}>
+          <BarChart data={data} maxBarSize={20} margin={{ left: -50, top: 10 }}>
             <XAxis
               dataKey="x"
               axisLine={false}
@@ -77,7 +76,7 @@ export default class BarsType extends React.Component {
                 return setFormat(t, config.axes.x || null);
               }}
             />
-            <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} />
+            <YAxis dataKey="y" yAxisId="left" orientation="left" axisLine={false} tickLine={false} padding={{ left: 10, top: 20 }} />
             {y2Axis &&
               <YAxis dataKey="y2" yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
             }
@@ -129,7 +128,6 @@ export default class BarsType extends React.Component {
 
 BarsType.propTypes = {
   className: PropTypes.string,
-  threshold: PropTypes.object,
   data: PropTypes.array,
   config: PropTypes.object,
   y2Axis: PropTypes.bool
