@@ -71,7 +71,10 @@ class HomePage extends React.PureComponent {
     const { numLoaded } = this.state;
     const principalAgency = agencies.list.find(a => a.name === 'Ministry of Environment & Natural Resources' ||
       `${a.id}` === '5') || agencies.list[0] || {};
-    const filteredAgencies = agencies.list.filter(a => a.name !== 'Ministry of Environment & Natural Resources');
+    const secondaryAgency = agencies.list.find(a => a.name === 'Kenya Forest Service (KFS)' ||
+      `${a.id}` === '16') || {};
+    const filteredAgencies = agencies.list.filter(a => a.name !== 'Ministry of Environment & Natural Resources' &&
+      a.name !== 'Kenya Forest Service (KFS)');
 
     return (
       <Layout
@@ -140,15 +143,33 @@ class HomePage extends React.PureComponent {
           <div className="row">
             <div className="column small-12 medium-8 medium-offset-2">
               <h1 className="section-title">Members</h1>
-              <div className="principal-agency">
-                <a href={principalAgency.url} className="agency" target="_blank" rel="noopener noreferrer">
-                  <div className="image-container">
-                    <img src={`${process.env.KENYA_PATH}/${principalAgency.logo}`} alt={principalAgency.name} />
+
+              <div className="principals-container row">
+                <div className="column small-12 medium-6">
+                  <div className="principal-agency">
+                    <a href={principalAgency.url} className="agency" target="_blank" rel="noopener noreferrer">
+                      <div className="image-container">
+                        <img src={`${process.env.KENYA_PATH}/${principalAgency.logo}`} alt={principalAgency.name} />
+                      </div>
+                      <span className="agency-name">
+                        <span>Ministry of Environment & Natural</span><span>Resources</span>
+                      </span>
+                    </a>
                   </div>
-                  <span className="agency-name">
-                    <span>Ministry of Environment & Natural</span><span>Resources</span>
-                  </span>
-                </a>
+                </div>
+
+                <div className="column small-12 medium-6">
+                  <div className="principal-agency">
+                    <a href={secondaryAgency.url} className="agency" target="_blank" rel="noopener noreferrer">
+                      <div className="image-container">
+                        <img src={`${process.env.KENYA_PATH}/${secondaryAgency.logo}`} alt={secondaryAgency.name} />
+                      </div>
+                      <span className="agency-name">
+                        <span>Kenya Forest Service</span><span>(KFS)</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
