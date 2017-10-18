@@ -265,7 +265,7 @@ class ComparePage extends Page {
             removedWidgets={areas[key].removedWidgets}
             dates={areas[key].dates}
             numOfAreas={Object.keys(areas).length}
-            selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : KENYA_CARTO_ID}
+            selectedRegion={areas[key].region && areas[key].region !== '' ? areas[key].region : ''}
             regions={this.props.filters.options.regions}
             onRemoveArea={this.onRemoveArea}
             onSelectRegion={this.props.selectRegion}

@@ -267,40 +267,42 @@ export function setAreasParamsUrl(url) {
 // Add layer
 export function addLayer(layer, area, region, dates) {
   return (dispatch, getState) => {
-    const token = getState().user.auth_token;
-    const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
-    let params = `'${token}', ${layer.id}`;
+    if (region && region !== '') {
+      const token = getState().user.auth_token;
+      const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
+      let params = `'${token}', ${layer.id}`;
 
-    if (region && region !== '') params += `, '${region}'`;
+      if (region && region !== '') params += `, '${region}'`;
 
-    if (dates) {
-      const start = `${dates.start.year}-${dates.start.month}-${dates.start.day}`;
-      const end = `${dates.end.year}-${dates.end.month}-${dates.end.day}`;
-      params += `, '${start}', '${end}'`;
-    }
-
-    const query = `select * from get_widget(${params})`;
-    get({
-      url: `${url}?q=${query}`,
-      onSuccess: (data) => {
-        const newLayers = Object.assign({}, getState().maps.areas[area].layers);
-        if (newLayers[layer.id]) { // Update url
-          newLayers[layer.id].url = data.rows[0].data[0].url;
-        } else { // Add new layer
-          newLayers[layer.id] = { id: layer.id, url: data.rows[0].data[0].url };
-        }
-
-        const newArea = {
-          ...getState().maps.areas[area],
-          ...{ layers: newLayers }
-        };
-
-        dispatch({
-          type: ADD_LAYER,
-          payload: { [area]: newArea }
-        });
+      if (dates) {
+        const start = `${dates.start.year}-${dates.start.month}-${dates.start.day}`;
+        const end = `${dates.end.year}-${dates.end.month}-${dates.end.day}`;
+        params += `, '${start}', '${end}'`;
       }
-    });
+
+      const query = `select * from get_widget(${params})`;
+      get({
+        url: `${url}?q=${query}`,
+        onSuccess: (data) => {
+          const newLayers = Object.assign({}, getState().maps.areas[area].layers);
+          if (newLayers[layer.id]) { // Update url
+            newLayers[layer.id].url = data.rows[0].data[0].url;
+          } else { // Add new layer
+            newLayers[layer.id] = { id: layer.id, url: data.rows[0].data[0].url };
+          }
+
+          const newArea = {
+            ...getState().maps.areas[area],
+            ...{ layers: newLayers }
+          };
+
+          dispatch({
+            type: ADD_LAYER,
+            payload: { [area]: newArea }
+          });
+        }
+      });
+    }
   };
 }
 
