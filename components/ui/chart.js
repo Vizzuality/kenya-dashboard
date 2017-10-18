@@ -146,7 +146,8 @@ class Chart extends React.Component {
   getData(attr, onSuccess, onError) {
     const { info, dates, region } = attr;
     const { user } = this.props;
-    if (info) {
+
+    if (info && region && region !== '') {
       const token = user.auth_token;
       // token, widget_id, region, start_date, end_date
       const url = 'https://cdb.resilienceatlas.org/user/kenya/api/v2/sql';
