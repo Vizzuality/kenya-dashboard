@@ -10,6 +10,14 @@
   @media #{$mq-small-medium} {
     padding: 0 0 0 20px;
     height: 46px;
+
+    &.-highlighted {
+      background-color: $color-primary;
+
+      .tools {
+        background-color: #253131;
+      }
+    }
   }
 
   &.-fixed {
@@ -23,63 +31,6 @@
         display: flex;
         align-items: center;
         padding: 8px;
-
-        &.-highlighted {
-          -webkit-animation-name: flash;
-          animation-name: flash;
-          -webkit-animation-duration: 3s;
-          animation-duration: 3s;
-          -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
-
-          @-webkit-keyframes flash {
-            0%, 50%, 100% { background-color: transparent; }
-            25%, 75% { background-color: $color-threshold-success; }
-          }
-
-          @keyframes flash {
-            0%, 50%, 100% { background-color: transparent; }
-            25%, 75% { background-color: $color-threshold-success; }
-          }
-
-          .area-name {
-            -webkit-animation-name: areaName;
-            animation-name: areaName;
-            -webkit-animation-duration: 3s;
-            animation-duration: 3s;
-            -webkit-animation-fill-mode: both;
-            animation-fill-mode: both;
-
-            @-webkit-keyframes areaName {
-              0%, 50%, 100% { color: rgba($color-text-1, .5); }
-              25%, 75% { color: rgba($color-text-2, .7); }
-            }
-
-            @keyframes areaName {
-              0%, 50%, 100% { color: rgba($color-text-1, .5); }
-              25%, 75% { color: rgba($color-text-2, .7); }
-            }
-          }
-
-          .area-number {
-            -webkit-animation-name: areaNum;
-            animation-name: areaNum;
-            -webkit-animation-duration: 3s;
-            animation-duration: 3s;
-            -webkit-animation-fill-mode: both;
-            animation-fill-mode: both;
-
-            @-webkit-keyframes areaNum {
-              0%, 50%, 100% { color: $color-text-1; }
-              25%, 75% { color: rgba($color-text-2, .7); }
-            }
-
-            @keyframes areaNum {
-              0%, 50%, 100% { color: $color-text-1; }
-              25%, 75% { color: rgba($color-text-2, .7); }
-            }
-          }
-        }
       }
 
       .area-name {

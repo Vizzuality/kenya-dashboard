@@ -149,7 +149,7 @@ class AreaToolbar extends React.Component {
     setTimeout(() => {
       this.setState({ highlighted: false });
       this.areasChanged = false;
-    }, 3500);
+    }, 3000);
   }
 
   render() {
@@ -166,7 +166,10 @@ class AreaToolbar extends React.Component {
 
     const classNames = classnames(
       'c-area-toolbar area-indicators-header',
-      { [className]: !!className }
+      {
+        [className]: !!className,
+        '-highlighted': highlighted
+      }
     );
 
     const btnPreviousClasses = classnames(
@@ -185,7 +188,7 @@ class AreaToolbar extends React.Component {
       <div className={classNames}>
         <div className="location-select-container">
           <Media device="device">
-            <button className={`btn-area ${highlighted ? '-highlighted' : ''}`} onClick={this.onOpenAddAreaModal}>
+            <button className="btn-area" onClick={this.onOpenAddAreaModal}>
               <h1 className="area-name">
                 <span className="area-number">{Object.keys(areas).indexOf(id) + 1}.</span>
                 {regionName}
