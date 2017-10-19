@@ -142,7 +142,7 @@ class AreaToolbar extends React.Component {
   setHighlighted() {
     setTimeout(() => {
       this.setState({ highlighted: false });
-    }, 4000);
+    }, 3500);
   }
 
   render() {
@@ -178,8 +178,8 @@ class AreaToolbar extends React.Component {
       <div className={classNames}>
         <div className="location-select-container">
           <Media device="device">
-            <button className="btn-area" onClick={this.onOpenAddAreaModal}>
-              <h1 className={`area-name ${highlighted ? '-highlighted' : ''}`}>
+            <button className={`btn-area ${highlighted ? '-highlighted' : ''}`} onClick={this.onOpenAddAreaModal}>
+              <h1 className="area-name">
                 <span className="area-number">{Object.keys(areas).indexOf(id) + 1}.</span>
                 {regionName}
               </h1>
