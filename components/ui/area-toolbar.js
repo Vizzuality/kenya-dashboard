@@ -45,7 +45,7 @@ class AreaToolbar extends React.Component {
     super(props);
 
     this.state = {
-      highlighted: true
+      highlighted: false
     };
 
     // Bindings
@@ -58,11 +58,11 @@ class AreaToolbar extends React.Component {
   }
 
   componentDidMount() {
-    this.setHighlighted();
+    // if (!this.props.modal.opened) this.setHighlighted();
   }
 
   componentWillReceiveProps(nextProps) {
-    const { modalOpened } = this.props;
+    const { modalOpened, areas } = this.props;
 
     // Update modal content props for Add area
     if (modalOpened && nextProps.modalOpened && this.state.modalContent === 'AddArea' &&
@@ -80,6 +80,10 @@ class AreaToolbar extends React.Component {
         }
       };
       modal.setModalOptions(opts);
+    }
+
+    if (!isEqual(areas, nextProps.areas) && !this.props.modal.opened) {
+      this.setState({ highlighted: true });
     }
   }
 
@@ -130,12 +134,12 @@ class AreaToolbar extends React.Component {
   }
 
   onPreviousSlider() {
-    this.setState({ highlighted: true });
+    // this.setState({ highlighted: true });
     this.props.onPreviousSlider();
   }
 
   onNextSlider() {
-    this.setState({ highlighted: true });
+    // this.setState({ highlighted: true });
     this.props.onNextSlider();
   }
 

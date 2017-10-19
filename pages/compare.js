@@ -363,7 +363,8 @@ class ComparePage extends Page {
       mapState,
       indicators,
       session,
-      user
+      user,
+      modal
     } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(mapState.areas, layers);
@@ -403,6 +404,7 @@ class ComparePage extends Page {
                 className={status === 2 ? '-fixed' : ''}
                 id={this.state.areaShown}
                 url={url}
+                modal={modal}
                 areas={mapState.areas}
                 numOfAreas={Object.keys(mapState.areas).length}
                 regions={this.props.filters.options.regions}
