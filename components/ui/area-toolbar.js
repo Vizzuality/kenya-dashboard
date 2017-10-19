@@ -82,7 +82,11 @@ class AreaToolbar extends React.Component {
       modal.setModalOptions(opts);
     }
 
-    if (!isEqual(areas, nextProps.areas) && !this.props.modal.opened) {
+    if (!isEqual(areas, nextProps.areas)) {
+      this.areasChanged = true;
+    }
+
+    if (this.props.modalOpened && !nextProps.modalOpened && this.areasChanged) {
       this.setState({ highlighted: true });
     }
   }
@@ -134,18 +138,17 @@ class AreaToolbar extends React.Component {
   }
 
   onPreviousSlider() {
-    // this.setState({ highlighted: true });
     this.props.onPreviousSlider();
   }
 
   onNextSlider() {
-    // this.setState({ highlighted: true });
     this.props.onNextSlider();
   }
 
   setHighlighted() {
     setTimeout(() => {
       this.setState({ highlighted: false });
+      this.areasChanged = false;
     }, 3500);
   }
 
