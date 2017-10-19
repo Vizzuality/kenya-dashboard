@@ -410,7 +410,6 @@ class ComparePage extends Page {
                 className={status === 2 ? '-fixed' : ''}
                 id={this.state.areaShown}
                 url={url}
-                modal={modal}
                 areas={mapState.areas}
                 numOfAreas={Object.keys(mapState.areas).length}
                 regions={this.props.filters.options.regions}

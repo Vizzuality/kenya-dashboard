@@ -57,10 +57,6 @@ class AreaToolbar extends React.Component {
     this.onNextSlider = this.onNextSlider.bind(this);
   }
 
-  componentDidMount() {
-    // if (!this.props.modal.opened) this.setHighlighted();
-  }
-
   componentWillReceiveProps(nextProps) {
     const { modalOpened, areas } = this.props;
 
