@@ -172,7 +172,7 @@ class ComparePage extends Page {
     const newAreasIds = Object.keys(this.props.mapState.areas);
     const oldAreasIds = Object.keys(prevProps.mapState.areas);
 
-    if (!isEqual(oldAreasIds, newAreasIds) && window.offsetWidth < 1024) {
+    if (!isEqual(oldAreasIds, newAreasIds) && window.innerWidth < 1024) {
       newAreasIds.forEach((aId) => {
         if (!oldAreasIds.includes(aId)) {
           this.onNextSlider();
