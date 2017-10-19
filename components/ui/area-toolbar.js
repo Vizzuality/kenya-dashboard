@@ -45,7 +45,7 @@ class AreaToolbar extends React.Component {
     super(props);
 
     this.state = {
-      highlighted: true
+      highlighted: false
     };
 
     // Bindings
@@ -57,12 +57,8 @@ class AreaToolbar extends React.Component {
     this.onNextSlider = this.onNextSlider.bind(this);
   }
 
-  componentDidMount() {
-    this.setHighlighted();
-  }
-
   componentWillReceiveProps(nextProps) {
-    const { modalOpened } = this.props;
+    const { modalOpened, areas } = this.props;
 
     // Update modal content props for Add area
     if (modalOpened && nextProps.modalOpened && this.state.modalContent === 'AddArea' &&
@@ -80,6 +76,14 @@ class AreaToolbar extends React.Component {
         }
       };
       modal.setModalOptions(opts);
+    }
+
+    if (!isEqual(areas, nextProps.areas)) {
+      this.areasChanged = true;
+    }
+
+    if (this.props.modalOpened && !nextProps.modalOpened && this.areasChanged) {
+      this.setState({ highlighted: true });
     }
   }
 
@@ -130,19 +134,18 @@ class AreaToolbar extends React.Component {
   }
 
   onPreviousSlider() {
-    this.setState({ highlighted: true });
     this.props.onPreviousSlider();
   }
 
   onNextSlider() {
-    this.setState({ highlighted: true });
     this.props.onNextSlider();
   }
 
   setHighlighted() {
     setTimeout(() => {
       this.setState({ highlighted: false });
-    }, 4000);
+      this.areasChanged = false;
+    }, 3000);
   }
 
   render() {
@@ -159,7 +162,10 @@ class AreaToolbar extends React.Component {
 
     const classNames = classnames(
       'c-area-toolbar area-indicators-header',
-      { [className]: !!className }
+      {
+        [className]: !!className,
+        '-highlighted': highlighted
+      }
     );
 
     const btnPreviousClasses = classnames(
@@ -179,7 +185,7 @@ class AreaToolbar extends React.Component {
         <div className="location-select-container">
           <Media device="device">
             <button className="btn-area" onClick={this.onOpenAddAreaModal}>
-              <h1 className={`area-name ${highlighted ? '-highlighted' : ''}`}>
+              <h1 className="area-name">
                 <span className="area-number">{Object.keys(areas).indexOf(id) + 1}.</span>
                 {regionName}
               </h1>

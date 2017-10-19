@@ -10,6 +10,14 @@
   @media #{$mq-small-medium} {
     padding: 0 0 0 20px;
     height: 46px;
+
+    &.-highlighted {
+      background-color: $color-primary;
+
+      .tools {
+        background-color: #253131;
+      }
+    }
   }
 
   &.-fixed {
@@ -17,10 +25,12 @@
   }
 
   .location-select-container {
+
     @media #{$mq-small-medium} {
       .btn-area {
         display: flex;
         align-items: center;
+        padding: 8px;
       }
 
       .area-name {
@@ -29,9 +39,6 @@
         color: rgba($color-text-1, .5);
         padding: 0;
 
-        &.-highlighted {
-          color: $color-primary;
-        }
 
         .area-number {
           color: $color-text-1;

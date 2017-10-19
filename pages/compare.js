@@ -102,6 +102,7 @@ class ComparePage extends Page {
     this.onRemoveIndicator = this.onRemoveIndicator.bind(this);
     this.onNextSlider = this.onNextSlider.bind(this);
     this.onPreviousSlider = this.onPreviousSlider.bind(this);
+    this.onGoToSlider = this.onGoToSlider.bind(this);
     this.onBeforeSlidersChange = this.onBeforeSlidersChange.bind(this);
     this.onSetRegion = this.onSetRegion.bind(this);
   }
@@ -172,10 +173,11 @@ class ComparePage extends Page {
     const newAreasIds = Object.keys(this.props.mapState.areas);
     const oldAreasIds = Object.keys(prevProps.mapState.areas);
 
+    /* Redirect to new area */
     if (!isEqual(oldAreasIds, newAreasIds) && window.innerWidth < 1024) {
       newAreasIds.forEach((aId) => {
         if (!oldAreasIds.includes(aId)) {
-          this.onNextSlider();
+          this.onGoToSlider(newAreasIds.length);
         }
       });
     }
@@ -330,6 +332,10 @@ class ComparePage extends Page {
     this.slider.slickPrev();
   }
 
+  onGoToSlider(num) {
+    this.slider.slickGoTo(num);
+  }
+
   onBeforeSlidersChange(oldId, newId) {
     const { areas } = this.props.mapState;
     const area = Object.keys(areas)[newId];
@@ -363,7 +369,8 @@ class ComparePage extends Page {
       mapState,
       indicators,
       session,
-      user
+      user,
+      modal
     } = this.props;
     const layers = setLayersZIndex(indicators.layers, indicators.layersActive);
     const areaMaps = this.getAreaMaps(mapState.areas, layers);
