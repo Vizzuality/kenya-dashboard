@@ -24,15 +24,15 @@ module.exports = () => {
       .send({ email, password })
       .set('Accept', 'application/json')
       .end((err, res) => {
-        if (err) {
-          done(err, null, 'User unathorized');
-        } else {
-          const user = Object.assign({}, res.body);
-          done(null, user, 'User authenticated correctly');
-        }
+        if (err) return done(null, false);
+        const user = Object.assign({}, res.body);
+        if (!user) return done(null, false);
+        return done(null, user);
       });
   });
+
   passport.use(strategy);
+
   return {
     authenticate: () => passport.authenticate('local', { failureRedirect: '/login' })
   };
