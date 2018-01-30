@@ -123,7 +123,7 @@ class Chart extends React.Component {
     return (
       <p className="no-data">
         {this.state.loading && 'Loading data'}
-        {!this.state.loading && 'No data available'}
+        {!this.state.loading && 'No data available at this scale'}
       </p>
     );
   }
