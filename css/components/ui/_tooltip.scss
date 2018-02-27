@@ -3,6 +3,7 @@
   background-color: $color-secondary;
   color: $color-text-1;
   pointer-events: none;
+  z-index: 5000;
 
   &:after {
     content: '';
