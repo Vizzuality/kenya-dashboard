@@ -1,15 +1,16 @@
 .c-button {
+  display: inline-block;
   color: $color-text-1;
+  fill: $color-text-1;
   padding: 12px 14px;
   border-radius: 100px;
   background-color: $color-secondary;
   font-size: $font-size-small;
   line-height: 16px;
+  cursor: pointer;
 
   // STATES
   &:hover {
-    color: $color-primary;
-    background-color: rgba($color-secondary, .5);
     opacity: 1;
   }
 
@@ -36,6 +37,7 @@
   &.-dark {
     background-color: $color-bg-dark;
     color: $color-text-1;
+    fill: $color-text-1;
     text-transform: capitalize;
     font-size: 17px;
     line-height: 20px;
@@ -50,6 +52,7 @@
   &.-light {
     background-color: $color-bg-light;
     color: $color-text-2;
+    fill: $color-text-2;
     text-transform: capitalize;
     font-size: 17px;
     line-height: 20px;
@@ -63,20 +66,24 @@
   &.-primary {
     border-color: $color-border-1;
     color: $color-text-1;
+    fill: $color-text-1;
     background: transparent;
 
     &:hover {
       color: darken($color-text-1, 10%);
+      fill: darken($color-text-1, 10%);
     }
   }
 
   &.-secondary {
     border-color: $color-border-1;
     color: $color-text-1;
+    fill: $color-text-1;
     background: $color-dark-grey;
 
     &:hover {
       color: $color-primary;
+      fill: $color-primary;
     }
   }
 
@@ -84,6 +91,7 @@
     display: inline-flex;
     background: #3b5998;
     color: $color-white;
+    fill: $color-white;
     border-color: #3b5998;
 
     &:hover {
@@ -95,6 +103,7 @@
     display: inline-flex;
     background: #55acee;
     color: $color-white;
+    fill: $color-white;
     border-color: #55acee;
 
     &:hover {
@@ -107,6 +116,7 @@
     align-items: flex-start;
     background: #007bb5;
     color: $color-white;
+    fill: $color-white;
     border-color: #007bb5;
 
     &:hover {

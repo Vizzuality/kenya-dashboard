@@ -14,8 +14,8 @@ import { encode, decode } from 'utils/general';
 import { toastr } from 'react-redux-toastr';
 
 // Components
-import { Link } from 'routes';
 import IndicatorInfo from 'components/modal-contents/indicator-info';
+import PrintPreview from 'components/modal-contents/print-preview';
 import Icon from 'components/ui/icon';
 import PickDate from 'components/ui/pickdate';
 import Tooltip from 'components/ui/tooltip';
@@ -50,6 +50,23 @@ class ItemTools extends React.Component {
     GA.event({
       category: window.location.pathname,
       action: 'Open infowindow',
+      label: this.props.info.title
+    });
+  }
+
+  onTogglePrintModal(props) {
+    const opts = {
+      children: PrintPreview,
+      childrenProps: {
+        ...props
+      },
+      size: '-pdf'
+    };
+    modal.toggleModal(true, opts);
+
+    GA.event({
+      category: window.location.pathname,
+      action: 'Open print preview',
       label: this.props.info.title
     });
   }
@@ -114,7 +131,6 @@ class ItemTools extends React.Component {
             <button className="btn" onClick={this.onToggleModal}>
               <Icon name="icon-info" className="-small" />
             </button>
-
             <div>Info</div>
           </Tooltip>
 
@@ -127,11 +143,16 @@ class ItemTools extends React.Component {
             event="mouseenter"
             eventOff="mouseleave"
           >
-            <Link route={`${process.env.KENYA_PATH}/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`}>
-              <a className="btn" download>
-                <Icon name="icon-print" className="-small" />
-              </a>
-            </Link>
+            <button
+              className="btn"
+              onClick={() => this.onTogglePrintModal({
+                url: `/widget/${info.id}?options=${encodedFilters}&token=${user.auth_token}`,
+                pdfUrl: `/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000`,
+                imageUrl: `/widget/${info.id}/export?options=${encodedFilters}&token=${user.auth_token}&waitFor=3000&extension=png`
+              })}
+            >
+              <Icon name="icon-print" className="-small" />
+            </button>
             <div>Print</div>
           </Tooltip>
 

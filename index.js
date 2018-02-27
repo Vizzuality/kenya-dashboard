@@ -69,7 +69,9 @@ const getDelayParam = (param) => {
 };
 async function exportPDF(req, res) {
   const tmpDir = tmp.dirSync();
-  const filename = `widget-${req.params.id}-${Date.now()}.pdf`;
+  const fileExtension = req.query.extension || 'pdf';
+
+  const filename = `widget-${req.params.id}-${Date.now()}.${fileExtension}`;
   const filePath = `${tmpDir.name}/${filename}`;
 
   try {
@@ -77,16 +79,23 @@ async function exportPDF(req, res) {
     const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
     const page = await browser.newPage();
     const delay = getDelayParam(req.query.waitFor);
-    const host = dev ? 'http://localhost:3000' : 'https://kenya-dashboard.vizzuality.com';
+    const host = dev ? 'http://localhost:4000' : 'https://kenya-dashboard.vizzuality.com';
 
     await page.setViewport(viewportOptions);
     await page.goto(`${host}/widget/${req.params.id}?options=${req.query.options}&token=${req.query.token}`, gotoOptions);
     await page.waitFor(delay);
-    await page.pdf({ path: filePath, format: 'A4' });
+
+    if (fileExtension === 'pdf') {
+      await page.pdf({ path: filePath, format: 'A4' });
+    } else {
+      await page.screenshot({ path: filePath });
+    }
 
     browser.close();
 
-    res.setHeader('Content-type', 'application/pdf');
+    const contentType = fileExtension === 'pdf' ? 'application/pdf' : 'image/png';
+
+    res.setHeader('Content-type', contentType);
     res.setHeader('Content-disposition', `attachment; filename=${filename}`);
     res.download(filePath);
   } catch (err) {

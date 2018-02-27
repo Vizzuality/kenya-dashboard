@@ -172,9 +172,12 @@ class WidgetPage extends Page {
                   <span className="">{info.topic.name}</span>
                 </div>
                 <span className="update">Last update: {this.state.lastDate}</span>
-                <span className="logo">
-                  <img src={`${process.env.KENYA_PATH}/${info.agency.logo}`} alt={info.agency.name} />
-                </span>
+
+                {info.agency &&
+                  <span className="logo">
+                    <img src={`${process.env.KENYA_PATH}/${info.agency.logo}`} alt={info.agency.name} />
+                  </span>
+                }
               </div>
             </footer>
           </article> : ''

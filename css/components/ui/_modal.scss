@@ -139,6 +139,20 @@
       height: calc(100vh - 120px);
     }
   }
+
+  // SIZES
+  &.-pdf {
+    .modal-container {
+      max-width: none;
+      width: 210mm + 30mm;
+    }
+
+    .modal-content {
+      max-height: calc(100vh - 120px);
+      background: $color-bg-light;
+    }
+  }
+
 }
 
 /* Override toastr */
