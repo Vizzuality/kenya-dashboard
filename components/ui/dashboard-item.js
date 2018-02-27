@@ -105,12 +105,18 @@ export default class DashboardItem extends React.Component {
     const rawMinDate = minMaxDates && minMaxDates.min ? new Date(minMaxDates.min) : null;
     const rawMaxDate = minMaxDates && minMaxDates.max ? new Date(minMaxDates.max) : null;
 
+    if (!rawMinDate || !rawMaxDate) {
+      return '';
+    }
+
     const minDate = rawMinDate ? `${rawMinDate.getDate()}/${rawMinDate.getMonth() + 1}/${rawMinDate.getFullYear()}` : '';
     const maxDate = rawMaxDate ? `${rawMaxDate.getDate()}/${rawMaxDate.getMonth() + 1}/${rawMaxDate.getFullYear()}` : '';
 
-    const dateLabel = minDate !== '' && maxDate !== '' ? `${minDate} - ${maxDate}` : '';
+    if (minDate === maxDate) {
+      return rawMinDate.getFullYear();
+    }
 
-    return dateLabel;
+    return `${minDate} - ${maxDate}`;
   }
 
   render() {

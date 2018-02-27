@@ -95,7 +95,7 @@ class ItemTools extends React.Component {
 
     return (
       <div className={classNames}>
-        {info.frenquency !== null && remove &&
+        {info.frenquency !== null && remove && minMaxDates && minMaxDates.min !== minMaxDates.max &&
           <div className="select-date">
             <PickDate dates={dates} onChange={this.onChangeDate} minMaxDates={minMaxDates} />
           </div>
