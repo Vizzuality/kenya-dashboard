@@ -131,6 +131,7 @@ export default class DashboardItem extends React.Component {
     const parsedInfo = { ...info, ...{ lastDate: this.state.lastDate } };
     const description = info.description || FAKE_DESCRIPTION;
     const dateLabel = this.getDatesLabel();
+    const agency = info.agency || {};
 
     return (
       // Grid layout
@@ -175,7 +176,7 @@ export default class DashboardItem extends React.Component {
               <TopicIcon topic={info.topic ? info.topic.name : ''} />
               <span className="update">Last update: {this.state.lastDate}</span>
               <span className="logo">
-                <img src={`${process.env.KENYA_PATH}/${info.agency.logo}`} alt={info.agency.name} />
+                <img src={`${process.env.KENYA_PATH}/${agency.logo}`} alt={agency.name} />
               </span>
             </div>
             {!remove &&
@@ -248,7 +249,7 @@ export default class DashboardItem extends React.Component {
                       <TopicIcon topic={info.topic ? info.topic.name : ''} tooltip={info.topic && !!info.topic.name} />
                       <span className="update">Last update: {this.state.lastDate}</span>
                       <span className="logo">
-                        <img src={`${process.env.KENYA_PATH}/${info.agency.logo}`} alt={info.agency.name} />
+                        <img src={`${process.env.KENYA_PATH}/${agency.logo}`} alt={agency.name} />
                       </span>
                     </div>
                   </footer>
