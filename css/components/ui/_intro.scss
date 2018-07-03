@@ -58,6 +58,8 @@
   .description {
     font-size: $font-size-big;
     line-height: 32px;
+    max-width: 60ch;
+    margin: 0 auto;
   }
 
   .link {

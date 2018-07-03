@@ -53,7 +53,7 @@ class AboutPage extends Page {
     return (
       <Layout
         title="About"
-        description="About description..."
+        description="The alliance is made up of various partners from the National Government, Government agencies, Civil Society and NGOs with information on wildlife conservation, human well-being and agriculture"
         url={url}
         className={user ? 'p-about -logged' : 'p-about'}
         logged={user.logged}
@@ -64,7 +64,7 @@ class AboutPage extends Page {
             <div className="row">
               <div className="column small-12 medium-10 medium-offset-1">
                 <h1 className="title">About the Alliance</h1>
-                <p className="description">{FAKE_DESCRIPTION}</p>
+                <p className="description">The alliance is made up of various partners from the National Government, Government agencies, Civil Society and NGOs with information on wildlife conservation, human well-being and agriculture</p>
               </div>
             </div>
           </Intro>

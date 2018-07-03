@@ -71,7 +71,7 @@ class AgencyPage extends React.PureComponent {
             <div className="row">
               <div className="column small-12 medium-10 medium-offset-1">
                 <h1 className="section-title">Contributions to Data</h1>
-                <p className="section-description">{FAKE_DESCRIPTION}</p>
+                <p className="section-description">Datasets contributed by the organization are as follows:</p>
               </div>
             </div>
             <div className="row">
